@@ -442,29 +442,20 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
-  placeholder:
-
-  # Algolia Search
+  use: local_search
   algolia_search:
     # Number of search results per page
-    hitsPerPage: 6
-
-  # Local Search
+    per_page: 6
   local_search:
     # Preload the search data when the page loads.
     preload: false
     # Show top n results per article, show all results by setting to -1
     top_n_per_article: 1
-    # Unescape html strings to the readable one.
-    unescape: false
     # Enable pagination for search results
-    pagination:
-      enable: false
-      # Number of search results per page
-      hitsPerPage: 8
+    unescape: false
+    # Use CDN for local_search
     CDN:
-
+      # If not set, the default CDN will be used.
   # Docsearch
   # https://docsearch.algolia.com/
   docsearch:

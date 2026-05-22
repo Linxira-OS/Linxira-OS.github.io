@@ -13,13 +13,15 @@ keywords:
   - Debian
   - Linxira
 author: Linxira OS Contributors
-language: zh-CN
+language:
+  - zh-CN
+  - en
 timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://Linxira-OS.github.io
-permalink: :year/:month/:day/:title/
+permalink: posts/:abbrlink.html
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -107,3 +109,20 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: ''
+
+# abbrlink
+abbrlink:
+  alg: crc32
+  rep: hex
+
+# i18n
+i18n:
+  type: ["page", "post"]
+  generator: ["archive", "index"]
+
+# RSS Feed
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  limit: 20

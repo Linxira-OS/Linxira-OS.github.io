@@ -1,7 +1,8 @@
 ---
 title: 欢迎使用 Linxira OS
-date: 2026-05-22
 cover: false
+abbrlink: 74062d
+date: 2026-05-22 00:00:00
 ---
 
 ## 什么是 Linxira OS？
