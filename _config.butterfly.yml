@@ -18,6 +18,7 @@ nav:
 menu:
   首页: / || fas fa-home
   下载: /download/ || fas fa-download
+  品牌: /brand/ || fas fa-palette
   文档: /docs/ || fas fa-book
   关于: /about/ || fas fa-info-circle
 
@@ -29,11 +30,11 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: /img/logo-32.png
 
 avatar:
-  img: /img/butterfly-icon.png
-  effect: false
+  img: /img/logo-192.png
+  effect: true
 
 # Disable all banner images
 disable_top_img: false

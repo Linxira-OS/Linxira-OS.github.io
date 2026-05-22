@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
   <defs>
+    <radialGradient id="glow-bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#0B1121" stop-opacity="0"/>
+    </radialGradient>
     <linearGradient id="bio-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#10B981"/>
       <stop offset="100%" stop-color="#06B6D4"/>
     </linearGradient>
+    <linearGradient id="ai-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1E293B" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
   </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" fill="#0B1121" rx="16"/>
+  <rect width="200" height="200" fill="url(#grid)" rx="16"/>
+  <circle cx="100" cy="100" r="85" fill="url(#glow-bg)"/>
 
   <!-- Hexagon -->
   <polygon points="100,25 165,62.5 165,137.5 100,175 35,137.5 35,62.5"
