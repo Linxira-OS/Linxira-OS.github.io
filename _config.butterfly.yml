@@ -20,6 +20,7 @@ menu:
   下载: /download/ || fas fa-download
   品牌: /brand/ || fas fa-palette
   文档: /docs/ || fas fa-book
+  社区: /community/ || fas fa-users
   关于: /about/ || fas fa-info-circle
 
 social:
