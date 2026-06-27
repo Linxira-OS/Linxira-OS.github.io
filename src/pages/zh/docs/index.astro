@@ -1,0 +1,152 @@
+---
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文档 — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+
+    .layout { display: flex; padding-top: 60px; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { width: 260px; background: #0c1322; border-right: 1px solid rgba(51,65,85,0.3); padding: 2rem 0; position: fixed; top: 60px; bottom: 0; overflow-y: auto; }
+    .sidebar-title { color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem; margin-bottom: 0.5rem; }
+    .sidebar a { display: block; padding: 0.5rem 1.5rem; color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar a:hover { color: #14b8a6; background: rgba(20,184,166,0.05); }
+    .sidebar a.active { color: #14b8a6; border-left-color: #14b8a6; background: rgba(20,184,166,0.08); }
+    .sidebar .section { margin-bottom: 1.5rem; }
+
+    /* Main content */
+    .main { flex: 1; margin-left: 260px; padding: 3rem 4rem; max-width: 900px; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    p { color: #94a3b8; margin-bottom: 1rem; }
+    strong { color: #e2e8f0; }
+    a { color: #14b8a6; }
+    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+    code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #14b8a6; }
+
+    .doc-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; text-decoration: none; transition: border-color 0.3s; }
+    .doc-card:hover { border-color: rgba(20,184,166,0.4); }
+    .doc-card h3 { color: #14b8a6; margin-bottom: 0.3rem; font-size: 1.1rem; }
+    .doc-card p { font-size: 0.9rem; margin: 0; color: #94a3b8; }
+
+    .keyword { display: inline-block; font-size: 0.7rem; background: rgba(20,184,166,0.15); color: #14b8a6; padding: 0.15rem 0.5rem; border-radius: 4px; margin: 0.2rem; }
+
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); margin-left: 260px; }
+
+    @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; padding: 2rem; } footer { margin-left: 0; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/zh/docs/" style="color:#14b8a6;">文档</a>
+      <a href="/zh/blog/">博客</a>
+      <a href="/zh/legal/license/">协议</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/en/docs/" class="lang-link">EN</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section">
+        <div class="sidebar-title">开始</div>
+        <a href="/zh/docs/" class="active">概述</a>
+        <a href="/zh/docs/install/">安装指南</a>
+        <a href="/zh/docs/quick-start/">快速开始</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">用户指南</div>
+        <a href="/zh/docs/package-managers/">包管理器</a>
+        <a href="/zh/docs/workflows/">工作流模板</a>
+        <a href="/zh/docs/config-hub/">配置中心</a>
+        <a href="/zh/docs/desktop/">桌面环境</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">开发者</div>
+        <a href="/zh/docs/contributing/">参与贡献</a>
+        <a href="/zh/docs/building/">构建 ISO</a>
+        <a href="/zh/docs/repository-structure/">仓库结构</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">参考</div>
+        <a href="/zh/legal/license/">开源协议</a>
+        <a href="/zh/docs/glossary/">术语表</a>
+        <a href="/zh/docs/faq/">常见问题</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h1>Linxira OS 文档</h1>
+      <p>欢迎阅读 Linxira OS 官方文档。本文档只记录 Linxira 独有的功能和配置。通用 Linux 问题请参考 <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>。</p>
+
+      <h2>快速导航</h2>
+
+      <a href="/zh/docs/install/" class="doc-card">
+        <h3>安装指南</h3>
+        <p>下载 ISO、制作启动盘、完成安装的完整流程。</p>
+      </a>
+
+      <a href="/zh/docs/quick-start/" class="doc-card">
+        <h3>快速开始</h3>
+        <p>安装后的第一步：配置源、安装工具、开始使用。</p>
+      </a>
+
+      <a href="/zh/docs/package-managers/" class="doc-card">
+        <h3>包管理器</h3>
+        <p>apt、mise、Miniforge、Distrobox 的使用指南。</p>
+      </a>
+
+      <a href="/zh/docs/workflows/" class="doc-card">
+        <h3>工作流模板</h3>
+        <p>科研、开发、AI/ML、生物信息学预配置环境。</p>
+      </a>
+
+      <a href="/zh/docs/config-hub/" class="doc-card">
+        <h3>配置中心</h3>
+        <p>Linxira Config Hub 的使用和配置。</p>
+      </a>
+
+      <h2>关键词索引</h2>
+      <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
+        <span class="keyword">mise</span>
+        <span class="keyword">Miniforge</span>
+        <span class="keyword">bioconda</span>
+        <span class="keyword">Distrobox</span>
+        <span class="keyword">KDE Plasma</span>
+        <span class="keyword">btrfs</span>
+        <span class="keyword">Timeshift</span>
+        <span class="keyword">Calamares</span>
+        <span class="keyword">OpenCode</span>
+        <span class="keyword">NIRI</span>
+        <span class="keyword">CUDA</span>
+        <span class="keyword">PyTorch</span>
+        <span class="keyword">Nextflow</span>
+        <span class="keyword">LaTeX</span>
+        <span class="keyword">SSH</span>
+      </div>
+    </main>
+  </div>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>

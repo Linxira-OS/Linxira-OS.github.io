@@ -1,0 +1,114 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introducing Linxira OS — Blog</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .back { color: #14b8a6; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    p { color: #94a3b8; margin-bottom: 1rem; }
+    strong { color: #e2e8f0; }
+    a { color: #14b8a6; }
+    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/en/docs/">Docs</a>
+      <a href="/en/blog/" style="color:#14b8a6;">Blog</a>
+      <a href="/en/legal/license/">License</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/zh/blog/introducing-linxira-os/" class="lang-link">中文</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-06-27 · Announcement</div>
+    <h1>Introducing Linxira OS</h1>
+
+    <p><strong>Linxira OS</strong> is an independent Linux distribution built for scientific computing and AI development.</p>
+
+    <h2>What is Linxira OS?</h2>
+    <p>Linxira OS is a desktop Linux distribution based on Linux Mint (Ubuntu LTS ecosystem). It comes with KDE Plasma desktop and a carefully curated set of development and scientific tools pre-installed.</p>
+    <p>The name "Linxira" combines "Linux" with a unique identifier — it is not affiliated with any existing Linux distribution or hardware project.</p>
+
+    <h2>Who is it for?</h2>
+    <h3>1. Researchers & Scientists</h3>
+    <ul>
+      <li>Bioinformaticians who need bioconda, Nextflow, and common sequencing tools</li>
+      <li>Physicists and chemists who need Python scientific stacks</li>
+      <li>Anyone who needs LaTeX for paper writing</li>
+    </ul>
+
+    <h3>2. Developers</h3>
+    <ul>
+      <li>Full-stack developers who want mise for language version management</li>
+      <li>Rust, Go, Node.js, Python developers who want a ready-to-go environment</li>
+      <li>AI/ML engineers who need CUDA, PyTorch, and local LLM support</li>
+    </ul>
+
+    <h3>3. Students</h3>
+    <ul>
+      <li>Computer science students who want a modern Linux desktop</li>
+      <li>Science students who need both GUI and terminal tools</li>
+      <li>Anyone learning Linux who wants a well-configured system</li>
+    </ul>
+
+    <h2>Design Philosophy</h2>
+    <h3>Layered Architecture</h3>
+    <p>We believe in separating concerns:</p>
+    <ul>
+      <li><strong>Base Layer</strong>: Linux Mint provides stability and hardware compatibility</li>
+      <li><strong>Platform Layer</strong>: Linxira tools provide cross-ecosource management</li>
+      <li><strong>Reproducibility Layer</strong>: mise + Miniforge + Distrobox for portable environments</li>
+      <li><strong>Domain Layer</strong>: Scientific and development tools delivered through profiles</li>
+    </ul>
+
+    <h3>Not Everything in One ISO</h3>
+    <p>We deliberately avoid stuffing every scientific tool into the base ISO. Core ISO includes essential tools and package managers; heavy scientific tools are available through workflow templates.</p>
+
+    <h2>Key Features</h2>
+    <table>
+      <tr><th>Feature</th><th>Description</th></tr>
+      <tr><td>KDE Plasma Desktop</td><td>Modern, customizable desktop environment</td></tr>
+      <tr><td>btrfs + Timeshift</td><td>System snapshots for easy rollback</td></tr>
+      <tr><td>mise</td><td>Multi-language version manager</td></tr>
+      <tr><td>Miniforge3</td><td>Scientific computing with bioconda</td></tr>
+      <tr><td>Distrobox</td><td>Run other distros in containers</td></tr>
+      <tr><td>OpenCode</td><td>AI coding assistant</td></tr>
+    </table>
+
+    <h2>What's Next?</h2>
+    <p>We are currently working on v1.0 release, workflow templates, and Config Hub. Follow our progress on <a href="https://github.com/Linxira-OS" style="color:#14b8a6;">GitHub</a>.</p>
+  </div>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>

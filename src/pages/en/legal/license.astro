@@ -1,0 +1,117 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>License — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .back { color: #14b8a6; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 2rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    p { color: #94a3b8; margin-bottom: 1rem; }
+    strong { color: #e2e8f0; }
+    .license-box { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+    .license-box h3 { color: #14b8a6; margin-bottom: 0.5rem; font-size: 1rem; }
+    .license-box p { font-size: 0.9rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    td a { color: #14b8a6; text-decoration: none; }
+    td a:hover { text-decoration: underline; }
+    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/en/docs/">Docs</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/zh/legal/license/" class="lang-link">中文</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <a href="/en/" class="back">← Back to Home</a>
+    <h1>Open Source Licenses</h1>
+
+    <p>Linxira OS is a distribution built on top of multiple upstream open source projects. We respect and comply with all upstream project licenses.</p>
+
+    <h2>Linxira OS Own Licenses</h2>
+    <div class="license-box">
+      <h3>Code & Configuration</h3>
+      <p>Custom code, configuration files, and build scripts are licensed under <strong>GPL-3.0</strong>.</p>
+    </div>
+    <div class="license-box">
+      <h3>Documentation & Website</h3>
+      <p>Documentation, Wiki, and website content are licensed under <strong>CC BY-SA 4.0</strong>.</p>
+    </div>
+    <div class="license-box">
+      <h3>Brand Assets</h3>
+      <p>Logos, wallpapers, icons, and other brand assets are licensed under <strong>CC BY-NC-SA 4.0</strong>. See <a href="/en/#brand" style="color:#14b8a6;">Brand Assets</a> page.</p>
+    </div>
+
+    <h2>Upstream License Inheritance</h2>
+    <p>As a Linux distribution, Linxira OS inherits license obligations from upstream projects. Key dependencies:</p>
+
+    <table>
+      <tr><th>Component</th><th>Upstream Project</th><th>License</th></tr>
+      <tr><td>Base System</td><td><a href="https://ubuntu.com">Ubuntu</a> / <a href="https://linuxmint.com">Linux Mint</a></td><td>GPL-2.0+ / various</td></tr>
+      <tr><td>Desktop</td><td><a href="https://kde.org">KDE Plasma</a></td><td>GPL-2.0+</td></tr>
+      <tr><td>Installer</td><td><a href="https://calamares.io">Calamares</a></td><td>GPL-3.0+</td></tr>
+      <tr><td>Kernel</td><td><a href="https://kernel.org">Linux Kernel</a></td><td>GPL-2.0</td></tr>
+      <tr><td>GNU Tools</td><td><a href="https://gnu.org">GNU Project</a></td><td>GPL-2.0+ / LGPL-2.0+</td></tr>
+      <tr><td>Firefox</td><td><a href="https://mozilla.org">Mozilla</a></td><td>MPL-2.0</td></tr>
+      <tr><td>LibreOffice</td><td><a href="https://documentfoundation.org">The Document Foundation</a></td><td>MPL-2.0</td></tr>
+    </table>
+
+    <h2>GPL Copyleft Explanation</h2>
+    <p>The GNU General Public License (GPL) has <strong>copyleft</strong> provisions: if you distribute software containing GPL code, your derivative work must also be GPL-licensed.</p>
+
+    <p>Impact on Linxira OS:</p>
+    <ul>
+      <li>All custom code we distribute must be open source (already GPL-3.0)</li>
+      <li>Users running Linxira OS locally are not subject to copyleft restrictions</li>
+      <li>Users creating derivative distributions must comply with upstream licenses</li>
+      <li>User customizations and scripts are not subject to copyleft (unless they include GPL code)</li>
+    </ul>
+
+    <h2>Non-Free Components</h2>
+    <p>Linxira OS may include the following non-free components:</p>
+    <ul>
+      <li><strong>Firmware</strong>: Some hardware requires proprietary firmware</li>
+      <li><strong>GPU Drivers</strong>: NVIDIA drivers are proprietary</li>
+      <li><strong>User-Optional</strong>: VS Code, Chrome, etc. are proprietary</li>
+    </ul>
+    <p>These components are user-installed by choice; Linxira OS does not mandate non-free software.</p>
+
+    <h2>Full License Texts</h2>
+    <ul>
+      <li><a href="https://www.gnu.org/licenses/gpl-3.0.html" style="color:#14b8a6;">GNU GPL v3.0</a></li>
+      <li><a href="https://creativecommons.org/licenses/by-sa/4.0/" style="color:#14b8a6;">CC BY-SA 4.0</a></li>
+      <li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color:#14b8a6;">CC BY-NC-SA 4.0</a></li>
+      <li><a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html" style="color:#14b8a6;">GNU GPL v2.0</a></li>
+    </ul>
+  </div>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>

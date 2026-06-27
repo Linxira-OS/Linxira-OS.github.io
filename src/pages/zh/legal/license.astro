@@ -1,0 +1,123 @@
+---
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>开源协议 — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+
+    .container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .back { color: #14b8a6; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 2rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    p { color: #94a3b8; margin-bottom: 1rem; }
+    strong { color: #e2e8f0; }
+
+    .license-box { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+    .license-box h3 { color: #14b8a6; margin-bottom: 0.5rem; font-size: 1rem; }
+    .license-box p { font-size: 0.9rem; }
+
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    td a { color: #14b8a6; text-decoration: none; }
+    td a:hover { text-decoration: underline; }
+
+    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/zh/docs/">文档</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/en/legal/license/" class="lang-link">EN</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <a href="/zh/" class="back">← 返回首页</a>
+    <h1>开源协议</h1>
+
+    <p>Linxira OS 是一个基于多个上游开源项目的发行版。我们尊重并遵守所有上游项目的开源协议。</p>
+
+    <h2>Linxira OS 自身协议</h2>
+    <div class="license-box">
+      <h3>代码与配置</h3>
+      <p>Linxira OS 的自定义代码、配置文件和构建脚本采用 <strong>GPL-3.0</strong> 协议。</p>
+    </div>
+    <div class="license-box">
+      <h3>文档与网站</h3>
+      <p>Linxira OS 的文档、Wiki 和官方网站内容采用 <strong>CC BY-SA 4.0</strong> 协议。</p>
+    </div>
+    <div class="license-box">
+      <h3>品牌资产</h3>
+      <p>Logo、壁纸、图标等品牌资产采用 <strong>CC BY-NC-SA 4.0</strong> 协议。详见 <a href="/zh/#brand" style="color:#14b8a6;">品牌资产</a> 页面。</p>
+    </div>
+
+    <h2>上游协议继承</h2>
+    <p>作为 Linux 发行版，Linxira OS 继承了上游项目的协议义务。以下是主要依赖及其协议：</p>
+
+    <table>
+      <tr><th>组件</th><th>上游项目</th><th>协议</th></tr>
+      <tr><td>基础系统</td><td><a href="https://ubuntu.com">Ubuntu</a> / <a href="https://linuxmint.com">Linux Mint</a></td><td>GPL-2.0+ / 各组件自有协议</td></tr>
+      <tr><td>桌面环境</td><td><a href="https://kde.org">KDE Plasma</a></td><td>GPL-2.0+</td></tr>
+      <tr><td>安装器</td><td><a href="https://calamares.io">Calamares</a></td><td>GPL-3.0+</td></tr>
+      <tr><td>内核</td><td><a href="https://kernel.org">Linux Kernel</a></td><td>GPL-2.0</td></tr>
+      <tr><td>GNU 工具</td><td><a href="https://gnu.org">GNU Project</a></td><td>GPL-2.0+ / LGPL-2.0+</td></tr>
+      <tr><td>Firefox</td><td><a href="https://mozilla.org">Mozilla</a></td><td>MPL-2.0</td></tr>
+      <tr><td> LibreOffice</td><td><a href="https://documentfoundation.org">The Document Foundation</a></td><td>MPL-2.0</td></tr>
+    </table>
+
+    <h2>GPL 协议传染性说明</h2>
+    <p>GNU General Public License (GPL) 具有<strong>传染性</strong>（也称<strong>copyleft</strong>）：如果你分发包含 GPL 代码的软件，你的衍生作品也必须采用 GPL 协议。</p>
+
+    <p>对 Linxira OS 的影响：</p>
+    <ul>
+      <li>我们分发的所有自定义代码必须开源（已采用 GPL-3.0）</li>
+      <li>用户在本地使用 Linxira OS 不受 copyleft 限制</li>
+      <li>如果用户基于 Linxira OS 创建衍生发行版，需遵守相应上游协议</li>
+      <li>用户自定义的配置和脚本不受 copyleft 限制（除非包含 GPL 代码）</li>
+    </ul>
+
+    <h2>非自由软件组件</h2>
+    <p>Linxira OS 可能包含以下非自由组件：</p>
+    <ul>
+      <li><strong>固件</strong>：部分硬件需要专有固件才能正常工作</li>
+      <li><strong>显卡驱动</strong>：NVIDIA 驱动为专有软件</li>
+      <li><strong>用户可选安装</strong>：VS Code、Chrome 等为专有软件</li>
+    </ul>
+    <p>这些组件由用户自行选择安装，Linxira OS 不强制使用非自由软件。</p>
+
+    <h2>完整协议文本</h2>
+    <p>各协议的完整文本请参阅：</p>
+    <ul>
+      <li><a href="https://www.gnu.org/licenses/gpl-3.0.html" style="color:#14b8a6;">GNU GPL v3.0</a></li>
+      <li><a href="https://creativecommons.org/licenses/by-sa/4.0/" style="color:#14b8a6;">CC BY-SA 4.0</a></li>
+      <li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color:#14b8a6;">CC BY-NC-SA 4.0</a></li>
+      <li><a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html" style="color:#14b8a6;">GNU GPL v2.0</a></li>
+    </ul>
+  </div>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>

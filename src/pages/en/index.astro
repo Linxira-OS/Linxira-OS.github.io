@@ -1,0 +1,210 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linxira OS — Linux for Science</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(51,65,85,0.3);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+    .lang-link:hover { background: rgba(20,184,166,0.2); }
+
+    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
+    .hero::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%); animation: drift 25s ease-in-out infinite alternate-reverse; pointer-events: none; }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-30px) scale(1.05); } }
+    .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(20,184,166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,184,166,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid rgba(20,184,166,0.06); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
+    .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid rgba(99,102,241,0.05); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
+    .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(20,184,166,0.15), rgba(99,102,241,0.15), transparent); pointer-events: none; }
+    .beam-1 { top: 30%; left: 0; width: 100%; transform: rotate(-5deg); }
+    .beam-2 { top: 60%; left: 0; width: 100%; transform: rotate(3deg); }
+    .beam-3 { top: 45%; left: 0; width: 100%; transform: rotate(-2deg); opacity: 0.5; }
+
+    .hero-content { position: relative; z-index: 1; }
+    .hero-logo { width: 140px; height: 140px; margin-bottom: 2rem; filter: drop-shadow(0 0 40px rgba(20,184,166,0.3)); }
+    .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, #14b8a6, #22c7da, #6366f1, #8b5cf6); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+    @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .tagline { font-size: 1.3rem; color: #94a3b8; margin-bottom: 0.3rem; }
+    .en-tagline { font-size: 1rem; color: #64748b; margin-bottom: 2.5rem; letter-spacing: 3px; text-transform: uppercase; }
+
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; max-width: 960px; width: 100%; margin-bottom: 3rem; }
+    .feature { background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
+    .feature:hover { transform: translateY(-4px); border-color: rgba(20,184,166,0.4); }
+    .feature h3 { color: #14b8a6; margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .feature p { color: #94a3b8; font-size: 0.88rem; line-height: 1.5; }
+
+    .cta { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #14b8a6, #6366f1); color: white; font-weight: 600; border-radius: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(20,184,166,0.3); }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(20,184,166,0.4); text-decoration: none; }
+
+    .brand-section { position: relative; background: linear-gradient(180deg, #0f172a 0%, #1a1f2e 50%, #1e2433 100%); padding: 5rem 0; }
+    .brand-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(20,184,166,0.3), rgba(99,102,241,0.3), transparent); }
+    .section { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .section-subtitle { color: #64748b; font-size: 1rem; }
+    .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, #14b8a6, #6366f1); border-radius: 2px; }
+
+    .subsection-title { color: #e2e8f0; margin-bottom: 1.2rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+    .subsection-title::before { content: ''; width: 4px; height: 20px; background: linear-gradient(180deg, #14b8a6, #6366f1); border-radius: 2px; }
+
+    .logo-display { display: flex; justify-content: center; gap: 2rem; margin-bottom: 3.5rem; }
+    .logo-card { border-radius: 16px; padding: 3rem 4rem; text-align: center; border: 1px solid rgba(51,65,85,0.5); background: linear-gradient(135deg, #0c1322, #131b2e); }
+    .logo-card img { width: 120px; height: 120px; }
+    .logo-card .label { font-size: 0.85rem; color: #94a3b8; margin-top: 1rem; }
+
+    .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 3.5rem; }
+    .color-card { border-radius: 14px; overflow: hidden; border: 1px solid rgba(51,65,85,0.5); transition: transform 0.3s; }
+    .color-card:hover { transform: translateY(-4px); }
+    .color-swatch { height: 90px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; }
+    .color-info { background: #1e2433; padding: 0.75rem 0.85rem; }
+    .color-name { font-weight: 600; font-size: 0.85rem; color: #e2e8f0; }
+    .color-hex { font-size: 0.75rem; color: #94a3b8; font-family: monospace; }
+    .color-use { font-size: 0.7rem; color: #64748b; margin-top: 0.2rem; }
+
+    .wallpaper-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3.5rem; }
+    .wallpaper-card { border-radius: 16px; overflow: hidden; border: 1px solid rgba(51,65,85,0.5); }
+    .wallpaper-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
+    .wallpaper-label { background: #1e2433; padding: 0.85rem 1rem; font-size: 0.85rem; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; }
+    .wallpaper-tag { font-size: 0.7rem; background: rgba(20,184,166,0.15); color: #14b8a6; padding: 0.2rem 0.6rem; border-radius: 4px; }
+
+    .license { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; margin-top: 1rem; }
+    .license h3 { color: #14b8a6; margin-bottom: 1rem; font-size: 1.1rem; }
+    .license-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .license-item { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .license-item:last-child { border-bottom: none; }
+    .license-icon { font-size: 1rem; flex-shrink: 0; }
+    .license-text { font-size: 0.85rem; color: #94a3b8; }
+    .license-text strong { color: #e2e8f0; }
+
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); background: #0a0f1a; }
+
+    .blog-section { background: linear-gradient(180deg, #0a0f1a 0%, #0f172a 100%); padding: 5rem 0; }
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .blog-card { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+    .blog-card:hover { transform: translateY(-4px); border-color: rgba(20,184,166,0.4); }
+    .blog-date { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; }
+    .blog-title { font-size: 1.2rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
+    .blog-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
+    .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(20,184,166,0.15); color: #14b8a6; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+
+    @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } .palette { grid-template-columns: repeat(2, 1fr); } .wallpaper-grid { grid-template-columns: 1fr; } .license-grid { grid-template-columns: 1fr; } .logo-display { flex-direction: column; align-items: center; } .blog-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/en/docs/">Docs</a>
+      <a href="/en/blog/">Blog</a>
+      <a href="/en/legal/license/">License</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/zh/" class="lang-link">中文</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="grid-bg"></div>
+    <div class="prism-deco"></div>
+    <div class="prism-deco-2"></div>
+    <div class="beam beam-1"></div>
+    <div class="beam beam-2"></div>
+    <div class="beam beam-3"></div>
+    <div class="hero-content">
+      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo">
+      <h1>Linxira OS</h1>
+      <p class="tagline">Linux for Science</p>
+      <p class="en-tagline">A Scientific Workstation Distribution</p>
+      <div class="features">
+        <div class="feature"><h3>🔬 Science-First</h3><p>Pre-installed Miniforge, bioconda channels, LaTeX toolchain — ready-to-use scientific environment.</p></div>
+        <div class="feature"><h3>💻 Developer-Friendly</h3><p>mise multi-language version manager, C/Rust/Go/Python/Java toolchain, one-click dev setup.</p></div>
+        <div class="feature"><h3>🤖 AI-Ready</h3><p>Pre-installed OpenCode AI assistant, local LLM integration, terminal-level AI coding.</p></div>
+        <div class="feature"><h3>🖥️ Modern Desktop</h3><p>KDE Plasma desktop, btrfs + Timeshift snapshots, reliable daily use.</p></div>
+      </div>
+      <a href="https://github.com/Linxira-OS/linxira-os" class="cta">View on GitHub</a>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section class="blog-section">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Latest Updates</h2>
+        <p class="section-subtitle">Announcements and technical articles</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="blog-grid">
+        <a href="/en/blog/introducing-linxira-os/" class="blog-card">
+          <div class="blog-date">2026-06-27</div>
+          <div class="blog-title">Introducing Linxira OS</div>
+          <div class="blog-desc">What is Linxira OS, who is it for, and why we built it. Design philosophy, technical architecture, and target users.</div>
+          <span class="blog-tag">Announcement</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="brand-section" id="brand">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Brand Assets</h2>
+        <p class="section-subtitle">Visual identity system for Linxira OS</p>
+        <div class="section-divider"></div>
+      </div>
+
+      <h3 class="subsection-title">Primary Mark</h3>
+      <div class="logo-display">
+        <div class="logo-card"><img src="/assets/linxira-l.svg" alt="Linxira L"><div class="label">Color — Dark Background</div></div>
+        <div class="logo-card" style="background:linear-gradient(135deg,#2a2f3a,#343a47);"><img src="/assets/linxira-l-mono.svg" alt="Linxira L Mono"><div class="label">Monochrome — Gray Background</div></div>
+      </div>
+
+      <h3 class="subsection-title">Color Palette</h3>
+      <div class="palette">
+        <div class="color-card"><div class="color-swatch" style="background:linear-gradient(135deg,#14b8a6,#0d9488); color:#0f172a;">Primary</div><div class="color-info"><div class="color-name">Teal</div><div class="color-hex">#14b8a6</div><div class="color-use">Physics, Biology, Primary accent</div></div></div>
+        <div class="color-card"><div class="color-swatch" style="background:linear-gradient(135deg,#22c7da,#06b6d4); color:#0f172a;">Accent</div><div class="color-info"><div class="color-name">Cyan</div><div class="color-hex">#22c7da</div><div class="color-use">Secondary, gradient transitions</div></div></div>
+        <div class="color-card"><div class="color-swatch" style="background:linear-gradient(135deg,#6366f1,#4f46e5); color:#ffffff;">Secondary</div><div class="color-info"><div class="color-name">Indigo</div><div class="color-hex">#6366f1</div><div class="color-use">Chemistry, Computing, Secondary accent</div></div></div>
+        <div class="color-card"><div class="color-swatch" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed); color:#ffffff;">Tertiary</div><div class="color-info"><div class="color-name">Violet</div><div class="color-hex">#8b5cf6</div><div class="color-use">Spectrum end, decorative</div></div></div>
+        <div class="color-card"><div class="color-swatch" style="background:linear-gradient(135deg,#1e293b,#0f172a); color:#e2e8f0;">BG</div><div class="color-info"><div class="color-name">Dark</div><div class="color-hex">#0f172a</div><div class="color-use">Dark theme background</div></div></div>
+      </div>
+
+      <h3 class="subsection-title">Wallpaper Preview</h3>
+      <div class="wallpaper-grid">
+        <div class="wallpaper-card"><img src="/assets/linxira-wallpaper.svg" alt="Dark Wallpaper"><div class="wallpaper-label"><span>Dark Wallpaper</span><span class="wallpaper-tag">1920×1080</span></div></div>
+        <div class="wallpaper-card"><img src="/assets/linxira-wallpaper-light.svg" alt="Light Wallpaper"><div class="wallpaper-label"><span>Light Wallpaper</span><span class="wallpaper-tag">1920×1080</span></div></div>
+      </div>
+
+      <h3 class="subsection-title">Asset Usage Terms</h3>
+      <div class="license">
+        <div class="license-grid">
+          <div class="license-item"><span class="license-icon">📜</span><div class="license-text"><strong>License:</strong> CC BY-NC-SA 4.0</div></div>
+          <div class="license-item"><span class="license-icon">✅</span><div class="license-text"><strong>Allowed:</strong> Use in Linxira OS projects</div></div>
+          <div class="license-item"><span class="license-icon">✅</span><div class="license-text"><strong>Allowed:</strong> Media coverage, reviews</div></div>
+          <div class="license-item"><span class="license-icon">❌</span><div class="license-text"><strong>Prohibited:</strong> Implying official affiliation for non-official projects</div></div>
+          <div class="license-item"><span class="license-icon">❌</span><div class="license-text"><strong>Prohibited:</strong> Modified use for other distributions</div></div>
+          <div class="license-item"><span class="license-icon">❌</span><div class="license-text"><strong>Prohibited:</strong> Unauthorized commercial use</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>

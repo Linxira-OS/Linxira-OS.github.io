@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Linxira L monochrome">
+  <!-- L 字母主体 -->
+  <path d="M120 80 L200 80 L200 420 L120 420 Z" fill="#ffffff"/>
+  <path d="M120 340 L380 340 L380 420 L120 420 Z" fill="#ffffff"/>
+  
+  <!-- 棱镜切割线 -->
+  <path d="M160 80 L160 340" stroke="#ffffff" stroke-width="6" opacity="0.5"/>
+  
+  <!-- 棱镜折射光束 -->
+  <path d="M200 340 L320 200" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.5"/>
+  <path d="M200 365 L345 235" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+  <path d="M200 390 L360 275" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.25"/>
+  
+  <!-- 转角棱镜三角 -->
+  <polygon points="120,340 200,340 160,270" fill="#ffffff" opacity="0.4"/>
+  
+  <!-- 光谱色散点 -->
+  <circle cx="320" cy="200" r="10" fill="#ffffff" opacity="0.6"/>
+  <circle cx="345" cy="235" r="8" fill="#ffffff" opacity="0.45"/>
+  <circle cx="360" cy="275" r="7" fill="#ffffff" opacity="0.35"/>
+</svg>

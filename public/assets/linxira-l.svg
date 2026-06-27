@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Linxira L mark">
+  <defs>
+    <linearGradient id="l-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="50%" stop-color="#22c7da"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="l-beam" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f0fdfa" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="l-prism" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <filter id="l-glow">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#l-glow)">
+    <!-- 竖笔 -->
+    <path d="M120 80 L200 80 L200 420 L120 420 Z" fill="url(#l-grad)"/>
+    <!-- 横笔 -->
+    <path d="M120 340 L380 340 L380 420 L120 420 Z" fill="url(#l-grad)"/>
+    
+    <!-- 棱镜切割线 - 加粗 -->
+    <path d="M160 80 L160 340" stroke="url(#l-beam)" stroke-width="6" opacity="0.7"/>
+    
+    <!-- 棱镜折射光束 - 加粗 -->
+    <path d="M200 340 L320 200" stroke="url(#l-beam)" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+    <path d="M200 365 L345 235" stroke="#f0abfc" stroke-width="6" stroke-linecap="round" opacity="0.45"/>
+    <path d="M200 390 L360 275" stroke="#93c5fd" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+    
+    <!-- 转角棱镜三角 -->
+    <polygon points="120,340 200,340 160,270" fill="url(#l-prism)" opacity="0.75"/>
+    
+    <!-- 光谱色散点 - 加大 -->
+    <circle cx="320" cy="200" r="10" fill="#14b8a6" opacity="0.85"/>
+    <circle cx="345" cy="235" r="8" fill="#22c7da" opacity="0.7"/>
+    <circle cx="360" cy="275" r="7" fill="#8b5cf6" opacity="0.6"/>
+  </g>
+</svg>

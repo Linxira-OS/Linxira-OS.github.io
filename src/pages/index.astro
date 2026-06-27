@@ -1,0 +1,17 @@
+---
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Linxira OS</title>
+  <script is:inline>
+    // 检测浏览器语言，跳转到对应版本
+    const lang = navigator.language.startsWith('zh') ? 'zh' : 'en';
+    window.location.replace('/' + lang + '/');
+  </script>
+</head>
+<body>
+  <p>Redirecting... <a href="/zh/">中文</a> | <a href="/en/">English</a></p>
+</body>
+</html>

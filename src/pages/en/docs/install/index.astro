@@ -1,0 +1,130 @@
+---
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安装指南 — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-logo span { color: #e2e8f0; font-weight: 600; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #14b8a6; }
+    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
+    .layout { display: flex; padding-top: 60px; min-height: 100vh; }
+    .sidebar { width: 260px; background: #0c1322; border-right: 1px solid rgba(51,65,85,0.3); padding: 2rem 0; position: fixed; top: 60px; bottom: 0; overflow-y: auto; }
+    .sidebar-title { color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem; margin-bottom: 0.5rem; }
+    .sidebar a { display: block; padding: 0.5rem 1.5rem; color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
+    .sidebar a:hover { color: #14b8a6; background: rgba(20,184,166,0.05); }
+    .sidebar a.active { color: #14b8a6; border-left-color: #14b8a6; background: rgba(20,184,166,0.08); }
+    .sidebar .section { margin-bottom: 1.5rem; }
+    .main { flex: 1; margin-left: 260px; padding: 3rem 4rem; max-width: 900px; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    p { color: #94a3b8; margin-bottom: 1rem; }
+    strong { color: #e2e8f0; }
+    a { color: #14b8a6; }
+    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #14b8a6; }
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); margin-left: 260px; }
+    @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; padding: 2rem; } footer { margin-left: 0; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/zh/docs/" style="color:#14b8a6;">文档</a>
+      <a href="/zh/blog/">博客</a>
+      <a href="/zh/legal/license/">协议</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/en/docs/install/" class="lang-link">EN</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section">
+        <div class="sidebar-title">开始</div>
+        <a href="/zh/docs/">概述</a>
+        <a href="/zh/docs/install/" class="active">安装指南</a>
+        <a href="/zh/docs/quick-start/">快速开始</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">用户指南</div>
+        <a href="/zh/docs/package-managers/">包管理器</a>
+        <a href="/zh/docs/workflows/">工作流模板</a>
+        <a href="/zh/docs/config-hub/">配置中心</a>
+        <a href="/zh/docs/desktop/">桌面环境</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">开发者</div>
+        <a href="/zh/docs/contributing/">参与贡献</a>
+        <a href="/zh/docs/building/">构建 ISO</a>
+        <a href="/zh/docs/repository-structure/">仓库结构</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">参考</div>
+        <a href="/zh/legal/license/">开源协议</a>
+        <a href="/zh/docs/glossary/">术语表</a>
+        <a href="/zh/docs/faq/">常见问题</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <h1>安装指南</h1>
+
+      <h2>下载</h2>
+      <p>从 <a href="https://github.com/Linxira-OS/linxira-os/releases" target="_blank">GitHub Releases</a> 下载最新 ISO 镜像。</p>
+
+      <h2>制作启动盘</h2>
+      <h3>Windows</h3>
+      <p>使用 <a href="https://rufus.ie/" target="_blank">Rufus</a> 或 <a href="https://etcher.balena.io/" target="_blank">balenaEtcher</a>：</p>
+      <ul>
+        <li>插入 USB（至少 8GB）</li>
+        <li>打开 Rufus</li>
+        <li>选择下载的 ISO 文件</li>
+        <li>选择你的 USB 设备</li>
+        <li>点击"开始"</li>
+      </ul>
+
+      <h3>Linux</h3>
+      <p><code>sudo dd if=linxira-os-deb-desktop-*.iso of=/dev/sdX bs=4M status=progress</code></p>
+
+      <h2>安装流程</h2>
+      <ol style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
+        <li>从 USB 启动</li>
+        <li>选择"安装 Linxira OS"</li>
+        <li>选择语言和键盘布局</li>
+        <li>选择分区方案（推荐 btrfs + Timeshift）</li>
+        <li>创建用户账户</li>
+        <li>等待安装完成</li>
+        <li>重启并移除 USB</li>
+      </ol>
+
+      <h2>系统要求</h2>
+      <table>
+        <tr><th>组件</th><th>最低要求</th><th>推荐配置</th></tr>
+        <tr><td>CPU</td><td>64-bit x86</td><td>4+ 核心</td></tr>
+        <tr><td>内存</td><td>4 GB</td><td>8+ GB</td></tr>
+        <tr><td>存储</td><td>20 GB</td><td>50+ GB</td></tr>
+        <tr><td>显卡</td><td>支持 OpenGL 2.0</td><td>NVIDIA/AMD 独显</td></tr>
+      </table>
+    </main>
+  </div>
+
+  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+</body>
+</html>
