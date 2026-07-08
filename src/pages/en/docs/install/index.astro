@@ -1,11 +1,11 @@
 ---
 ---
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>安装指南 — Linxira OS</title>
+  <title>Installation Guide — Linxira OS</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -44,83 +44,83 @@
 </head>
 <body>
   <nav>
-    <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
     <div class="nav-links">
-      <a href="/zh/docs/" style="color:#14b8a6;">文档</a>
-      <a href="/zh/blog/">博客</a>
-      <a href="/zh/legal/license/">协议</a>
+      <a href="/en/docs/" style="color:#14b8a6;">Docs</a>
+      <a href="/en/blog/">Blog</a>
+      <a href="/en/legal/license/">License</a>
       <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
-      <a href="/en/docs/install/" class="lang-link">EN</a>
+      <a href="/zh/docs/install/" class="lang-link">中文</a>
     </div>
   </nav>
 
   <div class="layout">
     <aside class="sidebar">
       <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/" class="active">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
+        <div class="sidebar-title">Getting Started</div>
+        <a href="/en/docs/">Overview</a>
+        <a href="/en/docs/install/" class="active">Installation</a>
+        <a href="/en/docs/quick-start/">Quick Start</a>
       </div>
       <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/workflows/">工作流模板</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
+        <div class="sidebar-title">User Guide</div>
+        <a href="/en/docs/package-managers/">Package Managers</a>
+        <a href="/en/docs/workflows/">Workflow Templates</a>
+        <a href="/en/docs/config-hub/">Config Hub</a>
+        <a href="/en/docs/desktop/">Desktop Environment</a>
       </div>
       <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
+        <div class="sidebar-title">Developers</div>
+        <a href="/en/docs/contributing/">Contributing</a>
+        <a href="/en/docs/building/">Building ISO</a>
+        <a href="/en/docs/repository-structure/">Repository Structure</a>
       </div>
       <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
+        <div class="sidebar-title">Reference</div>
+        <a href="/en/legal/license/">Licenses</a>
+        <a href="/en/docs/glossary/">Glossary</a>
+        <a href="/en/docs/faq/">FAQ</a>
       </div>
     </aside>
 
     <main class="main">
-      <h1>安装指南</h1>
+      <h1>Installation Guide</h1>
 
-      <h2>下载</h2>
-      <p>从 <a href="https://github.com/Linxira-OS/linxira-os/releases" target="_blank">GitHub Releases</a> 下载最新 ISO 镜像。</p>
+      <h2>Download</h2>
+      <p>Download the latest ISO image from <a href="https://github.com/Linxira-OS/linxira-os/releases" target="_blank">GitHub Releases</a>.</p>
 
-      <h2>制作启动盘</h2>
+      <h2>Create Bootable Media</h2>
       <h3>Windows</h3>
-      <p>使用 <a href="https://rufus.ie/" target="_blank">Rufus</a> 或 <a href="https://etcher.balena.io/" target="_blank">balenaEtcher</a>：</p>
+      <p>Use <a href="https://rufus.ie/" target="_blank">Rufus</a> or <a href="https://etcher.balena.io/" target="_blank">balenaEtcher</a>:</p>
       <ul>
-        <li>插入 USB（至少 8GB）</li>
-        <li>打开 Rufus</li>
-        <li>选择下载的 ISO 文件</li>
-        <li>选择你的 USB 设备</li>
-        <li>点击"开始"</li>
+        <li>Insert a USB drive with at least 8 GB of space</li>
+        <li>Open Rufus</li>
+        <li>Select the downloaded ISO file</li>
+        <li>Select your USB device</li>
+        <li>Click "Start"</li>
       </ul>
 
       <h3>Linux</h3>
-      <p><code>sudo dd if=linxira-os-deb-desktop-*.iso of=/dev/sdX bs=4M status=progress</code></p>
+      <p><code>sudo dd if=linxira-desktop-linux-*.iso of=/dev/sdX bs=4M status=progress</code></p>
 
-      <h2>安装流程</h2>
+      <h2>Installation Steps</h2>
       <ol style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
-        <li>从 USB 启动</li>
-        <li>选择"安装 Linxira OS"</li>
-        <li>选择语言和键盘布局</li>
-        <li>选择分区方案（推荐 btrfs + Timeshift）</li>
-        <li>创建用户账户</li>
-        <li>等待安装完成</li>
-        <li>重启并移除 USB</li>
+        <li>Boot from the USB drive</li>
+        <li>Select "Install Linxira OS"</li>
+        <li>Choose your language and keyboard layout</li>
+        <li>Select a partitioning scheme. <code>btrfs</code> with Timeshift is recommended.</li>
+        <li>Create your user account</li>
+        <li>Wait for the installer to finish</li>
+        <li>Restart the system and remove the USB drive</li>
       </ol>
 
-      <h2>系统要求</h2>
+      <h2>System Requirements</h2>
       <table>
-        <tr><th>组件</th><th>最低要求</th><th>推荐配置</th></tr>
-        <tr><td>CPU</td><td>64-bit x86</td><td>4+ 核心</td></tr>
-        <tr><td>内存</td><td>4 GB</td><td>8+ GB</td></tr>
-        <tr><td>存储</td><td>20 GB</td><td>50+ GB</td></tr>
-        <tr><td>显卡</td><td>支持 OpenGL 2.0</td><td>NVIDIA/AMD 独显</td></tr>
+        <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
+        <tr><td>CPU</td><td>64-bit x86</td><td>4+ cores</td></tr>
+        <tr><td>Memory</td><td>4 GB</td><td>8+ GB</td></tr>
+        <tr><td>Storage</td><td>20 GB</td><td>50+ GB</td></tr>
+        <tr><td>Graphics</td><td>OpenGL 2.0 support</td><td>Dedicated NVIDIA or AMD GPU</td></tr>
       </table>
     </main>
   </div>
