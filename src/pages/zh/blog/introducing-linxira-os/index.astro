@@ -10,24 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
     .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
     .nav-logo img { width: 32px; height: 32px; }
     .nav-logo span { color: #e2e8f0; font-weight: 600; }
     .nav-links { display: flex; gap: 1.5rem; align-items: center; }
     .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
-    .nav-links a:hover { color: #14b8a6; }
+    .nav-links a:hover { color: #20B8B0; }
     .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
     .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #14b8a6; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
     .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
     h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
     p { color: #94a3b8; margin-bottom: 1rem; }
     strong { color: #e2e8f0; }
-    a { color: #14b8a6; }
+    a { color: #20B8B0; }
     ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
@@ -41,7 +42,7 @@
     <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
     <div class="nav-links">
       <a href="/zh/docs/">文档</a>
-      <a href="/zh/blog/" style="color:#14b8a6;">博客</a>
+      <a href="/zh/blog/" style="color:#20B8B0;">博客</a>
       <a href="/zh/legal/license/">协议</a>
       <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
       <a href="/en/blog/introducing-linxira-os/" class="lang-link">EN</a>
@@ -52,6 +53,7 @@
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-06-27 · 公告</div>
     <h1>Linxira OS 介绍</h1>
+    <p class="superseded"><strong>已由新信息取代：</strong>本文作为历史发布文章保留，正文描述的是早期基于 Linux Mint/Ubuntu 的方案。Linxira OS 现正直接基于 Arch Linux 开发，目前尚无公开的直基 Arch ISO。项目现状请以当前首页和文档为准。</p>
 
     <p><strong>Linxira OS</strong> 是一个独立的 Linux 发行版，专为科学计算和 AI 开发而构建。</p>
 
@@ -105,10 +107,13 @@
       <tr><td>OpenCode</td><td>AI 编程助手</td></tr>
     </table>
 
+    <h2>当前品牌标识</h2>
+    <p>当前 Scale L 已取代早期棱镜光谱方案：仪器青绿 <code>#20B8B0</code> 构成主标识，珊瑚红 <code>#F36F5D</code> 标记测量终点，深墨色 <code>#0E1417</code> 定义参考轴，浅水色 <code>#E8F7F6</code> 绘制科学刻度。</p>
+
     <h2>下一步</h2>
-    <p>我们目前正在开发 v1.0 发布、工作流模板和配置中心。在 <a href="https://github.com/Linxira-OS" style="color:#14b8a6;">GitHub</a> 关注我们的进展。</p>
+    <p>我们目前正在开发 v1.0 发布、工作流模板和配置中心。在 <a href="https://github.com/Linxira-OS" style="color:#20B8B0;">GitHub</a> 关注我们的进展。</p>
   </div>
 
-  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。</p></footer>
 </body>
 </html>

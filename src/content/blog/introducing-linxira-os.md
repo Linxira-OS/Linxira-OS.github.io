@@ -9,6 +9,8 @@ lang: "en"
 
 # Introducing Linxira OS
 
+> **Superseded notice:** This article is retained as a historical launch post and describes an earlier Linux Mint/Ubuntu-based concept. Linxira OS is now being developed directly on Arch Linux; no public direct-Arch ISO is available yet. Refer to the current home page and documentation for project status.
+
 **Linxira OS** is an independent Linux distribution built for scientific computing and AI development.
 
 ## What is Linxira OS?
@@ -80,13 +82,14 @@ The host system (Linux Mint) provides stability. Development environments can be
 
 ## Brand Identity
 
-Our visual identity is built around the **prism** concept — representing the spectrum of scientific disciplines:
+The current visual identity uses the **Scale L**, combining a reference axis, scientific graduations, and a measurement endpoint:
 
-- **Teal** (#14b8a6) — Physics, Biology
-- **Indigo** (#6366f1) — Chemistry, Computing
-- **Violet** (#8b5cf6) — Spectrum endpoints
+- **Instrument Teal** (#20B8B0) — Primary mark and scientific-instrument identity
+- **Coral** (#F36F5D) — Measurement endpoint and action accent
+- **Ink** (#0E1417) — Reference axis and dark background
+- **Pale Aqua** (#E8F7F6) — Graduations and light detail
 
-The single-character **L** mark features geometric angles and light refraction elements, distinct from other Linux distribution logos.
+This current Scale L identity supersedes the earlier prism-spectrum branding described when the article was first published.
 
 ## What's Next?
 

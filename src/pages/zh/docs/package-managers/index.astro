@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0f172a; color: #e5e7eb; line-height: 1.8; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
     .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
     .nav-logo img { width: 32px; height: 32px; }
     .nav-logo span { color: #e2e8f0; font-weight: 600; }
@@ -19,11 +19,11 @@
     .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
     .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
     .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #14b8a6; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #14b8a6, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     p { color: #94a3b8; margin-bottom: 1rem; }
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { color: #e2e8f0; font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+    code { color: #67e8f9; }
     footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
   </style>
 </head>
@@ -31,7 +31,7 @@
   <nav>
     <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
     <div class="nav-links">
-      <a href="/zh/docs/" style="color:#14b8a6;">文档</a>
+      <a href="/zh/docs/" style="color:#20B8B0;">文档</a>
       <a href="/zh/blog/">博客</a>
       <a href="/zh/legal/license/">协议</a>
       <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
@@ -41,12 +41,14 @@
 
   <div class="container">
     <a href="/zh/docs/" class="back">← 返回文档</a>
-    <h1>package-managers</h1>
-    <div class="placeholder">
-      <p>📝 此页面正在编写中，敬请期待。</p>
-    </div>
+    <h1>软件管理</h1>
+    <p>Linxira 直接基于 Arch Linux 构建。原生软件包使用 <code>pacman</code>、Arch 官方仓库以及独立签名的 Linxira 仓库。</p>
+    <h2>Shelly</h2>
+    <p>Shelly 是安装后的默认图形软件管理器。它是可选的安装后软件，不是安装器依赖；安装事务由 Calamares 负责。</p>
+    <h2>可选来源</h2>
+    <p>AUR、Flatpak 与 AppImage 默认关闭，必须由用户明确选择启用。Catalog v2 记录经过审核的推荐项与来源边界，Shelly 执行获准的软件包操作。</p>
   </div>
 
-  <footer><p>Linxira OS is an independent project. Not affiliated with Debian, Ubuntu, Linux Mint, or Arch Linux.</p></footer>
+  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。</p></footer>
 </body>
 </html>
