@@ -6,12 +6,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Zeta — 终端编码代理</title>
-	<meta name="description" content="Zeta 是一个终端编码代理发行版：工具调用、多提供商模型、原生加速、可嵌入的 TUI。">
+	<meta name="description" content="Zeta 是运行在终端里的编码代理：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则——由原生 Rust 引擎驱动。OMP 兼容发行版。">
+	<meta property="og:site_name" content="Zeta">
+	<meta property="og:type" content="website">
 	<meta property="og:title" content="Zeta — 终端编码代理">
-	<meta property="og:description" content="在终端里构建、调试、重构。Zeta 是 OMP 的下游发行版，兼容 OMP 生态。">
+	<meta property="og:description" content="子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则——原生 Rust 引擎驱动。OMP 兼容发行版。">
 	<meta property="og:url" content="https://linxira-os.github.io/zeta/">
-	<meta name="theme-color" content="#0a0a0a">
-	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23e30613'/%3E%3Ctext x='16' y='24' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='%230a0a0a' text-anchor='middle'%3EZ%3C/text%3E%3C/svg%3E">
+	<meta name="theme-color" content="#0E1417" media="(prefers-color-scheme: dark)">
+	<meta name="theme-color" content="#E8F7F6" media="(prefers-color-scheme: light)">
+	<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2320B8B0'/%3E%3Ctext x='16' y='24' font-family='Helvetica,Arial,sans-serif' font-size='22' font-weight='700' fill='%230E1417' text-anchor='middle'%3EZ%3C/text%3E%3C/svg%3E">
 	<script is:inline>
 		const saved = localStorage.getItem('zeta-theme');
 		const prefers = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
@@ -19,22 +22,26 @@
 	</script>
 	<style>
 		:root {
-			--bg: #0a0a0a;
-			--ink: #f2f2f2;
-			--muted: #8a8a8a;
-			--line: #262626;
-			--red: #e30613;
-			--panel: #141414;
+			--teal: #20B8B0;
+			--coral: #F36F5D;
+			--bg: #0E1417;
+			--ink: #E8F7F6;
+			--muted: #94a3b8;
+			--faint: #64748b;
+			--line: rgba(51, 65, 85, 0.5);
+			--panel: rgba(30, 41, 59, 0.6);
+			--panel-solid: #131b2e;
 			--font: "Helvetica Neue", Helvetica, "Inter", "Noto Sans", system-ui, sans-serif;
 			--mono: "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, monospace;
 		}
 		[data-theme="light"] {
-			--bg: #f5f5f3;
-			--ink: #111;
-			--muted: #555;
-			--line: #c9c9c4;
-			--red: #d3000f;
-			--panel: #ffffff;
+			--bg: #E8F7F6;
+			--ink: #0E1417;
+			--muted: #475569;
+			--faint: #64748b;
+			--line: rgba(14, 20, 23, 0.18);
+			--panel: rgba(255, 255, 255, 0.7);
+			--panel-solid: #ffffff;
 		}
 		* { margin: 0; padding: 0; box-sizing: border-box; }
 		html { scroll-behavior: smooth; }
@@ -42,54 +49,79 @@
 			font-family: var(--font);
 			background: var(--bg);
 			color: var(--ink);
-			line-height: 1.45;
+			line-height: 1.5;
 			font-size: 16px;
 			transition: background .2s, color .2s;
 		}
-		::selection { background: var(--red); color: #fff; }
+		::selection { background: var(--teal); color: var(--bg); }
 
 		.gridlines {
 			position: fixed;
 			inset: 0;
 			pointer-events: none;
+			z-index: 0;
 			background-image:
 				linear-gradient(var(--line) 1px, transparent 1px),
 				linear-gradient(90deg, var(--line) 1px, transparent 1px);
-			background-size: 25vw 25vh;
-			opacity: .45;
-			z-index: 0;
+			background-size: 60px 60px;
+			opacity: .35;
 		}
-		.container { position: relative; z-index: 1; max-width: 1280px; margin: 0 auto; padding: 0 5vw; }
+		.container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
 
 		.topbar {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 1.25rem 5vw;
+			padding: 1.1rem 5vw;
 			border-bottom: 1px solid var(--line);
+			position: sticky; top: 0;
+			background: color-mix(in srgb, var(--bg) 88%, transparent);
+			backdrop-filter: blur(12px);
+			z-index: 10;
 		}
-		.wordmark { font-weight: 800; font-size: 1.15rem; letter-spacing: .02em; text-decoration: none; color: var(--ink); }
-		.wordmark sup { color: var(--red); font-size: .6em; margin-left: .15em; }
-		.nav a { color: var(--muted); text-decoration: none; font-size: .82rem; margin-left: 1.5rem; letter-spacing: .06em; text-transform: uppercase; }
-		.nav a:hover { color: var(--ink); }
+		.wordmark {
+			font-weight: 800; font-size: 1.2rem; letter-spacing: .08em;
+			text-decoration: none; color: var(--ink); display: flex; align-items: center; gap: .5rem;
+		}
+		.wordmark .zmark {
+			display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center;
+			background: var(--teal); color: var(--bg); font-size: 1rem; font-weight: 800;
+		}
+		.nav a { color: var(--muted); text-decoration: none; font-size: .8rem; margin-left: 1.4rem; letter-spacing: .08em; text-transform: uppercase; }
+		.nav a:hover { color: var(--teal); }
 		.theme-toggle {
 			background: none; border: 1px solid var(--line); color: var(--ink);
-			font-family: var(--font); font-size: .8rem; padding: .4rem .8rem;
-			cursor: pointer; letter-spacing: .08em; text-transform: uppercase;
+			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
+			cursor: pointer; letter-spacing: .1em; text-transform: uppercase;
 		}
-		.theme-toggle:hover { border-color: var(--red); color: var(--red); }
+		.theme-toggle:hover { border-color: var(--teal); color: var(--teal); }
 
-		.hero { padding: 6rem 0 4rem; border-bottom: 1px solid var(--line); }
-		.hero .kicker { color: var(--red); font-weight: 700; letter-spacing: .28em; font-size: .75rem; text-transform: uppercase; margin-bottom: 1.5rem; }
-		.hero h1 {
-			font-size: clamp(3.5rem, 11vw, 8.5rem);
-			font-weight: 800;
-			letter-spacing: -.03em;
-			line-height: .95;
-			margin-bottom: 2.5rem;
+		.hero { padding: 7rem 0 4.5rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+		.hero::before {
+			content: ''; position: absolute; top: -45%; left: -15%; width: 65vw; height: 65vw;
+			background: radial-gradient(circle, rgba(32,184,176,0.10) 0%, transparent 70%); pointer-events: none;
 		}
-		.hero h1 .mark { color: var(--red); }
-		.hero .lede { max-width: 44ch; font-size: clamp(1.05rem, 2vw, 1.35rem); color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; }
+		.hero::after {
+			content: ''; position: absolute; bottom: -35%; right: -12%; width: 55vw; height: 55vw;
+			background: radial-gradient(circle, rgba(243,111,93,0.08) 0%, transparent 70%); pointer-events: none;
+		}
+		.hero-inner { position: relative; z-index: 1; }
+		.kicker {
+			display: inline-flex; align-items: center; gap: .6rem;
+			color: var(--teal); font-weight: 700; letter-spacing: .24em;
+			font-size: .72rem; text-transform: uppercase; margin-bottom: 2rem;
+		}
+		.kicker::before { content: ''; width: 2.4rem; height: 2px; background: var(--teal); }
+		.hero h1 {
+			font-size: clamp(2.8rem, 8vw, 6.2rem);
+			font-weight: 800; letter-spacing: -.03em; line-height: 1.02;
+			margin-bottom: 2rem; max-width: 18ch;
+		}
+		.hero h1 .accent {
+			background: linear-gradient(120deg, var(--teal), var(--coral));
+			-webkit-background-clip: text; background-clip: text; color: transparent;
+		}
+		.hero .lede { max-width: 58ch; font-size: clamp(1.05rem, 1.8vw, 1.25rem); color: var(--muted); margin-bottom: 2.8rem; font-weight: 300; }
 		.hero .lede strong { color: var(--ink); font-weight: 600; }
 
 		.cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
@@ -99,59 +131,89 @@
 			border: 1px solid var(--line); color: var(--ink);
 			transition: background .15s, color .15s, border-color .15s;
 		}
-		.cta.primary { background: var(--red); border-color: var(--red); color: #fff; }
-		.cta.primary:hover { background: transparent; color: var(--red); }
-		.cta.ghost:hover { border-color: var(--ink); }
+		.cta.primary {
+			background: linear-gradient(120deg, var(--teal), var(--coral));
+			border-color: transparent; color: #fff;
+		}
+		.cta.primary:hover { filter: brightness(1.08); }
+		.cta.ghost:hover { border-color: var(--teal); color: var(--teal); }
 
-		.install { margin-top: 3.5rem; }
-		.install .label { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
+		.install { margin-top: 3.2rem; max-width: 720px; }
+		.tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+		.tab {
+			background: none; border: 1px solid var(--line); border-bottom: none;
+			color: var(--muted); font-family: var(--font); font-size: .75rem;
+			letter-spacing: .1em; text-transform: uppercase; padding: .6rem 1.2rem;
+			cursor: pointer; margin-bottom: -1px;
+		}
+		.tab.active { background: var(--panel-solid); color: var(--teal); border-color: var(--line); }
+		.tab:not(.active):hover { color: var(--ink); }
 		.code {
-			background: var(--panel); border: 1px solid var(--line);
-			padding: 1.1rem 1.4rem; font-family: var(--mono); font-size: .9rem;
+			background: var(--panel-solid); border: 1px solid var(--line); border-top: none;
+			padding: 1.1rem 1.4rem; font-family: var(--mono); font-size: .88rem;
 			display: flex; justify-content: space-between; align-items: center; gap: 1rem;
 		}
 		.code .cmd { white-space: nowrap; overflow-x: auto; }
-		.code .prompt { color: var(--red); font-weight: 700; margin-right: .6rem; }
+		.code .prompt { color: var(--teal); font-weight: 700; margin-right: .6rem; }
 		.copy { background: none; border: 1px solid var(--line); color: var(--muted); font-family: var(--font); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: .4rem .7rem; cursor: pointer; flex-shrink: 0; }
-		.copy:hover { color: var(--red); border-color: var(--red); }
+		.copy:hover { color: var(--teal); border-color: var(--teal); }
 
-		section.block { padding: 5rem 0; border-bottom: 1px solid var(--line); }
-		.section-head { display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem; margin-bottom: 3rem; }
-		.section-head .num { color: var(--red); font-weight: 800; font-size: 1rem; padding-top: .3rem; }
-		.section-head h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; letter-spacing: -.02em; }
+		section.block { padding: 5.5rem 0; border-bottom: 1px solid var(--line); }
+		.section-head { display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem; margin-bottom: 3.2rem; align-items: baseline; }
+		.section-head .num { color: var(--coral); font-weight: 800; font-size: .95rem; letter-spacing: .1em; }
+		.section-head h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -.02em; }
+		.section-head .sub { color: var(--faint); font-size: .92rem; margin-top: .4rem; max-width: 60ch; }
 
-		.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
-		.feature { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.8rem; transition: background .15s; }
-		.feature:hover { background: var(--panel); }
-		.feature .idx { color: var(--red); font-weight: 700; font-size: .75rem; letter-spacing: .15em; }
-		.feature h3 { font-size: 1.05rem; margin: .9rem 0 .6rem; font-weight: 600; }
-		.feature p { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+		.grid-table { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+		.grid-item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.6rem; transition: background .15s; position: relative; }
+		.grid-item:hover { background: var(--panel); }
+		.grid-item .idx { color: var(--teal); font-weight: 700; font-size: .72rem; letter-spacing: .18em; }
+		.grid-item h3 { font-size: 1.02rem; margin: .8rem 0 .5rem; font-weight: 600; display: flex; align-items: center; gap: .45rem; }
+		.grid-item h3 .k { color: var(--coral); font-weight: 800; }
+		.grid-item p { color: var(--muted); font-size: .87rem; line-height: 1.55; }
 
-		.manifest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
-		.manifest .item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.6rem; }
-		.manifest .item .val { font-size: 2.2rem; font-weight: 800; letter-spacing: -.02em; }
-		.manifest .item .key { color: var(--muted); font-size: .78rem; letter-spacing: .16em; text-transform: uppercase; margin-top: .4rem; }
+		.providers { margin-top: 1rem; }
+		.providers .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; }
+		.tag {
+			font-size: .75rem; letter-spacing: .04em; padding: .4rem .8rem;
+			border: 1px solid var(--line); color: var(--muted); background: var(--panel);
+		}
+		.tag.hot { border-color: var(--teal); color: var(--teal); }
+		.keycap { font-family: var(--mono); font-size: .75rem; border: 1px solid var(--line); padding: .15rem .5rem; color: var(--ink); background: var(--panel); }
+
+		.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+		.mode { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.7rem; }
+		.mode .mname { font-weight: 700; font-size: 1.05rem; display: flex; align-items: center; gap: .5rem; }
+		.mode .mname .dot { width: .55rem; height: .55rem; background: var(--teal); display: inline-block; flex-shrink: 0; }
+		.mode .mname .dot.alt { background: var(--coral); }
+		.mode p { color: var(--muted); font-size: .86rem; margin-top: .6rem; line-height: 1.55; }
+		.mode code { font-family: var(--mono); font-size: .8rem; color: var(--teal); background: var(--panel); padding: .1rem .35rem; }
+
+		.didnot { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+		.didnot-item { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.5rem; }
+		.didnot-item .dname { font-weight: 600; font-size: .95rem; display: flex; align-items: center; gap: .6rem; }
+		.didnot-item .dname::before { content: '—'; color: var(--coral); font-weight: 800; }
+		.didnot-item p { color: var(--muted); font-size: .84rem; margin-top: .45rem; line-height: 1.5; }
 
 		.sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
-		.source { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.8rem; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; transition: background .15s; }
+		.source { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 1.7rem; text-decoration: none; color: var(--ink); display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; transition: background .15s; }
 		.source:hover { background: var(--panel); }
-		.source .sname { font-weight: 700; font-size: 1.05rem; }
-		.source .sdesc { color: var(--muted); font-size: .85rem; margin-top: .5rem; line-height: 1.5; }
-		.source .arrow { color: var(--red); font-size: 1.4rem; font-weight: 700; }
+		.source .sname { font-weight: 700; font-size: 1.02rem; }
+		.source .sdesc { color: var(--muted); font-size: .84rem; margin-top: .5rem; line-height: 1.5; }
+		.source .arrow { color: var(--coral); font-size: 1.3rem; font-weight: 700; }
 
 		footer { padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
-		footer .copy { border: none; background: none; color: var(--muted); font-size: .78rem; }
-		footer .foot-links a { color: var(--muted); text-decoration: none; font-size: .78rem; margin-left: 1.2rem; }
-		footer .foot-links a:hover { color: var(--red); }
+		footer .copy { color: var(--faint); font-size: .78rem; }
+		footer .foot-links a { color: var(--faint); text-decoration: none; font-size: .78rem; margin-left: 1.2rem; }
+		footer .foot-links a:hover { color: var(--teal); }
 
 		@media (max-width: 720px) {
-			.gridlines { background-size: 50vw 25vh; }
-			.topbar { flex-wrap: wrap; gap: .8rem; }
-			.nav a { margin-left: 1rem; font-size: .75rem; }
-			.hero h1 { font-size: clamp(3rem, 17vw, 5rem); }
+			.topbar { flex-wrap: wrap; gap: .6rem; }
+			.nav a { margin-left: .9rem; font-size: .7rem; }
+			.hero { padding-top: 4.5rem; }
+			.section-head { grid-template-columns: 1fr; gap: .4rem; }
 			.code { flex-direction: column; align-items: flex-start; }
-			.section-head { grid-template-columns: 1fr; }
-			.section-head .num { padding-top: 0; }
+			.tab { padding: .5rem .8rem; font-size: .68rem; }
 		}
 	</style>
 </head>
@@ -159,41 +221,50 @@
 	<div class="gridlines" aria-hidden="true"></div>
 
 	<header class="topbar">
-		<a class="wordmark" href="/zeta/">ZETA<sup>®</sup></a>
+		<a class="wordmark" href="/zeta/"><span class="zmark">Z</span>ZETA</a>
 		<nav class="nav">
-			<a href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">文档</a>
 			<a href="#features">特性</a>
-			<a href="#install">安装</a>
+			<a href="#providers">模型</a>
+			<a href="#sessions">会话</a>
+			<a href="#modes">模式</a>
 			<a href="#ecosystem">生态</a>
-			<a href="#manifest">准则</a>
 		</nav>
-		<button class="theme-toggle" id="themeToggle" type="button">深色 / 浅色</button>
+		<button class="theme-toggle" id="themeToggle" type="button">深浅切换</button>
 	</header>
 
 	<main class="container">
 		<section class="hero">
-			<div class="kicker">终端编码代理 · OMP 兼容发行版</div>
-			<h1>编码，<br>纯粹<span class="mark">。</span></h1>
-			<p class="lede">
-				<strong>Zeta</strong> 是运行在终端里的编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。
-				作为 OMP 的下游发行版，它与 OMP 生态保持兼容，并持续同步上游演进。
-			</p>
-			<div class="cta-row">
-				<a class="cta primary" href="#install">开始使用</a>
-				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">文档 & GitHub →</a>
-			</div>
-			<div class="install" id="install">
-				<div class="label">安装 · npm</div>
-				<div class="code">
-					<span class="cmd"><span class="prompt">$</span>npm install -g @zeta/pi-coding-agent</span>
-					<button class="copy" type="button" data-copy="npm install -g @zeta/pi-coding-agent">复制</button>
+			<div class="hero-inner">
+				<div class="kicker">终端编码代理 · OMP 兼容发行版</div>
+				<h1>编码代理，<br>接入 IDE<span class="accent">。</span></h1>
+				<p class="lede">
+					<strong>Zeta</strong> 是运行在终端里的编码代理：<strong>子代理</strong>、<strong>计划模式</strong>、
+					<strong>LSP</strong>、<strong>DAP</strong>、<strong>事后记忆</strong>、<strong>hashline 编辑</strong>、
+					<strong>时间旅行规则</strong>——由原生 Rust 引擎驱动。作为 OMP 的下游发行版，Zeta 保持与 OMP 生态的兼容，
+					并持续同步上游演进。
+				</p>
+				<div class="cta-row">
+					<a class="cta primary" href="#install">开始使用</a>
+					<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">文档与源码 →</a>
 				</div>
-			</div>
-			<div class="install">
-				<div class="label">安装 · Bun</div>
-				<div class="code">
-					<span class="cmd"><span class="prompt">$</span>bun add -g @zeta/pi-coding-agent</span>
-					<button class="copy" type="button" data-copy="bun add -g @zeta/pi-coding-agent">复制</button>
+				<div class="install" id="install">
+					<div class="tabs">
+						<button class="tab active" type="button" data-tab="npm">npm</button>
+						<button class="tab" type="button" data-tab="bun">bun</button>
+						<button class="tab" type="button" data-tab="curl">curl</button>
+					</div>
+					<div class="code" data-pane="npm">
+						<span class="cmd"><span class="prompt">$</span>npm install -g @zeta/pi-coding-agent</span>
+						<button class="copy" type="button" data-copy="npm install -g @zeta/pi-coding-agent">复制</button>
+					</div>
+					<div class="code" data-pane="bun" hidden>
+						<span class="cmd"><span class="prompt">$</span>bun add -g @zeta/pi-coding-agent</span>
+						<button class="copy" type="button" data-copy="bun add -g @zeta/pi-coding-agent">复制</button>
+					</div>
+					<div class="code" data-pane="curl" hidden>
+						<span class="cmd"><span class="prompt">$</span>curl -fsSL https://linxira-os.github.io/install | sh</span>
+						<button class="copy" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh">复制</button>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -201,39 +272,122 @@
 		<section class="block" id="features">
 			<div class="section-head">
 				<div class="num">01</div>
-				<h2>特性</h2>
+				<div>
+					<h2>把 IDE 接到终端里</h2>
+					<div class="sub">OMP 生态的全部核心能力，随发行版同步演进——不是可选的扩展，而是内置的默认。</div>
+				</div>
 			</div>
-			<div class="features">
-				<div class="feature"><div class="idx">F/01</div><h3>多提供商模型</h3><p>通过统一的 LLM 客户端接入多种模型提供商，支持流式输出与思考配置。</p></div>
-				<div class="feature"><div class="idx">F/02</div><h3>工具调用</h3><p>read / edit / write / bash / LSP：代理运行时与工具框架，直接驱动你的工作区。</p></div>
-				<div class="feature"><div class="idx">F/03</div><h3>原生加速</h3><p>Rust 编写的高性能文本与正则原语，grep / diff / 大文件处理不拖后腿。</p></div>
-				<div class="feature"><div class="idx">F/04</div><h3>可嵌入 TUI</h3><p>差分渲染的终端界面库，预览、渲染器、多面板布局，全部可定制。</p></div>
-				<div class="feature"><div class="idx">F/05</div><h3>会话与分享</h3><p>会话导出、分享链接、协同编辑。加密的协作会话，端到端保护。</p></div>
-				<div class="feature"><div class="idx">F/06</div><h3>OMP 兼容</h3><p>保持与 OMP 的合并能力：运行时、包布局、Bun 工作流沿用同一套约定。</p></div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>子代理 Subagents</h3><p>将任务拆给并行的子代理，各自携带独立上下文与工具集，在主会话中汇总结果。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>计划模式 Plan mode</h3><p>先规划、再执行：让代理先产出计划供你审阅，批准后才触碰工作区。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP 语言服务</h3><p>内置 LSP 客户端：跳转定义、查找引用、诊断与补全，编辑时同步感知代码语义。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3><span class="k">D</span>DAP 调试适配器</h3><p>对接调试适配协议，代理可以设置断点、读取栈帧、检查变量并解释失败原因。</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3><span class="k">H</span>事后记忆 Hindsight memory</h3><p>回顾过往会话的成败与教训，在后续任务中自动利用积累的 hindsight 记忆。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3><span class="k">E</span>Hashline 编辑</h3><p>行级精确编辑语义：内容寻址的行编辑，让重构与批量替换保持可追溯。</p></div>
+				<div class="grid-item"><div class="idx">07</div><h3><span class="k">T</span>时间旅行规则</h3><p>按时间线生效的项目规则：旧提交的约定不会错误地套用在新代码上。</p></div>
+				<div class="grid-item"><div class="idx">08</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 等重活交给 Rust 原语，长文件与大型仓库不拖后腿。</p></div>
 			</div>
 		</section>
 
-		<section class="block" id="manifest">
+		<section class="block" id="providers">
 			<div class="section-head">
 				<div class="num">02</div>
-				<h2>准则</h2>
+				<div>
+					<h2>15+ 提供商，数百个模型</h2>
+					<div class="sub">统一客户端接入主流提供商，API Key 或 OAuth 认证。会话中用 <span class="keycap">/model</span> 或 <span class="keycap">Ctrl+L</span> 随时切换模型。</div>
+				</div>
 			</div>
-			<div class="manifest">
-				<div class="item"><div class="val">终端优先</div><div class="key">Principle 01</div></div>
-				<div class="item"><div class="val">同步上游</div><div class="key">Principle 02</div></div>
-				<div class="item"><div class="val">原生性能</div><div class="key">Principle 03</div></div>
-				<div class="item"><div class="val">可嵌入</div><div class="key">Principle 04</div></div>
+			<div class="providers">
+				<div class="tag-row">
+					<span class="tag hot">Anthropic</span><span class="tag hot">OpenAI</span><span class="tag hot">Google</span>
+					<span class="tag">Azure</span><span class="tag">Bedrock</span><span class="tag">Mistral</span>
+					<span class="tag">Groq</span><span class="tag">Cerebras</span><span class="tag">xAI</span>
+					<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
+					<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
+					<span class="tag">更多…</span>
+				</div>
+			</div>
+		</section>
+
+		<section class="block" id="sessions">
+			<div class="section-head">
+				<div class="num">03</div>
+				<div>
+					<h2>会话是树，不是日志</h2>
+					<div class="sub">回到任意历史节点继续，分支与主线共存于同一个文件；导出、分享、加密协同。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>分支式历史</h3><p>会话按树状结构存储，任意时刻可回退到之前的节点并从中继续。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>导出与分享</h3><p><code class="keycap">/export</code> 导出 HTML；<code class="keycap">/share</code> 上传为可分享链接，他人可直接打开查看。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>加密协同</h3><p><code class="keycap">/collab</code> 建立端到端加密的实时会话，参与者渲染同一会话、同一工具卡片。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>断点续接</h3><p>进程重启后以 <code class="keycap">--continue</code> 回到原会话，保留完整推理与决策轨迹。</p></div>
+			</div>
+		</section>
+
+		<section class="block" id="context">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>上下文工程</h2>
+					<div class="sub">控制进入上下文窗口的内容与方式，而不是让模型自行猜测。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>AGENTS.md</h3><p>项目指令：启动时从 <code class="keycap">~/.zeta/agent/</code>、父目录与当前目录逐级加载。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>SYSTEM.md</h3><p>按项目替换或追加默认系统提示词，为每个仓库定制人格与约束。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Skills</h3><p>按需加载的能力包：指令与工具组合，渐进式披露而不破坏提示缓存。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Prompt 模板</h3><p>可复用的 Markdown 提示词，<code class="keycap">/name</code> 一键展开。</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>自动压缩</h3><p>接近上下文上限时自动摘要旧消息，压缩策略可通过扩展完全定制。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>动态上下文</h3><p>扩展可在每轮前注入消息、过滤历史、实现 RAG 或长期记忆。</p></div>
+			</div>
+		</section>
+
+		<section class="block" id="modes">
+			<div class="section-head">
+				<div class="num">05</div>
+				<div>
+					<h2>四种运行模式</h2>
+					<div class="sub">从全功能 TUI 到脚本、事件流与程序化嵌入，同一个代理，多种接口。</div>
+				</div>
+			</div>
+			<div class="modes">
+				<div class="mode"><div class="mname"><span class="dot"></span>交互式</div><p>完整的 TUI 体验：面板、预览、工具卡片与快捷键。</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta -p "query"</code> 输出即用；<code>--mode json</code> 输出事件流供脚本消费。</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>stdin/stdout 上的 JSON 协议，供非 Node 集成直接调用。</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>以库的形式嵌入你自己的应用，完整控制代理生命周期。</p></div>
+			</div>
+		</section>
+
+		<section class="block" id="extensions">
+			<div class="section-head">
+				<div class="num">06</div>
+				<div>
+					<h2>原语，而非功能</h2>
+					<div class="sub">别家代理内置的功能，你可以自己搭。扩展是 TypeScript 模块，可访问工具、命令、快捷键、事件与完整 TUI。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>权限门禁</h3><p>自定义确认流：按环境与安全要求放行或拦截敏感操作。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>路径保护</h3><p>声明受保护路径，代理的读写被严格限制在允许区域内。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>MCP 集成</h3><p>通过扩展接入 MCP 服务器，或直接用技能构建 CLI 工具。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>沙箱执行</h3><p>在容器或沙箱中运行命令，把风险隔离在代理之外。</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>插件市场</h3><p>skills、hooks、tools、commands、rules、prompts 与 <code class="keycap">.mcp.json</code> 全部可从扩展发现。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>50+ 示例</h3><p>子代理、计划模式、SSH 执行、自定义编辑器、状态栏与覆盖层——官方示例开箱即用。</p></div>
 			</div>
 		</section>
 
 		<section class="block" id="ecosystem">
 			<div class="section-head">
-				<div class="num">03</div>
-				<h2>生态</h2>
+				<div class="num">07</div>
+				<div>
+					<h2>发行版承诺</h2>
+					<div class="sub">Zeta 是 OMP 的下游发行版：运行时树、包布局、Bun 工作流与 <code class="keycap">@zeta/*</code> 内部包名沿用 OMP 约定，上游更新保持可合并。</div>
+				</div>
 			</div>
 			<div class="sources">
 				<a class="source" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
-					<div><div class="sname">linxira-zeta</div><div class="sdesc">产品主仓库：OMP 下游发行版，追踪上游并持续整合。</div></div>
+					<div><div class="sname">linxira-zeta</div><div class="sdesc">产品主仓库：追踪 OMP 上游并持续整合，文档与发行都在这里。</div></div>
 					<div class="arrow">→</div>
 				</a>
 				<a class="source" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">
@@ -258,17 +412,23 @@
 
 	<script is:inline>
 		const root = document.documentElement;
-		const toggle = document.getElementById('themeToggle');
-		toggle?.addEventListener('click', () => {
+		document.getElementById('themeToggle')?.addEventListener('click', () => {
 			const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
 			root.dataset.theme = next;
 			localStorage.setItem('zeta-theme', next);
 		});
+		document.querySelectorAll('.tab').forEach(tab => {
+			tab.addEventListener('click', () => {
+				document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+				document.querySelectorAll('[data-pane]').forEach(p => (p.hidden = true));
+				tab.classList.add('active');
+				document.querySelector(`[data-pane="${tab.dataset.tab}"]`).hidden = false;
+			});
+		});
 		document.querySelectorAll('.copy').forEach(btn => {
 			btn.addEventListener('click', async () => {
-				const text = btn.dataset.copy;
 				try {
-					await navigator.clipboard.writeText(text);
+					await navigator.clipboard.writeText(btn.dataset.copy);
 					const old = btn.textContent;
 					btn.textContent = '已复制';
 					setTimeout(() => { btn.textContent = old; }, 1500);
