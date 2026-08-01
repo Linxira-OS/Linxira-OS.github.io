@@ -9,13 +9,15 @@ const { lang, title, description, active } = Astro.props;
 const copy = lang === "zh"
 	? {
 			navHome: "首页", navFeatures: "特性", navEcosystem: "生态",
-			langLink: "EN", themeBtn: "深浅切换", footOrg: "Linxira OS",
-			footGitHub: "GitHub", footCopy: "© 2026 Zeta · Linxira-OS",
+			langLink: "EN", themeBtn: "深浅切换", backMain: "主站",
+			footOrg: "Linxira OS", footGitHub: "GitHub",
+			footCopy: "© 2026 Zeta · Linxira-OS",
 	  }
 	: {
 			navHome: "Home", navFeatures: "Features", navEcosystem: "Ecosystem",
-			langLink: "中文", themeBtn: "Theme", footOrg: "Linxira OS",
-			footGitHub: "GitHub", footCopy: "© 2026 Zeta · Linxira-OS",
+			langLink: "中文", themeBtn: "Theme", backMain: "Main",
+			footOrg: "Linxira OS", footGitHub: "GitHub",
+			footCopy: "© 2026 Zeta · Linxira-OS",
 	  };
 const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 ---
@@ -50,7 +52,8 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 			--line: rgba(51, 65, 85, 0.5);
 			--panel: rgba(30, 41, 59, 0.6);
 			--panel-solid: #131b2e;
-			--font: "Helvetica Neue", Helvetica, "Inter", "Noto Sans", system-ui, sans-serif;
+			--font: "Helvetica Neue", Helvetica, "Inter", "Noto Sans", system-ui,
+				"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 			--mono: "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, monospace;
 		}
 		[data-theme="light"] {
@@ -106,6 +109,14 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		.nav a:hover { color: var(--teal); }
 		.nav a.active { color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: .2rem; }
 		.topbar-right { display: flex; align-items: center; gap: .8rem; }
+		.icon-link {
+			display: inline-flex; align-items: center; gap: .4rem;
+			background: none; border: 1px solid var(--line); color: var(--ink);
+			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
+			text-decoration: none; letter-spacing: .1em; text-transform: uppercase;
+		}
+		.icon-link svg { width: .95rem; height: .95rem; flex-shrink: 0; fill: currentColor; }
+		.icon-link:hover { border-color: var(--teal); color: var(--teal); }
 		.theme-toggle, .lang-toggle {
 			background: none; border: 1px solid var(--line); color: var(--ink);
 			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
@@ -222,6 +233,11 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		footer .foot-links a { color: var(--faint); text-decoration: none; font-size: .78rem; margin-left: 1.2rem; }
 		footer .foot-links a:hover { color: var(--teal); }
 
+		html[lang="zh"] .hero h1 { letter-spacing: 0; line-height: 1.12; }
+		html[lang="zh"] .hero .lede { font-weight: 400; }
+		html[lang="zh"] .page-hero h1 { letter-spacing: 0; }
+		html[lang="zh"] .section-head h2 { letter-spacing: 0; }
+
 		@media (max-width: 720px) {
 			.topbar { flex-wrap: wrap; gap: .6rem; }
 			.topbar-left { gap: 1rem; flex-wrap: wrap; }
@@ -246,6 +262,11 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 			</nav>
 		</div>
 		<div class="topbar-right">
+			<a class="icon-link" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
+				<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+				GitHub
+			</a>
+			<a class="icon-link" href="/">{copy.backMain}</a>
 			<button class="theme-toggle" id="themeToggle" type="button">{copy.themeBtn}</button>
 			<a class="lang-toggle" href={lang === "zh" ? "/zeta/en/" + (active === "home" ? "" : active + "/") : "/zeta/zh/" + (active === "home" ? "" : active + "/")}>{copy.langLink}</a>
 		</div>
