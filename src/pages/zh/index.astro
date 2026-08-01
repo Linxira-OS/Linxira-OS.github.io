@@ -24,6 +24,12 @@
     .nav-links { display: flex; gap: 1.5rem; align-items: center; }
     .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
     .nav-links a:hover { color: #20B8B0; }
+    .zeta-feature { display: block; text-decoration: none; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
+    .zeta-feature:hover { transform: translateY(-4px); border-color: rgba(226,6,19,0.5); }
+    .zeta-feature h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .zeta-feature h3 .zeta-mark { color: #E20613; font-weight: 800; }
+    .zeta-feature p { color: #94a3b8; font-size: 0.88rem; line-height: 1.5; }
+    .zeta-feature .zeta-go { color: #E20613; font-size: 0.82rem; margin-top: 0.6rem; display: inline-block; }
     .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
     .lang-link:hover { background: rgba(32,184,176,0.2); }
 
@@ -115,6 +121,7 @@
   <nav>
     <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
     <div class="nav-links">
+      <a href="/zeta/">Zeta</a>
       <a href="/zh/docs/">文档</a>
       <a href="/zh/blog/">博客</a>
       <a href="/zh/legal/license/">协议</a>
@@ -142,6 +149,7 @@
         <div class="feature"><h3>手动启动安装</h3><p>Live 会话保持完整 Plasma 桌面；准备好后从 Welcome 或应用菜单手动启动 Calamares。</p></div>
         <div class="feature"><h3>安装后使用 Shelly</h3><p>Shelly 在安装后管理 Arch 软件包和可选来源，不参与安装器事务。</p></div>
       </div>
+      <a href="/zeta/" class="zeta-feature"><h3><span class="zeta-mark">Z</span> Zeta — 终端编码代理</h3><p>在终端里运行编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。OMP 兼容发行版。</p><span class="zeta-go">探索 Zeta →</span></a>
       <a href="/zh/docs/" class="cta">阅读当前文档</a>
     </div>
   </section>
