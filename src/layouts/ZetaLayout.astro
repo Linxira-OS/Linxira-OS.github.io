@@ -39,7 +39,7 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		const prefers = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 		document.documentElement.dataset.theme = saved ?? prefers;
 	</script>
-	<style>
+	<style is:global>
 		:root {
 			--teal: #20B8B0;
 			--coral: #F36F5D;
