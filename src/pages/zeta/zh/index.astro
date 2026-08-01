@@ -1,0 +1,97 @@
+---
+import ZetaLayout from "../../../layouts/ZetaLayout.astro";
+---
+<ZetaLayout
+	lang="zh"
+	title="Zeta — 终端编码代理"
+	description="Zeta 是运行在终端里的编码代理：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则——由原生 Rust 引擎驱动。OMP 兼容发行版。"
+	active="home"
+>
+	<section class="hero">
+		<div class="hero-inner">
+			<div class="kicker">终端编码代理 · OMP 兼容发行版</div>
+			<h1>编码代理，<br>接入 IDE<span class="accent">。</span></h1>
+			<p class="lede">
+				<strong>Zeta</strong> 是运行在终端里的编码代理：<strong>子代理</strong>、<strong>计划模式</strong>、
+				<strong>LSP</strong>、<strong>DAP</strong>、<strong>事后记忆</strong>、<strong>hashline 编辑</strong>、
+				<strong>时间旅行规则</strong>——由原生 Rust 引擎驱动。主线同步 <strong>OMP</strong> 上游，
+				并移植 <strong>Pi</strong> 的高级能力。
+			</p>
+			<div class="cta-row">
+				<a class="cta primary" href="#install">开始使用</a>
+				<a class="cta ghost" href="/zeta/zh/features/">查看特性 →</a>
+			</div>
+			<div class="install" id="install">
+				<div class="tabs">
+					<button class="tab active" type="button" data-tab="npm">npm</button>
+					<button class="tab" type="button" data-tab="bun">bun</button>
+					<button class="tab" type="button" data-tab="curl">curl</button>
+				</div>
+				<div class="code" data-pane="npm">
+					<span class="cmd"><span class="prompt">$</span>npm install -g @zeta/pi-coding-agent</span>
+					<button class="copy" type="button" data-copy="npm install -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
+				</div>
+				<div class="code" data-pane="bun" hidden>
+					<span class="cmd"><span class="prompt">$</span>bun add -g @zeta/pi-coding-agent</span>
+					<button class="copy" type="button" data-copy="bun add -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
+				</div>
+				<div class="code" data-pane="curl" hidden>
+					<span class="cmd"><span class="prompt">$</span>curl -fsSL https://linxira-os.github.io/install | sh</span>
+					<button class="copy" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh" data-done="已复制">复制</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="highlights">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>主线 OMP，进阶 Pi</h2>
+				<div class="sub">运行时、包布局与工作流沿用 OMP 约定，保持上游可合并；Pi 的上下文工程与扩展原语作为高级内容移植进来。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>子代理 Subagents</h3><p>并行子代理携带独立上下文与工具集，主会话汇总结果。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>计划模式 Plan mode</h3><p>先规划再执行，批准后才触碰工作区。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP + DAP</h3><p>语言服务与调试适配器内置：跳转、诊断、断点、栈帧。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">H</span>事后记忆</h3><p>回顾过往会话的成败教训，后续任务自动利用。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">E</span>Hashline 编辑</h3><p>内容寻址的行级编辑，重构与批量替换可追溯。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 重活交给 Rust 原语。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>四种运行模式</h2>
+				<div class="sub">从全功能 TUI 到脚本、事件流与程序化嵌入。</div>
+			</div>
+		</div>
+		<div class="modes">
+			<div class="mode"><div class="mname"><span class="dot"></span>交互式</div><p>完整 TUI 体验：面板、预览、工具卡片与快捷键。</p></div>
+			<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta -p "query"</code> 输出即用；<code>--mode json</code> 输出事件流。</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>stdin/stdout 上的 JSON 协议，供非 Node 集成调用。</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>以库的形式嵌入你的应用，控制代理生命周期。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="providers">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>15+ 提供商，数百个模型</h2>
+				<div class="sub">会话中用 <span class="keycap">/model</span> 或 <span class="keycap">Ctrl+L</span> 随时切换模型。</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">Anthropic</span><span class="tag hot">OpenAI</span><span class="tag hot">Google</span>
+			<span class="tag">Azure</span><span class="tag">Bedrock</span><span class="tag">Mistral</span>
+			<span class="tag">Groq</span><span class="tag">Cerebras</span><span class="tag">xAI</span>
+			<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
+			<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
+			<span class="tag">更多…</span>
+		</div>
+	</section>
+</ZetaLayout>

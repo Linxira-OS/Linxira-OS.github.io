@@ -1,0 +1,113 @@
+---
+import ZetaLayout from "../../../layouts/ZetaLayout.astro";
+---
+<ZetaLayout
+	lang="en"
+	title="Zeta — a coding agent for your terminal"
+	description="Zeta is a coding agent for the terminal: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, time-traveling rules — with a native Rust engine doing the heavy lifting. An OMP-compatible distribution."
+	active="home"
+>
+	<section class="hero">
+		<div class="hero-inner">
+			<div class="kicker">Coding agent · OMP-compatible distribution</div>
+			<h1>There are many agent harnesses.<br>This one is <span class="accent">yours.</span></h1>
+			<p class="lede">
+				<strong>Zeta</strong> is a coding agent for the terminal: <strong>subagents</strong>, <strong>plan mode</strong>,
+				<strong>LSP</strong>, <strong>DAP</strong>, <strong>hindsight memory</strong>, <strong>hashline edits</strong>,
+				<strong>time-traveling rules</strong> — with a native Rust engine doing the heavy lifting. It tracks
+				the <strong>OMP</strong> mainline and ports <strong>Pi</strong>'s advanced capabilities.
+			</p>
+			<div class="cta-row">
+				<a class="cta primary" href="#install">Get started</a>
+				<a class="cta ghost" href="/zeta/en/features/">Explore features →</a>
+			</div>
+			<div class="install" id="install">
+				<div class="tabs">
+					<button class="tab active" type="button" data-tab="npm">npm</button>
+					<button class="tab" type="button" data-tab="bun">bun</button>
+					<button class="tab" type="button" data-tab="curl">curl</button>
+				</div>
+				<div class="code" data-pane="npm">
+					<span class="cmd"><span class="prompt">$</span>npm install -g @zeta/pi-coding-agent</span>
+					<button class="copy" type="button" data-copy="npm install -g @zeta/pi-coding-agent" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="bun" hidden>
+					<span class="cmd"><span class="prompt">$</span>bun add -g @zeta/pi-coding-agent</span>
+					<button class="copy" type="button" data-copy="bun add -g @zeta/pi-coding-agent" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="curl" hidden>
+					<span class="cmd"><span class="prompt">$</span>curl -fsSL https://linxira-os.github.io/install | sh</span>
+					<button class="copy" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh" data-done="Copied">Copy</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="goals">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Design goals</h2>
+				<div class="sub">Three priorities shape every release: modern out-of-the-box experience, cache-first execution, and an agent that evolves with you.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">M</span>Modern first</h3><p>A clear product identity, secure onboarding, reliable sessions, a full-featured Web UI — no hand-assembled extension stacks for everyday coding.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">C</span>Cache first</h3><p>Keep provider prompt-cache eligibility without sacrificing protocol correctness, tool freshness, or session reliability. Long sessions stay cheap.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>Self-evolving</h3><p>Extensions, skills, prompt templates, and themes are first-class. Ask the agent to build what you need — it can customize itself on the fly.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>Upstream mergeable</h3><p>Runtime tree, package layout, Bun workflow, and internal <span class="keycap">@zeta/*</span> names follow OMP conventions, so upstream updates stay mergeable.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="highlights">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>OMP mainline, Pi advanced</h2>
+				<div class="sub">The runtime, packaging, and workflows follow OMP; Pi's context engineering and extension primitives are ported in as advanced content.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>Subagents</h3><p>Parallel subagents with their own context and tools, aggregated back into the main session.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>Plan mode</h3><p>Plan first, then execute — approve before the agent touches your workspace.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP + DAP</h3><p>Language servers and debug adapters built in: definitions, diagnostics, breakpoints, stack frames.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">H</span>Hindsight memory</h3><p>Lessons from past sessions are recalled and applied automatically in later work.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">E</span>Hashline edits</h3><p>Content-addressed line edits: refactors and bulk replacements stay traceable.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">R</span>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting runs on Rust primitives.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>Four modes</h2>
+				<div class="sub">From the full TUI to scripts, event streams, and programmatic embedding.</div>
+			</div>
+		</div>
+		<div class="modes">
+			<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI experience: panels, previews, tool cards, keyboard shortcuts.</p></div>
+			<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta -p "query"</code> for scripts; <code>--mode json</code> streams events.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and control its full lifecycle.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="providers">
+		<div class="section-head">
+			<div class="num">04</div>
+			<div>
+				<h2>15+ providers, hundreds of models</h2>
+				<div class="sub">Switch models mid-session with <span class="keycap">/model</span> or <span class="keycap">Ctrl+L</span>.</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">Anthropic</span><span class="tag hot">OpenAI</span><span class="tag hot">Google</span>
+			<span class="tag">Azure</span><span class="tag">Bedrock</span><span class="tag">Mistral</span>
+			<span class="tag">Groq</span><span class="tag">Cerebras</span><span class="tag">xAI</span>
+			<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
+			<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
+			<span class="tag">more…</span>
+		</div>
+	</section>
+</ZetaLayout>

@@ -1,0 +1,103 @@
+---
+import ZetaLayout from "../../../layouts/ZetaLayout.astro";
+---
+<ZetaLayout
+	lang="en"
+	title="Features — Zeta"
+	description="Zeta features: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, time-traveling rules, context engineering, extensions."
+	active="features"
+>
+	<section class="page-hero">
+		<div class="kicker">Features</div>
+		<h1>Everything you need.<br>Nothing you don't.</h1>
+		<p class="lede">Core capabilities are built in from the OMP mainline; advanced content is ported from Pi's semantic source. Extensions cover the rest — build what you want, install what you don't want to build.</p>
+	</section>
+
+	<section class="block" id="core">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Core capabilities</h2>
+				<div class="sub">Built-in defaults, not optional extensions.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>Subagents</h3><p>Split work across parallel subagents, each with its own context and toolset. Results aggregate back into the main session.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>Plan mode</h3><p>Plan before you act: the agent produces a plan for your review, then touches the workspace only after approval.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP language services</h3><p>Built-in LSP client: go-to-definition, find references, diagnostics, and completions — code semantics at edit time.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">D</span>DAP debug adapter</h3><p>Speaks the Debug Adapter Protocol: set breakpoints, read stack frames, inspect variables, and explain failures.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">H</span>Hindsight memory</h3><p>Lessons and outcomes from past sessions are revisited and applied automatically in later tasks.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">E</span>Hashline edits</h3><p>Line-precise, content-addressed editing semantics: refactors and bulk replacements stay traceable.</p></div>
+			<div class="grid-item"><div class="idx">07</div><h3><span class="k">T</span>Time-traveling rules</h3><p>Project rules that apply per time slice: old commit conventions don't leak onto new code.</p></div>
+			<div class="grid-item"><div class="idx">08</div><h3><span class="k">R</span>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting on Rust primitives — large files and big repos stay fast.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="context">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>Context engineering</h2>
+				<div class="sub">Control what enters the context window and how it is managed — don't let the model guess.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>AGENTS.md</h3><p>Project instructions loaded at startup from <code class="keycap">~/.zeta/agent/</code>, parent directories, and the current directory.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>SYSTEM.md</h3><p>Replace or append the default system prompt per project — a persona and constraints for each repository.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Skills</h3><p>Capability packages loaded on demand: instructions plus tools, with progressive disclosure that doesn't bust prompt caches.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>Prompt templates</h3><p>Reusable Markdown prompts, expanded with <code class="keycap">/name</code>.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>Auto compaction</h3><p>Older messages are summarized near the context limit; strategy is fully customizable via extensions.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>Dynamic context</h3><p>Extensions inject messages before each turn, filter history, implement RAG, or build long-term memory.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="sessions">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>Sessions: a tree, not a log</h2>
+				<div class="sub">Return to any previous node and continue; branches and mainline live in one file.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>Branching history</h3><p>Sessions are stored as trees. Navigate to any earlier point and continue from there.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Export & share</h3><p><code class="keycap">/export</code> produces HTML; <code class="keycap">/share</code> uploads to a shareable URL anyone can open.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Encrypted collab</h3><p><code class="keycap">/collab</code> opens an end-to-end encrypted live session — participants render the same session and tool cards.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>Resume anywhere</h3><p>Restart with <code class="keycap">--continue</code> to re-enter the same session with full reasoning and decisions intact.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">04</div>
+			<div>
+				<h2>Four modes</h2>
+				<div class="sub">One agent, many interfaces.</div>
+			</div>
+		</div>
+		<div class="modes">
+			<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI: panels, previews, tool cards, keybindings.</p></div>
+			<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta -p "query"</code> for scripts; <code>--mode json</code> streams events for consumers.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>JSON protocol over stdin/stdout for non-Node integrations.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed as a library in your own application, with full control over the agent lifecycle.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="extensions">
+		<div class="section-head">
+			<div class="num">05</div>
+			<div>
+				<h2>Primitives, not features</h2>
+				<div class="sub">Features other agents bake in, you can build yourself. Extensions are TypeScript modules with access to tools, commands, keybindings, events, and the full TUI.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>Permission gates</h3><p>Custom confirmation flows — allow or block sensitive operations per your environment and security needs.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Path protection</h3><p>Declare protected paths; the agent's reads and writes stay inside the allowed region.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>MCP integration</h3><p>Connect MCP servers via extensions, or build CLI tools with READMEs as skills.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>Sandboxed execution</h3><p>Run commands inside a container or sandbox, isolating risk from the agent.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>Extension discovery</h3><p>skills, hooks, tools, commands, rules, prompts, and <code class="keycap">.mcp.json</code> all discovered from extensions.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>50+ examples</h3><p>Subagents, plan mode, SSH execution, custom editors, status bars, overlays — official examples ready to use.</p></div>
+		</div>
+	</section>
+</ZetaLayout>

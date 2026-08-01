@@ -1,0 +1,106 @@
+---
+import ZetaLayout from "../../../layouts/ZetaLayout.astro";
+---
+<ZetaLayout
+	lang="en"
+	title="Ecosystem — Zeta"
+	description="Zeta references four projects: OMP mainline, Pi advanced content, OMP Web, and Pi Web. Acknowledgments and source roles."
+	active="ecosystem"
+>
+	<section class="page-hero">
+		<div class="kicker">Ecosystem</div>
+		<h1>Built on proven sources.</h1>
+		<p class="lede">Zeta tracks four reference projects. OMP is the product mainline; Pi provides advanced agent behavior as a semantic port source. OMP Web is the direct web snapshot upstream, with Pi Web contributing security and reliability patterns.</p>
+	</section>
+
+	<section class="block" id="sources">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Reference projects</h2>
+				<div class="sub">The four sources Zeta is built on.</div>
+			</div>
+		</div>
+		<div class="sources">
+			<a class="source" href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Oh My Pi <span class="badge main">MAINLINE</span></div>
+					<div class="sdesc">The runtime, CLI, local tools, and sessions — Zeta's direct upstream. Runtime tree, package layout, and Bun workflow follow OMP so updates stay mergeable.</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Pi <span class="badge adv">ADVANCED</span></div>
+					<div class="sdesc">Semantic port source for modern agent behavior: context engineering, extension primitives, provider correctness. Ported as verifiable semantic ports, not wholesale merges.</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/17380936778/omp-web" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">OMP Web <span class="badge main">SNAPSHOT</span></div>
+					<div class="sdesc">The direct upstream of the standalone <code>web-ui/</code> snapshot: agent.db, model handling, session SSE, Windows selectors.</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/agegr/pi-web" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Pi Web <span class="badge adv">UX SOURCE</span></div>
+					<div class="sdesc">Semantic port source for web product and UX: host whitelists, DNS-rebinding protection, CSP, project trust.</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+		</div>
+	</section>
+
+	<section class="block" id="research">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>Research references</h2>
+				<div class="sub">Studied for semantics; not merged as runtimes.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>DeepSeek Reasonix</h3><p>Cache behavior research: system-prompt stability, cache diagnostics, cache-aware compaction.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>OpenCode</h3><p>Model metadata, protocol semantics, and cache-handling boundaries for research only.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>OpenTUI</h3><p>TUI design and interaction patterns for reference layouts, keybindings, and components.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="credits">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>Acknowledgments</h2>
+				<div class="sub">Zeta would not exist without these projects and their maintainers.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>can1357</h3><p>Author and maintainer of Oh My Pi — Zeta's runtime and mainline upstream.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>mariozechner / earendil-works</h3><p>Author and maintainers of Pi — source of Zeta's advanced agent behavior.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>17380936778</h3><p>Maintainer of the OMP Web snapshot that seeds Zeta's <code>web-ui/</code>.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>agegr</h3><p>Author of Pi Web — source of Zeta's web security and reliability patterns.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="distro">
+		<div class="section-head">
+			<div class="num">04</div>
+			<div>
+				<h2>Distribution promise</h2>
+				<div class="sub">Zeta is an OMP downstream distribution: runtime tree, package layout, Bun workflow, and internal <span class="keycap">@zeta/*</span> names follow OMP so upstream updates remain mergeable.</div>
+			</div>
+		</div>
+		<div class="sources">
+			<a class="source" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
+				<div><div class="sname">linxira-zeta</div><div class="sdesc">The product repository: tracking OMP upstream with continuous integration; docs and releases live here.</div></div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">
+				<div><div class="sname">Linxira-OS organization</div><div class="sdesc">The organization home: distributions and related infrastructure.</div></div>
+				<div class="arrow">→</div>
+			</a>
+		</div>
+	</section>
+</ZetaLayout>

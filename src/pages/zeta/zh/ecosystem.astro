@@ -1,0 +1,106 @@
+---
+import ZetaLayout from "../../../layouts/ZetaLayout.astro";
+---
+<ZetaLayout
+	lang="zh"
+	title="生态 — Zeta"
+	description="Zeta 参考四个项目：OMP 主线、Pi 高级内容、OMP Web、Pi Web。致谢与来源角色。"
+	active="ecosystem"
+>
+	<section class="page-hero">
+		<div class="kicker">生态</div>
+		<h1>站在经过验证的来源之上。</h1>
+		<p class="lede">Zeta 追踪四个参考项目。<strong>OMP</strong> 是产品主线；<strong>Pi</strong> 提供现代代理行为，作为语义移植来源。OMP Web 是直接的 Web 快照上游，Pi Web 贡献安全与可靠性模式。</p>
+	</section>
+
+	<section class="block" id="sources">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>参考项目</h2>
+				<div class="sub">Zeta 构建其上的四个来源。</div>
+			</div>
+		</div>
+		<div class="sources">
+			<a class="source" href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Oh My Pi <span class="badge main">主线</span></div>
+					<div class="sdesc">运行时、CLI、本地工具与会话——Zeta 的直接上游。运行时树、包布局与 Bun 工作流沿用 OMP 约定，上游更新保持可合并。</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Pi <span class="badge adv">进阶</span></div>
+					<div class="sdesc">现代代理行为的语义移植来源：上下文工程、扩展原语、提供商正确性。以可验证的语义端口引入，而非整体合并。</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/17380936778/omp-web" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">OMP Web <span class="badge main">快照</span></div>
+					<div class="sdesc">独立 <code>web-ui/</code> 快照的直接上游：agent.db、模型处理、会话 SSE、Windows 选择器。</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/agegr/pi-web" target="_blank" rel="noopener">
+				<div>
+					<div class="sname">Pi Web <span class="badge adv">UX 来源</span></div>
+					<div class="sdesc">Web 产品与 UX 的语义移植来源：主机白名单、DNS 重绑定防护、CSP、项目信任。</div>
+				</div>
+				<div class="arrow">→</div>
+			</a>
+		</div>
+	</section>
+
+	<section class="block" id="research">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>研究参考</h2>
+				<div class="sub">仅研究语义，不作为运行时合并。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>DeepSeek Reasonix</h3><p>缓存行为研究：系统提示稳定性、缓存诊断、缓存感知压缩。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>OpenCode</h3><p>模型元数据、协议语义与缓存处理边界——仅作研究参考。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>OpenTUI</h3><p>TUI 设计与交互模式：参考布局、按键路由与组件设计。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="credits">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>致谢</h2>
+				<div class="sub">没有这些项目与维护者，就没有 Zeta。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>can1357</h3><p>Oh My Pi 的作者与维护者——Zeta 的运行时与主线上游。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>mariozechner / earendil-works</h3><p>Pi 的作者与维护者——Zeta 进阶代理行为的来源。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>17380936778</h3><p>OMP Web 快照的维护者——Zeta 的 <code>web-ui/</code> 由此播种。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>agegr</h3><p>Pi Web 的作者——Zeta Web 安全与可靠性模式的来源。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="distro">
+		<div class="section-head">
+			<div class="num">04</div>
+			<div>
+				<h2>发行版承诺</h2>
+				<div class="sub">Zeta 是 OMP 的下游发行版：运行时树、包布局、Bun 工作流与内部 <span class="keycap">@zeta/*</span> 包名沿用 OMP 约定，上游更新保持可合并。</div>
+			</div>
+		</div>
+		<div class="sources">
+			<a class="source" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
+				<div><div class="sname">linxira-zeta</div><div class="sdesc">产品主仓库：追踪 OMP 上游并持续整合，文档与发行都在这里。</div></div>
+				<div class="arrow">→</div>
+			</a>
+			<a class="source" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">
+				<div><div class="sname">Linxira-OS 组织</div><div class="sdesc">组织主页：发行版与相关基础设施。</div></div>
+				<div class="arrow">→</div>
+			</a>
+		</div>
+	</section>
+</ZetaLayout>
