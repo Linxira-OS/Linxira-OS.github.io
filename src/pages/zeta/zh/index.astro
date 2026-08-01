@@ -26,18 +26,19 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 					<button class="tab active" type="button" data-tab="npm">npm</button>
 					<button class="tab" type="button" data-tab="bun">bun</button>
 					<button class="tab" type="button" data-tab="curl">curl</button>
+					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
 				</div>
 				<div class="code" data-pane="npm">
-					<span class="cmd"><span class="prompt">$</span>npm install -g @zeta/pi-coding-agent</span>
-					<button class="copy" type="button" data-copy="npm install -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @zeta/pi-coding-agent">npm install -g @zeta/pi-coding-agent</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
 				</div>
 				<div class="code" data-pane="bun" hidden>
-					<span class="cmd"><span class="prompt">$</span>bun add -g @zeta/pi-coding-agent</span>
-					<button class="copy" type="button" data-copy="bun add -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @zeta/pi-coding-agent">bun add -g @zeta/pi-coding-agent</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @zeta/pi-coding-agent" data-done="已复制">复制</button>
 				</div>
 				<div class="code" data-pane="curl" hidden>
-					<span class="cmd"><span class="prompt">$</span>curl -fsSL https://linxira-os.github.io/install | sh</span>
-					<button class="copy" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh" data-done="已复制">复制</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install | sh">curl -fsSL https://linxira-os.github.io/install | sh</span></span>
+					<button class="copy-btn" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh" data-done="已复制">复制</button>
 				</div>
 			</div>
 		</div>

@@ -40,6 +40,7 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		const saved = localStorage.getItem('zeta-theme');
 		const prefers = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 		document.documentElement.dataset.theme = saved ?? prefers;
+		document.documentElement.classList.add('js');
 	</script>
 	<style is:global>
 		:root {
@@ -128,10 +129,16 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		.hero::before {
 			content: ''; position: absolute; top: -45%; left: -15%; width: 65vw; height: 65vw;
 			background: radial-gradient(circle, rgba(32,184,176,0.10) 0%, transparent 70%); pointer-events: none;
+			animation: breathe 9s ease-in-out infinite alternate;
 		}
 		.hero::after {
 			content: ''; position: absolute; bottom: -35%; right: -12%; width: 55vw; height: 55vw;
 			background: radial-gradient(circle, rgba(243,111,93,0.08) 0%, transparent 70%); pointer-events: none;
+			animation: breathe 11s ease-in-out infinite alternate-reverse;
+		}
+		@keyframes breathe {
+			0% { opacity: .6; transform: scale(1); }
+			100% { opacity: 1; transform: scale(1.08); }
 		}
 		.hero-inner { position: relative; z-index: 1; }
 		.kicker {
@@ -201,20 +208,57 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		.source .sname .badge.main { color: var(--teal); border-color: var(--teal); }
 		.source .sname .badge.adv { color: var(--coral); border-color: var(--coral); }
 		.source .sdesc { color: var(--muted); font-size: .84rem; margin-top: .5rem; line-height: 1.5; }
-		.source .arrow { color: var(--coral); font-size: 1.3rem; font-weight: 700; }
+		.source .arrow { color: var(--coral); font-size: 1.3rem; font-weight: 700; transition: transform .25s ease; }
+		.source:hover .arrow { transform: translateX(6px); }
 
-		.page-hero { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--line); }
+		html.js .hero, html.js .page-hero, html.js section.block {
+			opacity: 0; transform: translateY(20px);
+			transition: opacity .7s ease, transform .7s ease;
+		}
+		html.js .hero.in, html.js .page-hero.in, html.js section.block.in { opacity: 1; transform: none; }
+		@keyframes rise {
+			from { opacity: 0; transform: translateY(16px); }
+			to { opacity: 1; transform: none; }
+		}
+		html.js .block.in .section-head,
+		html.js .block.in .tag-row,
+		html.js .block.in .grid-item,
+		html.js .block.in .mode,
+		html.js .block.in .source {
+			animation: rise .55s cubic-bezier(.22,.61,.36,1) both;
+		}
+		@media (prefers-reduced-motion: reduce) {
+			html.js .hero, html.js .page-hero, html.js section.block { opacity: 1; transform: none; transition: none; }
+			html.js .block.in .section-head, html.js .block.in .tag-row,
+			html.js .block.in .grid-item, html.js .block.in .mode, html.js .block.in .source { animation: none; }
+			.hero::before, .hero::after { animation: none; }
+			.code .type::after { animation: none; }
+			.tab-ind { transition: none; }
+		}
+
+		.page-hero { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+		.page-hero::before {
+			content: ''; position: absolute; top: -80%; left: 25%; width: 70vw; height: 70vw;
+			background: radial-gradient(circle, rgba(32,184,176,0.08) 0%, transparent 70%); pointer-events: none;
+		}
+		.page-hero > * { position: relative; z-index: 1; }
 		.page-hero .kicker { margin-bottom: 1.5rem; }
 		.page-hero h1 { font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 1.2rem; }
 		.page-hero .lede { max-width: 60ch; color: var(--muted); font-size: 1.05rem; font-weight: 300; }
 
 		.install { margin-top: 3rem; max-width: 720px; }
-		.tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+		.tabs { display: flex; gap: .25rem; border-bottom: 1px solid var(--line); margin-bottom: 0; position: relative; }
+		.tab-ind {
+			position: absolute; bottom: -1px; left: 0; height: 2px;
+			background: linear-gradient(90deg, var(--teal), var(--coral));
+			transition: left .28s cubic-bezier(.22,.61,.36,1), width .28s cubic-bezier(.22,.61,.36,1);
+		}
 		.tab {
 			background: none; border: 1px solid var(--line); border-bottom: none;
 			color: var(--muted); font-family: var(--font); font-size: .75rem;
 			letter-spacing: .1em; text-transform: uppercase; padding: .6rem 1.2rem;
 			cursor: pointer; margin-bottom: -1px;
+			transition: color .2s, background .2s, border-color .2s;
 		}
 		.tab.active { background: var(--panel-solid); color: var(--teal); border-color: var(--line); }
 		.tab:not(.active):hover { color: var(--ink); }
@@ -225,8 +269,13 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		}
 		.code .cmd { white-space: nowrap; overflow-x: auto; }
 		.code .prompt { color: var(--teal); font-weight: 700; margin-right: .6rem; }
-		.copy { background: none; border: 1px solid var(--line); color: var(--muted); font-family: var(--font); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: .4rem .7rem; cursor: pointer; flex-shrink: 0; }
-		.copy:hover { color: var(--teal); border-color: var(--teal); }
+		.code .type::after { content: '▍'; margin-left: .15rem; color: var(--teal); animation: blink 1.1s step-end infinite; }
+		@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+		[data-pane]:not([hidden]) { animation: paneIn .25s ease; }
+		@keyframes paneIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+		.copy-btn { background: none; border: 1px solid var(--line); color: var(--muted); font-family: var(--font); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: .4rem .7rem; cursor: pointer; flex-shrink: 0; transition: color .2s, border-color .2s; }
+		.copy-btn:hover { color: var(--teal); border-color: var(--teal); }
+		.copy-btn.ok { color: var(--teal); border-color: var(--teal); }
 
 		footer { padding: 3rem 5vw; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
 		footer .copy { color: var(--faint); font-size: .78rem; }
@@ -285,28 +334,79 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 	</footer>
 
 	<script is:inline>
-		const root = document.documentElement;
+		const html = document.documentElement;
+		html.classList.add('js');
+		const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		// reveal on scroll
+		const blocks = document.querySelectorAll('.hero, .page-hero, section.block');
+		if ('IntersectionObserver' in window && !prefersReduced) {
+			const io = new IntersectionObserver(entries => {
+				for (const e of entries) {
+					if (!e.isIntersecting) continue;
+					const el = e.target;
+					el.querySelectorAll('.section-head, .tag-row, .grid-item, .mode, .source')
+						.forEach((k, i) => (k.style.animationDelay = (i * 55) + 'ms'));
+					el.classList.add('in');
+					io.unobserve(el);
+				}
+			}, { threshold: 0.12 });
+			blocks.forEach(el => io.observe(el));
+		} else {
+			blocks.forEach(el => el.classList.add('in'));
+		}
+
+		// theme toggle
 		document.getElementById('themeToggle')?.addEventListener('click', () => {
-			const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-			root.dataset.theme = next;
+			const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+			html.dataset.theme = next;
 			localStorage.setItem('zeta-theme', next);
 		});
-		document.querySelectorAll('.tab').forEach(tab => {
-			tab.addEventListener('click', () => {
-				document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-				document.querySelectorAll('[data-pane]').forEach(p => (p.hidden = true));
-				tab.classList.add('active');
-				document.querySelector(`[data-pane="${tab.dataset.tab}"]`).hidden = false;
-			});
-		});
-		document.querySelectorAll('.copy').forEach(btn => {
+
+		// install tabs
+		const tabs = document.querySelectorAll('.tab');
+		const ind = document.getElementById('tabInd');
+		const moveInd = tab => {
+			if (!ind || !tab) return;
+			ind.style.left = tab.offsetLeft + 'px';
+			ind.style.width = tab.offsetWidth + 'px';
+		};
+		const activate = tab => {
+			tabs.forEach(t => t.classList.remove('active'));
+			tab.classList.add('active');
+			document.querySelectorAll('[data-pane]').forEach(p => (p.hidden = true));
+			const pane = document.querySelector(`[data-pane="${tab.dataset.tab}"]`);
+			pane.hidden = false;
+			typeInto(pane);
+			moveInd(tab);
+		};
+		tabs.forEach(tab => tab.addEventListener('click', () => activate(tab)));
+		moveInd(tabs[0]);
+
+		// typewriter
+		const typeInto = pane => {
+			const target = pane?.querySelector('.type[data-typing]');
+			if (!target) return;
+			const text = target.dataset.typing;
+			target.textContent = '';
+			let i = 0;
+			const tick = () => {
+				if (i <= text.length) { target.textContent = text.slice(0, i++); setTimeout(tick, 26); }
+			};
+			tick();
+		};
+		document.querySelectorAll('[data-pane]').forEach(p => { if (!p.hidden) typeInto(p); });
+
+		// copy buttons
+		document.querySelectorAll('.copy-btn').forEach(btn => {
+			const orig = btn.textContent;
+			let timer;
 			btn.addEventListener('click', async () => {
-				try {
-					await navigator.clipboard.writeText(btn.dataset.copy);
-					const old = btn.textContent;
-					btn.textContent = btn.dataset.done || '✓';
-					setTimeout(() => { btn.textContent = old; }, 1500);
-				} catch {}
+				try { await navigator.clipboard.writeText(btn.dataset.copy); } catch {}
+				btn.classList.add('ok');
+				btn.textContent = btn.dataset.done;
+				clearTimeout(timer);
+				timer = setTimeout(() => { btn.classList.remove('ok'); btn.textContent = orig; }, 1400);
 			});
 		});
 	</script>
