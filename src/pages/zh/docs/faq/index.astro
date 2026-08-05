@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>faq — Linxira OS</title>
+  <title>常见问题 — Linxira OS</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -21,9 +21,13 @@
     .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
     .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
     h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.15rem; color: #e2e8f0; margin: 2rem 0 0.6rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+    h2::before { content: '▸'; color: #20B8B0; transition: transform 0.2s; }
+    h2.open::before { transform: rotate(90deg); }
+    .answer { color: #94a3b8; margin-bottom: 1.5rem; padding-left: 1.4rem; border-left: 2px solid rgba(32,184,176,0.3); }
+    p { color: #94a3b8; margin-bottom: 0.8rem; }
+    a { color: #20B8B0; }
+    code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #20B8B0; }
     footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
   </style>
 </head>
@@ -41,9 +45,41 @@
 
   <div class="container">
     <a href="/zh/docs/" class="back">← 返回文档</a>
-    <h1>faq</h1>
-    <div class="placeholder">
-      <p>📝 此页面正在编写中，敬请期待。</p>
+    <h1>常见问题</h1>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Linxira OS 是什么？</h2>
+    <div class="answer" style="display:none;">
+      <p>Linxira OS 是直接基于 Arch Linux 构建的独立桌面发行版，目标是开箱即用的工作站体验：KDE Plasma 桌面、官方 Arch 仓库、签名自研软件仓库，以及经过审核的软件生态。它与 Arch Linux 无隶属关系。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">当前版本可用吗？</h2>
+    <div class="answer" style="display:none;">
+      <p>2026.08.04 测试版已通过完整安装测试（自研软件安装零报错、签名仓库可用），可安装使用。正式公开版计划后续发布。ISO 约 4.5GB，校验 SHA-256 <code>f5d18f0d…</code> 后使用。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何安装软件？</h2>
+    <div class="answer" style="display:none;">
+      <p>系统预装 <a href="/zh/docs/apps/">Shelly</a> 图形包管理器；也可直接用 <code>pacman</code>。92 个精选应用见 <a href="/zh/docs/ecosystem/">软件生态</a>。自研软件从签名仓库 <code>[linxira]</code> 安装。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">为什么有些软件列表里看不到？</h2>
+    <div class="answer" style="display:none;">
+      <p>软件生态经过 catalog v3 审查：许可证、来源、可用性三级分级。AUR/Flathub 来源、专有软件需显式审查；敏感类（如代理工具）被政策锁定不提供。审查通过后会自动放行。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何配置镜像源？</h2>
+    <div class="answer" style="display:none;">
+      <p>用 <code>linxira-config mirror &lt;生态&gt; auto</code> 自动测速选最快源（支持 Arch/npm/PyPI/AUR/Go/Flatpak），如 <code>linxira-config mirror pip auto</code>。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何远程访问系统？</h2>
+    <div class="answer" style="display:none;">
+      <p><code>linxira-config ssh on</code> 开启 sshd，<code>linxira-config ssh key add</code> 授权密钥。完整教程见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
+    </div>
+
+    <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何参与贡献？</h2>
+    <div class="answer" style="display:none;">
+      <p>所有自研仓库开源托管在 <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>。源码可复现构建（PKGBUILD 固定 commit + sha256），见 <a href="/zh/docs/building/">构建 ISO</a> 与 <a href="/zh/docs/contributing/">参与贡献</a>。</p>
     </div>
   </div>
 

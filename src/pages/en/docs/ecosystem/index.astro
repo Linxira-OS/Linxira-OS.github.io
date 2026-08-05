@@ -1,0 +1,697 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Ecosystem — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+    body {{ font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }}
+    nav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }}
+    .nav-logo {{ display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }}
+    .nav-logo img {{ width: 32px; height: 32px; }}
+    .nav-logo span {{ color: #e2e8f0; font-weight: 600; }}
+    .nav-links {{ display: flex; gap: 1.5rem; align-items: center; }}
+    .nav-links a {{ color: #94a3b8; text-decoration: none; font-size: 0.9rem; }}
+    .nav-links a:hover {{ color: #20B8B0; }}
+    .lang-link {{ background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }}
+
+    .layout {{ display: flex; padding-top: 60px; min-height: 100vh; }}
+    .sidebar {{ width: 260px; background: #0c1322; border-right: 1px solid rgba(51,65,85,0.3); padding: 2rem 0; position: fixed; top: 60px; bottom: 0; overflow-y: auto; }}
+    .sidebar-title {{ color: #64748b; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem; margin-bottom: 0.5rem; }}
+    .sidebar a {{ display: block; padding: 0.5rem 1.5rem; color: #94a3b8; text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }}
+    .sidebar a:hover {{ color: #20B8B0; background: rgba(32,184,176,0.05); }}
+    .sidebar a.active {{ color: #20B8B0; border-left-color: #20B8B0; background: rgba(32,184,176,0.08); }}
+    .sidebar .section {{ margin-bottom: 1.5rem; }}
+
+    .main {{ flex: 1; margin-left: 260px; padding: 3rem 4rem; max-width: 1000px; }}
+    h1 {{ font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }}
+    h2 {{ font-size: 1.4rem; color: #e2e8f0; margin: 2.5rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }}
+    p {{ color: #94a3b8; margin-bottom: 1rem; }}
+    a {{ color: #20B8B0; }}
+    code {{ background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #20B8B0; }}
+
+    .app-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin: 1.5rem 0 2.5rem; }}
+    .app-card {{ background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1.3rem 1.4rem; transition: border-color 0.3s, transform 0.2s; }}
+    .app-card:hover {{ border-color: rgba(32,184,176,0.4); transform: translateY(-2px); }}
+    .app-card h3 {{ color: #20B8B0; font-size: 1.05rem; margin-bottom: 0.3rem; }}
+    .app-card .pkg {{ color: #64748b; font-size: 0.75rem; font-family: monospace; margin-bottom: 0.5rem; }}
+    .app-card p {{ font-size: 0.88rem; color: #94a3b8; margin-bottom: 0.6rem; }}
+    .app-card .tag {{ display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.1rem 0.5rem; border-radius: 4px; margin: 0.15rem 0.2rem 0 0; }}
+    .app-card .tag.rec {{ background: rgba(243,111,93,0.2); color: #F36F5D; }}
+    .app-card .tag.prop {{ background: rgba(243,111,93,0.12); color: #fca5a5; }}
+    footer {{ text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); margin-left: 260px; }}
+    @media (max-width: 768px) {{ .sidebar {{ display: none; }} .main {{ margin-left: 0; padding: 2rem; }} footer {{ margin-left: 0; }} }}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
+    <div class="nav-links">
+      <a href="/en/docs/" style="color:#20B8B0;">Docs</a>
+      <a href="/en/blog/">Blog</a>
+      <a href="/en/legal/license/">License</a>
+      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
+      <a href="/zh/docs/ecosystem/" class="lang-link">中</a>
+    </div>
+  </nav>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="section">
+        <div class="sidebar-title">Getting Started</div>
+        <a href="/en/docs/">Overview</a>
+        <a href="/en/docs/install/">Install</a>
+        <a href="/en/docs/quick-start/">Quick Start</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">User Guide</div>
+        <a href="/en/docs/package-managers/">Package Managers</a>
+        <a href="/en/docs/ecosystem/" class="active">Ecosystem</a>
+        <a href="/en/docs/apps/">Official Apps</a>
+        <a href="/en/docs/config-hub/">Config Hub</a>
+        <a href="/en/docs/remote-access/">Remote Access (SSH)</a>
+        <a href="/en/docs/desktop/">Desktop</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">Developer</div>
+        <a href="/en/docs/contributing/">Contributing</a>
+        <a href="/en/docs/building/">Build ISO</a>
+        <a href="/en/docs/repository-structure/">Repository</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">Reference</div>
+        <a href="/en/legal/license/">License</a>
+        <a href="/en/docs/glossary/">Glossary</a>
+        <a href="/en/docs/faq/">FAQ</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← Back to Docs</a>
+      <h1>Ecosystem</h1>
+      <p>The Linxira OS ecosystem consists of <strong>92 curated applications</strong> organized into 14 categories, all passing the <strong>catalog v3 review process</strong> (license / source / availability tiering). Available apps are installed via <code>pacman</code> from the official signed repository <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>; <span class="tag rec">Recommended</span> marks official picks, <span class="tag prop">Proprietary</span> marks proprietary software (accept its license at install time).</p>
+      <h2>Web and browsers <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Firefox</h3>
+          <div class="pkg">firefox</div>
+          <p>Privacy-respecting general-purpose web browser.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Chromium</h3>
+          <div class="pkg">chromium</div>
+          <p>Open-source Chromium web browser.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Brave</h3>
+          <div class="pkg">brave-bin</div>
+          <p>Third-party Chromium-based browser candidate.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Nyxt</h3>
+          <div class="pkg">nyxt</div>
+          <p>Programmable power-browser.</p>
+          
+        </div>
+      </div>
+      <h2>Mail and communication <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Thunderbird</h3>
+          <div class="pkg">thunderbird</div>
+          <p>Mail, calendar and contacts client.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Element</h3>
+          <div class="pkg">element-desktop</div>
+          <p>Matrix communication client.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Telegram Desktop</h3>
+          <div class="pkg">telegram-desktop</div>
+          <p>Desktop client for Telegram messaging.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Signal Desktop</h3>
+          <div class="pkg">signal-desktop</div>
+          <p>Signal encrypted messenger desktop client.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>NeoChat</h3>
+          <div class="pkg">neochat</div>
+          <p>Matrix protocol chat client.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Fractal</h3>
+          <div class="pkg">fractal</div>
+          <p>GNOME Matrix chat client.</p>
+          
+        </div>
+      </div>
+      <h2>Office <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>LibreOffice</h3>
+          <div class="pkg">libreoffice-fresh</div>
+          <p>Open office suite for documents, sheets and presentations.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Calligra Suite</h3>
+          <div class="pkg">calligra</div>
+          <p>KDE office and graphics suite.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>ONLYOFFICE Desktop Editors</h3>
+          <div class="pkg">onlyoffice-bin</div>
+          <p>Third-party office suite candidate.</p>
+          <span class="tag rec">Recommended</span><span class="tag prop">Proprietary</span>
+        </div>
+        <div class="app-card">
+          <h3>LibreOffice (Still)</h3>
+          <div class="pkg">libreoffice-still</div>
+          <p>Stable maintenance office suite.</p>
+          
+        </div>
+      </div>
+      <h2>Documents and reading <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(7)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Okular</h3>
+          <div class="pkg">okular</div>
+          <p>KDE document and PDF viewer.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Foliate</h3>
+          <div class="pkg">foliate</div>
+          <p>Ebook reader for common open formats.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Calibre</h3>
+          <div class="pkg">calibre</div>
+          <p>Ebook library, conversion and reading suite.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Pandoc</h3>
+          <div class="pkg">pandoc</div>
+          <p>Universal document converter.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Evince</h3>
+          <div class="pkg">evince</div>
+          <p>GNOME document viewer.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Zathura</h3>
+          <div class="pkg">zathura</div>
+          <p>Minimal keyboard-driven PDF viewer.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Ghostwriter</h3>
+          <div class="pkg">ghostwriter</div>
+          <p>Distraction-free Markdown editor.</p>
+          
+        </div>
+      </div>
+      <h2>Passwords and personal data <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>KeePassXC</h3>
+          <div class="pkg">keepassxc</div>
+          <p>Local encrypted password manager.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Seahorse</h3>
+          <div class="pkg">seahorse</div>
+          <p>GNOME password and encryption-key manager.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Bitwarden</h3>
+          <div class="pkg">bitwarden</div>
+          <p>Open-source password manager.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>VeraCrypt</h3>
+          <div class="pkg">veracrypt</div>
+          <p>Disk encryption tool.</p>
+          
+        </div>
+      </div>
+      <h2>Graphics, photo and CAD <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(10)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Krita</h3>
+          <div class="pkg">krita</div>
+          <p>Digital painting and illustration application.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>GIMP</h3>
+          <div class="pkg">gimp</div>
+          <p>Raster image editor and processing toolkit.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Inkscape</h3>
+          <div class="pkg">inkscape</div>
+          <p>Vector illustration and SVG editor.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Darktable</h3>
+          <div class="pkg">darktable</div>
+          <p>Photography workflow and RAW developer.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Blender</h3>
+          <div class="pkg">blender</div>
+          <p>3D modeling, animation and rendering suite.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>FreeCAD</h3>
+          <div class="pkg">freecad</div>
+          <p>Parametric 3D CAD application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Scribus</h3>
+          <div class="pkg">scribus</div>
+          <p>Desktop publishing and page-layout application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>digiKam</h3>
+          <div class="pkg">digikam</div>
+          <p>Professional photo management.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Shotwell</h3>
+          <div class="pkg">shotwell</div>
+          <p>GNOME photo manager.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Nomacs</h3>
+          <div class="pkg">nomacs</div>
+          <p>Lightweight image viewer.</p>
+          
+        </div>
+      </div>
+      <h2>Video and audio creation <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Kdenlive</h3>
+          <div class="pkg">kdenlive</div>
+          <p>Non-linear video editor.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>OBS Studio</h3>
+          <div class="pkg">obs-studio</div>
+          <p>Screen recording and live streaming studio.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Audacity</h3>
+          <div class="pkg">audacity</div>
+          <p>Multi-track audio editor and recorder.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>HandBrake</h3>
+          <div class="pkg">handbrake</div>
+          <p>Video transcoding tool.</p>
+          
+        </div>
+      </div>
+      <h2>Media playback <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>VLC</h3>
+          <div class="pkg">vlc</div>
+          <p>Cross-platform media player.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Haruna</h3>
+          <div class="pkg">haruna</div>
+          <p>KDE media player built on mpv.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>MPV</h3>
+          <div class="pkg">mpv</div>
+          <p>Minimal keyboard-driven media player.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Celluloid</h3>
+          <div class="pkg">celluloid</div>
+          <p>GNOME video player (mpv frontend).</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Totem</h3>
+          <div class="pkg">totem</div>
+          <p>GNOME default video player.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>GNOME Music</h3>
+          <div class="pkg">gnome-music</div>
+          <p>GNOME music player.</p>
+          
+        </div>
+      </div>
+      <h2>File and sync tools <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(7)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Syncthing</h3>
+          <div class="pkg">syncthing</div>
+          <p>Peer-to-peer file synchronization.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Nextcloud Desktop</h3>
+          <div class="pkg">nextcloud-client</div>
+          <p>Desktop synchronization client for Nextcloud.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>LocalSend</h3>
+          <div class="pkg">localsend</div>
+          <p>Local-network file sharing application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>FileZilla</h3>
+          <div class="pkg">filezilla</div>
+          <p>Graphical FTP/SFTP client.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Nautilus</h3>
+          <div class="pkg">nautilus</div>
+          <p>GNOME file manager.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Thunar</h3>
+          <div class="pkg">thunar</div>
+          <p>Lightweight Xfce file manager.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Syncthing GTK</h3>
+          <div class="pkg">syncthing-gtk</div>
+          <p>Syncthing GUI.</p>
+          
+        </div>
+      </div>
+      <h2>Development applications <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(10)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Kate</h3>
+          <div class="pkg">kate</div>
+          <p>Advanced text and code editor.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Code - OSS</h3>
+          <div class="pkg">code</div>
+          <p>Open-source build of the Visual Studio Code editor.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Geany</h3>
+          <div class="pkg">geany</div>
+          <p>Lightweight programmer's editor.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Meld</h3>
+          <div class="pkg">meld</div>
+          <p>Visual file and version-control comparison tool.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>DBeaver Community</h3>
+          <div class="pkg">dbeaver</div>
+          <p>Cross-database administration and query tool.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>DB Browser for SQLite</h3>
+          <div class="pkg">sqlitebrowser</div>
+          <p>Graphical SQLite database browser.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Docker</h3>
+          <div class="pkg">docker</div>
+          <p>Container runtime and tooling.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Docker Compose</h3>
+          <div class="pkg">docker-compose</div>
+          <p>Multi-container orchestration.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>gitg</h3>
+          <div class="pkg">gitg</div>
+          <p>GNOME Git GUI client.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>KDiff3</h3>
+          <div class="pkg">kdiff3</div>
+          <p>File and directory diff/merge tool.</p>
+          
+        </div>
+      </div>
+      <h2>Education and geography <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Stellarium</h3>
+          <div class="pkg">stellarium</div>
+          <p>Interactive desktop planetarium.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Marble</h3>
+          <div class="pkg">marble</div>
+          <p>KDE virtual globe and map application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>QGIS</h3>
+          <div class="pkg">qgis</div>
+          <p>Desktop geographic information system.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Stellarium Web</h3>
+          <div class="pkg">stellarium-web</div>
+          <p>Online planetarium.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>GCompris</h3>
+          <div class="pkg">gcompris</div>
+          <p>Educational software suite for children.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>KWordQuiz</h3>
+          <div class="pkg">kwordquiz</div>
+          <p>KDE vocabulary learning tool.</p>
+          
+        </div>
+      </div>
+      <h2>Scientific desktop applications <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(8)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>GNU Octave</h3>
+          <div class="pkg">octave</div>
+          <p>Interactive numerical computing environment.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>ParaView</h3>
+          <div class="pkg">paraview</div>
+          <p>Scientific data analysis and visualization application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Veusz</h3>
+          <div class="pkg">veusz</div>
+          <p>Scientific plotting and graphing application.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>LabPlot</h3>
+          <div class="pkg">labplot</div>
+          <p>KDE application for scientific data plotting and analysis.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Cantor</h3>
+          <div class="pkg">cantor</div>
+          <p>KDE worksheet frontend for mathematical and scientific engines.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>RKWard</h3>
+          <div class="pkg">rkward</div>
+          <p>R statistics IDE with a graphical analysis workflow.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Spyder</h3>
+          <div class="pkg">spyder</div>
+          <p>Scientific Python IDE for interactive analysis.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>SageMath</h3>
+          <div class="pkg">sagemath</div>
+          <p>Large integrated mathematics system for algebra and number theory.</p>
+          
+        </div>
+      </div>
+      <h2>Gaming <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>Steam</h3>
+          <div class="pkg">steam</div>
+          <p>Valve game store and launcher installed only after explicit Steam terms confirmation.</p>
+          <span class="tag prop">Proprietary</span>
+        </div>
+        <div class="app-card">
+          <h3>Lutris</h3>
+          <div class="pkg">lutris</div>
+          <p>Open game-library and compatibility frontend.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Heroic Games Launcher</h3>
+          <div class="pkg">com.heroicgameslauncher.hgl</div>
+          <p>Third-party game-store frontend delivered through an opt-in source.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Bottles</h3>
+          <div class="pkg">com.usebottles.bottles</div>
+          <p>User-scoped Wine environment manager from an opt-in source.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Wine</h3>
+          <div class="pkg">wine</div>
+          <p>Windows applications compatibility layer.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>GameHub</h3>
+          <div class="pkg">gamehub</div>
+          <p>Unified game launcher.</p>
+          
+        </div>
+      </div>
+      <h2>System utilities <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(10)</span></h2>
+      <div class="app-grid">
+        <div class="app-card">
+          <h3>GParted</h3>
+          <div class="pkg">gparted</div>
+          <p>Graphical disk partition editor.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>KDE Partition Manager</h3>
+          <div class="pkg">partitionmanager</div>
+          <p>KDE disk partition editor for storage maintenance.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>GNOME Disks</h3>
+          <div class="pkg">gnome-disk-utility</div>
+          <p>Disk inspection, formatting and SMART utility.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>Filelight</h3>
+          <div class="pkg">filelight</div>
+          <p>KDE disk-usage visualizer for finding large files.</p>
+          <span class="tag rec">Recommended</span>
+        </div>
+        <div class="app-card">
+          <h3>KDE Connect</h3>
+          <div class="pkg">kdeconnect</div>
+          <p>Phone and desktop integration over the local network.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Timeshift</h3>
+          <div class="pkg">timeshift</div>
+          <p>System snapshot management utility.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>BleachBit</h3>
+          <div class="pkg">bleachbit</div>
+          <p>Cleanup utility for caches, temporary files and application traces.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>Flatseal</h3>
+          <div class="pkg">com.github.tchx84.Flatseal</div>
+          <p>Flatpak permission inspection and editing tool.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>htop</h3>
+          <div class="pkg">htop</div>
+          <p>Interactive process viewer.</p>
+          
+        </div>
+        <div class="app-card">
+          <h3>fastfetch</h3>
+          <div class="pkg">fastfetch</div>
+          <p>System information display.</p>
+          
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer>© 2026 Linxira OS · built on Arch Linux · <a href="/en/legal/license/">License</a></footer>
+</body>
+</html>

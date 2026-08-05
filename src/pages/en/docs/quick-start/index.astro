@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>quick-start — Linxira OS</title>
+  <title>Quick Start — Linxira OS</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -21,9 +21,13 @@
     .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
     .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
     h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
     p { color: #94a3b8; margin-bottom: 1rem; }
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    a { color: #20B8B0; }
+    code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #20B8B0; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
     footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
   </style>
 </head>
@@ -41,12 +45,40 @@
 
   <div class="container">
     <a href="/en/docs/" class="back">← Back to Docs</a>
-    <h1>quick-start</h1>
-    <div class="placeholder">
-      <p>📝 This page is under construction.</p>
-    </div>
+    <h1>Quick Start</h1>
+    <p>First steps after installation: enable the signed repository, install software, and start working.</p>
+
+    <h2>1. Enable the official signed repository [linxira]</h2>
+    <p>First-party software is hosted on the signed repository <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>. It is configured automatically on install; to add it manually, append to <code>/etc/pacman.conf</code>:</p>
+<pre><code>[linxira]
+Server = https://linxira-os.github.io/linxira-packages/x86_64
+SigLevel = Required DatabaseOptional</code></pre>
+
+    <h3>Import and trust the signing key</h3>
+    <p>Installing the <code>linxira-keyring</code> package imports and locally signs the release key automatically:</p>
+<pre><code>sudo pacman-key --init
+sudo pacman -Sy linxira-keyring</code></pre>
+    <p>Key fingerprints (rotated 2026-08-04): master <code>E1A4155F457D1481CA85EE6BF9D157739534BC29</code>, signing subkey <code>D477286C296F1E1C35735E52B22DF3E636274191</code>.</p>
+
+    <h2>2. Update the system</h2>
+<pre><code>sudo pacman -Syu</code></pre>
+
+    <h2>3. Install software</h2>
+    <p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (92 curated applications) or install directly with pacman:</p>
+<pre><code>sudo pacman -S firefox libreoffice-fresh vlc</code></pre>
+
+    <h2>4. Configure mirrors (optional)</h2>
+    <p>Use <code>linxira-config</code> to manage mirrors for each language ecosystem, with auto speed-testing:</p>
+<pre><code>linxira-config mirror pip auto   # auto-pick fastest PyPI mirror
+linxira-config mirror arch list  # list Arch mirrors</code></pre>
+
+    <h2>5. Enable remote access (optional)</h2>
+    <p>Turn the machine into a server:</p>
+<pre><code>linxira-config ssh on
+linxira-config ssh key add</code></pre>
+    <p>See <a href="/en/docs/remote-access/">Remote Access (SSH)</a>.</p>
   </div>
 
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
+  <footer><p>Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux.</p></footer>
 </body>
 </html>
