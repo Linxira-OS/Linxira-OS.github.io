@@ -94,6 +94,16 @@
     .ecosystem-link p { color: #94a3b8; font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
     .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
+    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .product-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-align: left; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+    .product-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
+    .product-card .product-mark { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.6rem; display: inline-block; }
+    .product-card.zeta-card .product-mark { color: #E20613; }
+    .product-card.bio-card .product-mark { color: #20B8B0; }
+    .product-card h3 { color: #e2e8f0; font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .product-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.55; margin-bottom: 1rem; }
+    .product-card .product-go { color: #20B8B0; font-size: 0.85rem; font-weight: 600; }
+    .product-card.zeta-card .product-go { color: #E20613; }
 
     .blog-section { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
@@ -200,6 +210,31 @@
           <div class="stat-card"><div class="stat-num">17</div><div class="stat-label">自研工具</div></div>
           <div class="stat-card"><div class="stat-num">804</div><div class="stat-label">离线包</div></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 我们的产品 -->
+  <section class="section-block section-block-alt">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">我们的产品</h2>
+        <p class="section-subtitle">Linxira 自研的旗舰工具</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="product-grid">
+        <a href="/zeta/" class="product-card zeta-card">
+          <span class="product-mark">Z</span>
+          <h3>Zeta — 终端编码代理</h3>
+          <p>在终端里运行编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。OMP 兼容发行版，主线同步上游并移植 Pi 的高级能力。</p>
+          <span class="product-go">探索 Zeta →</span>
+        </a>
+        <a href="/bio-sdk/" class="product-card bio-card">
+          <span class="product-mark">SDK</span>
+          <h3>Bio SDK — 本地生信分析平台</h3>
+          <p>本地优先生物信息学分析工作台：数据、工具链与流程全部在本地运行，保护隐私的同时提供完整分析能力。</p>
+          <span class="product-go">进入 Bio SDK →</span>
+        </a>
       </div>
     </div>
   </section>
