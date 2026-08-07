@@ -70,13 +70,26 @@ sudo pacman -Sy linxira-keyring</code></pre>
     <h2>4. 配置镜像源（可选）</h2>
     <p>使用 <code>linxira-config</code> 管理各语言生态的镜像源，支持自动测速：</p>
 <pre><code>linxira-config mirror pip auto   # 自动选最快的 PyPI 源
-linxira-config mirror arch list  # 查看 Arch 源</code></pre>
+linxira-config mirror arch list  # 查看 Arch 源
+linxira-config mirror npm auto   # 自动选最快的 npm 源（国内直连 npmjs.org 较慢，建议先执行）</code></pre>
 
     <h2>5. 开启远程访问（可选）</h2>
     <p>把系统变成服务器：</p>
 <pre><code>linxira-config ssh on
 linxira-config ssh key add</code></pre>
     <p>详见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
+
+    <h2>6. AI 工具一键安装（可选）</h2>
+    <p>先切换 npm 源再安装会快很多：</p>
+<pre><code>linxira-config mirror npm auto</code></pre>
+    <p>然后选择要安装的 AI 编码代理（按需执行，均为 npm 官方包）：</p>
+<pre><code>npm i -g @anthropic-ai/claude-code@latest   # Claude Code
+npm i -g @openai/codex@latest                # Codex
+npm i -g @google/gemini-cli@latest           # Gemini CLI
+npm i -g @xai-official/grok@latest           # Grok Build
+npm i -g opencode-ai@latest                  # OpenCode
+npm i -g openclaw@latest                     # OpenClaw</code></pre>
+    <p>其他终端代理：Hermes 用 <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code>（国内镜像 <code>res1.hermesagent.org.cn</code>）；Pi / OMP 用 <code>curl -fsSL https://omp.sh/install | sh</code>。</p>
   </div>
 
   <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。</p></footer>
