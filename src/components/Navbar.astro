@@ -1,0 +1,318 @@
+---
+/**
+ * ============================================================
+ *  Navbar.astro — 全站统一导航栏（banner）
+ * ------------------------------------------------------------
+ *  维护说明（给后续维护者 / agent）：
+ *  1. 这是官网唯一的导航来源。新增页面、【不要】再在单页里复制粘贴
+ *     <nav> 代码，改为引入本组件并传 lang / active。
+ *  2. 新增/修改顶部导航项：改下面的 navItems，不要改模板。
+ *  3. 新增/修改自建产品下拉项（Zeta / Bio SDK）：
+ *     改 products 数组。href 指向该产品的落地页（保持现有跳转目标，
+ *     不要改动产品子页面的标准跳转逻辑）。
+ *  4. 支持的下拉菜单：把产品的 href 指向 /zeta/ 、/bio-sdk/ 这类
+ *     由 index 页做语言重定向的标准入口，保证中英文都能正确落地。
+ *  5. 顶部导航活动态由调用方传入 active（见各页面用法）。
+ * ============================================================
+ */
+
+interface Props {
+	/** 语言：zh 或 en */
+	lang: "zh" | "en";
+	/**
+	 * 当前高亮的导航项 key。
+	 * 可选值：home | docs | ecosystem | products | brand | roadmap | blog
+	 * 传 "home" 表示首页（无高亮项）。
+	 */
+	active?: string;
+}
+
+const { lang, active } = Astro.props;
+const zh = lang === "zh";
+
+const base = `/${lang}`;
+
+/* ---------- 语言切换：保留当前页面路径，仅替换语言前缀 ----------
+ *   例如 /zh/docs/install/  →  EN 按钮 → /en/docs/install/
+ *   这样中英文切换不会丢页面，修正原导航「跳回首页」的跳转问题。
+ */
+const otherLang = zh ? "en" : "zh";
+const langHref = Astro.url.pathname.replace(/^\/(zh|en)(\/|$)/, `/${otherLang}$2`);
+
+/* ---------- 文案（中英） ---------- */
+const copy = {
+	docs: zh ? "文档" : "Docs",
+	ecosystem: zh ? "软件生态" : "Ecosystem",
+	products: zh ? "产品" : "Products",
+	brand: zh ? "品牌资产" : "Brand",
+	roadmap: zh ? "路线图" : "Roadmap",
+	blog: zh ? "博客" : "Blog",
+	github: "GitHub",
+	langLink: zh ? "EN" : "中文",
+	langHref,
+};
+
+/* ---------- 顶部导航项（数据驱动） ---------- */
+const navItems = [
+	{ key: "docs", label: copy.docs, href: `${base}/docs/` },
+	{ key: "ecosystem", label: copy.ecosystem, href: `${base}/docs/ecosystem/` },
+	{
+		key: "products",
+		label: copy.products,
+		dropdown: true,
+	},
+	{ key: "brand", label: copy.brand, href: `${base}/legal/brand-assets/` },
+	{ key: "roadmap", label: copy.roadmap, href: `${base}/roadmap/` },
+	{ key: "blog", label: copy.blog, href: `${base}/blog/` },
+];
+
+/* ---------- 自建产品下拉（数据驱动，维护这里即可） ---------- */
+const products = [
+	{
+		id: "zeta",
+		mark: "Z",
+		name: zh ? "Zeta — 终端编码代理" : "Zeta — Terminal Coding Agent",
+		desc: zh
+			? "在终端里运行编码代理：子代理、计划模式、LSP，原生 Rust 引擎。OMP 兼容发行版。"
+			: "Run coding agents in your terminal: subagents, plan mode, LSP, native Rust engine.",
+		href: "/zeta/",
+	},
+	{
+		id: "sdk",
+		mark: "SDK",
+		name: zh ? "Bio SDK — 本地生信平台" : "Bio SDK — Local Bioinformatics",
+		desc: zh
+			? "本地优先生物信息学分析平台：数据、工具链与流程全部在本地运行。"
+			: "Local-first bioinformatics workbench: data, toolchains and pipelines run on-device.",
+		href: "/bio-sdk/",
+	},
+];
+---
+
+<nav class="site-nav" data-astro-nav>
+  <a class="site-nav__logo" href={`${base}/`}>
+    <img src="/assets/linxira-l.svg" alt="Linxira" width="32" height="32" />
+    <span>Linxira OS</span>
+  </a>
+
+  <div class="site-nav__links">
+    {navItems.map((item) => (
+      item.dropdown ? (
+        <div class:list={["site-nav__item", { "is-active": active === item.key }]}>
+          <span class="site-nav__trigger" tabindex="0" aria-haspopup="true" aria-expanded="false">
+            {item.label}
+            <svg class="caret" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <div class="product-menu" role="menu" aria-label={copy.products}>
+            {products.map((p) => (
+              <a class="product-menu__item" href={p.href} role="menuitem">
+                <span class="product-menu__mark">{p.mark}</span>
+                <span class="product-menu__body">
+                  <span class="product-menu__name">{p.name}</span>
+                  <span class="product-menu__desc">{p.desc}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <a
+          class:list={["site-nav__item", "site-nav__link", { "is-active": active === item.key }]}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+      )
+    ))}
+
+    <a class="site-nav__link site-nav__gh" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">{copy.github}</a>
+    <a class="site-nav__lang" href={copy.langHref}>{copy.langLink}</a>
+  </div>
+</nav>
+
+<style>
+  /* ============================================================
+   *  导航样式（组件自包含，不依赖页面内联样式）
+   *  颜色沿用全站品牌色：teal #20B8B0 / coral #F36F5D
+   * ============================================================ */
+  .site-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 2rem;
+    background: rgba(14, 20, 23, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  }
+  .site-nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .site-nav__logo img { width: 32px; height: 32px; }
+  .site-nav__logo span { color: #e2e8f0; font-weight: 600; }
+
+  .site-nav__links {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  /* 普通链接项 */
+  .site-nav__link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .site-nav__link:hover { color: #20B8B0; }
+  .site-nav__item.is-active,
+  .site-nav__link.is-active { color: #20B8B0; }
+
+  /* ---- 下拉触发项 ---- */
+  .site-nav__item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .site-nav__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+  }
+  .site-nav__trigger:hover,
+  .site-nav__item.is-active .site-nav__trigger,
+  .site-nav__item:focus-within .site-nav__trigger {
+    color: #20B8B0;
+  }
+  .site-nav__trigger .caret {
+    width: 0.75rem;
+    height: 0.75rem;
+    transition: transform 0.2s;
+  }
+  .site-nav__item:hover .caret,
+  .site-nav__item:focus-within .caret {
+    transform: rotate(180deg);
+  }
+
+  /* ---- 产品下拉菜单（标准 hover + focus 展开） ---- */
+  .product-menu {
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    padding: 0.5rem;
+    background: #131b2e;
+    border: 1px solid rgba(51, 65, 85, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  }
+  .site-nav__item:hover .product-menu,
+  .site-nav__item:focus-within .product-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .product-menu__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .product-menu__item:hover { background: rgba(32, 184, 176, 0.08); }
+  .product-menu__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    border-radius: 6px;
+    font-weight: 800;
+    background: rgba(32, 184, 176, 0.15);
+    color: #20B8B0;
+  }
+  .product-menu__item[data-id="zeta"] .product-menu__mark { color: #E20613; background: rgba(226, 6, 19, 0.12); }
+  .product-menu__body { display: flex; flex-direction: column; gap: 0.15rem; }
+  .product-menu__name { color: #e2e8f0; font-size: 0.92rem; font-weight: 600; }
+  .product-menu__desc { color: #94a3b8; font-size: 0.78rem; line-height: 1.4; }
+
+  /* ---- 右侧（GitHub / 语言切换） ---- */
+  .site-nav__gh { margin-left: 0.4rem; }
+  .site-nav__lang {
+    background: rgba(51, 65, 85, 0.5);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    color: #e2e8f0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+  }
+  .site-nav__lang:hover { background: rgba(32, 184, 176, 0.2); color: #20B8B0; }
+
+  @media (max-width: 768px) {
+    .site-nav { padding: 0.8rem 1rem; }
+    .site-nav__links { gap: 1rem; }
+    .product-menu { left: auto; right: 0; transform: none; min-width: 260px; }
+    .site-nav__item:hover .product-menu,
+    .site-nav__item:focus-within .product-menu { transform: none; }
+  }
+</style>
+
+<script is:inline>
+  // 键盘可达性：Enter/Space 展开收起产品下拉，并同步 aria-expanded
+  document.querySelectorAll(".site-nav__item[data-astro-nav]")?.length;
+  document.querySelectorAll(".site-nav__trigger").forEach((trigger) => {
+    const item = trigger.closest(".site-nav__item");
+    const menu = trigger.nextElementSibling;
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = item.classList.toggle("is-open");
+      trigger.setAttribute("aria-expanded", String(open));
+    });
+    trigger.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        trigger.click();
+      }
+    });
+    // 点击菜单项后收起
+    menu?.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => {
+        item.classList.remove("is-open");
+        trigger.setAttribute("aria-expanded", "false");
+      })
+    );
+  });
+  // 点击导航外部时收起
+  document.addEventListener("click", (e) => {
+    document.querySelectorAll(".site-nav__item.is-open").forEach((item) => {
+      if (!item.contains(e.target)) {
+        item.classList.remove("is-open");
+        item.querySelector(".site-nav__trigger").setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+</script>

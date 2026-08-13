@@ -1,4 +1,5 @@
 ---
+import Navbar from "../../components/Navbar.astro";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -12,20 +13,41 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(51,65,85,0.3);
+    /* ==========================================================================
+       液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
+       高度透明，背景动效从中透出；顶部/左侧高光描边 + 对角光泽 + 内部辉光。
+       ========================================================================== */
+    .glass {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 35%, rgba(14,20,23,0.22));
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.32),
+        inset 1px 0 0 rgba(255,255,255,0.10),
+        inset -1px -1px 0 rgba(255,255,255,0.04),
+        0 20px 60px rgba(0,0,0,0.45);
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
-    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
-    .nav-logo img { width: 32px; height: 32px; }
-    .nav-logo span { color: #e2e8f0; font-weight: 600; }
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
-    .nav-links a:hover { color: #20B8B0; }
-    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
-    .lang-link:hover { background: rgba(32,184,176,0.2); }
+    /* 对角光泽 + 顶部辉光（液态玻璃的 specular 高光） */
+    .glass::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 26%, transparent 42%),
+        radial-gradient(120% 70% at 18% 0%, rgba(255,255,255,0.10), transparent 55%);
+    }
+
+    /* ---------- 滚动揭示动画 ---------- */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+    #particles { position: absolute; inset: 0; z-index: 0; opacity: 0.7; pointer-events: none; }
 
     .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 5rem; overflow: hidden; }
     .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, rgba(32,184,176,0.12) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
@@ -53,15 +75,64 @@
     .cta-ghost { display: inline-block; padding: 1rem 2rem; color: #e2e8f0; border: 1px solid rgba(51,65,85,0.8); border-radius: 10px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
     .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
 
-    .badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .zeta-feature { display: block; text-decoration: none; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; max-width: 620px; margin: -1rem auto 2.5rem; }
-    .zeta-feature:hover { transform: translateY(-4px); border-color: rgba(226,6,19,0.5); }
-    .zeta-feature h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .zeta-feature h3 .zeta-mark { color: #E20613; font-weight: 800; }
-    .zeta-feature p { color: #94a3b8; font-size: 0.88rem; line-height: 1.5; }
-    .zeta-feature .zeta-go { color: #E20613; font-size: 0.82rem; margin-top: 0.6rem; display: inline-block; }
+    /* ---------- 产品平级双卡（Zeta + Bio SDK） ---------- */
+    .product-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 860px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
+    .pcard { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.6rem 1.7rem; border-radius: 20px; text-decoration: none; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; will-change: transform; }
+    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .pcard.zeta::after { background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
+    .pcard:hover { border-color: rgba(255,255,255,0.18); box-shadow: 0 22px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12); }
+    .pcard:hover::after { opacity: 1; }
+    .pcard .pmark { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 10px; font-weight: 800; font-size: 1.1rem; }
+    .pcard.zeta .pmark { color: #E20613; background: rgba(226,6,19,0.12); }
+    .pcard.sdk .pmark { color: #20B8B0; background: rgba(32,184,176,0.14); }
+    .pcard h3 { color: #e2e8f0; font-size: 1.18rem; font-weight: 600; }
+    .pcard p { color: #94a3b8; font-size: 0.88rem; line-height: 1.55; flex: 1; }
+    .pcard .pgo { font-size: 0.85rem; font-weight: 600; }
+    .pcard.zeta .pgo { color: #E20613; }
+    .pcard.sdk .pgo { color: #20B8B0; }
+
     .badge { font-size: 0.8rem; background: rgba(32,184,176,0.12); color: #20B8B0; padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid rgba(32,184,176,0.25); }
     .badge-coral { background: rgba(243,111,93,0.12); color: #F36F5D; border-color: rgba(243,111,93,0.25); }
+
+    /* ---------- Hero 主打卡（Get Started 下方 · 单张 Zeta） ---------- */
+    .product-feature { max-width: 560px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
+
+    /* ---------- 自研产品大区（Zeta + Bio SDK 大展示卡 · 沉浸科技感） ---------- */
+    .section-products { position: relative; overflow: hidden; }
+    .section-products::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(32,184,176,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,184,176,0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
+      mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
+      pointer-events: none;
+    }
+    .scanline { position: absolute; left: 0; right: 0; height: 240px; top: -240px; pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(32,184,176,0.07), transparent);
+      animation: scan 8s linear infinite; mix-blend-mode: screen; }
+    @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(calc(100vh + 240px)); } }
+    .product-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; perspective: 1400px; }
+    .show-card { position: relative; display: flex; flex-direction: column; gap: 1rem; padding: 2rem 2.1rem; border-radius: 26px; text-decoration: none; transform-style: preserve-3d; will-change: transform; overflow: hidden; }
+    .show-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.2rem; }
+    .show-mark { display: inline-flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border-radius: 14px; font-weight: 800; font-size: 1.3rem; }
+    .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
+    .show-card.zeta .show-mark { color: #E20613; background: rgba(226,6,19,0.14); }
+    .show-card.sdk .show-mark { color: #20B8B0; background: rgba(32,184,176,0.16); }
+    .show-card h3 { font-size: 1.9rem; font-weight: 700; color: #f1f5f9; }
+    .show-sub { font-size: 0.86rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
+    .show-card .show-desc { color: #94a3b8; font-size: 0.97rem; line-height: 1.6; flex: 1; }
+    .show-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .show-chips span { font-size: 0.78rem; color: #cbd5e1; background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
+    .show-card.zeta .show-chips span { background: rgba(226,6,19,0.10); border-color: rgba(226,6,19,0.24); }
+    .show-cta { font-weight: 600; font-size: 0.95rem; margin-top: 0.4rem; }
+    .show-card.zeta .show-cta { color: #E20613; }
+    .show-card.sdk .show-cta { color: #20B8B0; }
+    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .show-card.zeta::after { background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
+    .show-card:hover::after { opacity: 1; }
+    .show-card:hover { border-color: rgba(255,255,255,0.24); }
 
     .section-block { padding: 5rem 0; }
     .section-block-alt { background: linear-gradient(180deg, #0E1417 0%, #141a26 100%); }
@@ -94,17 +165,6 @@
     .ecosystem-link p { color: #94a3b8; font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
     .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
-    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .product-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-align: left; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
-    .product-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
-    .product-card .product-mark { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.6rem; display: inline-block; }
-    .product-card.zeta-card .product-mark { color: #E20613; }
-    .product-card.bio-card .product-mark { color: #20B8B0; }
-    .product-card h3 { color: #e2e8f0; font-size: 1.25rem; margin-bottom: 0.5rem; }
-    .product-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.55; margin-bottom: 1rem; }
-    .product-card .product-go { color: #20B8B0; font-size: 0.85rem; font-weight: 600; }
-    .product-card.zeta-card .product-go { color: #E20613; }
-
     .blog-section { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
     .blog-card { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
@@ -130,28 +190,16 @@
       .blog-grid { grid-template-columns: 1fr; }
       .features { grid-template-columns: 1fr; }
       .nav-links { gap: 1rem; }
+      .product-showcase { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
-                <div class="nav-links">
-      <a href="/en/docs/">Docs</a>
-      <a href="/en/docs/ecosystem/">Ecosystem</a>
-      <a href="/bio-sdk/">Bio SDK</a>
-      <a href="/en/legal/brand-assets/">Brand Assets</a>
-      <a href="/en/roadmap/">Roadmap</a>
-      <a href="/en/blog/">Blog</a>
-      <a href="/zeta/en/">Zeta</a>
-
-      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
-      <a href="/zh/" class="lang-link">中文</a>
-    </div>
-  </nav>
+  <Navbar lang="en" active="home" />
 
   <section class="hero">
     <div class="grid-bg"></div>
+    <canvas id="particles"></canvas>
     <div class="prism-deco"></div>
     <div class="prism-deco-2"></div>
     <div class="beam beam-1"></div>
@@ -162,16 +210,61 @@
       <h1>Linxira OS</h1>
       <p class="tagline">Arch Linux for scientific computing</p>
       <p class="en-tagline">Desktop Supercomputer · Direct Arch · Built for researchers</p>
-      <p class="hero-desc">A personal scientific workstation distribution built on <strong>Arch Linux</strong> — a ready-to-use <strong>KDE Plasma</strong> desktop, <strong>93 curated applications</strong>, <strong>dual-kernel + snapshot</strong> safety for rolling updates, and <strong>containerized reproducibility</strong> for research workflows. Built for scientists and developers: a computer for everyday use that doubles as a compute machine on demand.</p>
+      <p class="hero-desc">A personal scientific workstation distribution built on <strong>Arch Linux</strong> — a ready-to-use <strong>KDE Plasma</strong> desktop, <strong>93 curated applications</strong>, <strong>dual-kernel + snapshot</strong> safety for rolling updates, <strong>upstream security patches</strong>, and <strong>containerized reproducibility</strong> for research workflows. Built for science students, researchers, developers and everyday power users who value high performance, deep customizability and always-current security updates.</p>
       <div class="hero-ctas">
         <a href="/en/docs/" class="cta">Get Started</a>
         <a href="/en/docs/ecosystem/" class="cta-ghost">Browse Ecosystem →</a>
       </div>
-      <a href="/zeta/" class="zeta-feature"><h3><span class="zeta-mark">Z</span> Zeta — Terminal Coding Agent</h3><p>Run coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI. An OMP-compatible release.</p><span class="zeta-go">Explore Zeta →</span></a>
+      <div class="product-feature">
+        <a href="/zeta/" class="pcard zeta glass">
+          <span class="pmark">Z</span>
+          <h3>Zeta — Terminal Coding Agent</h3>
+          <p>Run coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI. An OMP-compatible release.</p>
+          <span class="pgo">Explore Zeta →</span>
+        </a>
+      </div>
       <div class="badges">
         <span class="badge">Test ISO passed full install testing</span>
         <span class="badge">Signed [linxira] repository</span>
-        <span class="badge badge-coral">Public release 2026.09</span>
+        <span class="badge badge-coral">Test passed · Build the full release from source</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- First-party products (Zeta + Bio SDK showcase) -->
+  <section class="section-block section-products">
+    <div class="scanline"></div>
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">First-party Products</h2>
+        <p class="section-subtitle">Two core products we build and ship with the system</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="product-showcase">
+        <a href="/zeta/" class="show-card zeta glass reveal reveal-d1">
+          <div class="show-top">
+            <span class="show-mark">Z</span>
+            <span class="show-tag">Terminal Coding Agent</span>
+          </div>
+          <h3>Zeta</h3>
+          <p class="show-desc">Run powerful coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI.</p>
+          <div class="show-chips">
+            <span>Multi-provider</span><span>Tool calling</span><span>Native acceleration</span><span>Embeddable TUI</span>
+          </div>
+          <span class="show-cta">Explore Zeta →</span>
+        </a>
+        <a href="/bio-sdk/" class="show-card sdk glass reveal reveal-d2">
+          <div class="show-top">
+            <span class="show-mark">SDK</span>
+            <span class="show-tag">Local Bioinformatics Platform</span>
+          </div>
+          <h3>Bio SDK</h3>
+          <p class="show-desc">A local-first bioinformatics analysis workbench: data, toolchains and pipelines all run locally, protecting privacy while providing full analysis capability.</p>
+          <div class="show-chips">
+            <span>Local-first</span><span>Data privacy</span><span>Toolchain integration</span><span>Pipeline reproducibility</span>
+          </div>
+          <span class="show-cta">Open Bio SDK →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -185,12 +278,13 @@
         <div class="section-divider"></div>
       </div>
       <div class="features">
-        <div class="feature"><span class="feature-icon">🖥️</span><h3>Direct Arch Desktop</h3><p>KDE Plasma built directly on the Arch official repositories — always current, always fast. Dual kernels (linux + linux-lts) as the rolling-update safety net.</p></div>
-        <div class="feature"><span class="feature-icon">📦</span><h3>93 Curated Apps</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
-        <div class="feature"><span class="feature-icon">🔐</span><h3>Signed [linxira] Repo</h3><p>All 17 first-party tools ship through our own signing key, tracked by pacman — from Welcome to Config Hub, one chain of trust.</p></div>
-        <div class="feature"><span class="feature-icon">🛡️</span><h3>Rolling-Update Safety</h3><p>Timeshift automatic snapshots + grub-btrfs boot-time rollback + dual-kernel fallback. A broken update costs a reboot, not a reinstall.</p></div>
-        <div class="feature"><span class="feature-icon">🐳</span><h3>Container Reproducibility</h3><p>Podman, Distrobox and Apptainer out of the box — pull others' environments, reproduce results, publish your own images. Near-zero overhead.</p></div>
-        <div class="feature"><span class="feature-icon">⚡</span><h3>Headless Mode</h3><p>One command drops to a command-line target: zero desktop memory, all RAM for compute. Back to the desktop any time. Your PC is a mini supercomputer.</p></div>
+        <div class="feature reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch Desktop</h3><p>KDE Plasma built directly on the Arch official repositories — always current, always fast. Dual kernels (linux + linux-lts) as the rolling-update safety net.</p></div>
+        <div class="feature reveal reveal-d2"><span class="feature-icon">📦</span><h3>93 Curated Apps</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
+        <div class="feature reveal reveal-d3"><span class="feature-icon">🔐</span><h3>Signed [linxira] Repo</h3><p>All 17 first-party tools ship through our own signing key, tracked by pacman — from Welcome to Config Hub, one chain of trust.</p></div>
+        <div class="feature reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>Careful Software Sources</h3><p>Rely on official repositories and the curated catalog. Wild AUR packages are user-maintained and not audited — they often carry quality and security issues. Use them with caution.</p></div>
+        <div class="feature reveal reveal-d1"><span class="feature-icon">🛡️</span><h3>Rolling Updates · Timely Security</h3><p>Rolling updates pick up upstream security patches as soon as they land — no waiting for a distro release cycle. Paired with Timeshift snapshots, grub-btrfs rollback and dual kernels for both safety and stability.</p></div>
+        <div class="feature reveal reveal-d2"><span class="feature-icon">🐳</span><h3>Container Reproducibility</h3><p>Podman, Distrobox and Apptainer out of the box — pull others' environments, reproduce results, publish your own images. Near-zero overhead.</p></div>
+        <div class="feature reveal reveal-d3"><span class="feature-icon">⚡</span><h3>Headless Mode</h3><p>One command drops to a command-line target: zero desktop memory, all RAM for compute. Back to the desktop any time. Your PC is a mini supercomputer.</p></div>
       </div>
     </div>
   </section>
@@ -201,53 +295,28 @@
       <div class="about-grid">
         <div class="about-text">
           <h3>Who it's for</h3>
-          <p>Linxira is built for <strong>science students, researchers and developers</strong>: people who need an everyday computer that can also become a compute machine.</p>
+          <p>Linxira is built for <strong>science students, researchers, developers and everyday power users</strong>: people who want high performance, deep customizability and always-current, secure updates — and a computer that can also become a compute machine.</p>
           <p>Most distributions favor either desktop comfort or server capability — rarely both. Linxira keeps the <strong>full desktop</strong> (Bluetooth, Wi-Fi, printing, graphical environment all work out of the box) and adds what research actually needs: <strong>memory tuning, headless mode, container reproducibility</strong>. Not a "mini server" — a desktop supercomputer.</p>
-          <p>And critically, <strong>installation needs no network</strong>: the ISO bundles a complete offline package source, so a full usable system installs even on campus or intranet networks.</p>
+          <p><strong>Offline-ready, more complete online</strong>: the ISO bundles KDE Plasma and the preinstalled software, so a usable system installs with no network. But most additional applications and third-party desktops require an <strong>internet connection</strong>. Confirm network access in campus or intranet environments.</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card"><div class="stat-num">93</div><div class="stat-label">Curated apps</div></div>
-          <div class="stat-card"><div class="stat-num">17</div><div class="stat-label">First-party tools</div></div>
-          <div class="stat-card"><div class="stat-num">804</div><div class="stat-label">Offline packages</div></div>
+          <div class="stat-card reveal reveal-d1"><div class="stat-num" data-count="93">0</div><div class="stat-label">Curated apps</div></div>
+          <div class="stat-card reveal reveal-d2"><div class="stat-num" data-count="17">0</div><div class="stat-label">First-party tools</div></div>
+          <div class="stat-card reveal reveal-d3"><div class="stat-num" data-count="804">0</div><div class="stat-label">Offline packages</div></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Our products -->
-  <section class="section-block section-block-alt">
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Our Products</h2>
-        <p class="section-subtitle">Flagship tools built by Linxira</p>
-        <div class="section-divider"></div>
-      </div>
-      <div class="product-grid">
-        <a href="/zeta/" class="product-card zeta-card">
-          <span class="product-mark">Z</span>
-          <h3>Zeta — Terminal Coding Agent</h3>
-          <p>Run coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI. An OMP-compatible release that tracks upstream and ports Pi's advanced capabilities.</p>
-          <span class="product-go">Explore Zeta →</span>
-        </a>
-        <a href="/bio-sdk/" class="product-card bio-card">
-          <span class="product-mark">SDK</span>
-          <h3>Bio SDK — Local Bioinformatics Platform</h3>
-          <p>A local-first bioinformatics analysis workbench: data, toolchains and pipelines all run locally, protecting privacy while providing full analysis capability.</p>
-          <span class="product-go">Open Bio SDK →</span>
-        </a>
       </div>
     </div>
   </section>
 
   <!-- Ecosystem -->
-  <section class="section-block section-block-alt2">
+  <section class="section-block section-block-alt">
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Software Ecosystem</h2>
         <p class="section-subtitle">A curated catalog covering every step — daily and scientific</p>
         <div class="section-divider"></div>
       </div>
-      <a href="/en/docs/ecosystem/" class="ecosystem-link">
+      <a href="/en/docs/ecosystem/" class="ecosystem-link reveal">
         <h3>Browse the full catalog →</h3>
         <p>93 curated applications in 14 categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
         <div class="ecosystem-tags">
@@ -260,14 +329,14 @@
   <!-- Release status -->
   <section class="release-section">
     <div class="section">
-      <div class="release-card">
+      <div class="release-card reveal">
         <h3>Release Status</h3>
-        <p>The first test ISO (2026.08) passed full installation testing: all first-party software installs cleanly, boot / shutdown artwork and terminal char-art are finalized, and the signed repository tracks updates.</p>
+        <p>The first test ISO passed full installation testing: all first-party software installs cleanly, boot / shutdown artwork and terminal char-art are finalized, and the signed repository tracks updates. Build the full release from source yourself — we no longer advertise a fixed release date.</p>
         <a href="/en/roadmap/" class="cta-ghost" style="padding:0.8rem 1.8rem;">View the Roadmap →</a>
         <div class="release-status-line">
           <span class="release-item">✅ Test install verified</span>
-          <span class="release-item">🔧 Full release building (2026.09)</span>
-          <span class="release-item">📦 ISO at public release</span>
+          <span class="release-item">🛠️ Full release from source (<a href="/en/docs/building/" style="color:#20B8B0;">build guide</a>)</span>
+          <span class="release-item">📦 Test ISO available</span>
         </div>
       </div>
     </div>
@@ -282,7 +351,7 @@
         <div class="section-divider"></div>
       </div>
       <div class="blog-grid">
-        <a href="/en/blog/introducing-linxira-os/" class="blog-card">
+        <a href="/en/blog/introducing-linxira-os/" class="blog-card reveal">
           <div class="blog-date">2026-06-27</div>
           <div class="blog-title">Introducing Linxira OS</div>
           <div class="blog-desc">What Linxira OS is, who it's for, and why it exists. Design philosophy, technical architecture and target users.</div>
@@ -293,5 +362,116 @@
   </section>
 
   <footer><p>Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux. Brand assets: <a href="/en/legal/brand-assets/" style="color:#64748b;">Brand Asset Policy</a>.</p></footer>
+
+  <script>
+    // ---------- 滚动揭示 ----------
+    const revealEls = document.querySelectorAll('.reveal');
+    if (revealEls.length) {
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('in'));
+      }
+    }
+
+    // ---------- 粒子网络背景（+鼠标引力交互） ----------
+    const canvas = document.getElementById('particles');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, particles = [];
+      const COUNT = window.innerWidth < 768 ? 40 : 80;
+      const LINK = 120;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mouse = { x: -9999, y: -9999 };
+
+      function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+      function spawn() {
+        particles = Array.from({ length: COUNT }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 1.6 + 0.8,
+        }));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of particles) {
+          const dx = mouse.x - p.x, dy = mouse.y - p.y;
+          const md = Math.hypot(dx, dy);
+          if (md < 160 && md > 0.001) { p.vx += (dx / md) * 0.02; p.vy += (dy / md) * 0.02; }
+          p.vx *= 0.99; p.vy *= 0.99;
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > W) p.vx *= -1;
+          if (p.y < 0 || p.y > H) p.vy *= -1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(32,184,176,0.55)'; ctx.fill();
+        }
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const d = Math.hypot(dx, dy);
+            if (d < LINK) {
+              const a = 1 - d / LINK;
+              ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(32,184,176,${0.16 * a})`; ctx.lineWidth = 1; ctx.stroke();
+            }
+          }
+        }
+        if (!reduceMotion) requestAnimationFrame(draw);
+      }
+      resize(); spawn(); draw();
+      window.addEventListener('resize', () => { resize(); spawn(); });
+      canvas.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      });
+      canvas.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    }
+
+    // ---------- 数字滚动动画（count-up） ----------
+    const statEls = document.querySelectorAll('.stat-num[data-count]');
+    if (statEls.length && 'IntersectionObserver' in window) {
+      const animate = (el) => {
+        const target = parseInt(el.dataset.count, 10);
+        const dur = 1200;
+        const t0 = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - t0) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      const sio = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { animate(e.target); sio.unobserve(e.target); } });
+      }, { threshold: 0.4 });
+      statEls.forEach((el) => sio.observe(el));
+    } else {
+      statEls.forEach((el) => { el.textContent = el.dataset.count; });
+    }
+
+    // ---------- 产品卡片 3D 倾斜跟随 + 光晕定位（hero 主打卡 + 大区卡） ----------
+    const cards = document.querySelectorAll('.pcard, .show-card');
+    if (cards.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cards.forEach((card) => {
+        const onMove = (ev) => {
+          const r = card.getBoundingClientRect();
+          const px = (ev.clientX - r.left) / r.width;
+          const py = (ev.clientY - r.top) / r.height;
+          card.style.setProperty('--mx', `${px * 100}%`);
+          card.style.setProperty('--my', `${py * 100}%`);
+          const rx = (0.5 - py) * 10;
+          const ry = (px - 0.5) * 10;
+          card.style.transform = `translateY(-5px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        };
+        const onLeave = () => { card.style.transform = ''; };
+        card.addEventListener('mousemove', onMove);
+        card.addEventListener('mouseleave', onLeave);
+      });
+    }
+  </script>
 </body>
 </html>

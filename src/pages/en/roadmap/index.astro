@@ -1,4 +1,5 @@
 ---
+import Navbar from "../../../components/Navbar.astro";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -11,14 +12,6 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(51,65,85,0.3); }
-    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
-    .nav-logo img { width: 32px; height: 32px; }
-    .nav-logo span { color: #e2e8f0; font-weight: 600; }
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
-    .nav-links a:hover { color: #20B8B0; }
-    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
     main { max-width: 860px; margin: 0 auto; padding: 100px 2rem 4rem; }
     h1 { font-size: 2.2rem; margin-bottom: 0.5rem; color: #f1f5f9; }
     .subtitle { color: #94a3b8; margin-bottom: 2.5rem; }
@@ -35,21 +28,7 @@
   </style>
 </head>
 <body>
-  <nav>
-    <a href="/en/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
-                <div class="nav-links">
-      <a href="/en/docs/">Docs</a>
-      <a href="/en/docs/ecosystem/">Ecosystem</a>
-      <a href="/bio-sdk/">Bio SDK</a>
-      <a href="/en/legal/brand-assets/">Brand Assets</a>
-      <a href="/en/roadmap/" style="color:#20B8B0;">Roadmap</a>
-      <a href="/en/blog/">Blog</a>
-      <a href="/zeta/en/">Zeta</a>
-
-      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
-      <a href="/zh/roadmap/" class="lang-link">中文</a>
-    </div>
-  </nav>
+  <Navbar lang="en" active="roadmap" />
   <main>
     <h1>Roadmap</h1>
     <p class="subtitle">Desktop Supercomputer — full regular desktop functionality plus a headless mode for scientific computing, with lossless containers to reproduce other environments and let others reproduce ours.</p>
@@ -66,7 +45,7 @@
       </ul>
     </div>
 
-    <h2>2026.09 Official release</h2>
+    <h2>Official release (from source)</h2>
     <div class="card">
       <h3>Core upgrades <span class="tag todo">In progress</span></h3>
       <ul>

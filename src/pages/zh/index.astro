@@ -1,4 +1,5 @@
 ---
+import Navbar from "../../components/Navbar.astro";
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -9,29 +10,55 @@
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* ==========================================================================
+       Linxira 官网首页 — 科技感 + 苹果液态玻璃
+       配色沿用品牌色系（teal #20B8B0 / coral #F36F5D / 深底 #0E1417）保持不变。
+       新增：粒子网络背景、产品平级双卡、滚动揭示、统计数字动画、液态玻璃卡片。
+       ========================================================================== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
 
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 2rem; background: rgba(14,20,23,0.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(51,65,85,0.3);
+    /* ==========================================================================
+       液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
+       高度透明，背景动效从中透出；顶部/左侧高光描边 + 对角光泽 + 内部辉光。
+       ========================================================================== */
+    .glass {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 35%, rgba(14,20,23,0.22));
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.32),
+        inset 1px 0 0 rgba(255,255,255,0.10),
+        inset -1px -1px 0 rgba(255,255,255,0.04),
+        0 20px 60px rgba(0,0,0,0.45);
     }
-    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
-    .nav-logo img { width: 32px; height: 32px; }
-    .nav-logo span { color: #e2e8f0; font-weight: 600; }
-    .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-    .nav-links a { color: #94a3b8; text-decoration: none; font-size: 0.9rem; }
-    .nav-links a:hover { color: #20B8B0; }
-    .lang-link { background: rgba(51,65,85,0.5); border: 1px solid rgba(51,65,85,0.5); color: #e2e8f0; padding: 0.4rem 0.8rem; border-radius: 6px; text-decoration: none; font-size: 0.85rem; }
-    .lang-link:hover { background: rgba(32,184,176,0.2); }
+    /* 对角光泽 + 顶部辉光（液态玻璃的 specular 高光） */
+    .glass::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background:
+        linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 26%, transparent 42%),
+        radial-gradient(120% 70% at 18% 0%, rgba(255,255,255,0.10), transparent 55%);
+    }
 
+    /* ---------- 滚动揭示动画 ---------- */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+    /* ---------- Hero ---------- */
     .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 5rem; overflow: hidden; }
     .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, rgba(32,184,176,0.12) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
     .hero::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(243,111,93,0.10) 0%, transparent 70%); animation: drift 25s ease-in-out infinite alternate-reverse; pointer-events: none; }
     @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-30px) scale(1.05); } }
     .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(32,184,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(32,184,176,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    /* 粒子网络画布 */
+    #particles { position: absolute; inset: 0; z-index: 0; opacity: 0.7; pointer-events: none; }
     .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid rgba(32,184,176,0.06); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
     .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid rgba(243,111,93,0.05); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
     .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(32,184,176,0.15), rgba(243,111,93,0.15), transparent); pointer-events: none; }
@@ -40,29 +67,86 @@
     .beam-3 { top: 45%; left: 0; width: 100%; transform: rotate(-2deg); opacity: 0.5; }
 
     .hero-content { position: relative; z-index: 1; max-width: 1000px; }
-    .hero-logo { width: 140px; height: 140px; margin-bottom: 2rem; filter: drop-shadow(0 0 40px rgba(32,184,176,0.3)); }
+    .hero-logo { width: 130px; height: 130px; margin-bottom: 1.8rem; filter: drop-shadow(0 0 40px rgba(32,184,176,0.35)); animation: floaty 6s ease-in-out infinite; }
+    @keyframes floaty { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
     .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #E8F7F6, #F36F5D); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
     @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
     .tagline { font-size: 1.3rem; color: #94a3b8; margin-bottom: 0.3rem; }
+    .tagline .caret-ty { display: inline-block; width: 2px; height: 1.3em; margin-left: 2px; vertical-align: text-bottom; background: #20B8B0; animation: blink-ty 1s step-end infinite; }
+    @keyframes blink-ty { 0%,49%{opacity:1} 50%,100%{opacity:0} }
     .en-tagline { font-size: 1rem; color: #64748b; margin-bottom: 2rem; letter-spacing: 3px; text-transform: uppercase; }
     .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: #cbd5e1; font-size: 1.02rem; }
     .hero-desc strong { color: #20B8B0; }
-    .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
-    .cta { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
+    .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.8rem; }
+    .cta { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 12px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
     .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(32,184,176,0.4); text-decoration: none; }
-    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: #e2e8f0; border: 1px solid rgba(51,65,85,0.8); border-radius: 10px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
+    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: #e2e8f0; border: 1px solid rgba(51,65,85,0.8); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
     .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
 
+    /* ---------- 产品平级双卡（Zeta + Bio SDK） ---------- */
+    .product-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 860px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
+    .pcard { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.6rem 1.7rem; border-radius: 20px; text-decoration: none; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; will-change: transform; }
+    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .pcard.zeta::after { background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
+    .pcard:hover { border-color: rgba(255,255,255,0.18); box-shadow: 0 22px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12); }
+    .pcard:hover::after { opacity: 1; }
+    .pcard .pmark { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 10px; font-weight: 800; font-size: 1.1rem; }
+    .pcard.zeta .pmark { color: #E20613; background: rgba(226,6,19,0.12); }
+    .pcard.sdk .pmark { color: #20B8B0; background: rgba(32,184,176,0.14); }
+    .pcard h3 { color: #e2e8f0; font-size: 1.18rem; font-weight: 600; }
+    .pcard p { color: #94a3b8; font-size: 0.88rem; line-height: 1.55; flex: 1; }
+    .pcard .pgo { font-size: 0.85rem; font-weight: 600; }
+    .pcard.zeta .pgo { color: #E20613; }
+    .pcard.sdk .pgo { color: #20B8B0; }
+
     .badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .zeta-feature { display: block; text-decoration: none; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; max-width: 620px; margin: -1rem auto 2.5rem; }
-    .zeta-feature:hover { transform: translateY(-4px); border-color: rgba(226,6,19,0.5); }
-    .zeta-feature h3 { color: #e2e8f0; margin-bottom: 0.5rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
-    .zeta-feature h3 .zeta-mark { color: #E20613; font-weight: 800; }
-    .zeta-feature p { color: #94a3b8; font-size: 0.88rem; line-height: 1.5; }
-    .zeta-feature .zeta-go { color: #E20613; font-size: 0.82rem; margin-top: 0.6rem; display: inline-block; }
     .badge { font-size: 0.8rem; background: rgba(32,184,176,0.12); color: #20B8B0; padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid rgba(32,184,176,0.25); }
     .badge-coral { background: rgba(243,111,93,0.12); color: #F36F5D; border-color: rgba(243,111,93,0.25); }
 
+    /* ---------- Hero 主打卡（开始使用下方 · 单张 Zeta） ---------- */
+    .product-feature { max-width: 560px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
+
+    /* ---------- 自研产品大区（Zeta + Bio SDK 大展示卡 · 沉浸科技感） ---------- */
+    .section-products { position: relative; overflow: hidden; }
+    .section-products::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(32,184,176,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,184,176,0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      -webkit-mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
+      mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
+      pointer-events: none;
+    }
+    .scanline { position: absolute; left: 0; right: 0; height: 240px; top: -240px; pointer-events: none;
+      background: linear-gradient(180deg, transparent, rgba(32,184,176,0.07), transparent);
+      animation: scan 8s linear infinite; mix-blend-mode: screen; }
+    @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(calc(100vh + 240px)); } }
+    .product-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; perspective: 1400px; }
+    .show-card { position: relative; display: flex; flex-direction: column; gap: 1rem; padding: 2rem 2.1rem; border-radius: 26px; text-decoration: none; transform-style: preserve-3d; will-change: transform; overflow: hidden; }
+    .show-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.2rem; }
+    .show-mark { display: inline-flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border-radius: 14px; font-weight: 800; font-size: 1.3rem; }
+    .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
+    .show-card.zeta .show-mark { color: #E20613; background: rgba(226,6,19,0.14); }
+    .show-card.sdk .show-mark { color: #20B8B0; background: rgba(32,184,176,0.16); }
+    .show-card h3 { font-size: 1.9rem; font-weight: 700; color: #f1f5f9; }
+    .show-sub { font-size: 0.86rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
+    .show-card .show-desc { color: #94a3b8; font-size: 0.97rem; line-height: 1.6; flex: 1; }
+    .show-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .show-chips span { font-size: 0.78rem; color: #cbd5e1; background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
+    .show-card.zeta .show-chips span { background: rgba(226,6,19,0.10); border-color: rgba(226,6,19,0.24); }
+    .show-stats { display: flex; gap: 1.6rem; margin-top: 0.2rem; }
+    .show-stats .num { font-size: 1.5rem; font-weight: 700; color: #e2e8f0; }
+    .show-stats .lbl { font-size: 0.76rem; color: #64748b; }
+    .show-cta { font-weight: 600; font-size: 0.95rem; margin-top: 0.4rem; }
+    .show-card.zeta .show-cta { color: #E20613; }
+    .show-card.sdk .show-cta { color: #20B8B0; }
+    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .show-card.zeta::after { background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
+    .show-card:hover::after { opacity: 1; }
+    .show-card:hover { border-color: rgba(255,255,255,0.24); }
+
+    /* ---------- 区块 ---------- */
     .section-block { padding: 5rem 0; }
     .section-block-alt { background: linear-gradient(180deg, #0E1417 0%, #141a26 100%); }
     .section-block-alt2 { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); }
@@ -73,7 +157,7 @@
     .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, #20B8B0, #F36F5D); border-radius: 2px; }
 
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
-    .feature { background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.6rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
+    .feature { padding: 1.4rem 1.5rem; border-radius: 18px; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
     .feature:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
     .feature .feature-icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
     .feature h3 { color: #20B8B0; margin-bottom: 0.5rem; font-size: 1.08rem; }
@@ -84,30 +168,22 @@
     .about-text p { color: #94a3b8; margin-bottom: 1rem; font-size: 0.95rem; }
     .about-text strong { color: #20B8B0; }
     .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .stat-card { background: linear-gradient(135deg, rgba(30,41,59,0.7), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 14px; padding: 1.4rem; text-align: center; }
     .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { color: #94a3b8; font-size: 0.8rem; margin-top: 0.3rem; }
+    .stat-card { padding: 1.2rem 0.8rem; border-radius: 16px; text-align: center; }
 
-    .ecosystem-link { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-align: center; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+    .release-card { padding: 2.5rem 2rem; border-radius: 20px; text-align: center; }
+    .blog-card { display: block; padding: 1.5rem; border-radius: 16px; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+
+    .ecosystem-link { display: block; text-align: center; padding: 2.4rem 2rem; border-radius: 20px; text-decoration: none; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
     .ecosystem-link:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
     .ecosystem-link h3 { color: #20B8B0; font-size: 1.3rem; margin-bottom: 0.6rem; }
     .ecosystem-link p { color: #94a3b8; font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
     .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
-    .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .product-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-align: left; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
-    .product-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
-    .product-card .product-mark { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.6rem; display: inline-block; }
-    .product-card.zeta-card .product-mark { color: #E20613; }
-    .product-card.bio-card .product-mark { color: #20B8B0; }
-    .product-card h3 { color: #e2e8f0; font-size: 1.25rem; margin-bottom: 0.5rem; }
-    .product-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.55; margin-bottom: 1rem; }
-    .product-card .product-go { color: #20B8B0; font-size: 0.85rem; font-weight: 600; }
-    .product-card.zeta-card .product-go { color: #E20613; }
 
     .blog-section { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-    .blog-card { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
     .blog-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
     .blog-date { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; }
     .blog-title { font-size: 1.2rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
@@ -115,7 +191,6 @@
     .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
 
     .release-section { padding: 4rem 0; }
-    .release-card { background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2.5rem; text-align: center; max-width: 800px; margin: 0 auto; }
     .release-card h3 { color: #e2e8f0; font-size: 1.4rem; margin-bottom: 0.8rem; }
     .release-card p { color: #94a3b8; margin-bottom: 1.2rem; font-size: 0.95rem; }
     .release-status-line { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
@@ -129,49 +204,82 @@
       .about-stats { grid-template-columns: repeat(3, 1fr); }
       .blog-grid { grid-template-columns: 1fr; }
       .features { grid-template-columns: 1fr; }
-      .nav-links { gap: 1rem; }
+      .product-duo { grid-template-columns: 1fr; }
+      .product-showcase { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <a href="/zh/" class="nav-logo"><img src="/assets/linxira-l.svg" alt="Linxira"><span>Linxira OS</span></a>
-                <div class="nav-links">
-      <a href="/zh/docs/">文档</a>
-      <a href="/zh/docs/ecosystem/">软件生态</a>
-      <a href="/bio-sdk/">Bio SDK</a>
-      <a href="/zh/legal/brand-assets/">品牌资产</a>
-      <a href="/zh/roadmap/">路线图</a>
-      <a href="/zh/blog/">博客</a>
-      <a href="/zeta/zh/">Zeta</a>
-
-      <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>
-      <a href="/en/" class="lang-link">EN</a>
-    </div>
-  </nav>
+  <Navbar lang="zh" active="home" />
 
   <section class="hero">
     <div class="grid-bg"></div>
+    <canvas id="particles"></canvas>
     <div class="prism-deco"></div>
     <div class="prism-deco-2"></div>
     <div class="beam beam-1"></div>
     <div class="beam beam-2"></div>
     <div class="beam beam-3"></div>
     <div class="hero-content">
-      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo">
-      <h1>Linxira OS</h1>
-      <p class="tagline">为科学计算而生的 Arch Linux 桌面</p>
-      <p class="en-tagline">Desktop Supercomputer · Direct Arch · 面向研究者</p>
-      <p class="hero-desc">基于 <strong>Arch Linux</strong> 构建的个人科学工作站发行版——开箱即用的 <strong>KDE Plasma</strong> 桌面、<strong>93 款精选软件</strong> 的审核目录、<strong>双内核 + 快照</strong> 的滚动更新安全网，以及 <strong>容器化复现</strong> 的科研工作流。面向理科生与开发者，既是一台可以日常使用的电脑，也是一台随时候命的计算设备。</p>
-      <div class="hero-ctas">
+      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo reveal in">
+      <h1 class="reveal in">Linxira OS</h1>
+      <p class="tagline reveal in reveal-d1">为科学计算而生的 Arch Linux 桌面</p>
+      <p class="en-tagline reveal in reveal-d1">Desktop Supercomputer · Direct Arch · 面向研究者</p>
+      <p class="hero-desc reveal in reveal-d2">基于 <strong>Arch Linux</strong> 构建的个人科学工作站发行版——开箱即用的 <strong>KDE Plasma</strong> 桌面、<strong>93 款精选软件</strong> 的审核目录、<strong>双内核 + 快照</strong> 的滚动更新安全网、紧跟上游的 <strong>安全补丁</strong>，以及 <strong>容器化复现</strong> 的科研工作流。面向理科生、研究人员、开发者与个人用户：高性能、可定制、随时更新，既是一台可以日常使用的电脑，也是一台随时候命的计算设备。</p>
+      <div class="hero-ctas reveal in reveal-d3">
         <a href="/zh/docs/" class="cta">开始使用</a>
         <a href="/zh/docs/ecosystem/" class="cta-ghost">浏览软件生态 →</a>
       </div>
-      <a href="/zeta/" class="zeta-feature"><h3><span class="zeta-mark">Z</span> Zeta — 终端编码代理</h3><p>在终端里运行编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。OMP 兼容发行版。</p><span class="zeta-go">探索 Zeta →</span></a>
-      <div class="badges">
+      <div class="product-feature reveal in reveal-d3">
+        <a href="/zeta/" class="pcard zeta glass">
+          <span class="pmark">Z</span>
+          <h3>Zeta — 终端编码代理</h3>
+          <p>在终端里运行编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。OMP 兼容发行版。</p>
+          <span class="pgo">探索 Zeta →</span>
+        </a>
+      </div>
+      <div class="badges reveal in reveal-d4">
         <span class="badge">测试版 ISO 已通过完整安装测试</span>
         <span class="badge">签名软件仓库 [linxira]</span>
-        <span class="badge badge-coral">2026.09 正式发布</span>
+        <span class="badge badge-coral">测试版已通过 · 正式版源码自建</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 自研产品（Zeta + Bio SDK 大展示区） -->
+  <section class="section-block section-products">
+    <div class="scanline"></div>
+    <div class="section">
+      <div class="section-header reveal">
+        <h2 class="section-title">自研产品</h2>
+        <p class="section-subtitle">我们独立构建、随系统发布的两大核心产品</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="product-showcase">
+        <a href="/zeta/" class="show-card zeta glass reveal reveal-d1">
+          <div class="show-top">
+            <span class="show-mark">Z</span>
+            <span class="show-tag">终端编码代理</span>
+          </div>
+          <h3>Zeta</h3>
+          <p class="show-desc">在终端里运行强大编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。为命令行重度用户打磨。</p>
+          <div class="show-chips">
+            <span>多提供商模型</span><span>工具调用</span><span>原生加速</span><span>可嵌入 TUI</span>
+          </div>
+          <span class="show-cta">探索 Zeta →</span>
+        </a>
+        <a href="/bio-sdk/" class="show-card sdk glass reveal reveal-d2">
+          <div class="show-top">
+            <span class="show-mark">SDK</span>
+            <span class="show-tag">本地生信分析平台</span>
+          </div>
+          <h3>Bio SDK</h3>
+          <p class="show-desc">本地优先生物信息学分析工作台：数据、工具链与流程全部在本地运行，保护隐私的同时提供完整分析能力。</p>
+          <div class="show-chips">
+            <span>本地优先</span><span>数据隐私</span><span>工具链集成</span><span>流程复现</span>
+          </div>
+          <span class="show-cta">进入 Bio SDK →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -179,18 +287,19 @@
   <!-- 核心特性 -->
   <section class="section-block section-block-alt">
     <div class="section">
-      <div class="section-header">
+      <div class="section-header reveal">
         <h2 class="section-title">为什么选择 Linxira</h2>
         <p class="section-subtitle">一个发行版把「日常桌面」和「科学计算」都做好</p>
         <div class="section-divider"></div>
       </div>
       <div class="features">
-        <div class="feature"><span class="feature-icon">🖥️</span><h3>Direct Arch 桌面</h3><p>KDE Plasma 桌面直接基于 Arch 官方仓库构建，软件最新、性能最优。双内核（linux + linux-lts）作为滚动更新的兜底。</p></div>
-        <div class="feature"><span class="feature-icon">📦</span><h3>93 款审核软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
-        <div class="feature"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>17 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
-        <div class="feature"><span class="feature-icon">🛡️</span><h3>滚动更新安全网</h3><p>Timeshift 自动快照 + grub-btrfs 开机回滚 + 双内核切换，滚挂的代价从「重装」降为「重启选一下」。</p></div>
-        <div class="feature"><span class="feature-icon">🐳</span><h3>容器化科研复现</h3><p>Podman、Distrobox、Apptainer 开箱即用——拉取别人的环境、复现实验结果、发布自己的镜像，无损且低开销。</p></div>
-        <div class="feature"><span class="feature-icon">⚡</span><h3>无头模式</h3><p>需要算力时一条命令切到命令行模式，桌面零占用、内存全给计算；用完随时回到桌面。你的电脑就是小型超算。</p></div>
+        <div class="feature glass reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch 桌面</h3><p>KDE Plasma 桌面直接基于 Arch 官方仓库构建，软件最新、性能最优。双内核（linux + linux-lts）作为滚动更新的兜底。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>93 款审核软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
+        <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>17 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
+        <div class="feature glass reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>严谨的软件来源</h3><p>以官方仓库与审核目录为准。野生 AUR 包未经审核、由用户个人维护，常存在质量问题与安全隐患，请勿随意启用。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">🛡️</span><h3>滚动更新 · 紧跟安全补丁</h3><p>上游一发布补丁，滚动更新即可跟进修复高危 CVE，无需等待发行版统一调度。配合 Timeshift 快照 + grub-btrfs 回滚 + 双内核，安全与稳定兼得。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">🐳</span><h3>容器化科研复现</h3><p>Podman、Distrobox、Apptainer 开箱即用——拉取别人的环境、复现实验结果、发布自己的镜像，无损且低开销。</p></div>
+        <div class="feature glass reveal reveal-d3"><span class="feature-icon">⚡</span><h3>无头模式</h3><p>需要算力时一条命令切到命令行模式，桌面零占用、内存全给计算；用完随时回到桌面。你的电脑就是小型超算。</p></div>
       </div>
     </div>
   </section>
@@ -199,55 +308,30 @@
   <section class="section-block">
     <div class="section">
       <div class="about-grid">
-        <div class="about-text">
+        <div class="about-text reveal">
           <h3>为谁而建</h3>
-          <p>Linxira 面向 <strong>理科生、研究人员与开发者</strong>：需要一台日常好用的电脑，也需要它随时变成计算设备。</p>
+          <p>Linxira 面向 <strong>理科生、研究人员、开发者与个人用户</strong>：追求高性能、可定制化与及时安全的更新体验，需要一台日常好用的电脑，也需要它随时变成计算设备。</p>
           <p>很多发行版要么偏重桌面体验、要么偏重服务器能力，两者难以兼得。Linxira 的思路是：<strong>桌面完整保留</strong>（蓝牙 / WiFi / 打印 / 图形界面全部开箱即用），同时提供 <strong>内存优化、无头模式、容器复现</strong> 这些科研刚需——它不是「迷你服务器」，而是「随时能进计算模式的桌面超算」。</p>
-          <p>更重要的是，<strong>安装无需网络</strong>：ISO 内置完整离线包源，无网也能装出可用的完整系统——这对校园网、内网环境尤其重要。</p>
+          <p><strong>离线开箱即用，联网更完整</strong>：ISO 附带 Plasma 桌面与预装软件，无网也能进入可用系统；但绝大多数额外应用与第三方桌面仍需<strong>联网安装</strong>。校园网、内网环境请先确认网络可达。</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card"><div class="stat-num">93</div><div class="stat-label">审核软件</div></div>
-          <div class="stat-card"><div class="stat-num">17</div><div class="stat-label">自研工具</div></div>
-          <div class="stat-card"><div class="stat-num">804</div><div class="stat-label">离线包</div></div>
+          <div class="stat-card glass reveal reveal-d1"><div class="stat-num" data-count="93">0</div><div class="stat-label">审核软件</div></div>
+          <div class="stat-card glass reveal reveal-d2"><div class="stat-num" data-count="17">0</div><div class="stat-label">自研工具</div></div>
+          <div class="stat-card glass reveal reveal-d3"><div class="stat-num" data-count="804">0</div><div class="stat-label">离线包</div></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 我们的产品 -->
-  <section class="section-block section-block-alt">
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">我们的产品</h2>
-        <p class="section-subtitle">Linxira 自研的旗舰工具</p>
-        <div class="section-divider"></div>
-      </div>
-      <div class="product-grid">
-        <a href="/zeta/" class="product-card zeta-card">
-          <span class="product-mark">Z</span>
-          <h3>Zeta — 终端编码代理</h3>
-          <p>在终端里运行编码代理：多提供商模型、工具调用、原生加速、可嵌入 TUI。OMP 兼容发行版，主线同步上游并移植 Pi 的高级能力。</p>
-          <span class="product-go">探索 Zeta →</span>
-        </a>
-        <a href="/bio-sdk/" class="product-card bio-card">
-          <span class="product-mark">SDK</span>
-          <h3>Bio SDK — 本地生信分析平台</h3>
-          <p>本地优先生物信息学分析工作台：数据、工具链与流程全部在本地运行，保护隐私的同时提供完整分析能力。</p>
-          <span class="product-go">进入 Bio SDK →</span>
-        </a>
       </div>
     </div>
   </section>
 
   <!-- 软件生态 -->
-  <section class="section-block section-block-alt2">
+  <section class="section-block section-block-alt">
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">软件生态</h2>
         <p class="section-subtitle">审核目录覆盖日常与科研的每一个环节</p>
         <div class="section-divider"></div>
       </div>
-      <a href="/zh/docs/ecosystem/" class="ecosystem-link">
+      <a href="/zh/docs/ecosystem/" class="ecosystem-link glass reveal">
         <h3>浏览完整软件目录 →</h3>
         <p>93 款精选软件，14 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
         <div class="ecosystem-tags">
@@ -260,14 +344,14 @@
   <!-- 发布状态 -->
   <section class="release-section">
     <div class="section">
-      <div class="release-card">
+      <div class="release-card glass reveal">
         <h3>发布状态</h3>
-        <p>第一个测试版 ISO（2026.08）已通过完整安装测试：自研软件全部可正常安装、启动 / 关机标识与终端字符画已定稿、签名仓库可追踪更新。</p>
+        <p>第一个测试版 ISO 已通过完整安装测试：自研软件全部可正常安装、启动 / 关机标识与终端字符画已定稿、签名仓库可追踪更新。正式版让用户自行从源码构建，不再预设固定发布日期。</p>
         <a href="/zh/roadmap/" class="cta-ghost" style="padding:0.8rem 1.8rem;">查看发布路线图 →</a>
         <div class="release-status-line">
           <span class="release-item">✅ 测试版安装验证通过</span>
-          <span class="release-item">🔧 完整版构建中（2026.09）</span>
-          <span class="release-item">📦 ISO 将于公开发布时放出</span>
+          <span class="release-item">🛠️ 正式版由源码自建（<a href="/zh/docs/building/" style="color:#20B8B0;">构建指南</a>）</span>
+          <span class="release-item">📦 测试版 ISO 已可获取</span>
         </div>
       </div>
     </div>
@@ -282,7 +366,7 @@
         <div class="section-divider"></div>
       </div>
       <div class="blog-grid">
-        <a href="/zh/blog/introducing-linxira-os/" class="blog-card">
+        <a href="/zh/blog/introducing-linxira-os/" class="blog-card glass reveal">
           <div class="blog-date">2026-06-27</div>
           <div class="blog-title">Linxira OS 介绍</div>
           <div class="blog-desc">Linxira OS 是什么，为谁而建，为什么要做这个项目。设计理念、技术架构和目标用户。</div>
@@ -293,5 +377,129 @@
   </section>
 
   <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。品牌资产见 <a href="/zh/legal/brand-assets/" style="color:#64748b;">品牌资产政策</a>。</p></footer>
+
+  <script>
+    // ---------- 滚动揭示 ----------
+    const revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach((el) => io.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add('in'));
+    }
+
+    // ---------- 粒子网络背景（+鼠标引力交互） ----------
+    const canvas = document.getElementById('particles');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, particles = [];
+      const COUNT = window.innerWidth < 768 ? 40 : 80;
+      const LINK = 120;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const mouse = { x: -9999, y: -9999 };
+
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+      }
+      function spawn() {
+        particles = Array.from({ length: COUNT }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 1.6 + 0.8,
+        }));
+      }
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of particles) {
+          // 鼠标引力：靠近时轻微加速（科技互动感）
+          const dx = mouse.x - p.x, dy = mouse.y - p.y;
+          const md = Math.hypot(dx, dy);
+          if (md < 160 && md > 0.001) {
+            p.vx += (dx / md) * 0.02;
+            p.vy += (dy / md) * 0.02;
+          }
+          p.vx *= 0.99; p.vy *= 0.99;
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > W) p.vx *= -1;
+          if (p.y < 0 || p.y > H) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(32,184,176,0.55)';
+          ctx.fill();
+        }
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const d = Math.hypot(dx, dy);
+            if (d < LINK) {
+              const a = 1 - d / LINK;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(32,184,176,${0.16 * a})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        if (!reduceMotion) requestAnimationFrame(draw);
+      }
+      resize(); spawn(); draw();
+      window.addEventListener('resize', () => { resize(); spawn(); });
+      canvas.addEventListener('mousemove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+      });
+      canvas.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    }
+
+    // ---------- 数字滚动动画（count-up） ----------
+    const statEls = document.querySelectorAll('.stat-num[data-count]');
+    if (statEls.length && 'IntersectionObserver' in window) {
+      const animate = (el) => {
+        const target = parseInt(el.dataset.count, 10);
+        const dur = 1200;
+        const t0 = performance.now();
+        const step = (now) => {
+          const p = Math.min((now - t0) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+      const sio = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { animate(e.target); sio.unobserve(e.target); } });
+      }, { threshold: 0.4 });
+      statEls.forEach((el) => sio.observe(el));
+    } else {
+      statEls.forEach((el) => { el.textContent = el.dataset.count; });
+    }
+
+    // ---------- 产品卡片 3D 倾斜跟随 + 光晕定位（hero 主打卡 + 大区卡） ----------
+    const cards = document.querySelectorAll('.pcard, .show-card');
+    if (cards.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      cards.forEach((card) => {
+        const onMove = (ev) => {
+          const r = card.getBoundingClientRect();
+          const px = (ev.clientX - r.left) / r.width;
+          const py = (ev.clientY - r.top) / r.height;
+          card.style.setProperty('--mx', `${px * 100}%`);
+          card.style.setProperty('--my', `${py * 100}%`);
+          const rx = (0.5 - py) * 10;
+          const ry = (px - 0.5) * 10;
+          card.style.transform = `translateY(-5px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+        };
+        const onLeave = () => { card.style.transform = ''; };
+        card.addEventListener('mousemove', onMove);
+        card.addEventListener('mouseleave', onLeave);
+      });
+    }
+  </script>
 </body>
 </html>
