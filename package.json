@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "astro": "^5.0.0",
+    "entities": "^8.0.0",
     "sharp": "^0.33.0"
   }
 }

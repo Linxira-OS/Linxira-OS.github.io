@@ -32,12 +32,18 @@ const zh = lang === "zh";
 
 const base = `/${lang}`;
 
-/* ---------- 语言切换：保留当前页面路径，仅替换语言前缀 ----------
- *   例如 /zh/docs/install/  →  EN 按钮 → /en/docs/install/
+/* ---------- 语言切换：保留当前页面路径，仅替换语言段 ----------
+ *   兼容两种路径形态：
+ *     主站：/zh/...      →  EN 按钮 → /en/...
+ *     产品：/zeta/zh/... →  EN 按钮 → /zeta/en/...
+ *           /bio-sdk/zh/... → EN 按钮 → /bio-sdk/en/...
  *   这样中英文切换不会丢页面，修正原导航「跳回首页」的跳转问题。
  */
 const otherLang = zh ? "en" : "zh";
-const langHref = Astro.url.pathname.replace(/^\/(zh|en)(\/|$)/, `/${otherLang}$2`);
+const langPathMatch = Astro.url.pathname.match(/^\/{0,}((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/);
+const langHref = langPathMatch
+  ? `/${langPathMatch[1]}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
+  : Astro.url.pathname;
 
 /* ---------- 文案（中英） ---------- */
 const copy = {

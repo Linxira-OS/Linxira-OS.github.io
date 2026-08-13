@@ -1,11 +1,37 @@
+---
+/**
+ * BioSDKLayout.astro — Linxira Bio SDK 产品页统一样式布局
+ * ----------------------------------------------------------
+ *  与主站/Zeta 规范一致：
+ *   - 顶部使用主站 Navbar（logo 回主站、保路径中英切换、产品下拉）
+ *   - 语言由 URL 决定：/bio-sdk/zh/ 与 /bio-sdk/en/
+ *   - 侧边栏提供保路径的中英切换与回主站链接
+ *  内容为单页应用（概览/示例/工作台/结构/环境/文档/许可证），
+ *  中英文案通过 data-zh / data-en 双写，由 lang 决定初始显示语言。
+ */
+import Navbar from "../components/Navbar.astro";
+
+interface Props {
+	lang: "zh" | "en";
+}
+const { lang } = Astro.props;
+const zh = lang === "zh";
+const base = `/bio-sdk/${lang}`;
+const otherLang = zh ? "en" : "zh";
+const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/, `/$1${otherLang}$2`);
+---
+
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang={zh ? "zh-CN" : "en-US"}>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Linxira Bio SDK — 本地优先生物信息学分析平台</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path fill='%2320B8B0' d='M4 0h12v24h20v8H4z'/><path d='M8 8v24h20' fill='none' stroke='%230E1417' stroke-width='2'/><path d='M6 12h4M6 18h2M6 24h4' fill='none' stroke='%23E8F7F6' stroke-width='2'/></svg>">
-<style>
+<script is:inline>
+	window.BIOSDK_LANG = {zh ? "zh" : "en"};
+</script>
+<style is:global>
 /* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -20,9 +46,12 @@
   --transition:0.2s cubic-bezier(0.4,0,0.2,1);
 }
 html{scroll-behavior:smooth}
+html,body{height:100%}
 body{
   font-family:var(--font);background:var(--bg);color:var(--text);
   display:flex;height:100vh;overflow:hidden;line-height:1.5;
+  /* 顶部为主站固定 Navbar 预留高度 */
+  padding-top:60px;
 }
 a{color:var(--brand-teal);text-decoration:none;transition:var(--transition)}
 a:hover{color:#4DD4CC}
@@ -35,6 +64,7 @@ button{
   cursor:pointer;font-family:var(--font);border:none;outline:none;
   transition:var(--transition);
 }
+ol{color:var(--text-dim)}
 
 /* ===== Sidebar ===== */
 .sidebar{
@@ -86,7 +116,7 @@ button{
 }
 .lang-btn{
   flex:1;padding:0.375rem;font-size:0.75rem;background:transparent;
-  color:var(--text-dim);text-align:center;
+  color:var(--text-dim);text-align:center;text-decoration:none;
 }
 .lang-btn.active{background:var(--brand-dark);color:var(--text-bright)}
 
@@ -279,6 +309,8 @@ button{
 /* ===== Page toggle ===== */
 .page{display:none}
 .page.active{display:block;animation:fadeIn 0.3s ease-out}
+.wb-page{display:none}
+.wb-page.active{display:block;animation:fadeIn 0.3s ease-out}
 
 /* ===== Footer ===== */
 .footer{
@@ -385,6 +417,8 @@ body.light .example-panel-body pre{background:#F0F3F7}
 </style>
 </head>
 <body class="dark">
+<Navbar lang={lang} active="products" />
+
 <!-- ===== Sidebar ===== -->
 <aside class="sidebar">
   <div class="sidebar-brand">
@@ -392,43 +426,43 @@ body.light .example-panel-body pre{background:#F0F3F7}
       <svg viewBox="0 0 32 32"><path fill="#20B8B0" d="M4 0h12v24h20v8H4z"/><path d="M8 8v24h20" fill="none" stroke="#0E1417" stroke-width="2" stroke-linecap="square"/><path d="M7 12h4M7 18h2M7 24h4" fill="none" stroke="#E8F7F6" stroke-width="2" stroke-linecap="square"/></svg>
       <span class="logo-text">LINXIRA BIO</span>
     </div>
-    <div class="subtitle" data-zh="本地分析工作台" data-en="Local Analysis Workbench">本地分析工作台</div>
-    <a class="sidebar-back" href="/zh/" data-zh="← 返回 Linxira 主站" data-en="← Back to Linxira">← 返回 Linxira 主站</a>
+    <div class="subtitle">{zh ? "本地分析工作台" : "Local Analysis Workbench"}</div>
+    <a class="sidebar-back" href={`/${lang}/`}>{zh ? "← 返回 Linxira 主站" : "← Back to Linxira"}</a>
   </div>
   <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('zh')">中文</button>
-    <button class="lang-btn" onclick="setLang('en')">English</button>
+    <a class={`lang-btn ${zh ? "active" : ""}`} href="/bio-sdk/zh/">中文</a>
+    <a class={`lang-btn ${zh ? "" : "active"}`} href="/bio-sdk/en/">English</a>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section" data-zh="页面" data-en="PAGES">页面</div>
-    <div class="nav-item active" data-page="home" onclick="switchPage('home')">
+    <div class="nav-section">{zh ? "页面" : "PAGES"}</div>
+    <div class="nav-item active" data-page="home">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span data-zh="概览" data-en="Overview">概览</span>
+      <span>{zh ? "概览" : "Overview"}</span>
     </div>
-    <div class="nav-item" data-page="demo" onclick="switchPage('demo')">
+    <div class="nav-item" data-page="demo">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      <span data-zh="示例结果" data-en="Demo Results">示例结果</span>
+      <span>{zh ? "示例结果" : "Demo Results"}</span>
     </div>
-    <div class="nav-item" data-page="workbench" onclick="switchPage('workbench')">
+    <div class="nav-item" data-page="workbench">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      <span data-zh="数据工作台" data-en="Data Workbench">数据工作台</span>
+      <span>{zh ? "数据工作台" : "Data Workbench"}</span>
     </div>
-    <div class="nav-item" data-page="structure" onclick="switchPage('structure')">
+    <div class="nav-item" data-page="structure">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      <span data-zh="结构查看器" data-en="Structure Viewer">结构查看器</span>
+      <span>{zh ? "结构查看器" : "Structure Viewer"}</span>
     </div>
-    <div class="nav-item" data-page="environment" onclick="switchPage('environment')">
+    <div class="nav-item" data-page="environment">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-      <span data-zh="运行环境" data-en="Environment">运行环境</span>
+      <span>{zh ? "运行环境" : "Environment"}</span>
     </div>
-    <div class="nav-item" data-page="docs" onclick="switchPage('docs')">
+    <div class="nav-item" data-page="docs">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <span data-zh="文档" data-en="Docs">文档</span>
+      <span>{zh ? "文档" : "Docs"}</span>
     </div>
     <div style="margin-top:auto;padding-top:1rem">
-      <div class="nav-item" data-page="licenses" onclick="switchPage('licenses')">
+      <div class="nav-item" data-page="licenses">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span data-zh="许可证" data-en="Licenses">许可证</span>
+        <span>{zh ? "许可证" : "Licenses"}</span>
       </div>
     </div>
   </nav>
@@ -437,7 +471,7 @@ body.light .example-panel-body pre{background:#F0F3F7}
 <!-- ===== Main Content ===== -->
 <main class="main">
   <div class="topbar">
-    <span class="topbar-title" data-zh="Linxira Bio SDK" data-en="Linxira Bio SDK">Linxira Bio SDK</span>
+    <span class="topbar-title">Linxira Bio SDK</span>
     <div class="topbar-right">
       <span class="badge badge-ready">AGPL-3.0</span>
       <span class="badge badge-version">v0.1.0</span>
@@ -453,7 +487,7 @@ body.light .example-panel-body pre{background:#F0F3F7}
     <div class="page active" id="page-home">
       <div class="hero animate-in">
         <h1>Linxira Bio SDK</h1>
-        <p class="hero-subtitle" data-zh="本地优先、开箱即用的生物信息学分析平台。支持 50+ 种分析能力，覆盖序列、结构、表达、变异、比较基因组等全流程。" data-en="A local-first, ready-to-use bioinformatics analysis platform. 50+ capabilities covering sequences, structures, expression, variants, and comparative genomics.">本地优先、开箱即用的生物信息学分析平台。支持 50+ 种分析能力，覆盖序列、结构、表达、变异、比较基因组等全流程。</p>
+        <p class="hero-subtitle">{zh ? "本地优先、开箱即用的生物信息学分析平台。支持 50+ 种分析能力，覆盖序列、结构、表达、变异、比较基因组等全流程。" : "A local-first, ready-to-use bioinformatics analysis platform. 50+ capabilities covering sequences, structures, expression, variants, and comparative genomics."}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -461,59 +495,59 @@ body.light .example-panel-body pre{background:#F0F3F7}
           </a>
           <a class="btn btn-secondary" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span data-zh="使用指南" data-en="User Guide">使用指南</span>
+            <span>{zh ? "使用指南" : "User Guide"}</span>
           </a>
           <button class="btn btn-ghost" onclick="switchPage('demo')">
-            <span data-zh="查看示例结果 →" data-en="View Demo Results →">查看示例结果 →</span>
+            <span>{zh ? "查看示例结果 →" : "View Demo Results →"}</span>
           </button>
         </div>
       </div>
 
       <!-- Quick Start Steps -->
-      <h2 class="section-title" data-zh="快速开始" data-en="Quick Start">快速开始</h2>
+      <h2 class="section-title">{zh ? "快速开始" : "Quick Start"}</h2>
       <div class="steps">
         <div class="step animate-in">
           <div class="step-num">1</div>
-          <div class="step-title" data-zh="导入数据" data-en="Import Data">导入数据</div>
-          <div class="step-desc" data-zh="拖拽或选择 FASTA、FASTQ、GFF、VCF、BED、CSV、PDB 等格式文件" data-en="Drag or select FASTA, FASTQ, GFF, VCF, BED, CSV, PDB files">拖拽或选择 FASTA、FASTQ、GFF、VCF、BED、CSV、PDB 等格式文件</div>
+          <div class="step-title">{zh ? "导入数据" : "Import Data"}</div>
+          <div class="step-desc">{zh ? "拖拽或选择 FASTA、FASTQ、GFF、VCF、BED、CSV、PDB 等格式文件" : "Drag or select FASTA, FASTQ, GFF, VCF, BED, CSV, PDB files"}</div>
         </div>
         <div class="step animate-in">
           <div class="step-num">2</div>
-          <div class="step-title" data-zh="数据检查" data-en="Inspect">数据检查</div>
-          <div class="step-desc" data-zh="自动检测格式并显示摘要统计（序列数、长度、GC 含量等）" data-en="Auto-detect format and show summary statistics">自动检测格式并显示摘要统计（序列数、长度、GC 含量等）</div>
+          <div class="step-title">{zh ? "数据检查" : "Inspect"}</div>
+          <div class="step-desc">{zh ? "自动检测格式并显示摘要统计（序列数、长度、GC 含量等）" : "Auto-detect format and show summary statistics"}</div>
         </div>
         <div class="step animate-in">
           <div class="step-num">3</div>
-          <div class="step-title" data-zh="选择分析" data-en="Analyze">选择分析</div>
-          <div class="step-desc" data-zh="从 50+ 种分析能力中选择，自动匹配数据格式" data-en="Choose from 50+ capabilities, auto-matched to your data format">从 50+ 种分析能力中选择，自动匹配数据格式</div>
+          <div class="step-title">{zh ? "选择分析" : "Analyze"}</div>
+          <div class="step-desc">{zh ? "从 50+ 种分析能力中选择，自动匹配数据格式" : "Choose from 50+ capabilities, auto-matched to your data format"}</div>
         </div>
         <div class="step animate-in">
           <div class="step-num">4</div>
-          <div class="step-title" data-zh="查看结果" data-en="Results">查看结果</div>
-          <div class="step-desc" data-zh="表格、SVG 图表、交互式结构查看器，支持导出 CSV/TSV/JSON/XLSX" data-en="Tables, SVG plots, interactive structure viewer, export to CSV/TSV/JSON/XLSX">表格、SVG 图表、交互式结构查看器，支持导出 CSV/TSV/JSON/XLSX</div>
+          <div class="step-title">{zh ? "查看结果" : "Results"}</div>
+          <div class="step-desc">{zh ? "表格、SVG 图表、交互式结构查看器，支持导出 CSV/TSV/JSON/XLSX" : "Tables, SVG plots, interactive structure viewer, export to CSV/TSV/JSON/XLSX"}</div>
         </div>
       </div>
 
       <!-- Key Stats -->
-      <h2 class="section-title" data-zh="平台数据" data-en="Platform Stats">平台数据</h2>
+      <h2 class="section-title">{zh ? "平台数据" : "Platform Stats"}</h2>
       <div class="stat-row">
-        <div class="stat-card animate-in"><div class="stat-value">50+</div><div class="stat-label" data-zh="分析能力" data-en="Capabilities">分析能力</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">108</div><div class="stat-label" data-zh="中英文文档" data-en="Bilingual Docs">中英文文档</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label" data-zh="支持平台" data-en="Platforms">支持平台</div><div class="stat-unit">Windows · Debian · Arch</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">4</div><div class="stat-label" data-zh="原生语言" data-en="Languages">原生语言</div><div class="stat-unit">Rust · Python · R · Java</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">AGPL</div><div class="stat-label" data-zh="开源协议" data-en="License">开源协议</div><div class="stat-unit">v3.0-or-later</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">50+</div><div class="stat-label">{zh ? "分析能力" : "Capabilities"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">108</div><div class="stat-label">{zh ? "中英文文档" : "Bilingual Docs"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "支持平台" : "Platforms"}</div><div class="stat-unit">Windows · Debian · Arch</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">4</div><div class="stat-label">{zh ? "原生语言" : "Languages"}</div><div class="stat-unit">Rust · Python · R · Java</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">AGPL</div><div class="stat-label">{zh ? "开源协议" : "License"}</div><div class="stat-unit">v3.0-or-later</div></div>
       </div>
 
       <!-- Example Data Preview -->
-      <h2 class="section-title" data-zh="示例数据 &amp; 分析结果" data-en="Example Data &amp; Results">示例数据 &amp; 分析结果</h2>
+      <h2 class="section-title">{zh ? "示例数据 & 分析结果" : "Example Data & Results"}</h2>
       <div class="example-grid">
         <div class="example-panel animate-in">
           <div class="example-panel-header">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="2"><polyline points="4 17 10 11 16 17"/><polyline points="4 11 10 5 16 11"/></svg>
-            <span data-zh="序列统计 (sequence.stats.v1)" data-en="Sequence Stats (sequence.stats.v1)">序列统计 (sequence.stats.v1)</span>
+            <span>{zh ? "序列统计 (sequence.stats.v1)" : "Sequence Stats (sequence.stats.v1)"}</span>
           </div>
           <div class="example-panel-body">
-            <pre>{
+            <pre is:raw>{
   <span style="color:var(--brand-teal)">"sequence_count"</span>: 3,
   <span style="color:var(--brand-teal)">"total_bases"</span>: 12,
   <span style="color:var(--brand-teal)">"min_length"</span>: 2,
@@ -527,10 +561,10 @@ body.light .example-panel-body pre{background:#F0F3F7}
         <div class="example-panel animate-in">
           <div class="example-panel-header">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
-            <span data-zh="表达矩阵 PCA (expression.pca.v1)" data-en="Expression PCA (expression.pca.v1)">表达矩阵 PCA (expression.pca.v1)</span>
+            <span>{zh ? "表达矩阵 PCA (expression.pca.v1)" : "Expression PCA (expression.pca.v1)"}</span>
           </div>
           <div class="example-panel-body">
-            <pre>{
+            <pre is:raw>{
   <span style="color:var(--brand-teal)">"pca"</span>: {
     <span style="color:var(--brand-teal)">"variance_explained"</span>: [42.3, 18.7, 9.1],
     <span style="color:var(--brand-teal)">"samples"</span>: [
@@ -544,10 +578,10 @@ body.light .example-panel-body pre{background:#F0F3F7}
 <div class="example-panel animate-in">
           <div class="example-panel-header">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M12 20V10"/><path d="M12 10l-4 4"/><path d="M12 10l4 4"/></svg>
-            <span data-zh="GO 富集分析 (enrichment.go.v1)" data-en="GO Enrichment (enrichment.go.v1)">GO 富集分析 (enrichment.go.v1)</span>
+            <span>{zh ? "GO 富集分析 (enrichment.go.v1)" : "GO Enrichment (enrichment.go.v1)"}</span>
           </div>
           <div class="example-panel-body">
-            <pre>{
+            <pre is:raw>{
   <span style="color:var(--brand-teal)">"analysis_type"</span>: "go",
   <span style="color:var(--brand-teal)">"query_input_count"</span>: 4,
   <span style="color:var(--brand-teal)">"query_mapped_count"</span>: 3,
@@ -564,10 +598,10 @@ body.light .example-panel-body pre{background:#F0F3F7}
         <div class="example-panel animate-in">
           <div class="example-panel-header">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            <span data-zh="蛋白质性质 (protein.properties.v1)" data-en="Protein Properties (protein.properties.v1)">蛋白质性质 (protein.properties.v1)</span>
+            <span>{zh ? "蛋白质性质 (protein.properties.v1)" : "Protein Properties (protein.properties.v1)"}</span>
           </div>
           <div class="example-panel-body">
-            <pre>{
+            <pre is:raw>{
   <span style="color:var(--brand-teal)">"sequence_count"</span>: 2,
   <span style="color:var(--brand-teal)">"records"</span>: [{
     <span style="color:var(--brand-teal)">"id"</span>: "standard",
@@ -583,10 +617,10 @@ body.light .example-panel-body pre{background:#F0F3F7}
         <div class="example-panel animate-in">
           <div class="example-panel-header">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5"/></svg>
-            <span data-zh="集合交集 (set.venn.v1)" data-en="Set Intersection (set.venn.v1)">集合交集 (set.venn.v1)</span>
+            <span>{zh ? "集合交集 (set.venn.v1)" : "Set Intersection (set.venn.v1)"}</span>
           </div>
           <div class="example-panel-body">
-            <pre>{
+            <pre is:raw>{
   <span style="color:var(--brand-teal)">"set_count"</span>: 3,
   <span style="color:var(--brand-teal)">"union_size"</span>: 6,
   <span style="color:var(--brand-teal)">"set_sizes"</span>: [
@@ -601,7 +635,7 @@ body.light .example-panel-body pre{background:#F0F3F7}
 
       <!-- Sequence Stats Bar Chart -->
       <div class="chart-container animate-in">
-        <div style="font-size:0.8125rem;font-weight:600;color:var(--text-dim);margin-bottom:0.75rem" data-zh="序列长度分布 (示例)" data-en="Sequence Length Distribution (Example)">序列长度分布 (示例)</div>
+        <div style="font-size:0.8125rem;font-weight:600;color:var(--text-dim);margin-bottom:0.75rem">{zh ? "序列长度分布 (示例)" : "Sequence Length Distribution (Example)"}</div>
         <svg viewBox="0 0 500 200" width="100%" height="200" style="max-width:600px">
           <defs>
             <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#20B8B0"/><stop offset="100%" stop-color="#175148"/></linearGradient>
@@ -653,71 +687,71 @@ body.light .example-panel-body pre{background:#F0F3F7}
       </div>
 
       <!-- CLI Quick Start -->
-      <h2 class="section-title" data-zh="命令行快速开始" data-en="CLI Quick Start">命令行快速开始</h2>
+      <h2 class="section-title">{zh ? "命令行快速开始" : "CLI Quick Start"}</h2>
       <div class="code-block animate-in">
         <div class="code-header">
           <div class="dot"><span></span><span></span><span></span></div>
           <span>PowerShell / Bash</span>
         </div>
-        <pre><code><span style="color:var(--text-dim)"># 序列统计</span>
+        <pre><code><span style="color:var(--text-dim)">{zh ? "# 序列统计" : "# Sequence stats"}</span>
 linxira-bio sequence stats sequences.fa --json
 
-<span style="color:var(--text-dim)"># FASTQ 质量控制</span>
+<span style="color:var(--text-dim)">{zh ? "# FASTQ 质量控制" : "# FASTQ quality control"}</span>
 linxira-bio fastq qc reads.fastq --json
 
-<span style="color:var(--text-dim)"># 基因组注释统计</span>
+<span style="color:var(--text-dim)">{zh ? "# 基因组注释统计" : "# Genome annotation stats"}</span>
 linxira-bio annotation gxf-stats annotations.gff --json
 
-<span style="color:var(--text-dim)"># 表达矩阵 PCA</span>
+<span style="color:var(--text-dim)">{zh ? "# 表达矩阵 PCA" : "# Expression matrix PCA"}</span>
 linxira-bio expression pca matrix.tsv pca.json --json
 
-<span style="color:var(--text-dim)"># 系统发育树可视化</span>
+<span style="color:var(--text-dim)">{zh ? "# 系统发育树可视化" : "# Phylogenetic tree plot"}</span>
 linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
       </div>
 
       <!-- Capabilities -->
-      <h2 class="section-title" data-zh="分析能力一览" data-en="Capabilities">分析能力一览</h2>
+      <h2 class="section-title">{zh ? "分析能力一览" : "Capabilities"}</h2>
       <div class="cap-grid" id="cap-grid"></div>
 <!-- Quick Links -->
-      <h2 class="section-title" style="margin-top:2rem" data-zh="快速链接" data-en="Quick Links">快速链接</h2>
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "快速链接" : "Quick Links"}</h2>
       <div class="cap-grid">
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
-          <div class="cap-name" data-zh="GitHub 仓库" data-en="GitHub Repository">GitHub 仓库</div>
-          <div class="cap-desc" data-zh="源代码、Issue、PR" data-en="Source code, Issues, PRs">源代码、Issue、PR</div>
+          <div class="cap-name">{zh ? "GitHub 仓库" : "GitHub Repository"}</div>
+          <div class="cap-desc">{zh ? "源代码、Issue、PR" : "Source code, Issues, PRs"}</div>
         </a>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-teal)"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div class="cap-name" data-zh="Linxira-OS 组织" data-en="Linxira-OS Org">Linxira-OS 组织</div>
-          <div class="cap-desc" data-zh="组织主页与所有项目" data-en="Organization homepage & all projects">组织主页与所有项目</div>
+          <div class="cap-name">{zh ? "Linxira-OS 组织" : "Linxira-OS Org"}</div>
+          <div class="cap-desc">{zh ? "组织主页与所有项目" : "Organization homepage & all projects"}</div>
         </a>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-          <div class="cap-name" data-zh="使用指南 Wiki" data-en="User Guide Wiki">使用指南 Wiki</div>
-          <div class="cap-desc" data-zh="快速入门、CLI 参考、FAQ" data-en="Quick Start, CLI Reference, FAQ">快速入门、CLI 参考、FAQ</div>
+          <div class="cap-name">{zh ? "使用指南 Wiki" : "User Guide Wiki"}</div>
+          <div class="cap-desc">{zh ? "快速入门、CLI 参考、FAQ" : "Quick Start, CLI Reference, FAQ"}</div>
         </a>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
-          <div class="cap-name" data-zh="能力文档" data-en="Capability Docs">能力文档</div>
-          <div class="cap-desc" data-zh="108 个中英文能力文档" data-en="108 bilingual capability docs">108 个中英文能力文档</div>
+          <div class="cap-name">{zh ? "能力文档" : "Capability Docs"}</div>
+          <div class="cap-desc">{zh ? "108 个中英文能力文档" : "108 bilingual capability docs"}</div>
         </a>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/THIRD_PARTY.md" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
-          <div class="cap-name" data-zh="第三方许可" data-en="Third-Party Licenses">第三方许可</div>
-          <div class="cap-desc" data-zh="完整依赖许可信息" data-en="Full dependency license info">完整依赖许可信息</div>
+          <div class="cap-name">{zh ? "第三方许可" : "Third-Party Licenses"}</div>
+          <div class="cap-desc">{zh ? "完整依赖许可信息" : "Full dependency license info"}</div>
         </a>
-        <a class="cap-card animate-in" href="https://linxira-os.github.io/bio-sdk/" target="_blank" style="text-decoration:none;color:inherit">
+        <a class="cap-card animate-in" href={`/bio-sdk/${lang}/`} style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
-          <div class="cap-name" data-zh="项目官网" data-en="Official Site">项目官网</div>
-          <div class="cap-desc" data-zh="在线演示与文档" data-en="Online demo & documentation">在线演示与文档</div>
+          <div class="cap-name">{zh ? "项目官网" : "Official Site"}</div>
+          <div class="cap-desc">{zh ? "在线演示与文档" : "Online demo & documentation"}</div>
         </a>
       </div>
     </div>
 
     <!-- ===== DEMO RESULTS PAGE ===== -->
     <div class="page" id="page-demo">
-      <h2 class="section-title" data-zh="示例分析结果" data-en="Demo Analysis Results">示例分析结果</h2>
-      <p style="color:var(--text-dim);margin-bottom:1.5rem;font-size:0.875rem" data-zh="以下展示 Linxira Bio SDK 各分析能力的典型输出结果。所有结果均为结构化 JSON 格式，可直接用于下游分析。" data-en="Typical outputs from Linxira Bio SDK capabilities. All results are structured JSON ready for downstream analysis.">以下展示 Linxira Bio SDK 各分析能力的典型输出结果。所有结果均为结构化 JSON 格式，可直接用于下游分析。</p>
+      <h2 class="section-title">{zh ? "示例分析结果" : "Demo Analysis Results"}</h2>
+      <p style="color:var(--text-dim);margin-bottom:1.5rem;font-size:0.875rem">{zh ? "以下展示 Linxira Bio SDK 各分析能力的典型输出结果。所有结果均为结构化 JSON 格式，可直接用于下游分析。" : "Typical outputs from Linxira Bio SDK capabilities. All results are structured JSON ready for downstream analysis."}</p>
 
       <!-- Result Gallery -->
       <div class="gallery">
@@ -748,8 +782,8 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
               <circle cx="190" cy="150" r="1.5" fill="#6B4EA0" opacity="0.5"/>
               <circle cx="120" cy="200" r="1.5" fill="#6B4EA0" opacity="0.5"/>
               <circle cx="210" cy="100" r="1.5" fill="#6B4EA0" opacity="0.5"/>
-              <text x="130" y="252" text-anchor="middle" fill="#7A8A94" font-size="9">Query (chr1)</text>
-              <text x="8" y="134" text-anchor="middle" fill="#7A8A94" font-size="9" transform="rotate(-90,8,134)">Reference (chr1)</text>
+              <text x="130" y="252" text-anchor="middle" fill="#7A8A94" font-size="9">{zh ? "查询 (chr1)" : "Query (chr1)"}</text>
+              <text x="8" y="134" text-anchor="middle" fill="#7A8A94" font-size="9" transform="rotate(-90,8,134)">{zh ? "参考 (chr1)" : "Reference (chr1)"}</text>
             </svg>
           </div>
         </div>
@@ -962,18 +996,18 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
 
       <!-- Example Result Data Table -->
       <div class="card animate-in">
-        <div class="card-title" data-zh="差异表达基因结果 (示例)" data-en="Differential Expression Results (Example)">差异表达基因结果 (示例)</div>
+        <div class="card-title">{zh ? "差异表达基因结果 (示例)" : "Differential Expression Results (Example)"}</div>
         <div style="overflow-x:auto">
           <table class="result-table">
             <thead>
-              <tr><th>Gene ID</th><th>log2FC</th><th>p-value</th><th>padj</th><th data-zh="表达变化" data-en="Change">表达变化</th></tr>
+              <tr><th>Gene ID</th><th>log2FC</th><th>p-value</th><th>padj</th><th>{zh ? "表达变化" : "Change"}</th></tr>
             </thead>
             <tbody>
-              <tr><td class="mono">BRCA1</td><td style="color:var(--accent-red)">+2.34</td><td class="mono">1.2e-8</td><td class="mono">3.5e-6</td><td><span style="color:var(--accent-red)" data-zh="上调" data-en="Up">上调</span></td></tr>
-              <tr><td class="mono">TP53</td><td style="color:var(--accent-red)">+1.87</td><td class="mono">4.5e-7</td><td class="mono">6.2e-5</td><td><span style="color:var(--accent-red)" data-zh="上调" data-en="Up">上调</span></td></tr>
-              <tr><td class="mono">EGFR</td><td style="color:var(--accent-red)">+1.56</td><td class="mono">2.1e-6</td><td class="mono">1.8e-4</td><td><span style="color:var(--accent-red)" data-zh="上调" data-en="Up">上调</span></td></tr>
-              <tr><td class="mono">MYC</td><td style="color:var(--accent-green)">-1.23</td><td class="mono">8.7e-6</td><td class="mono">5.4e-4</td><td><span style="color:var(--accent-green)" data-zh="下调" data-en="Down">下调</span></td></tr>
-              <tr><td class="mono">CDKN1A</td><td style="color:var(--accent-green)">-2.01</td><td class="mono">3.2e-9</td><td class="mono">1.1e-6</td><td><span style="color:var(--accent-green)" data-zh="下调" data-en="Down">下调</span></td></tr>
+              <tr><td class="mono">BRCA1</td><td style="color:var(--accent-red)">+2.34</td><td class="mono">1.2e-8</td><td class="mono">3.5e-6</td><td><span style="color:var(--accent-red)">{zh ? "上调" : "Up"}</span></td></tr>
+              <tr><td class="mono">TP53</td><td style="color:var(--accent-red)">+1.87</td><td class="mono">4.5e-7</td><td class="mono">6.2e-5</td><td><span style="color:var(--accent-red)">{zh ? "上调" : "Up"}</span></td></tr>
+              <tr><td class="mono">EGFR</td><td style="color:var(--accent-red)">+1.56</td><td class="mono">2.1e-6</td><td class="mono">1.8e-4</td><td><span style="color:var(--accent-red)">{zh ? "上调" : "Up"}</span></td></tr>
+              <tr><td class="mono">MYC</td><td style="color:var(--accent-green)">-1.23</td><td class="mono">8.7e-6</td><td class="mono">5.4e-4</td><td><span style="color:var(--accent-green)">{zh ? "下调" : "Down"}</span></td></tr>
+              <tr><td class="mono">CDKN1A</td><td style="color:var(--accent-green)">-2.01</td><td class="mono">3.2e-9</td><td class="mono">1.1e-6</td><td><span style="color:var(--accent-green)">{zh ? "下调" : "Down"}</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -983,31 +1017,31 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
     <!-- ===== WORKBENCH ===== -->
     <div class="page" id="page-workbench">
       <div class="tab-bar">
-        <div class="tab active" data-tab="w-import" onclick="switchWorkbenchTab('w-import')"><span data-zh="1  导入" data-en="1  Import">1  导入</span></div>
-        <div class="tab" data-tab="w-inspect" onclick="switchWorkbenchTab('w-inspect')"><span data-zh="2  数据检查" data-en="2  Inspect">2  数据检查</span></div>
-        <div class="tab" data-tab="w-analyze" onclick="switchWorkbenchTab('w-analyze')"><span data-zh="3  分析" data-en="3  Analyze">3  分析</span></div>
-        <div class="tab" data-tab="w-results" onclick="switchWorkbenchTab('w-results')"><span data-zh="4  结果" data-en="4  Results">4  结果</span></div>
+        <div class="tab active" data-tab="w-import"><span>{zh ? "1  导入" : "1  Import"}</span></div>
+        <div class="tab" data-tab="w-inspect"><span>{zh ? "2  数据检查" : "2  Inspect"}</span></div>
+        <div class="tab" data-tab="w-analyze"><span>{zh ? "3  分析" : "3  Analyze"}</span></div>
+        <div class="tab" data-tab="w-results"><span>{zh ? "4  结果" : "4  Results"}</span></div>
       </div>
 
       <div class="wb-page active" id="wb-w-import">
         <div class="card">
-          <div class="card-title" data-zh="导入本地数据" data-en="Import Local Data">导入本地数据</div>
-          <div class="card-desc" data-zh="支持格式：FASTA (.fa, .fasta), FASTQ (.fq, .fastq), GFF3/GTF (.gff, .gtf), VCF (.vcf), BED (.bed), CSV/TSV (.csv, .tsv), PDB (.pdb), mmCIF (.cif), Newick (.nwk), 以及 gzip 压缩 (.gz)" data-en="Supported: FASTA, FASTQ, GFF3/GTF, VCF, BED, CSV/TSV, PDB, mmCIF, Newick, and gzip compressed">支持格式：FASTA (.fa, .fasta), FASTQ (.fq, .fastq), GFF3/GTF (.gff, .gtf), VCF (.vcf), BED (.bed), CSV/TSV (.csv, .tsv), PDB (.pdb), mmCIF (.cif), Newick (.nwk), 以及 gzip 压缩 (.gz)</div>
+          <div class="card-title">{zh ? "导入本地数据" : "Import Local Data"}</div>
+          <div class="card-desc">{zh ? "支持格式：FASTA (.fa, .fasta), FASTQ (.fq, .fastq), GFF3/GTF (.gff, .gtf), VCF (.vcf), BED (.bed), CSV/TSV (.csv, .tsv), PDB (.pdb), mmCIF (.cif), Newick (.nwk), 以及 gzip 压缩 (.gz)" : "Supported: FASTA, FASTQ, GFF3/GTF, VCF, BED, CSV/TSV, PDB, mmCIF, Newick, and gzip compressed"}</div>
         </div>
         <div class="card" style="border:2px dashed var(--border);text-align:center;padding:3rem;cursor:pointer">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5" style="margin-bottom:0.75rem"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <div style="font-size:0.9375rem;font-weight:500;color:var(--text-dim)" data-zh="拖拽文件到此处 或 点击选择文件" data-en="Drag files here or click to browse">拖拽文件到此处 或 点击选择文件</div>
-          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.5rem" data-zh="（桌面版支持，Web 版为演示界面）" data-en="(Desktop app supports this; this is a demo interface)">（桌面版支持，Web 版为演示界面）</div>
+          <div style="font-size:0.9375rem;font-weight:500;color:var(--text-dim)">{zh ? "拖拽文件到此处 或 点击选择文件" : "Drag files here or click to browse"}</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.5rem">{zh ? "（桌面版支持，Web 版为演示界面）" : "(Desktop app supports this; this is a demo interface)"}</div>
         </div>
       </div>
 
       <div class="wb-page" id="wb-w-inspect">
         <div class="card">
-          <div class="card-title" data-zh="数据集摘要" data-en="Dataset Summary">数据集摘要</div>
-          <div class="card-desc" data-zh="选择一个数据集以查看自动检测的格式和统计信息" data-en="Select a dataset to view auto-detected format and statistics">选择一个数据集以查看自动检测的格式和统计信息</div>
+          <div class="card-title">{zh ? "数据集摘要" : "Dataset Summary"}</div>
+          <div class="card-desc">{zh ? "选择一个数据集以查看自动检测的格式和统计信息" : "Select a dataset to view auto-detected format and statistics"}</div>
         </div>
         <div class="card" style="opacity:0.5">
-          <pre><code>{
+          <pre is:raw><code>{
   <span style="color:var(--brand-teal)">"format"</span>: "FASTA",
   <span style="color:var(--brand-teal)">"sequence_count"</span>: 3,
   <span style="color:var(--brand-teal)">"total_bases"</span>: 12,
@@ -1021,19 +1055,19 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
 
       <div class="wb-page" id="wb-w-analyze">
         <div class="card">
-          <div class="card-title" data-zh="选择分析能力" data-en="Choose Analysis Capability">选择分析能力</div>
-          <div class="card-desc" data-zh="系统会根据数据格式自动匹配可用的分析能力" data-en="The system auto-matches capabilities to your data format">系统会根据数据格式自动匹配可用的分析能力</div>
+          <div class="card-title">{zh ? "选择分析能力" : "Choose Analysis Capability"}</div>
+          <div class="card-desc">{zh ? "系统会根据数据格式自动匹配可用的分析能力" : "The system auto-matches capabilities to your data format"}</div>
         </div>
         <div class="cap-grid" id="analyze-cap-grid"></div>
       </div>
 
       <div class="wb-page" id="wb-w-results">
         <div class="card">
-          <div class="card-title" data-zh="分析结果" data-en="Analysis Results">分析结果</div>
-          <div class="card-desc" data-zh="运行分析后，结果将显示在此处。支持表格、SVG 图表和交互式结构查看。" data-en="After running an analysis, results appear here. Supports tables, SVG plots, and interactive structure viewing.">运行分析后，结果将显示在此处。支持表格、SVG 图表和交互式结构查看。</div>
+          <div class="card-title">{zh ? "分析结果" : "Analysis Results"}</div>
+          <div class="card-desc">{zh ? "运行分析后，结果将显示在此处。支持表格、SVG 图表和交互式结构查看。" : "After running an analysis, results appear here. Supports tables, SVG plots, and interactive structure viewing."}</div>
         </div>
         <div class="card" style="opacity:0.5">
-          <pre><code>{
+          <pre is:raw><code>{
   <span style="color:var(--brand-teal)">"schema_version"</span>: "1",
   <span style="color:var(--brand-teal)">"job_id"</span>: "example",
   <span style="color:var(--brand-teal)">"capability"</span>: "sequence.stats.v1",
@@ -1051,8 +1085,8 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
     <!-- ===== STRUCTURE ===== -->
     <div class="page" id="page-structure">
       <div class="card">
-        <div class="card-title" data-zh="交互式结构查看器" data-en="Interactive Structure Viewer">交互式结构查看器</div>
-        <div class="card-desc" data-zh="支持 PDB 和 mmCIF 格式的蛋白质结构交互式查看。可旋转、缩放、选择残基、测量距离、导出图片。" data-en="Interactive protein structure viewer for PDB and mmCIF. Rotate, zoom, select residues, measure distances, export images.">支持 PDB 和 mmCIF 格式的蛋白质结构交互式查看。可旋转、缩放、选择残基、测量距离、导出图片。</div>
+        <div class="card-title">{zh ? "交互式结构查看器" : "Interactive Structure Viewer"}</div>
+        <div class="card-desc">{zh ? "支持 PDB 和 mmCIF 格式的蛋白质结构交互式查看。可旋转、缩放、选择残基、测量距离、导出图片。" : "Interactive protein structure viewer for PDB and mmCIF. Rotate, zoom, select residues, measure distances, export images."}</div>
       </div>
       <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:3rem;text-align:center">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="1" opacity="0.5">
@@ -1062,18 +1096,18 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
           <line x1="6" y1="12" x2="12" y2="13"/><line x1="18" y1="12" x2="12" y2="13"/>
           <line x1="6" y1="18" x2="12" y2="17"/><line x1="18" y1="18" x2="12" y2="17"/>
         </svg>
-        <div style="font-size:0.9375rem;color:var(--text-dim);margin-top:1rem" data-zh="桌面版支持完整 3D 结构查看" data-en="Full 3D structure viewing available in desktop app">桌面版支持完整 3D 结构查看</div>
+        <div style="font-size:0.9375rem;color:var(--text-dim);margin-top:1rem">{zh ? "桌面版支持完整 3D 结构查看" : "Full 3D structure viewing available in desktop app"}</div>
       </div>
     </div>
 
     <!-- ===== ENVIRONMENT ===== -->
     <div class="page" id="page-environment">
       <div class="card">
-        <div class="card-title" data-zh="运行环境检测" data-en="Environment Check">运行环境检测</div>
-        <div class="card-desc" data-zh="Linxira Bio SDK 自动检测本地环境中的工具和运行时，支持 Windows、Debian 和 Arch Linux。" data-en="Auto-detects tools and runtimes in your local environment. Supports Windows, Debian, and Arch Linux.">Linxira Bio SDK 自动检测本地环境中的工具和运行时，支持 Windows、Debian 和 Arch Linux。</div>
+        <div class="card-title">{zh ? "运行环境检测" : "Environment Check"}</div>
+        <div class="card-desc">{zh ? "Linxira Bio SDK 自动检测本地环境中的工具和运行时，支持 Windows、Debian 和 Arch Linux。" : "Auto-detects tools and runtimes in your local environment. Supports Windows, Debian, and Arch Linux."}</div>
       </div>
       <div class="card">
-        <pre><code>{
+        <pre is:raw><code>{
   <span style="color:var(--brand-teal)">"arch"</span>: "x86_64",
   <span style="color:var(--brand-teal)">"os"</span>: "windows",
   <span style="color:var(--brand-teal)">"tools"</span>: [
@@ -1091,24 +1125,24 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
     <!-- ===== DOCS ===== -->
     <div class="page" id="page-docs">
       <div class="hero animate-in" style="padding:2rem;margin-bottom:1.5rem">
-        <h2 data-zh="文档与使用指南" data-en="Documentation &amp; Guides">文档与使用指南</h2>
-        <p class="hero-subtitle" data-zh="完整的中英文文档，每个能力都有详细的参数说明和示例" data-en="Full bilingual documentation with detailed parameters and examples for each capability">完整的中英文文档，每个能力都有详细的参数说明和示例</p>
+        <h2>{zh ? "文档与使用指南" : "Documentation & Guides"}</h2>
+        <p class="hero-subtitle">{zh ? "完整的中英文文档，每个能力都有详细的参数说明和示例" : "Full bilingual documentation with detailed parameters and examples for each capability"}</p>
       </div>
       <div class="steps">
         <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank" style="text-decoration:none;color:inherit">
           <div class="step-num" style="background:var(--accent-blue)">W</div>
-          <div class="step-title" data-zh="项目 Wiki" data-en="Project Wiki">项目 Wiki</div>
-          <div class="step-desc" data-zh="完整的使用手册、入门教程和常见问题" data-en="Full user manual, tutorials, and FAQ">完整的使用手册、入门教程和常见问题</div>
+          <div class="step-title">{zh ? "项目 Wiki" : "Project Wiki"}</div>
+          <div class="step-desc">{zh ? "完整的使用手册、入门教程和常见问题" : "Full user manual, tutorials, and FAQ"}</div>
         </a>
         <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
           <div class="step-num" style="background:var(--accent-purple)">D</div>
-          <div class="step-title" data-zh="能力文档" data-en="Capability Docs">能力文档</div>
-          <div class="step-desc" data-zh="每种分析能力的中英文参考文档（108 个能力）" data-en="Bilingual reference for each capability (108 capabilities)">每种分析能力的中英文参考文档（108 个能力）</div>
+          <div class="step-title">{zh ? "能力文档" : "Capability Docs"}</div>
+          <div class="step-desc">{zh ? "每种分析能力的中英文参考文档（108 个能力）" : "Bilingual reference for each capability (108 capabilities)"}</div>
         </a>
         <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none;color:inherit">
           <div class="step-num" style="background:var(--accent-green)">G</div>
-          <div class="step-title" data-zh="GitHub 仓库" data-en="GitHub Repo">GitHub 仓库</div>
-          <div class="step-desc" data-zh="源代码、构建说明和贡献指南" data-en="Source code, build instructions, and contribution guide">源代码、构建说明和贡献指南</div>
+          <div class="step-title">{zh ? "GitHub 仓库" : "GitHub Repo"}</div>
+          <div class="step-desc">{zh ? "源代码、构建说明和贡献指南" : "Source code, build instructions, and contribution guide"}</div>
         </a>
       </div>
     </div>
@@ -1117,71 +1151,71 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
     <div class="page" id="page-licenses">
       <div class="card">
         <div class="card-title">Linxira Bio SDK</div>
-        <div class="card-desc" data-zh="本软件采用 GNU Affero General Public License v3.0 (AGPL-3.0-or-later) 许可。项目自有组件使用 AGPL-3.0-or-later，不替换或重新许可第三方代码。每个依赖项、改编体、链接库、模型、数据库和外部可执行文件必须保留其自己的许可和声明。" data-en="Licensed under GNU Affero General Public License v3.0 (AGPL-3.0-or-later). Project-owned components use AGPL-3.0-or-later. This does not replace or relicense third-party code.">本软件采用 GNU Affero General Public License v3.0 (AGPL-3.0-or-later) 许可。项目自有组件使用 AGPL-3.0-or-later，不替换或重新许可第三方代码。</div>
+        <div class="card-desc">{zh ? "本软件采用 GNU Affero General Public License v3.0 (AGPL-3.0-or-later) 许可。项目自有组件使用 AGPL-3.0-or-later，不替换或重新许可第三方代码。每个依赖项、改编体、链接库、模型、数据库和外部可执行文件必须保留其自己的许可和声明。" : "Licensed under GNU Affero General Public License v3.0 (AGPL-3.0-or-later). Project-owned components use AGPL-3.0-or-later. This does not replace or relicense third-party code."}</div>
       </div>
 
-      <h2 class="section-title" data-zh="注册研究来源" data-en="Registered Research Sources">注册研究来源</h2>
+      <h2 class="section-title">{zh ? "注册研究来源" : "Registered Research Sources"}</h2>
       <div style="overflow-x:auto">
         <table class="result-table">
-          <thead><tr><th data-zh="来源" data-en="Source">来源</th><th data-zh="许可" data-en="License">许可</th><th data-zh="当前角色" data-en="Current Role">当前角色</th></tr></thead>
+          <thead><tr><th>{zh ? "来源" : "Source"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "当前角色" : "Current Role"}</th></tr></thead>
           <tbody>
-            <tr><td class="mono">GPTomics/bioSkills</td><td>MIT</td><td data-zh="主要方法和示例审查来源" data-en="Primary method and example review source">主要方法和示例审查来源</td></tr>
-            <tr><td class="mono">BioTender-max/awesome-bio-agent-skills</td><td data-zh="合集索引；嵌套条款各异" data-en="Collection index; nested terms vary">合集索引；嵌套条款各异</td><td data-zh="发现和分类来源" data-en="Discovery and classification source">发现和分类来源</td></tr>
-            <tr><td class="mono">Linxira-OS/linxira-skills</td><td>MIT</td><td data-zh="通用技能平台和策略参考" data-en="General skill platform and policy reference">通用技能平台和策略参考</td></tr>
+            <tr><td class="mono">GPTomics/bioSkills</td><td>MIT</td><td>{zh ? "主要方法和示例审查来源" : "Primary method and example review source"}</td></tr>
+            <tr><td class="mono">BioTender-max/awesome-bio-agent-skills</td><td>{zh ? "合集索引；嵌套条款各异" : "Collection index; nested terms vary"}</td><td>{zh ? "发现和分类来源" : "Discovery and classification source"}</td></tr>
+            <tr><td class="mono">Linxira-OS/linxira-skills</td><td>MIT</td><td>{zh ? "通用技能平台和策略参考" : "General skill platform and policy reference"}</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h2 class="section-title" style="margin-top:2rem" data-zh="初始运行时组件" data-en="Initial Runtime Components">初始运行时组件</h2>
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "初始运行时组件" : "Initial Runtime Components"}</h2>
       <div style="overflow-x:auto">
         <table class="result-table">
-          <thead><tr><th data-zh="组件" data-en="Component">组件</th><th data-zh="许可" data-en="License">许可</th><th data-zh="用途" data-en="Use">用途</th></tr></thead>
+          <thead><tr><th>{zh ? "组件" : "Component"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "用途" : "Use"}</th></tr></thead>
           <tbody>
-            <tr><td class="mono">serde, serde_json</td><td>MIT OR Apache-2.0</td><td data-zh="作业、结果和能力序列化" data-en="Job, result, and capability serialization">作业、结果和能力序列化</td></tr>
-            <tr><td class="mono">csv</td><td>Unlicense OR MIT</td><td data-zh="RFC 4180 CSV 和可配置 TSV 写入" data-en="RFC 4180-compatible CSV and configurable TSV writing">RFC 4180 CSV 和可配置 TSV 写入</td></tr>
-            <tr><td class="mono">flate2</td><td>MIT OR Apache-2.0</td><td data-zh="流式 gzip 和 BGZF 兼容解压" data-en="Streaming gzip and BGZF-compatible decompression">流式 gzip 和 BGZF 兼容解压</td></tr>
-            <tr><td class="mono">eframe, egui</td><td>MIT OR Apache-2.0</td><td data-zh="原生桌面 GUI（无嵌入式 WebView）" data-en="Native desktop GUI without an embedded WebView">原生桌面 GUI（无嵌入式 WebView）</td></tr>
-            <tr><td class="mono">png</td><td>MIT OR Apache-2.0</td><td data-zh="本地结构查看器快照编码" data-en="Local structure-view snapshot encoding">本地结构查看器快照编码</td></tr>
-            <tr><td class="mono">rfd</td><td>MIT</td><td data-zh="原生操作系统文件对话框" data-en="Native operating-system file dialogs">原生操作系统文件对话框</td></tr>
-            <tr><td class="mono">rust_xlsxwriter</td><td>MIT OR Apache-2.0</td><td data-zh="原生 XLSX 结果导出" data-en="Native XLSX result export">原生 XLSX 结果导出</td></tr>
-            <tr><td class="mono">same-file</td><td>Unlicense OR MIT</td><td data-zh="跨平台文件身份检查" data-en="Cross-platform file identity checks">跨平台文件身份检查</td></tr>
-            <tr><td class="mono">sha2</td><td>MIT OR Apache-2.0</td><td data-zh="SHA-256 完整性校验" data-en="Artifact SHA-256 integrity checks">SHA-256 完整性校验</td></tr>
-            <tr><td class="mono">tempfile</td><td>MIT OR Apache-2.0</td><td data-zh="原子表导出的临时输出" data-en="Temporary output for atomic table export">原子表导出的临时输出</td></tr>
-            <tr><td class="mono">zip</td><td>MIT</td><td data-zh="ZIP 签名和元数据检查" data-en="Bounded ZIP signature and metadata inspection">ZIP 签名和元数据检查</td></tr>
-            <tr><td class="mono">jsonschema 验证栈</td><td>MIT, BSD-3, Apache-2.0, ISC, MPL-2.0, GPL-3.0-or-later</td><td data-zh="CI 专用 JSON Schema 验证" data-en="CI-only JSON Schema validation">CI 专用 JSON Schema 验证</td></tr>
-            <tr><td class="mono">epaint_default_fonts</td><td>OFL-1.1 AND Ubuntu-font-1.0</td><td data-zh="默认原生 GUI 字体" data-en="Default native GUI fonts">默认原生 GUI 字体</td></tr>
-            <tr><td class="mono">Noto Sans SC 2.002</td><td>OFL-1.1</td><td data-zh="简体中文 GUI 回退字体" data-en="Bundled Simplified Chinese GUI fallback">简体中文 GUI 回退字体</td></tr>
-            <tr><td class="mono">hexf-parse</td><td>CC0-1.0</td><td data-zh="GPU 渲染器着色器数字解析" data-en="Transitive shader-number parsing">GPU 渲染器着色器数字解析</td></tr>
+            <tr><td class="mono">serde, serde_json</td><td>MIT OR Apache-2.0</td><td>{zh ? "作业、结果和能力序列化" : "Job, result, and capability serialization"}</td></tr>
+            <tr><td class="mono">csv</td><td>Unlicense OR MIT</td><td>{zh ? "RFC 4180 CSV 和可配置 TSV 写入" : "RFC 4180-compatible CSV and configurable TSV writing"}</td></tr>
+            <tr><td class="mono">flate2</td><td>MIT OR Apache-2.0</td><td>{zh ? "流式 gzip 和 BGZF 兼容解压" : "Streaming gzip and BGZF-compatible decompression"}</td></tr>
+            <tr><td class="mono">eframe, egui</td><td>MIT OR Apache-2.0</td><td>{zh ? "原生桌面 GUI（无嵌入式 WebView）" : "Native desktop GUI without an embedded WebView"}</td></tr>
+            <tr><td class="mono">png</td><td>MIT OR Apache-2.0</td><td>{zh ? "本地结构查看器快照编码" : "Local structure-view snapshot encoding"}</td></tr>
+            <tr><td class="mono">rfd</td><td>MIT</td><td>{zh ? "原生操作系统文件对话框" : "Native operating-system file dialogs"}</td></tr>
+            <tr><td class="mono">rust_xlsxwriter</td><td>MIT OR Apache-2.0</td><td>{zh ? "原生 XLSX 结果导出" : "Native XLSX result export"}</td></tr>
+            <tr><td class="mono">same-file</td><td>Unlicense OR MIT</td><td>{zh ? "跨平台文件身份检查" : "Cross-platform file identity checks"}</td></tr>
+            <tr><td class="mono">sha2</td><td>MIT OR Apache-2.0</td><td>{zh ? "SHA-256 完整性校验" : "Artifact SHA-256 integrity checks"}</td></tr>
+            <tr><td class="mono">tempfile</td><td>MIT OR Apache-2.0</td><td>{zh ? "原子表导出的临时输出" : "Temporary output for atomic table export"}</td></tr>
+            <tr><td class="mono">zip</td><td>MIT</td><td>{zh ? "ZIP 签名和元数据检查" : "Bounded ZIP signature and metadata inspection"}</td></tr>
+            <tr><td class="mono">jsonschema 验证栈</td><td>MIT, BSD-3, Apache-2.0, ISC, MPL-2.0, GPL-3.0-or-later</td><td>{zh ? "CI 专用 JSON Schema 验证" : "CI-only JSON Schema validation"}</td></tr>
+            <tr><td class="mono">epaint_default_fonts</td><td>OFL-1.1 AND Ubuntu-font-1.0</td><td>{zh ? "默认原生 GUI 字体" : "Default native GUI fonts"}</td></tr>
+            <tr><td class="mono">Noto Sans SC 2.002</td><td>OFL-1.1</td><td>{zh ? "简体中文 GUI 回退字体" : "Bundled Simplified Chinese GUI fallback"}</td></tr>
+            <tr><td class="mono">hexf-parse</td><td>CC0-1.0</td><td>{zh ? "GPU 渲染器着色器数字解析" : "Transitive shader-number parsing"}</td></tr>
           </tbody>
         </table>
       </div>
 
-      <h2 class="section-title" style="margin-top:2rem" data-zh="工作流运行时依赖" data-en="Workflow Runtime Dependencies">工作流运行时依赖</h2>
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "工作流运行时依赖" : "Workflow Runtime Dependencies"}</h2>
       <div style="overflow-x:auto">
         <table class="result-table">
-          <thead><tr><th data-zh="组件" data-en="Component">组件</th><th data-zh="许可" data-en="License">许可</th><th data-zh="状态" data-en="Status">状态</th></tr></thead>
+          <thead><tr><th>{zh ? "组件" : "Component"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "状态" : "Status"}</th></tr></thead>
           <tbody>
-            <tr><td class="mono">Biopython 1.85</td><td>Biopython License Agreement</td><td data-zh="已编目，尚未再分发" data-en="Cataloged, not redistributed yet">已编目，尚未再分发</td></tr>
-            <tr><td class="mono">NumPy 2.2.4</td><td>BSD-3-Clause</td><td data-zh="已编目，尚未再分发" data-en="Cataloged, not redistributed yet">已编目，尚未再分发</td></tr>
-            <tr><td class="mono">DESeq2 ≥1.52.0</td><td>LGPL-3.0-or-later</td><td data-zh="差异表达工作流依赖（未再分发）" data-en="Differential-expression workflow dependency (not redistributed)">差异表达工作流依赖（未再分发）</td></tr>
-            <tr><td class="mono">jsonlite ≥1.8.9</td><td>MIT</td><td data-zh="R 工作流依赖（未再分发）" data-en="R workflow dependency (not redistributed)">R 工作流依赖（未再分发）</td></tr>
-            <tr><td class="mono">digest ≥0.6.37</td><td>GPL-2.0-or-later</td><td data-zh="R 工作流依赖（未再分发）" data-en="R workflow dependency (not redistributed)">R 工作流依赖（未再分发）</td></tr>
-            <tr><td class="mono">MCScanX</td><td>BSD-2-Clause</td><td data-zh="可选外部可执行文件（不捆绑）" data-en="Optional external executable (not bundled)">可选外部可执行文件（不捆绑）</td></tr>
-            <tr><td class="mono">KaKs Calculator</td><td data-zh="用户选择的分发版许可" data-en="License of user-selected distribution">用户选择的分发版许可</td><td data-zh="可选外部可执行文件（不捆绑）" data-en="Optional external executable (not bundled)">可选外部可执行文件（不捆绑）</td></tr>
+            <tr><td class="mono">Biopython 1.85</td><td>Biopython License Agreement</td><td>{zh ? "已编目，尚未再分发" : "Cataloged, not redistributed yet"}</td></tr>
+            <tr><td class="mono">NumPy 2.2.4</td><td>BSD-3-Clause</td><td>{zh ? "已编目，尚未再分发" : "Cataloged, not redistributed yet"}</td></tr>
+            <tr><td class="mono">DESeq2 ≥1.52.0</td><td>LGPL-3.0-or-later</td><td>{zh ? "差异表达工作流依赖（未再分发）" : "Differential-expression workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">jsonlite ≥1.8.9</td><td>MIT</td><td>{zh ? "R 工作流依赖（未再分发）" : "R workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">digest ≥0.6.37</td><td>GPL-2.0-or-later</td><td>{zh ? "R 工作流依赖（未再分发）" : "R workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">MCScanX</td><td>BSD-2-Clause</td><td>{zh ? "可选外部可执行文件（不捆绑）" : "Optional external executable (not bundled)"}</td></tr>
+            <tr><td class="mono">KaKs Calculator</td><td>{zh ? "用户选择的分发版许可" : "License of user-selected distribution"}</td><td>{zh ? "可选外部可执行文件（不捆绑）" : "Optional external executable (not bundled)"}</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="card" style="margin-top:2rem">
-        <div class="card-title" data-zh="依赖门禁" data-en="Dependency Gate">依赖门禁</div>
+        <div class="card-title">{zh ? "依赖门禁" : "Dependency Gate"}</div>
         <div class="card-desc">
-          <ol style="font-size:0.8125rem;line-height:1.8;padding-left:1.25rem;color:var(--text-dim)">
-            <li data-zh="记录 SPDX 标识符和源仓库" data-en="Record SPDX identifier and source repository">记录 SPDX 标识符和源仓库</li>
-            <li data-zh="确认与 AGPL-3.0-or-later 的兼容性" data-en="Confirm compatibility with AGPL-3.0-or-later">确认与 AGPL-3.0-or-later 的兼容性</li>
-            <li data-zh="优先选择 MIT、Apache-2.0、BSD、ISC、Zlib 等兼容组件" data-en="Prefer permissive MIT, Apache-2.0, BSD, ISC, Zlib, or similarly compatible components">优先选择 MIT、Apache-2.0、BSD、ISC、Zlib 等兼容组件</li>
-            <li data-zh="单独审查 LGPL、MPL、GPL、模型权重、数据库条款等" data-en="Review LGPL, MPL, GPL, model weights, database terms individually">单独审查 LGPL、MPL、GPL、模型权重、数据库条款等</li>
-            <li data-zh="拒绝专有、源码可用、使用领域限制、非商业或模糊条款" data-en="Reject proprietary, source-available, field-of-use, non-commercial, or ambiguous terms">拒绝专有、源码可用、使用领域限制、非商业或模糊条款</li>
-            <li data-zh="生成机器可读的依赖报告，保留必要声明" data-en="Generate machine-readable dependency report and retain required notices">生成机器可读的依赖报告，保留必要声明</li>
+          <ol style="font-size:0.8125rem;line-height:1.8;padding-left:1.25rem">
+            <li>{zh ? "记录 SPDX 标识符和源仓库" : "Record SPDX identifier and source repository"}</li>
+            <li>{zh ? "确认与 AGPL-3.0-or-later 的兼容性" : "Confirm compatibility with AGPL-3.0-or-later"}</li>
+            <li>{zh ? "优先选择 MIT、Apache-2.0、BSD、ISC、Zlib 等兼容组件" : "Prefer permissive MIT, Apache-2.0, BSD, ISC, Zlib, or similarly compatible components"}</li>
+            <li>{zh ? "单独审查 LGPL、MPL、GPL、模型权重、数据库条款等" : "Review LGPL, MPL, GPL, model weights, database terms individually"}</li>
+            <li>{zh ? "拒绝专有、源码可用、使用领域限制、非商业或模糊条款" : "Reject proprietary, source-available, field-of-use, non-commercial, or ambiguous terms"}</li>
+            <li>{zh ? "生成机器可读的依赖报告，保留必要声明" : "Generate machine-readable dependency report and retain required notices"}</li>
           </ol>
         </div>
       </div>
@@ -1189,7 +1223,7 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
       <div style="text-align:center;margin-top:1.5rem">
         <a class="btn btn-secondary" href="https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/THIRD_PARTY.md" target="_blank">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span data-zh="查看完整 THIRD_PARTY.md" data-en="View Full THIRD_PARTY.md">查看完整 THIRD_PARTY.md</span>
+          <span>{zh ? "查看完整 THIRD_PARTY.md" : "View Full THIRD_PARTY.md"}</span>
         </a>
       </div>
     </div>
@@ -1200,13 +1234,13 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
       <p style="margin-top:0.5rem">
         <a href="https://github.com/Linxira-OS/linxira-bio-sdk">GitHub</a> ·
         <a href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki">Wiki</a> ·
-        <a href="https://github.com/Linxira-OS">Linxira-OS</a>
+        <a href={`/${lang}/`}>Linxira-OS</a>
       </p>
     </div>
   </div>
 </main>
 
-<script>
+<script is:inline>
 // ===== Data =====
 const capabilities = [
   {id:'sequence.stats.v1',name:'序列统计',nameEn:'Sequence Stats',desc:'序列数、长度分布、GC含量、N50',descEn:'Count, length, GC%, N50',cat:'序列',catEn:'Sequence',icon:'📊'},
@@ -1242,24 +1276,13 @@ const capabilities = [
 ];
 
 // ===== Language =====
-let currentLang = 'zh';
-function setLang(lang) {
-  currentLang = lang;
-  document.querySelectorAll('.lang-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&lang==='zh')||(i===1&&lang==='en')));
-  document.querySelectorAll('[data-zh][data-en]').forEach(el => {
-    el.textContent = el.getAttribute('data-'+lang);
-    if (el.tagName === 'INPUT') el.placeholder = el.getAttribute('data-'+lang);
-  });
-  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
-  renderCapGrid();
-}
+let currentLang = window.BIOSDK_LANG || 'zh';
 
 // ===== Theme =====
 function toggleTheme() {
   document.body.classList.toggle('light');
   document.body.classList.toggle('dark');
 }
-document.body.classList.add('dark');
 
 // ===== Page Navigation =====
 function switchPage(page) {
@@ -1287,6 +1310,14 @@ function switchWorkbenchTab(tab) {
     if (tab === 'w-analyze') renderAnalyzeCapGrid();
   }
 }
+
+// ===== Attach nav click handlers =====
+document.querySelectorAll('.nav-item[data-page]').forEach(el => {
+  el.addEventListener('click', () => switchPage(el.dataset.page));
+});
+document.querySelectorAll('#page-workbench .tab').forEach(el => {
+  el.addEventListener('click', () => switchWorkbenchTab(el.dataset.tab));
+});
 
 // ===== Render Capability Grid =====
 function renderCapGrid() {

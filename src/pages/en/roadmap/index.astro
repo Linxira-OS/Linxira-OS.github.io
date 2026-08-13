@@ -50,7 +50,7 @@ import Navbar from "../../../components/Navbar.astro";
       <h3>Core upgrades <span class="tag todo">In progress</span></h3>
       <ul>
         <li>Image slimming: 4.6G → 2.5-3G (GNOME online-only, Plasma stays offline-installable)</li>
-        <li>Memory optimization: ZRAM compressed swap + sysctl tuning (CachyOS-verified params)</li>
+        <li>Memory optimization: ZRAM compressed swap + sysctl tuning (community-verified params)</li>
         <li>Dual-kernel GRUB menu: pick linux / linux-lts directly at boot</li>
         <li>Timeshift one-command setup: linxira-config timeshift enable (daily 3 snapshots)</li>
         <li>Containers default-on: Podman + Distrobox + Apptainer preselected at install</li>
@@ -62,7 +62,7 @@ import Navbar from "../../../components/Navbar.astro";
     <h2>Next iterations</h2>
     <div class="card">
       <h3>Full multi-desktop selection <span class="tag plan">Planned</span></h3>
-      <p>Align with CachyOS at install time (KDE / GNOME / more), with desktop environments and tiling window managers managed separately.</p>
+      <p>Full multi-desktop selection at install time (KDE / GNOME / more), with desktop environments and tiling window managers managed separately.</p>
     </div>
     <div class="card">
       <h3>Recovery mode enhancements <span class="tag plan">Planned</span></h3>
@@ -70,7 +70,7 @@ import Navbar from "../../../components/Navbar.astro";
     </div>
     <div class="card">
       <h3>Self-built performance kernel <span class="tag plan">Planned</span></h3>
-      <p>Build from CachyOS open-source kernel (BORE scheduler + x86-64-v3 optimizations) into our own signed repository.</p>
+      <p>Build from open-source kernels (BORE scheduler + x86-64-v3 optimizations) into our own signed repository. Current releases ship the generic linux / linux-lts kernels.</p>
     </div>
     <div class="card">
       <h3>Tiling window managers <span class="tag plan">Planned</span></h3>

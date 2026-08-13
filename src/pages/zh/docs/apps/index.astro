@@ -56,6 +56,7 @@ import Navbar from "../../../../components/Navbar.astro";
         <a href="/zh/docs/package-managers/">包管理器</a>
         <a href="/zh/docs/ecosystem/">软件生态</a>
         <a href="/zh/docs/apps/" class="active">官方软件</a>
+        <a href="/zh/docs/drivers/">驱动配置</a>
         <a href="/zh/docs/config-hub/">配置中心</a>
         <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
         <a href="/zh/docs/desktop/">桌面环境</a>
@@ -151,10 +152,10 @@ import Navbar from "../../../../components/Navbar.astro";
           <span class="tag">GUI</span><span class="tag">CLI</span>
         </div>
         <div class="app-card">
-          <h3>CHWD Detector</h3>
-          <div class="pkg">linxira-chwd-detector</div>
-          <p>只读硬件检测器（Rust）：读取 /sys、DMI、/proc/cpuinfo，输出 cpu/graphics/vm 稳定 profile ID。零副作用。</p>
-          <code class="cli">linxira-chwd-detector</code>
+          <h3>HWD Detector（lhwd）</h3>
+          <div class="pkg">linxira-hwd-detector</div>
+          <p>硬件检测与驱动配置工具（Rust，完整 CHWD 移植）：无参输出只读 JSON 检测报告；<code>lhwd</code> 命令提供 list / autoconfigure / install / remove 完整 CLI。详见<a href="/zh/docs/drivers/">驱动配置</a>。</p>
+          <code class="cli">lhwd --list · lhwd -a</code>
         </div>
         <div class="app-card">
           <h3>Gaming Manager</h3>

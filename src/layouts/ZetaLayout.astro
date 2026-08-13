@@ -1,4 +1,5 @@
 ---
+import Navbar from "../components/Navbar.astro";
 interface Props {
 	lang: "zh" | "en";
 	title: string;
@@ -6,20 +7,24 @@ interface Props {
 	active: "home" | "features" | "ecosystem";
 }
 const { lang, title, description, active } = Astro.props;
-const copy = lang === "zh"
+const zh = lang === "zh";
+const copy = zh
 	? {
 			navHome: "首页", navFeatures: "特性", navEcosystem: "生态",
-			langLink: "EN", themeBtn: "深浅切换", backMain: "主站",
+			themeBtn: "深浅切换",
 			footOrg: "Linxira OS", footGitHub: "GitHub",
 			footCopy: "© 2026 Zeta · Linxira-OS",
 	  }
 	: {
 			navHome: "Home", navFeatures: "Features", navEcosystem: "Ecosystem",
-			langLink: "中文", themeBtn: "Theme", backMain: "Main",
+			themeBtn: "Theme",
 			footOrg: "Linxira OS", footGitHub: "GitHub",
 			footCopy: "© 2026 Zeta · Linxira-OS",
 	  };
-const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
+const base = zh ? "/zeta/zh" : "/zeta/en";
+// 与主站 Navbar 一致的中英切换：保留当前 zeta 子页面路径
+const otherLang = zh ? "en" : "zh";
+const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/, `/$1${otherLang}$2`);
 ---
 <!DOCTYPE html>
 <html lang={lang} data-theme="dark">
@@ -87,43 +92,38 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		}
 		.container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
 
-		.topbar {
-			display: flex; justify-content: space-between; align-items: center;
-			padding: 1.1rem 5vw; border-bottom: 1px solid var(--line);
-			position: sticky; top: 0;
-			background: color-mix(in srgb, var(--bg) 88%, transparent);
-			backdrop-filter: blur(12px); z-index: 10;
+		.zeta-bar {
+			position: sticky; top: 0; z-index: 20;
+			border-bottom: 1px solid var(--line);
+			background: color-mix(in srgb, var(--bg) 90%, transparent);
+			backdrop-filter: blur(12px);
 		}
-		.topbar-left { display: flex; align-items: center; gap: 2rem; }
-		.wordmark {
-			font-weight: 800; font-size: 1.2rem; letter-spacing: .08em;
-			text-decoration: none; color: var(--ink); display: flex; align-items: center; gap: .5rem;
+		.zeta-nav {
+			display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+			max-width: 1200px; margin: 0 auto; padding: 0.7rem 5vw;
 		}
-		.wordmark .zmark {
+		.zeta-brand {
+			display: inline-flex; align-items: center; gap: .5rem;
+			font-weight: 800; letter-spacing: .08em; text-decoration: none; color: var(--ink);
+		}
+		.zeta-brand .zmark {
 			display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center;
 			background: var(--teal); color: var(--bg); font-size: 1rem; font-weight: 800;
 		}
-		.nav a {
+		.zeta-links { display: flex; align-items: center; gap: 1.4rem; }
+		.zeta-links a {
 			color: var(--muted); text-decoration: none; font-size: .8rem;
-			margin-left: 1.4rem; letter-spacing: .08em; text-transform: uppercase;
+			letter-spacing: .08em; text-transform: uppercase;
 		}
-		.nav a:hover { color: var(--teal); }
-		.nav a.active { color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: .2rem; }
-		.topbar-right { display: flex; align-items: center; gap: .8rem; }
-		.icon-link {
-			display: inline-flex; align-items: center; gap: .4rem;
+		.zeta-links a:hover { color: var(--teal); }
+		.zeta-links a.active { color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: .2rem; }
+		.zeta-actions { display: flex; align-items: center; gap: .8rem; flex-shrink: 0; }
+		.theme-toggle, .zeta-actions .lang-toggle {
 			background: none; border: 1px solid var(--line); color: var(--ink);
 			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
-			text-decoration: none; letter-spacing: .1em; text-transform: uppercase;
+			cursor: pointer; letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
 		}
-		.icon-link svg { width: .95rem; height: .95rem; flex-shrink: 0; fill: currentColor; }
-		.icon-link:hover { border-color: var(--teal); color: var(--teal); }
-		.theme-toggle, .lang-toggle {
-			background: none; border: 1px solid var(--line); color: var(--ink);
-			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
-			cursor: pointer; letter-spacing: .1em; text-transform: uppercase;
-		}
-		.theme-toggle:hover, .lang-toggle:hover { border-color: var(--teal); color: var(--teal); }
+		.theme-toggle:hover, .zeta-actions .lang-toggle:hover { border-color: var(--teal); color: var(--teal); }
 
 		.hero { padding: 6.5rem 0 4rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
 		.hero::before {
@@ -288,9 +288,9 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 		html[lang="zh"] .section-head h2 { letter-spacing: 0; }
 
 		@media (max-width: 720px) {
-			.topbar { flex-wrap: wrap; gap: .6rem; }
-			.topbar-left { gap: 1rem; flex-wrap: wrap; }
-			.nav a { margin-left: .9rem; font-size: .7rem; }
+			.zeta-nav { flex-wrap: wrap; gap: .6rem; }
+			.zeta-links { gap: 1rem; flex-wrap: wrap; }
+			.zeta-links a { font-size: .7rem; }
 			.hero { padding-top: 4.5rem; }
 			.section-head { grid-template-columns: 1fr; gap: .4rem; }
 			.code { flex-direction: column; align-items: flex-start; }
@@ -301,24 +301,21 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 <body>
 	<div class="gridlines" aria-hidden="true"></div>
 
-	<header class="topbar">
-		<div class="topbar-left">
-			<a class="wordmark" href={base + "/"}><span class="zmark">Z</span>ZETA</a>
-			<nav class="nav">
+	<Navbar lang={lang} active="products" />
+
+	<header class="zeta-bar">
+		<nav class="zeta-nav">
+			<a class="zeta-brand" href={base + "/"}><span class="zmark">Z</span><span class="zeta-word">ZETA</span></a>
+			<div class="zeta-links">
 				<a href={base + "/"} class:list={{ active: active === "home" }}>{copy.navHome}</a>
 				<a href={base + "/features/"} class:list={{ active: active === "features" }}>{copy.navFeatures}</a>
 				<a href={base + "/ecosystem/"} class:list={{ active: active === "ecosystem" }}>{copy.navEcosystem}</a>
-			</nav>
-		</div>
-		<div class="topbar-right">
-			<a class="icon-link" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
-				<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-				GitHub
-			</a>
-			<a class="icon-link" href="/">{copy.backMain}</a>
-			<button class="theme-toggle" id="themeToggle" type="button">{copy.themeBtn}</button>
-			<a class="lang-toggle" href={lang === "zh" ? "/zeta/en/" + (active === "home" ? "" : active + "/") : "/zeta/zh/" + (active === "home" ? "" : active + "/")}>{copy.langLink}</a>
-		</div>
+			</div>
+			<div class="zeta-actions">
+				<button class="theme-toggle" id="themeToggle" type="button">{copy.themeBtn}</button>
+				<a class="lang-toggle" href={langHref}>{zh ? "EN" : "中文"}</a>
+			</div>
+		</nav>
 	</header>
 
 	<main class="container">
@@ -328,7 +325,7 @@ const base = lang === "zh" ? "/zeta/zh" : "/zeta/en";
 	<footer>
 		<span class="copy">{copy.footCopy}</span>
 		<div class="foot-links">
-			<a href="/">{copy.footOrg}</a>
+			<a href={`/${lang}/`}>{copy.footOrg}</a>
 			<a href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">{copy.footGitHub}</a>
 		</div>
 	</footer>

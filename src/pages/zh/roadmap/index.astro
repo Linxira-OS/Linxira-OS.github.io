@@ -50,7 +50,7 @@ import Navbar from "../../../components/Navbar.astro";
       <h3>核心升级 <span class="tag todo">实施中</span></h3>
       <ul>
         <li>镜像瘦身：4.6G → 2.5-3G（GNOME 改在线安装，Plasma 保持离线可装）</li>
-        <li>内存优化：ZRAM 压缩交换 + sysctl 调优（CachyOS 验证参数）</li>
+        <li>内存优化：ZRAM 压缩交换 + sysctl 调优（社区验证参数）</li>
         <li>多内核 GRUB 菜单：开机直接选择 linux / linux-lts</li>
         <li>Timeshift 一键配置：linxira-config timeshift enable（每日 3 份）</li>
         <li>容器默认化：Podman + Distrobox + Apptainer 安装时默认勾选</li>
@@ -62,7 +62,7 @@ import Navbar from "../../../components/Navbar.astro";
     <h2>后续迭代</h2>
     <div class="card">
       <h3>多桌面完整选择 <span class="tag plan">规划中</span></h3>
-      <p>安装时完整对齐 CachyOS 的多桌面选择（KDE / GNOME / 更多），桌面环境与平铺窗口管理器分类管理。</p>
+      <p>安装时提供完整的多桌面选择（KDE / GNOME / 更多），桌面环境与平铺窗口管理器分类管理。</p>
     </div>
     <div class="card">
       <h3>恢复模式增强 <span class="tag plan">规划中</span></h3>
@@ -70,7 +70,7 @@ import Navbar from "../../../components/Navbar.astro";
     </div>
     <div class="card">
       <h3>性能内核自建 <span class="tag plan">规划中</span></h3>
-      <p>基于 CachyOS 开源内核（BORE 调度器 + x86-64-v3 优化）自建编译，进我们自己的签名仓库。</p>
+      <p>基于开源内核（BORE 调度器 + x86-64-v3 优化）自建编译，进我们自己的签名仓库。当前版本使用通用 linux / linux-lts 内核。</p>
     </div>
     <div class="card">
       <h3>平铺窗口管理器 <span class="tag plan">规划中</span></h3>

@@ -55,7 +55,8 @@ import Navbar from "../../../../components/Navbar.astro";
         <div class="sidebar-title">User Guide</div>
         <a href="/en/docs/package-managers/">Package Managers</a>
         <a href="/en/docs/ecosystem/">Ecosystem</a>
-        <a href="/en/docs/apps/" class="active">Official Apps</a>
+        <a href="/en/docs/apps/" class="active">Official apps</a>
+        <a href="/en/docs/drivers/">Drivers</a>
         <a href="/en/docs/config-hub/">Config Hub</a>
         <a href="/en/docs/remote-access/">Remote Access (SSH)</a>
         <a href="/en/docs/desktop/">Desktop</a>
@@ -151,10 +152,10 @@ import Navbar from "../../../../components/Navbar.astro";
           <span class="tag">GUI</span><span class="tag">CLI</span>
         </div>
         <div class="app-card">
-          <h3>CHWD Detector</h3>
-          <div class="pkg">linxira-chwd-detector</div>
-          <p>Read-only hardware detector (Rust): reads /sys, DMI, /proc/cpuinfo; emits stable cpu/graphics/vm profile IDs. Zero side effects.</p>
-          <code class="cli">linxira-chwd-detector</code>
+          <h3>HWD Detector (lhwd)</h3>
+          <div class="pkg">linxira-hwd-detector</div>
+          <p>Hardware detection and driver configuration tool (Rust, full CHWD port): no-argument mode emits a read-only JSON report; <code>lhwd</code> provides the full list / autoconfigure / install / remove CLI. See <a href="/en/docs/drivers/">Driver setup</a>.</p>
+          <code class="cli">lhwd --list · lhwd -a</code>
         </div>
         <div class="app-card">
           <h3>Gaming Manager</h3>
