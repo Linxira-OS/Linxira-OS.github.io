@@ -31,6 +31,7 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 <script is:inline>
 	window.BIOSDK_LANG = location.pathname.startsWith('/bio-sdk/zh') ? 'zh' : 'en';
 </script>
+<script src="https://cdn.jsdelivr.net/npm/3dmol@2.4.1/build/3Dmol-min.js"></script>
 <style is:global>
 /* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -415,40 +416,25 @@ ol{color:var(--text-dim)}
   font-size:1.25rem;position:relative;transition:var(--transition);
 }
 .pipe-step:hover .pipe-node{border-color:var(--brand-teal)}
-.pipe-step.running .pipe-node{border-color:var(--brand-teal);box-shadow:0 0 0 4px rgba(32,184,176,0.14)}
-/* 每个节点依次闪烁激活：信号沿流程传播 */
-.pipe-node::before{
-  content:'';position:absolute;inset:0;border-radius:12px;
-  background:rgba(32,184,176,0.28);opacity:0;
-  animation:pipeFlash 2.1s ease-in-out infinite;
+/* 节点状态由运行日志驱动：running 高亮、done 完成 */
+.pipe-step.running .pipe-node{border-color:var(--brand-teal);box-shadow:0 0 0 4px rgba(32,184,176,0.16);background:var(--brand-dark)}
+.pipe-step.done .pipe-node{border-color:rgba(32,184,176,0.55);background:rgba(32,184,176,0.10)}
+.pipe-step.done .pipe-node::after{
+  content:'✓';position:absolute;top:-6px;right:-6px;width:16px;height:16px;border-radius:50%;
+  background:var(--accent-green);color:#fff;font-size:0.6rem;display:flex;align-items:center;justify-content:center;
 }
-@keyframes pipeFlash{0%{opacity:0}6%{opacity:0.9}16%{opacity:0}100%{opacity:0}}
-.pipe-step:nth-child(1)::after,.pipe-step:nth-child(1) .pipe-node::before{animation-delay:0s}
-.pipe-step:nth-child(3)::after,.pipe-step:nth-child(3) .pipe-node::before{animation-delay:0.68s}
-.pipe-step:nth-child(5)::after,.pipe-step:nth-child(5) .pipe-node::before{animation-delay:1.36s}
-.pipe-step:nth-child(7)::after,.pipe-step:nth-child(7) .pipe-node::before{animation-delay:2.04s}
-.pipe-step:nth-child(9)::after,.pipe-step:nth-child(9) .pipe-node::before{animation-delay:2.72s}
-.pipe-step:nth-child(11)::after,.pipe-step:nth-child(11) .pipe-node::before{animation-delay:3.4s}
-.pipe-step:nth-child(13)::after,.pipe-step:nth-child(13) .pipe-node::before{animation-delay:4.08s}
-/* 流动点沿各段依次前进 */
-.pipe-link:nth-child(2) .flow-dot{animation-delay:0.34s}
-.pipe-link:nth-child(4) .flow-dot{animation-delay:1.02s}
-.pipe-link:nth-child(6) .flow-dot{animation-delay:1.7s}
-.pipe-link:nth-child(8) .flow-dot{animation-delay:2.38s}
-.pipe-link:nth-child(10) .flow-dot{animation-delay:3.06s}
-.pipe-link:nth-child(12) .flow-dot{animation-delay:3.74s}
-.pipe-step::after{
+.pipe-step.running .pipe-node::after{
   content:'';position:absolute;inset:-5px;border-radius:16px;
-  border:2px solid var(--brand-teal);opacity:0;animation:pipePulse 2.1s ease-out infinite;
+  border:2px solid var(--brand-teal);opacity:0;animation:pipePulse 1.6s ease-out infinite;
 }
+@keyframes pipePulse{0%{transform:scale(0.8);opacity:0.7}100%{transform:scale(1.15);opacity:0}}
 @keyframes pipePulse{0%{transform:scale(0.8);opacity:0.7}100%{transform:scale(1.15);opacity:0}}
 .pipe-name{font-size:0.72rem;color:var(--text-dim);white-space:nowrap}
 .pipe-link{flex:1;min-width:22px;max-width:70px}
 .pipe-link svg{display:block;width:100%;height:10px;overflow:visible}
 .pipe-flow{stroke:var(--brand-teal);stroke-width:1.5;stroke-dasharray:6 6;animation:pipeFlow 1s linear infinite;opacity:0.75}
 @keyframes pipeFlow{to{stroke-dashoffset:-12}}
-.flow-dot{animation:flowDot 2.6s linear infinite}
-@keyframes flowDot{0%{transform:translateX(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateX(58px);opacity:0}}
+.flow-dot{display:none}
 
 /* ===== Simulated Run Log ===== */
 .runlog-body{
@@ -598,6 +584,39 @@ body.light .ai-channel.cli{color:#2A5E92}
 .dv-btn{background:var(--bg-hover);color:var(--text-dim);border:1px solid var(--border);border-radius:999px;padding:0.22rem 0.7rem;font-size:0.7rem;transition:var(--transition)}
 .dv-btn:hover{color:var(--brand-teal);border-color:var(--brand-teal)}
 .dv-btn.active{background:var(--brand-dark);color:var(--text-bright);border-color:var(--brand-teal)}
+
+/* ===== 报告预览子窗口 ===== */
+.ri-preview{margin-left:auto;align-self:center;font-size:0.65rem;color:var(--brand-teal);background:rgba(32,184,176,0.1);border:1px solid rgba(32,184,176,0.3);border-radius:999px;padding:0.15rem 0.5rem;white-space:nowrap}
+.rp-page{background:#fff;color:#1F1F1F;border-radius:6px;padding:1.4rem 1.6rem;max-width:720px;margin:0 auto;box-shadow:0 6px 24px rgba(0,0,0,0.4);font-size:0.8rem;line-height:1.6}
+.rp-page h3{margin:0 0 0.25rem;font-size:1.05rem}
+.rp-page .rp-sub{color:#616161;font-size:0.7rem;margin-bottom:0.9rem}
+.rp-page table{width:100%;border-collapse:collapse;margin:0.6rem 0;font-size:0.72rem}
+.rp-page th{text-align:left;padding:0.3rem 0.5rem;background:#F3F3F3;border-bottom:1px solid #E0E0E0}
+.rp-page td{padding:0.3rem 0.5rem;border-bottom:1px solid #EEEEEE}
+.rp-page .rp-stats{display:flex;gap:0.6rem;flex-wrap:wrap;margin:0.6rem 0}
+.rp-page .rp-stat{flex:1;min-width:90px;background:#F7F9FB;border:1px solid #E5E9EF;border-radius:6px;padding:0.5rem;text-align:center}
+.rp-page .rp-stat b{display:block;font-size:1rem;color:#0E4A44}
+.rp-page .rp-stat span{font-size:0.62rem;color:#616161}
+.rp-page .rp-fig{background:#F3F6FA;border:1px solid #E5E9EF;border-radius:6px;height:110px;display:flex;align-items:center;justify-content:center;color:#9AA5B1;font-size:0.7rem;margin:0.6rem 0}
+.rp-page .rp-foot{margin-top:1rem;padding-top:0.6rem;border-top:1px solid #E0E0E0;color:#9AA5B1;font-size:0.62rem;display:flex;justify-content:space-between}
+.rp-figs{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;max-width:640px;margin:0 auto}
+.rp-figs .rp-figcell{background:#0E1417;border-radius:6px;height:120px;display:flex;align-items:center;justify-content:center;color:#7A8A94;font-size:0.65rem;border:1px solid var(--border)}
+.rp-figs .rp-figcell svg{width:100%;height:100%}
+
+/* ===== 真实 3D 结构 ===== */
+.mdl-tabs{display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap}
+.mdl-tab{background:var(--bg-card);color:var(--text-dim);border:1px solid var(--border);border-radius:var(--radius);padding:0.4rem 0.85rem;font-size:0.78rem;transition:var(--transition)}
+.mdl-tab:hover{color:var(--brand-teal);border-color:var(--brand-teal)}
+.mdl-tab.active{background:var(--brand-dark);color:var(--text-bright);border-color:var(--brand-teal)}
+.mdl-viewer{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#101417;min-height:380px}
+.mdl-note{font-size:0.8rem;color:var(--text-dim);line-height:1.75;margin-top:0.75rem}
+.mdl-note b{color:var(--brand-teal)}
+
+/* ===== 可点击角标 ===== */
+.gallery-item{position:relative}
+.gi-tag{position:absolute;top:0.5rem;right:0.5rem;font-size:0.6rem;color:var(--text-dim);background:var(--bg-panel);border:1px solid var(--border);border-radius:999px;padding:0.15rem 0.5rem;opacity:0;transition:opacity .2s;pointer-events:none;z-index:2}
+.gallery-item:hover .gi-tag{opacity:1}
+.gi-var{color:var(--brand-teal);border-color:rgba(32,184,176,0.4);background:rgba(32,184,176,0.1)}
 
 /* ===== Light Theme ===== */
 body.light{
@@ -782,21 +801,25 @@ body.light .stat-card .stat-value{color:var(--brand-dark)}
         <div class="card-title">📄 {zh ? "模拟报告输出 · report/" : "Simulated Report Output · report/"}</div>
         <div class="card-desc" style="margin-bottom:0.9rem">{zh ? "流程结束后自动生成以下报告（桌面版可导出）：" : "Reports auto-generated after the pipeline (exportable in desktop app):"}</div>
         <div class="report-grid">
-          <div class="report-item animate-in">
+          <div class="report-item animate-in" onclick="openReportPreview('html')">
             <span class="ri-ico">📊</span>
             <div><div class="ri-name">report.html</div><div class="ri-desc">{zh ? "交互式图表报告" : "Interactive chart report"}</div><div class="ri-size">2.4 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
           </div>
-          <div class="report-item animate-in">
+          <div class="report-item animate-in" onclick="openReportPreview('pdf')">
             <span class="ri-ico">📄</span>
             <div><div class="ri-name">report.pdf</div><div class="ri-desc">{zh ? "论文级排版" : "Publication layout"}</div><div class="ri-size">1.8 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
           </div>
-          <div class="report-item animate-in">
+          <div class="report-item animate-in" onclick="openReportPreview('json')">
             <span class="ri-ico">📋</span>
             <div><div class="ri-name">report.json</div><div class="ri-desc">{zh ? "机器可读结果" : "Machine-readable results"}</div><div class="ri-size">312 KB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
           </div>
-          <div class="report-item animate-in">
+          <div class="report-item animate-in" onclick="openReportPreview('figures')">
             <span class="ri-ico">🖼</span>
             <div><div class="ri-name">figures/</div><div class="ri-desc">{zh ? "8 张 SVG 图表" : "8 SVG figures"}</div><div class="ri-size">6.1 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
           </div>
         </div>
       </div>
@@ -1484,6 +1507,24 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
           </div>
           <div class="gallery-item-body"><svg id="kmer-host" viewBox="0 0 260 200" width="240" height="180"></svg></div>
         </div>
+
+        <!-- Sequence Motif Logo -->
+        <div class="gallery-item animate-in" onclick="openDemo(this)">
+          <div class="gallery-item-header">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>
+            <span>sequence.motif.logo.v1</span>
+          </div>
+          <div class="gallery-item-body"><svg id="motif-host" viewBox="0 0 260 200" width="240" height="180"></svg></div>
+        </div>
+
+        <!-- Ka/Ks -->
+        <div class="gallery-item animate-in" onclick="openDemo(this)">
+          <div class="gallery-item-header">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <span>comparative.kaks.v1</span>
+          </div>
+          <div class="gallery-item-body"><svg id="kaks-host" viewBox="0 0 260 200" width="240" height="180"></svg></div>
+        </div>
       </div>
 
       <!-- Example Result Data Table -->
@@ -1584,6 +1625,17 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
       <div class="card">
         <div class="card-title">{zh ? "交互式结构查看器" : "Interactive Structure Viewer"}</div>
         <div class="card-desc">{zh ? "支持 PDB / mmCIF 蛋白质结构交互式查看（桌面版：旋转、缩放、残基选择、距离测量、图片导出）。以下为经典案例模拟演示——血红蛋白（Hemoglobin，1HHO）的氧合与一氧化碳结合机制。" : "Interactive PDB/mmCIF protein viewer (desktop: rotate, zoom, residue selection, distance measurement, image export). Simulated classic case below — hemoglobin (1HHO) oxygenation and carbon-monoxide binding."}</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧊 {zh ? "真实 3D 结构（WebGL 渲染）" : "Real 3D Structures (WebGL)"}</div>
+        <div class="card-desc">{zh ? "在浏览器中实时渲染 PDB 原子坐标（3Dmol.js）：人血红蛋白 1HHO（α₂β₂ 四聚体 · 4 个血红素）与牛胰岛素 4INS（A/B 双链 · 受体结合位点高亮动画）。拖拽旋转 · 滚轮缩放 · 自动缓慢旋转。" : "Real-time PDB rendering in browser (3Dmol.js): human hemoglobin 1HHO (α₂β₂ tetramer · 4 hemes) and bovine insulin 4INS (A/B chains · receptor-binding sites with flash animation). Drag to rotate · scroll to zoom · slow auto-spin."}</div>
+        <div class="mdl-tabs">
+          <button class="mdl-tab active" data-mdl="hho" onclick="mdlSwitch('hho')">🩸 {zh ? "血红蛋白 1HHO" : "Hemoglobin 1HHO"}</button>
+          <button class="mdl-tab" data-mdl="ins" onclick="mdlSwitch('ins')">💉 {zh ? "牛胰岛素 4INS" : "Bovine insulin 4INS"}</button>
+        </div>
+        <div class="mdl-viewer" id="mdl-viewer"></div>
+        <div class="mdl-note" id="mdl-note"></div>
       </div>
 
       <div class="hb-wrap">
@@ -1817,6 +1869,17 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
   </div>
 </div>
 
+<!-- ===== Report Preview Modal ===== -->
+<div class="demo-modal" id="report-modal" onclick="if(event.target===this)closeReport()">
+  <div class="demo-modal-panel">
+    <div class="demo-modal-head">
+      <span class="demo-modal-title" id="report-modal-title"></span>
+      <button class="demo-close" onclick="closeReport()" aria-label="Close">✕</button>
+    </div>
+    <div class="demo-body" id="report-modal-body"></div>
+  </div>
+</div>
+
 <script is:inline>
 // ===== Data =====
 const capabilities = [
@@ -1866,7 +1929,7 @@ function switchPage(page) {
     target.classList.add('active');
     if (page === 'home') renderCapGrid();
     if (page === 'workbench') switchWorkbenchTab('w-import');
-    if (page === 'structure') hbScene(hbCurrent);
+    if (page === 'structure') { hbScene(hbCurrent); if (!mdlInitDone) { mdlInitDone = true; initMdl(); } }
   }
 }
 
@@ -2037,8 +2100,7 @@ function renderGsea(hostEl) {
   host.appendChild(svgText(24, 168, 'rank \u2192', { 'text-anchor': 'start', 'font-size': '6' }));
 }
 function renderKmer(hostEl) {
-  const host = hostEl || document.getElementById('kmer-host'); if (!host) return;
-  const data = [['AAAAA', 4120], ['TTTTT', 3987], ['GCGCG', 2451], ['ATATA', 1890], ['CGCGC', 1532], ['AATTG', 1204], ['GATCA', 987], ['TTAAG', 876]];
+  const host = hostEl || document.getElementById('kmer-host'); if (!host) return;  const data = [['AAAAA', 4120], ['TTTTT', 3987], ['GCGCG', 2451], ['ATATA', 1890], ['CGCGC', 1532], ['AATTG', 1204], ['GATCA', 987], ['TTAAG', 876]];
   const base = 160, max = data[0][1];
   host.appendChild(svgEl('line', { x1: 40, y1: base, x2: 240, y2: base, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
   [53, 105].forEach(gy => host.appendChild(svgEl('line', { x1: 40, y1: gy, x2: 240, y2: gy, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5', opacity: '0.6' })));
@@ -2054,6 +2116,67 @@ function renderKmer(hostEl) {
     host.appendChild(svgText(x + 8, y - 4, (d[1] / 1000).toFixed(1) + 'k', { 'font-size': '6' }));
     host.appendChild(svgText(x + 8, 176, d[0], { 'font-size': '6' }));
   });
+}
+function renderMotif(hostEl) {
+  const host = hostEl || document.getElementById('motif-host'); if (!host) return;
+  const cols = [
+    { A: 0.55, C: 0.15, G: 0.2, T: 0.1 }, { A: 0.3, C: 0.5, G: 0.1, T: 0.1 },
+    { A: 0.1, C: 0.15, G: 0.65, T: 0.1 }, { A: 0.2, C: 0.2, G: 0.15, T: 0.45 },
+    { A: 0.7, C: 0.1, G: 0.1, T: 0.1 }, { A: 0.15, C: 0.25, G: 0.5, T: 0.1 },
+  ];
+  const colors = { A: '#207456', C: '#31679E', G: '#B06818', T: '#AE3939' };
+  const base = 170, scale = 110;
+  host.appendChild(svgEl('line', { x1: 28, y1: base, x2: 232, y2: base, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+  host.appendChild(svgText(24, base - scale / 2 + 3, '0.5', { 'text-anchor': 'end', 'font-size': '7' }));
+  host.appendChild(svgText(24, base - scale + 3, '1.0', { 'text-anchor': 'end', 'font-size': '7' }));
+  cols.forEach((col, i) => {
+    const x = 30 + i * 32, w = 26;
+    let yAcc = base;
+    Object.keys(col).sort((a, b) => col[b] - col[a]).forEach((nt, k) => {
+      const h = Math.round(col[nt] * scale);
+      yAcc -= h;
+      const rect = svgEl('rect', { x, y: yAcc, width: w, height: Math.max(3, h), fill: colors[nt], opacity: '0.85' });
+      rect.style.animation = 'barGrow ' + (0.5 + k * 0.12) + 's ease-out both';
+      rect.style.transformBox = 'fill-box';
+      rect.style.transformOrigin = 'center bottom';
+      rect.style.animationDelay = (i * 0.1) + 's';
+      host.appendChild(rect);
+      const t = svgText(x + w / 2, yAcc + h / 2 + 2.5, nt, { 'font-size': '9', 'font-weight': '700', style: 'fill:#fff' });
+      t.style.animation = 'fadeIn .4s ease-out both';
+      t.style.animationDelay = (i * 0.1 + 0.3) + 's';
+      host.appendChild(t);
+    });
+    host.appendChild(svgText(x + w / 2, 184, String(i + 1), { 'font-size': '7' }));
+  });
+  host.appendChild(svgText(130, 15, 'binding-site motif (JASPAR MA0139.1)', { 'font-size': '7' }));
+}
+function renderKaKs(hostEl) {
+  const host = hostEl || document.getElementById('kaks-host'); if (!host) return;
+  const rng = mulberry32(777);
+  host.appendChild(svgEl('line', { x1: 40, y1: 150, x2: 240, y2: 150, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+  host.appendChild(svgEl('line', { x1: 40, y1: 50, x2: 40, y2: 150, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+  // Ka/Ks=1 参考线
+  host.appendChild(svgEl('line', { x1: 40, y1: 150, x2: 240, y2: 62, style: 'stroke:var(--text-dim)', 'stroke-width': '0.7', 'stroke-dasharray': '4,3', opacity: '0.5' }));
+  host.appendChild(svgText(238, 58, 'Ka/Ks = 1', { 'text-anchor': 'end', 'font-size': '6.5' }));
+  host.appendChild(svgText(235, 166, 'Ka (nonsynonymous)', { 'text-anchor': 'end', 'font-size': '7' }));
+  host.appendChild(svgText(14, 55, 'Ks', { 'text-anchor': 'middle', 'font-size': '7' }));
+  for (let i = 0; i < 42; i++) {
+    const ka = rng() * 2.1, ks = rng() * 1.6;
+    const x = 40 + ka * 95, y = 150 - ks * 62;
+    const ratio = ka / Math.max(ks, 0.02);
+    const col = ratio > 1 ? '#AE3939' : (ratio < 0.5 ? '#31679E' : '#9D9D9D');
+    const c = svgEl('circle', { cx: x, cy: y, r: ratio > 1 ? 2.6 : 1.9, fill: col, opacity: ratio > 1 ? '0.95' : '0.6' });
+    c.style.animation = 'fadeIn .5s ease-out both';
+    c.style.animationDelay = (i * 20) + 'ms';
+    host.appendChild(c);
+  }
+  const isZh = currentLang === 'zh';
+  host.appendChild(svgEl('rect', { x: 15, y: 172, width: '7', height: '7', rx: '1', fill: '#AE3939' }));
+  host.appendChild(svgText(25, 179, isZh ? '正选择 (Ka/Ks>1)' : 'Positive (Ka/Ks>1)', { 'text-anchor': 'start', 'font-size': '7' }));
+  host.appendChild(svgEl('rect', { x: 105, y: 172, width: '7', height: '7', rx: '1', fill: '#31679E' }));
+  host.appendChild(svgText(115, 179, isZh ? '纯化选择' : 'Purifying', { 'text-anchor': 'start', 'font-size': '7' }));
+  host.appendChild(svgEl('rect', { x: 178, y: 172, width: '7', height: '7', rx: '1', fill: '#9D9D9D' }));
+  host.appendChild(svgText(188, 179, isZh ? '中性' : 'Neutral', { 'text-anchor': 'start', 'font-size': '7' }));
 }
 
 // ===== Simulated Workbench（数据工作台模拟流程） =====
@@ -2191,6 +2314,7 @@ function runSimAnalysis(cid) {
   simCap = cid;
   const host = document.getElementById('sim-result'); if (!host) return;
   if (!simFile) { switchWorkbenchTab('w-import'); return; }
+  switchWorkbenchTab('w-results');
   const isZh = currentLang === 'zh';
   const f = simFile;
   host.innerHTML = `<div class="card">
@@ -2246,6 +2370,8 @@ function renderResultChart(type, host) {
   else if (type === 'kmer') renderKmer(host);
   else if (type === 'pca') renderPca(host);
   else if (type === 'pie') renderPie(host);
+  else if (type === 'motif') renderMotif(host);
+  else if (type === 'kaks') renderKaKs(host);
 }
 function renderPca(host) {
   host.appendChild(svgEl('rect', { width: '260', height: '200', style: 'fill:var(--chart-bg)' }));
@@ -2430,6 +2556,18 @@ const demoDetails = {
   <span style="color:var(--brand-teal)">"distinct_kmers"</span>: 9312,
   <span style="color:var(--brand-teal)">"top"</span>: {<span style="color:var(--brand-teal)">"AAAAA"</span>: 4120}
 }` },
+  'sequence.motif.logo.v1': { file: 'Homo sapiens · TFBS motif (JASPAR MA0139.1)', logZh: ['读取 1,204 条结合位点序列', '构建位置权重矩阵 PWM', '绘制序列 logo'], logEn: ['Reading 1,204 binding-site sequences', 'Building position weight matrix', 'Rendering sequence logo'], json: `{
+  <span style="color:var(--brand-teal)">"motif_id"</span>: "MA0139.1",
+  <span style="color:var(--brand-teal)">"sites"</span>: 1204,
+  <span style="color:var(--brand-teal)">"width"</span>: 6,
+  <span style="color:var(--brand-teal)">"consensus"</span>: "AGC[A/G]T"
+}` },
+  'comparative.kaks.v1': { file: 'Homo sapiens vs Pan troglodytes · orthologs', logZh: ['比对 1,842 个直系同源基因', '计算 Ka / Ks', '标注正选择基因 (14)'], logEn: ['Aligning 1,842 orthologs', 'Computing Ka / Ks', 'Flagging positive selection (14)'], json: `{
+  <span style="color:var(--brand-teal)">"ortholog_pairs"</span>: 1842,
+  <span style="color:var(--brand-teal)">"positive_selection"</span>: 14,
+  <span style="color:var(--brand-teal)">"median_ka_ks"</span>: 0.21,
+  <span style="color:var(--brand-teal)">"top_gene"</span>: "FOXP2 (Ka/Ks 1.42)"
+}` },
 };
 function openDemo(el) {
   const capId = el.querySelector('.gallery-item-header span').textContent.trim();
@@ -2485,6 +2623,74 @@ function openDemo(el) {
   }, 520);
 }
 function closeDemo() { document.getElementById('demo-modal').classList.remove('open'); }
+
+// ===== Report Preview（报告子窗口预览） =====
+function closeReport() { document.getElementById('report-modal').classList.remove('open'); }
+function openReportPreview(type) {
+  const modal = document.getElementById('report-modal');
+  const body = document.getElementById('report-modal-body');
+  const title = document.getElementById('report-modal-title');
+  const isZh = currentLang === 'zh';
+  const file = { html: 'report.html', pdf: 'report.pdf', json: 'report.json', figures: 'figures/' }[type];
+  title.textContent = file;
+  const hbStat = '<div class="rp-stats">' +
+    '<div class="rp-stat"><b>2,481,532</b><span>' + (isZh ? '读段' : 'reads') + '</span></div>' +
+    '<div class="rp-stat"><b>93.7%</b><span>Q30</span></div>' +
+    '<div class="rp-stat"><b>48.2%</b><span>GC</span></div>' +
+    '<div class="rp-stat"><b>32.4×</b><span>' + (isZh ? '深度' : 'depth') + '</span></div>' +
+    '<div class="rp-stat"><b>128,450</b><span>' + (isZh ? '变异位点' : 'variants') + '</span></div></div>';
+  const hbTable = '<table><thead><tr><th>' + (isZh ? '变异类型' : 'Type') + '</th><th>' + (isZh ? '数量' : 'Count') + '</th><th>%</th></tr></thead><tbody>' +
+    '<tr><td>SNP</td><td>108,231</td><td>45%</td></tr>' +
+    '<tr><td>InDel</td><td>20,219</td><td>18%</td></tr>' +
+    '<tr><td>ts/tv</td><td colspan="2">1.99</td></tr></tbody></table>';
+  let content = '';
+  if (type === 'html') {
+    content = `<div class="rp-page">
+      <h3>${isZh ? 'WES 变异分析报告' : 'WES Variant Analysis Report'}</h3>
+      <div class="rp-sub">Homo sapiens · GRCh38 · ${isZh ? '样本' : 'sample'} reads.fastq.gz · linxira-bio v0.1.0</div>
+      ${hbStat}
+      <div class="rp-fig">${isZh ? '图 1 · 变异类型分布（SVG）' : 'Fig 1 · Variant type distribution (SVG)'}</div>
+      ${hbTable}
+      <div class="rp-fig">${isZh ? '图 2 · 覆盖深度分布（SVG）' : 'Fig 2 · Depth distribution (SVG)'}</div>
+      <div class="rp-foot"><span>${isZh ? '生成于' : 'Generated'} 2026-08-14 10:04</span><span>Linxira Bio SDK</span></div>
+    </div>`;
+  } else if (type === 'pdf') {
+    content = `<div class="rp-page" style="max-width:600px">
+      <h3 style="text-align:center">${isZh ? '全外显子组测序变异分析报告' : 'Whole-Exome Sequencing Variant Report'}</h3>
+      <div class="rp-sub" style="text-align:center">${isZh ? '样本' : 'Sample'}: WES-01 · Homo sapiens (GRCh38) · linxira-bio v0.1.0</div>
+      <p><b>${isZh ? '摘要' : 'Abstract'}:</b> ${isZh ? '本报告基于 2,481,532 条双端读段，比对率 97.2%，平均深度 32.4×。共检出 128,450 个变异位点（108,231 SNP / 20,219 InDel），ts/tv 1.99。' : '2,481,532 paired-end reads, 97.2% mapped, 32.4× mean depth. 128,450 variants called (108,231 SNPs / 20,219 InDels), ts/tv 1.99.'}</p>
+      ${hbStat}
+      ${hbTable}
+      <div class="rp-fig" style="height:150px">${isZh ? '图 1 · 变异类型分布' : 'Fig 1 · Variant type distribution'}</div>
+      <div class="rp-foot"><span>Linxira Bio SDK · AGPL-3.0</span><span>2026-08-14</span></div>
+    </div>`;
+  } else if (type === 'json') {
+    content = `<pre class="demo-json" style="max-height:56vh;font-size:0.7rem">{<span style="color:var(--brand-teal)">"schema_version"</span>: "1",
+  <span style="color:var(--brand-teal)">"job_id"</span>: "w20260814-1004-001",
+  <span style="color:var(--brand-teal)">"sample"</span>: "WES-01",
+  <span style="color:var(--brand-teal)">"reference"</span>: "GRCh38",
+  <span style="color:var(--brand-teal)">"qc"</span>: {<span style="color:var(--brand-teal)">"read_count"</span>: 2481532, <span style="color:var(--brand-teal)">"q30"</span>: 93.7, <span style="color:var(--brand-teal)">"gc"</span>: 48.2},
+  <span style="color:var(--brand-teal)">"alignment"</span>: {<span style="color:var(--brand-teal)">"mapped_percent"</span>: 97.2, <span style="color:var(--brand-teal)">"mean_depth"</span>: 32.4},
+  <span style="color:var(--brand-teal)">"variants"</span>: {
+    <span style="color:var(--brand-teal)">"total"</span>: 128450, <span style="color:var(--brand-teal)">"snp"</span>: 108231, <span style="color:var(--brand-teal)">"indel"</span>: 20219,
+    <span style="color:var(--brand-teal)">"ts_tv"</span>: 1.99, <span style="color:var(--brand-teal)">"pathogenic"</span>: 3
+  },
+  <span style="color:var(--brand-teal)">"annotations"</span>: {<span style="color:var(--brand-teal)">"dbSNP_matched"</span>: 121204, <span style="color:var(--brand-teal)">"clinvar_pathogenic"</span>: 3},
+  <span style="color:var(--brand-teal)">"status"</span>: "ok"
+}</pre>`;
+  } else {
+    content = `<div class="rp-figs">
+      <div class="rp-figcell">${isZh ? 'fig01 · 变异类型' : 'fig01 · variant types'}</div>
+      <div class="rp-figcell">${isZh ? 'fig02 · 深度分布' : 'fig02 · depth'}</div>
+      <div class="rp-figcell">${isZh ? 'fig03 · ts/tv 直方图' : 'fig03 · ts/tv'}</div>
+      <div class="rp-figcell">${isZh ? 'fig04 · 染色体分布' : 'fig04 · per-chrom'}</div>
+      <div class="rp-figcell">${isZh ? 'fig05 · 基因型质量' : 'fig05 · GQ'}</div>
+      <div class="rp-figcell">${isZh ? 'fig06 · 等位基因频率' : 'fig06 · AF'}</div>
+    </div>`;
+  }
+  body.innerHTML = content;
+  modal.classList.add('open');
+}
 
 // ===== Hemoglobin 模拟（结构查看器） =====
 const hbNotes = {
@@ -2749,16 +2955,78 @@ function clearAI() {
   chat.innerHTML = '';
 }
 
+// ===== Real 3D Structures（3Dmol.js） =====
+let mdlViewer = null, mdlCur = 'hho', mdlInitDone = false, insTimer = null;
+function initMdl() {
+  const el = document.getElementById('mdl-viewer');
+  const note = document.getElementById('mdl-note');
+  if (!el) return;
+  if (typeof $3Dmol === 'undefined') {
+    el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim);font-size:0.85rem">⚠ 3Dmol.js 加载失败（需网络访问 CDN）。上方 SVG 机制动画不受影响。</div>';
+    return;
+  }
+  const isZh = currentLang === 'zh';
+  clearInterval(insTimer);
+  el.innerHTML = '';
+  mdlViewer = $3Dmol.createViewer(el, { width: '100%', height: 380, backgroundColor: '#101417' });
+  const file = mdlCur === 'hho' ? '1hho.pdb' : '4ins.pdb';
+  fetch('/bio-sdk/structures/' + file).then(r => r.text()).then(data => {
+    mdlViewer.addModel(data, 'pdb');
+    mdlViewer.setStyle({}, { cartoon: { colorscheme: 'chain' } });
+    if (mdlCur === 'hho') {
+      mdlViewer.setStyle({ hetflag: true }, { stick: { radius: 0.28, color: '#C97A2E' }, sphere: { radius: 0.9, color: '#C97A2E' } });
+      note.innerHTML = '<b>1HHO</b> — ' + (isZh ? '人血红蛋白（Homo sapiens）α₂β₂ 四聚体；橙色为 4 个血红素辅基（Fe²⁺），即上方动画中的结合位点。' : 'Human hemoglobin (Homo sapiens) α₂β₂ tetramer; orange = 4 heme groups (Fe²⁺) — the binding sites animated above.');
+    } else {
+      mdlViewer.setStyle({ resn: 'CYS' }, { stick: { radius: 0.22, color: '#E8C33A' } });
+      mdlViewer.setStyle({ chain: ['A', 'C'], resi: '1,2,3,4,5,19,21' }, { sphere: { radius: 0.7, color: '#20B8B0' } });
+      mdlViewer.setStyle({ chain: ['B', 'D'], resi: '24,25,26,12,16' }, { sphere: { radius: 0.7, color: '#E23C3C' } });
+      note.innerHTML = '<b>4INS</b> — ' + (isZh ? '牛胰岛素（Bos taurus）A/B 双链（晶体含 2 个分子）；黄色 = 3 个二硫键；青色 = A 链 N 端受体结合区，红色 = B 链 C 端 β-折叠结合区。下方结合位点闪烁动画。' : 'Bovine insulin (Bos taurus), 2 molecules in crystal; yellow = 3 disulfide bonds; cyan = A-chain N-terminal receptor-binding region; red = B-chain C-terminal β-strand binding region. Binding sites flash below.');
+      mdlViewer.spin('y', 0.6);
+      let on = false;
+      insTimer = setInterval(() => {
+        if (!mdlViewer || mdlCur !== 'ins') { clearInterval(insTimer); return; }
+        on = !on;
+        mdlViewer.setStyle({ chain: ['A', 'C'], resi: '1,2,3,4,5,19,21' }, { sphere: { radius: 0.7, color: on ? '#4DD4CC' : '#20B8B0' } });
+        mdlViewer.setStyle({ chain: ['B', 'D'], resi: '24,25,26,12,16' }, { sphere: { radius: 0.7, color: on ? '#F27070' : '#E23C3C' } });
+        mdlViewer.render();
+      }, 900);
+    }
+    mdlViewer.zoomTo();
+    if (mdlCur === 'hho') mdlViewer.spin('y', 1.2);
+    mdlViewer.render();
+  }).catch(() => {
+    el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim)">⚠ PDB 文件加载失败</div>';
+  });
+}
+function mdlSwitch(type) {
+  mdlCur = type;
+  document.querySelectorAll('.mdl-tab').forEach(t => t.classList.toggle('active', t.dataset.mdl === type));
+  initMdl();
+}
+
+// ===== Gallery 可点击角标 =====
+function tagGallery() {
+  document.querySelectorAll('.gallery-item').forEach(el => {
+    if (el.querySelector('.gi-tag')) return;
+    const capId = el.querySelector('.gallery-item-header span').textContent.trim();
+    const v = demoVariants[capId];
+    const tag = document.createElement('span');
+    tag.className = 'gi-tag' + (v ? ' gi-var' : '');
+    tag.textContent = (currentLang === 'zh' ? '▶ 查看流程' : '▶ view flow') + (v ? ' · ' + v.length + (currentLang === 'zh' ? ' 变体' : ' variants') : '');
+    el.appendChild(tag);
+  });
+}
+
 // ===== Simulated Run Log（模拟运行日志动画） =====
 const runLogSteps = [
-  { zh: '启动本地分析运行时', en: 'Starting local analysis runtime' },
+  { zh: '启动本地分析运行时 (linxira-bio v0.1.0)', en: 'Starting local analysis runtime (linxira-bio v0.1.0)' },
   { zh: '检测工具链：rustc 1.97.1 · Python 3.10 · R 4.6.1 · Java 21', en: 'Detecting toolchain: rustc 1.97.1 · Python 3.10 · R 4.6.1 · Java 21' },
-  { zh: '读取 reads.fastq.gz（2,481,532 条读段）', en: 'Reading reads.fastq.gz (2,481,532 reads)' },
+  { zh: '读取 WES 样本 reads.fastq.gz（Homo sapiens · 2,481,532 条读段）', en: 'Reading WES sample reads.fastq.gz (Homo sapiens · 2,481,532 reads)' },
   { zh: 'fastq.qc.v1 质控完成 — Q30 93.7% · GC 48.2%', en: 'fastq.qc.v1 QC done — Q30 93.7% · GC 48.2%' },
   { zh: 'fastq.adapter.v1 接头去除 — 0.4% 读段含接头', en: 'fastq.adapter.v1 adapter removal — 0.4% reads with adapters' },
-  { zh: 'alignment.qc.v1 比对统计 — 97.2% 比对率 · 32.4× 深度', en: 'alignment.qc.v1 alignment — 97.2% mapped · 32.4× depth' },
-  { zh: 'variant.stats.v1 变异统计 — 128,450 位点 · ts/tv 1.99', en: 'variant.stats.v1 variants — 128,450 sites · ts/tv 1.99' },
-  { zh: 'expression.differential.v1 差异表达 — 842 上调 / 691 下调', en: 'expression.differential.v1 — 842 up / 691 down' },
+  { zh: '比对参考基因组 GRCh38 — 97.2% 比对率 · 32.4× 平均深度', en: 'Aligned to GRCh38 — 97.2% mapped · 32.4× mean depth' },
+  { zh: 'variant.stats.v1 变异检测 — 128,450 位点 · ts/tv 1.99', en: 'variant.stats.v1 variants — 128,450 sites · ts/tv 1.99' },
+  { zh: '注释 108,231 SNP · 20,219 InDel（dbSNP / ClinVar 比对）', en: 'Annotating 108,231 SNPs · 20,219 InDels (dbSNP / ClinVar)' },
   { zh: 'enrichment.kegg.v1 通路富集 — 23 条显著通路', en: 'enrichment.kegg.v1 — 23 significant pathways' },
   { zh: '生成报告 → report/（PDF · HTML · JSON）', en: 'Writing report → report/ (PDF · HTML · JSON)' },
 ];
@@ -2766,6 +3034,15 @@ let runTimer = null, runIdx = 0, runT0 = 0;
 function fmtT(t0) {
   const s = ((Date.now() - t0) / 1000).toFixed(1);
   return '00:' + (s.length < 4 ? '0' + s : s);
+}
+// ===== Pipeline 状态联动（日志进度 → 节点高亮） =====
+const pipeStageForLog = [0, 0, 0, 1, 2, 3, 4, 5, 5, 6];
+function setPipeStage(stage) {
+  document.querySelectorAll('.pipe-step').forEach((el, i) => {
+    el.classList.remove('running', 'done');
+    if (i < stage) el.classList.add('done');
+    else if (i === stage) el.classList.add('running');
+  });
 }
 function startRunLog() {
   const out = document.getElementById('runlog-output');
@@ -2775,9 +3052,15 @@ function startRunLog() {
   runIdx = 0; runT0 = Date.now();
   out.innerHTML = '';
   bar.style.width = '0%';
+  setPipeStage(0);
   const isZh = currentLang === 'zh';
   runTimer = setInterval(() => {
-    if (runIdx >= runLogSteps.length) { clearInterval(runTimer); return; }
+    if (runIdx >= runLogSteps.length) {
+      clearInterval(runTimer);
+      setPipeStage(7);
+      return;
+    }
+    setPipeStage(pipeStageForLog[runIdx]);
     const prev = out.querySelector('.rl-glyph.run');
     if (prev) { prev.textContent = '\u2713'; prev.classList.remove('run'); prev.classList.add('ok'); }
     const div = document.createElement('div');
@@ -2794,9 +3077,10 @@ function restartRunLog() { startRunLog(); }
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   renderCapGrid();
-  renderQc(); renderKegg(); renderVolcano(); renderGsea(); renderKmer();
+  renderQc(); renderKegg(); renderVolcano(); renderGsea(); renderKmer(); renderMotif(); renderKaKs();
   renderSimFiles();
   renderDocCats();
+  tagGallery();
   hbScene('o2');
   startRunLog();
   const observer = new IntersectionObserver((entries) => {
