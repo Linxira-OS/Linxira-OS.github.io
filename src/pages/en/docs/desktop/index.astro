@@ -6,18 +6,23 @@ import Navbar from "../../../../components/Navbar.astro";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>desktop — Linxira OS</title>
+  <title>Desktop &amp; Server Mode — Linxira OS</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .container { max-width: 760px; margin: 0 auto; padding: 8rem 2rem 4rem; }
     .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
     h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.35rem; color: #20B8B0; margin: 2.5rem 0 0.8rem; }
+    p, li { color: #94a3b8; margin-bottom: 0.8rem; }
+    ul { padding-left: 1.4rem; margin-bottom: 1rem; }
+    code { font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.9em; background: rgba(32,184,176,0.12); color: #4DD8D0; padding: 0.15rem 0.4rem; border-radius: 4px; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+    .note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+    .note p { color: #cbd5e1; margin: 0; }
     footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
   </style>
 </head>
@@ -26,12 +31,34 @@ import Navbar from "../../../../components/Navbar.astro";
 
   <div class="container">
     <a href="/en/docs/" class="back">← Back to Docs</a>
-    <h1>desktop</h1>
-    <div class="placeholder">
-      <p>📝 This page is under construction.</p>
+    <h1>Desktop &amp; Server Mode</h1>
+    <p>At the "Desktop Environment" step you choose one of two: <strong>KDE Plasma</strong> (full desktop) or <strong>Server (no desktop)</strong> (terminal only).</p>
+
+    <h2>KDE Plasma Desktop</h2>
+    <p>Recommended by default: a complete KDE Plasma desktop out of the box — Bluetooth, Wi-Fi, printing and the graphical environment all work. The Plasma setup is curated for a workstation that handles both daily use and scientific work.</p>
+
+    <h2>Server (No Desktop) Mode</h2>
+    <p>Installing in server mode ships no desktop environment and no display manager. The system boots into a <strong>terminal-only environment</strong> (tty login), exactly like a base Arch Linux install — memory stays fully available for compute. System tools, containers, driver detection and all other capabilities remain intact.</p>
+
+    <h2>Install Any Desktop Environment Later</h2>
+    <p>Server mode <strong>locks nothing</strong>. After installation you can install any desktop environment supported by Arch — Plasma, GNOME, or anything else:</p>
+    <pre><code>sudo pacman -S plasma-desktop sddm
+sudo systemctl enable --now sddm</code></pre>
+    <p>GNOME works the same way:</p>
+    <pre><code>sudo pacman -S gnome gdm
+sudo systemctl enable --now gdm</code></pre>
+
+    <h2>Desktop ⇄ Headless Switching</h2>
+    <p>Whichever way you installed, the system ships a headless-mode switch (standard systemd target switching — zero desktop footprint, all RAM for compute):</p>
+    <pre><code>linxira-config headless on now    # turn the desktop off immediately (confirm)
+linxira-config headless off now   # restore the desktop immediately
+linxira-config headless status    # show current mode</code></pre>
+
+    <div class="note">
+      <p>Note: the server-mode baseline still includes a few general-purpose tools (browser, terminal utilities, containers); actual desktop components (Plasma, SDDM, file managers) only appear when you choose KDE Plasma or install them yourself.</p>
     </div>
   </div>
 
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
+  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project with no affiliation to or endorsement from Arch Linux.</p></footer>
 </body>
 </html>
