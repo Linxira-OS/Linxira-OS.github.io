@@ -1,0 +1,68 @@
+---
+import Navbar from "../../../components/Navbar.astro";
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下载 — Linxira OS</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
+    .container { max-width: 760px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.35rem; color: #20B8B0; margin: 2.5rem 0 0.8rem; }
+    p, li { color: #94a3b8; margin-bottom: 0.8rem; }
+    ul { padding-left: 1.4rem; margin-bottom: 1rem; }
+    code { font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.9em; background: rgba(32,184,176,0.12); color: #4DD8D0; padding: 0.15rem 0.4rem; border-radius: 4px; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+    .dl-card { background: rgba(30,41,59,0.5); border: 1px solid rgba(32,184,176,0.3); border-radius: 14px; padding: 1.6rem 1.8rem; margin: 1.5rem 0; }
+    .dl-card h3 { color: #e2e8f0; font-size: 1.1rem; margin-bottom: 0.4rem; }
+    .dl-card .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 1rem; }
+    .dl-btn { display: inline-block; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; padding: 0.8rem 2rem; border-radius: 10px; text-decoration: none; margin: 0.3rem 0.5rem 0.3rem 0; transition: transform 0.2s, box-shadow 0.2s; }
+    .dl-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(32,184,176,0.35); text-decoration: none; }
+    .dl-btn.ghost { background: transparent; border: 1px solid rgba(51,65,85,0.8); color: #e2e8f0; font-weight: 500; }
+    .dl-btn.ghost:hover { border-color: #20B8B0; color: #20B8B0; }
+    .note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+    .note p { color: #cbd5e1; margin: 0; }
+    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
+  </style>
+</head>
+<body>
+  <Navbar lang="zh" active="download" />
+
+  <div class="container">
+    <a href="/zh/" class="back">← 返回首页</a>
+    <h1>下载 Linxira OS</h1>
+    <p>当前为测试版（2026.08.14）。正式版由用户按构建指南从源码自建，不预设固定发布日期。</p>
+
+    <div class="dl-card">
+      <h3>linxira-2026.08.14-x86_64.iso</h3>
+      <div class="meta">4.5 GB · 测试版 · x86_64</div>
+      <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">打开 GitCode 仓库下载 →</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.08.14-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">GitCode 仓库内点击 ISO 文件 → 下载按钮（大文件走 Git LFS，国内访问快）。</p>
+    </div>
+
+    <h2>校验和</h2>
+    <pre><code>sha256sum -c SHA256SUMS
+
+# SHA256 (linxira-2026.08.14-x86_64.iso):
+b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145  linxira-2026.08.14-x86_64.iso</code></pre>
+
+    <h2>安装</h2>
+    <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong> 或 <strong>服务器（无桌面）</strong>。</p>
+
+    <div class="note">
+      <p>说明：ISO 为聚合作品——内核 GPL-2.0-only、系统组件各自许可证、自研工具 MIT/GPL-3.0。校验和文件（SHA256SUMS）与 ISO 一同存放在 GitCode 仓库。</p>
+    </div>
+  </div>
+
+  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。</p></footer>
+</body>
+</html>
