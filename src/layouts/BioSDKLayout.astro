@@ -31,7 +31,6 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 <script is:inline>
 	window.BIOSDK_LANG = location.pathname.startsWith('/bio-sdk/zh') ? 'zh' : 'en';
 </script>
-<script src="https://cdn.jsdelivr.net/npm/3dmol@2.4.1/build/3Dmol-min.js"></script>
 <style is:global>
 /* ===== Reset & Base ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2955,16 +2954,50 @@ function clearAI() {
   chat.innerHTML = '';
 }
 
-// ===== Real 3D Structures（3Dmol.js） =====
-let mdlViewer = null, mdlCur = 'hho', mdlInitDone = false, insTimer = null;
+// ===== Real 3D Structures（3Dmol.js · 本地优先 + 多 CDN 兜底，不阻塞页面） =====
+let mdlViewer = null, mdlCur = 'hho', mdlInitDone = false, insTimer = null, mdlLibPromise = null;
+function loadMdlLib() {
+  if (window.$3Dmol) return Promise.resolve(true);
+  if (mdlLibPromise) return mdlLibPromise;
+  const urls = [
+    '/bio-sdk/lib/3Dmol-min.js',
+    'https://cdn.jsdelivr.net/npm/3dmol@2.4.1/build/3Dmol-min.js',
+    'https://unpkg.com/3dmol@2.4.1/build/3Dmol-min.js',
+    'https://cdn.bootcdn.net/ajax/libs/3Dmol.js/2.4.1/3Dmol-min.js',
+    'https://cdn.staticfile.org/3Dmol.js/2.4.1/3Dmol-min.js',
+  ];
+  mdlLibPromise = new Promise(resolve => {
+    let i = 0;
+    const tryNext = () => {
+      if (i >= urls.length) return resolve(false);
+      const s = document.createElement('script');
+      s.src = urls[i++];
+      s.onload = () => resolve(!!window.$3Dmol);
+      s.onerror = () => tryNext();
+      s.onabort = () => tryNext();
+      document.head.appendChild(s);
+    };
+    tryNext();
+  });
+  return mdlLibPromise;
+}
 function initMdl() {
   const el = document.getElementById('mdl-viewer');
-  const note = document.getElementById('mdl-note');
   if (!el) return;
-  if (typeof $3Dmol === 'undefined') {
-    el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim);font-size:0.85rem">⚠ 3Dmol.js 加载失败（需网络访问 CDN）。上方 SVG 机制动画不受影响。</div>';
-    return;
-  }
+  const isZh = currentLang === 'zh';
+  el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim);font-size:0.85rem">⏳ ' + (isZh ? '加载 3D 渲染引擎…' : 'Loading 3D rendering engine…') + '</div>';
+  loadMdlLib().then(ok => {
+    if (!ok) {
+      el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim);font-size:0.85rem">⚠ ' + (isZh ? '3D 引擎加载失败（网络受限），SVG 机制动画不受影响。' : 'Failed to load 3D engine (network restricted); SVG animations unaffected.') + '</div>';
+      return;
+    }
+    renderMdl();
+  });
+}
+function renderMdl() {
+  const el = document.getElementById('mdl-viewer');
+  const note = document.getElementById('mdl-note');
+  if (!el || typeof $3Dmol === 'undefined') return;
   const isZh = currentLang === 'zh';
   clearInterval(insTimer);
   el.innerHTML = '';
