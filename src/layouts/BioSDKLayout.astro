@@ -416,9 +416,30 @@ ol{color:var(--text-dim)}
 }
 .pipe-step:hover .pipe-node{border-color:var(--brand-teal)}
 .pipe-step.running .pipe-node{border-color:var(--brand-teal);box-shadow:0 0 0 4px rgba(32,184,176,0.14)}
-.pipe-step.running .pipe-node::after{
+/* 每个节点依次闪烁激活：信号沿流程传播 */
+.pipe-node::before{
+  content:'';position:absolute;inset:0;border-radius:12px;
+  background:rgba(32,184,176,0.28);opacity:0;
+  animation:pipeFlash 2.1s ease-in-out infinite;
+}
+@keyframes pipeFlash{0%{opacity:0}6%{opacity:0.9}16%{opacity:0}100%{opacity:0}}
+.pipe-step:nth-child(1)::after,.pipe-step:nth-child(1) .pipe-node::before{animation-delay:0s}
+.pipe-step:nth-child(3)::after,.pipe-step:nth-child(3) .pipe-node::before{animation-delay:0.68s}
+.pipe-step:nth-child(5)::after,.pipe-step:nth-child(5) .pipe-node::before{animation-delay:1.36s}
+.pipe-step:nth-child(7)::after,.pipe-step:nth-child(7) .pipe-node::before{animation-delay:2.04s}
+.pipe-step:nth-child(9)::after,.pipe-step:nth-child(9) .pipe-node::before{animation-delay:2.72s}
+.pipe-step:nth-child(11)::after,.pipe-step:nth-child(11) .pipe-node::before{animation-delay:3.4s}
+.pipe-step:nth-child(13)::after,.pipe-step:nth-child(13) .pipe-node::before{animation-delay:4.08s}
+/* 流动点沿各段依次前进 */
+.pipe-link:nth-child(2) .flow-dot{animation-delay:0.34s}
+.pipe-link:nth-child(4) .flow-dot{animation-delay:1.02s}
+.pipe-link:nth-child(6) .flow-dot{animation-delay:1.7s}
+.pipe-link:nth-child(8) .flow-dot{animation-delay:2.38s}
+.pipe-link:nth-child(10) .flow-dot{animation-delay:3.06s}
+.pipe-link:nth-child(12) .flow-dot{animation-delay:3.74s}
+.pipe-step::after{
   content:'';position:absolute;inset:-5px;border-radius:16px;
-  border:2px solid var(--brand-teal);opacity:0;animation:pipePulse 1.8s ease-out infinite;
+  border:2px solid var(--brand-teal);opacity:0;animation:pipePulse 2.1s ease-out infinite;
 }
 @keyframes pipePulse{0%{transform:scale(0.8);opacity:0.7}100%{transform:scale(1.15);opacity:0}}
 .pipe-name{font-size:0.72rem;color:var(--text-dim);white-space:nowrap}
@@ -527,6 +548,57 @@ ol{color:var(--text-dim)}
 .gallery-item:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.35)}
 .cap-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(32,184,176,0.14)}
 
+/* ===== 模拟报告输出 ===== */
+.report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.75rem}
+.report-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:0.9rem 1rem;display:flex;gap:0.7rem;align-items:flex-start;transition:var(--transition);cursor:pointer}
+.report-item:hover{border-color:var(--brand-teal);transform:translateY(-2px)}
+.report-item .ri-ico{font-size:1.3rem;flex-shrink:0}
+.report-item .ri-name{font-size:0.8125rem;font-weight:600;font-family:var(--font-mono)}
+.report-item .ri-desc{font-size:0.6875rem;color:var(--text-dim);margin-top:0.15rem}
+.report-item .ri-size{font-size:0.625rem;color:var(--text-dim);margin-top:0.25rem}
+
+/* ===== AI 助手对话 ===== */
+.ai-chat{display:flex;flex-direction:column;gap:1rem;max-height:540px;overflow-y:auto;padding:0.25rem 0.25rem 1rem}
+.ai-msg{display:flex;gap:0.6rem;max-width:88%}
+.ai-msg.user{align-self:flex-end;flex-direction:row-reverse}
+.ai-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.9rem;background:var(--bg-hover);border:1px solid var(--border)}
+.ai-msg.user .ai-avatar{background:var(--brand-dark)}
+.ai-bubble{padding:0.7rem 0.95rem;border-radius:12px;font-size:0.875rem;line-height:1.7;background:var(--bg-card);border:1px solid var(--border);max-width:100%}
+.ai-msg.user .ai-bubble{background:var(--brand-dark);border-color:var(--brand-teal);color:var(--text-bright)}
+.ai-typing{display:inline-flex;gap:4px;align-items:center;padding:0.25rem 0}
+.ai-typing i{width:6px;height:6px;border-radius:50%;background:var(--text-dim);animation:aiDot 1.2s ease-in-out infinite}
+.ai-typing i:nth-child(2){animation-delay:0.15s}.ai-typing i:nth-child(3){animation-delay:0.3s}
+@keyframes aiDot{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-4px);opacity:1}}
+.ai-tool{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin:0.6rem 0;overflow:hidden}
+.ai-tool-head{display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.4rem 0.8rem;background:var(--bg-panel);border-bottom:1px solid var(--border);font-size:0.72rem;color:var(--text-dim);font-family:var(--font-mono)}
+.ai-tool pre{margin:0;padding:0.7rem 0.9rem;font-size:0.75rem;overflow-x:auto;font-family:var(--font-mono);line-height:1.7;color:var(--text)}
+.ai-channel{display:inline-flex;align-items:center;gap:0.3rem;padding:0.12rem 0.5rem;border-radius:999px;font-size:0.65rem;font-weight:700;font-family:var(--font);white-space:nowrap}
+.ai-channel.mcp{background:rgba(107,78,160,0.18);color:#B497E8;border:1px solid rgba(107,78,160,0.4)}
+.ai-channel.sdk{background:rgba(32,116,86,0.18);color:#5BD3A8;border:1px solid rgba(32,116,86,0.4)}
+.ai-channel.cli{background:rgba(49,103,158,0.18);color:#7FB3E8;border:1px solid rgba(49,103,158,0.4)}
+.ai-result{margin-top:0.5rem}
+.ai-summary{font-size:0.875rem;color:var(--text);margin-top:0.75rem;padding:0.6rem 0.8rem;background:var(--bg-panel);border-left:3px solid var(--brand-teal);border-radius:var(--radius-sm)}
+.ai-summary b{color:var(--brand-teal)}
+.ai-chips{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;border-top:1px solid var(--border);padding-top:0.9rem}
+.ai-chip{background:var(--bg-card);border:1px solid var(--border);border-radius:999px;padding:0.4rem 0.9rem;font-size:0.78rem;color:var(--text-dim);cursor:pointer;transition:var(--transition)}
+.ai-chip:hover{color:var(--brand-teal);border-color:var(--brand-teal)}
+.ai-chip:disabled{opacity:0.45;cursor:default}
+.ai-input{display:flex;gap:0.6rem;margin-top:0.75rem}
+.ai-input input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:0.6rem 0.9rem;color:var(--text);font-family:var(--font);font-size:0.85rem;outline:none}
+.ai-input input:focus{border-color:var(--brand-teal)}
+.ai-input button{background:var(--brand-teal);color:var(--bg);border:none;border-radius:var(--radius);padding:0.6rem 1.2rem;font-weight:600;font-size:0.85rem}
+.ai-input button:hover{background:#4DD4CC}
+body.light .ai-msg.user .ai-avatar{background:var(--brand-teal)}
+body.light .ai-channel.mcp{color:#5B3E8A}
+body.light .ai-channel.sdk{color:#1B6B4E}
+body.light .ai-channel.cli{color:#2A5E92}
+
+/* ===== 图表变体切换 ===== */
+.demo-variants{display:flex;gap:0.4rem;margin-bottom:0.6rem;flex-wrap:wrap}
+.dv-btn{background:var(--bg-hover);color:var(--text-dim);border:1px solid var(--border);border-radius:999px;padding:0.22rem 0.7rem;font-size:0.7rem;transition:var(--transition)}
+.dv-btn:hover{color:var(--brand-teal);border-color:var(--brand-teal)}
+.dv-btn.active{background:var(--brand-dark);color:var(--text-bright);border-color:var(--brand-teal)}
+
 /* ===== Light Theme ===== */
 body.light{
   --bg:#FFFFFF;--bg-panel:#F3F3F3;--bg-card:#FFFFFF;--bg-hover:#F0F0F0;
@@ -573,6 +645,10 @@ body.light .stat-card .stat-value{color:var(--brand-dark)}
     <div class="nav-item" data-page="workbench">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       <span>{zh ? "数据工作台" : "Data Workbench"}</span>
+    </div>
+    <div class="nav-item" data-page="ai">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span>{zh ? "AI 助手" : "AI Assistant"}</span>
     </div>
     <div class="nav-item" data-page="structure">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -699,6 +775,30 @@ body.light .stat-card .stat-value{color:var(--brand-dark)}
         </div>
         <div id="runlog-output" class="runlog-body"></div>
         <div class="rl-bar"><i id="runlog-bar"></i></div>
+      </div>
+
+      <!-- Simulated Report Output -->
+      <div class="card animate-in" style="margin-top:1rem">
+        <div class="card-title">📄 {zh ? "模拟报告输出 · report/" : "Simulated Report Output · report/"}</div>
+        <div class="card-desc" style="margin-bottom:0.9rem">{zh ? "流程结束后自动生成以下报告（桌面版可导出）：" : "Reports auto-generated after the pipeline (exportable in desktop app):"}</div>
+        <div class="report-grid">
+          <div class="report-item animate-in">
+            <span class="ri-ico">📊</span>
+            <div><div class="ri-name">report.html</div><div class="ri-desc">{zh ? "交互式图表报告" : "Interactive chart report"}</div><div class="ri-size">2.4 MB · 2026-08-14 10:04</div></div>
+          </div>
+          <div class="report-item animate-in">
+            <span class="ri-ico">📄</span>
+            <div><div class="ri-name">report.pdf</div><div class="ri-desc">{zh ? "论文级排版" : "Publication layout"}</div><div class="ri-size">1.8 MB · 2026-08-14 10:04</div></div>
+          </div>
+          <div class="report-item animate-in">
+            <span class="ri-ico">📋</span>
+            <div><div class="ri-name">report.json</div><div class="ri-desc">{zh ? "机器可读结果" : "Machine-readable results"}</div><div class="ri-size">312 KB · 2026-08-14 10:04</div></div>
+          </div>
+          <div class="report-item animate-in">
+            <span class="ri-ico">🖼</span>
+            <div><div class="ri-name">figures/</div><div class="ri-desc">{zh ? "8 张 SVG 图表" : "8 SVG figures"}</div><div class="ri-size">6.1 MB · 2026-08-14 10:04</div></div>
+          </div>
+        </div>
       </div>
 
       <!-- Key Stats -->
@@ -1162,15 +1262,15 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
               <line x1="80" y1="160" x2="120" y2="170" stroke="#20B8B0" stroke-width="1.5"/>
               <line x1="40" y1="100" x2="80" y2="100" stroke="#20B8B0" stroke-width="1.5"/>
               <line x1="80" y1="100" x2="120" y2="100" stroke="#20B8B0" stroke-width="1.5"/>
-              <text x="125" y="33" style="fill:var(--text)" font-size="8">Homo</text>
-              <text x="125" y="53" style="fill:var(--text)" font-size="8">Pan</text>
-              <text x="125" y="73" style="fill:var(--text)" font-size="8">Gorilla</text>
-              <text x="125" y="93" style="fill:var(--text)" font-size="8">Pongo</text>
-              <text x="125" y="103" style="fill:var(--text)" font-size="8">Macaca</text>
-              <text x="125" y="113" style="fill:var(--text)" font-size="8">Mus</text>
-              <text x="125" y="133" style="fill:var(--text)" font-size="8">Rattus</text>
-              <text x="125" y="153" style="fill:var(--text)" font-size="8">Danio</text>
-              <text x="125" y="173" style="fill:var(--text)" font-size="8">Xenopus</text>
+              <text x="125" y="33" style="fill:var(--text)" font-size="7">Homo sapiens</text>
+              <text x="125" y="53" style="fill:var(--text)" font-size="7">Pan troglodytes</text>
+              <text x="125" y="73" style="fill:var(--text)" font-size="7">Gorilla gorilla</text>
+              <text x="125" y="93" style="fill:var(--text)" font-size="7">Pongo abelii</text>
+              <text x="125" y="103" style="fill:var(--text)" font-size="7">Macaca mulatta</text>
+              <text x="125" y="113" style="fill:var(--text)" font-size="7">Mus musculus</text>
+              <text x="125" y="133" style="fill:var(--text)" font-size="7">Rattus norvegicus</text>
+              <text x="125" y="153" style="fill:var(--text)" font-size="7">Danio rerio</text>
+              <text x="125" y="173" style="fill:var(--text)" font-size="7">Xenopus laevis</text>
             </svg>
           </div>
         </div>
@@ -1454,6 +1554,27 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
         <div id="sim-result" class="fade-in"></div>
         <div style="display:flex;justify-content:flex-end;margin-top:1rem">
           <button class="btn btn-secondary" onclick="wbRestart()">↻ {zh ? "重新开始" : "Restart"}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AI ASSISTANT ===== -->
+    <div class="page" id="page-ai">
+      <div class="card">
+        <div class="card-title">🤖 {zh ? "AI 分析助手（模拟演示）" : "AI Analysis Assistant (Simulated)"}</div>
+        <div class="card-desc">{zh ? "SDK 内置 Agent 规划即将上线：通过自然语言对话调用 50+ 分析能力，并支持三种外部工具调用通道——MCP 工具、Python SDK、命令行 CLI。以下为交互模拟。" : "Built-in Agent (planned): conversational access to 50+ capabilities via three external tool channels — MCP tools, Python SDK, and CLI. Interactive simulation below."}</div>
+      </div>
+      <div class="card">
+        <div id="ai-chat" class="ai-chat"></div>
+        <div class="ai-chips">
+          <button class="ai-chip" onclick="playAI(0)">🔬 {zh ? "FASTQ 质量检查" : "FASTQ quality check"}</button>
+          <button class="ai-chip" onclick="playAI(1)">📊 {zh ? "差异表达分析" : "Differential expression"}</button>
+          <button class="ai-chip" onclick="playAI(2)">🧬 {zh ? "变异统计" : "Variant stats"}</button>
+          <button class="ai-chip" onclick="clearAI()">🗑 {zh ? "清空对话" : "Clear chat"}</button>
+        </div>
+        <div class="ai-input">
+          <input type="text" placeholder="{zh ? '在此输入…（演示版由上方示例驱动）' : 'Type here… (demo driven by the examples above)'}" readonly>
+          <button onclick="playAI(Math.floor(Math.random()*3))">{zh ? "发送" : "Send"}</button>
         </div>
       </div>
     </div>
@@ -1793,7 +1914,12 @@ function renderAnalyzeCapGrid() {
   const isZh = currentLang === 'zh';
   const caps = simFile ? simFiles.find(f => f.id === simFile.id).caps : [];
   const desc = document.getElementById('sim-analyze-desc');
-  if (desc) desc.textContent = (isZh ? '根据「已导入文件 ' : 'Matched to imported file ') + simFile.name + (isZh ? '」的格式自动匹配以下能力（Web 演示为模拟子集），点击卡片开始模拟运行。' : ' format. Click a capability to run (simulated subset).');
+  if (desc) {
+    desc.textContent = simFile
+      ? (isZh ? '根据「已导入文件 ' : 'Matched to imported file ') + simFile.name + (isZh ? '」的格式自动匹配以下能力（Web 演示为模拟子集），点击卡片开始模拟运行。' : ' format. Click a capability to run (simulated subset).')
+      : (isZh ? '尚未导入文件——请先进入「1 导入」选择示例文件。' : 'No file imported — go to "1 Import" and pick a sample file.');
+  }
+  if (!simFile) { grid.innerHTML = ''; return; }
   grid.innerHTML = caps.map(cid => {
     const c = capabilities.find(x => x.id === cid); if (!c) return '';
     return `
@@ -1874,7 +2000,7 @@ function renderVolcano(hostEl) {
   host.appendChild(svgText(235, 175, 'log2FC', { 'text-anchor': 'end' }));
   host.appendChild(svgText(136, 15, '-log10(padj)', { 'text-anchor': 'start' }));
   const rng = mulberry32(20260814);
-  for (let i = 0; i < 64; i++) {
+  for (let i = 0; i < 120; i++) {
     const fc = (rng() * 2 - 1) * 3.1;
     const p = Math.pow(10, -(0.4 + Math.abs(fc) * 1.15 + rng() * 1.9));
     const x = Math.max(44, Math.min(216, 130 + fc * 30));
@@ -1932,16 +2058,16 @@ function renderKmer(hostEl) {
 
 // ===== Simulated Workbench（数据工作台模拟流程） =====
 const simFiles = [
-  { id:'reads', name:'reads.fastq.gz', icon:'🧬', meta:'FASTQ · 356 MB · 2,481,532 reads',
+  { id:'reads', name:'reads.fastq.gz', icon:'🧬', meta:'Homo sapiens WGS · FASTQ · 356 MB · 2,481,532 reads',
     summary: { format:'FASTQ', read_count:'2,481,532', total_bases:'372,229,800', mean_length:'150 bp', gc_percent:'48.2%', q30_percent:'93.7%' },
     caps:['fastq.qc.v1','fastq.trim.v1','fastq.adapter.v1'] },
-  { id:'genome', name:'genome_sim.fa', icon:'🧬', meta:'FASTA · 48 MB · 16,204 sequences',
+  { id:'genome', name:'genome_sim.fa', icon:'🧬', meta:'Escherichia coli K-12 · FASTA · 48 MB · 16,204 sequences',
     summary: { format:'FASTA', sequence_count:'16,204', total_bases:'2,430,600', mean_length:'150 bp', gc_percent:'50.1%', n50:'150 bp' },
     caps:['sequence.stats.v1','sequence.kmer.count.v1','sequence.translate.v1'] },
-  { id:'variants', name:'variants_sim.vcf', icon:'🧬', meta:'VCF v4.2 · 9.2 MB · 128,450 variants',
+  { id:'variants', name:'variants_sim.vcf', icon:'🧬', meta:'Homo sapiens chr1 · VCF v4.2 · 9.2 MB · 128,450 variants',
     summary: { format:'VCF', variant_count:'128,450', snp_count:'108,231', indel_count:'20,219', ts_tv_ratio:'1.99', samples:'1' },
     caps:['variant.stats.v1','variant.filter.v1'] },
-  { id:'expression', name:'expression_matrix.tsv', icon:'📈', meta:'TSV · 2.1 MB · 18,752 genes × 6 samples',
+  { id:'expression', name:'expression_matrix.tsv', icon:'📈', meta:'Arabidopsis thaliana · TSV · 2.1 MB · 18,752 genes × 6 samples',
     summary: { format:'TSV', genes:'18,752', samples:'6', mean_expression:'1,284.6', zero_genes:'412', cv_median:'0.86' },
     caps:['expression.pca.v1','expression.differential.v1','enrichment.kegg.v1'] },
 ];
@@ -1949,7 +2075,7 @@ let simFile = null, simCap = null;
 function renderSimFiles() {
   const grid = document.getElementById('sim-file-grid'); if (!grid) return;
   grid.innerHTML = simFiles.map((f, i) => `
-    <div class="sim-file animate-in" onclick="selectSimFile(${i})">
+    <div class="sim-file animate-in ${simFile && simFile.id === f.id ? 'selected' : ''}" onclick="selectSimFile(${i})">
       <div class="sf-ico">${f.icon}</div>
       <div class="sf-name">${f.name}</div>
       <div class="sf-meta">${f.meta}</div>
@@ -2052,10 +2178,19 @@ const simResults = {
 }` },
 };
 function wbNext(tab) { switchWorkbenchTab(tab); }
-function wbRestart() { simFile = null; simCap = null; renderSimFiles(); switchWorkbenchTab('w-import'); }
+function wbRestart() {
+  simFile = null; simCap = null;
+  const grid = document.getElementById('analyze-cap-grid');
+  if (grid) grid.innerHTML = '';
+  const result = document.getElementById('sim-result');
+  if (result) result.innerHTML = '';
+  renderSimFiles();
+  switchWorkbenchTab('w-import');
+}
 function runSimAnalysis(cid) {
   simCap = cid;
   const host = document.getElementById('sim-result'); if (!host) return;
+  if (!simFile) { switchWorkbenchTab('w-import'); return; }
   const isZh = currentLang === 'zh';
   const f = simFile;
   host.innerHTML = `<div class="card">
@@ -2118,8 +2253,8 @@ function renderPca(host) {
   host.appendChild(svgEl('line', { x1: 130, y1: 20, x2: 130, y2: 180, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
   host.appendChild(svgText(235, 175, 'PC1', { 'text-anchor': 'end' }));
   host.appendChild(svgText(135, 15, 'PC2'));
-  const wt = [[90, 100], [80, 110], [85, 90], [75, 95], [70, 105], [95, 108], [82, 82]];
-  const ko = [[170, 70], [180, 60], [175, 80], [185, 75], [190, 65], [165, 72], [178, 88]];
+  const wt = [[90, 100], [80, 110], [85, 90], [75, 95], [70, 105], [95, 108], [82, 82], [88, 78], [68, 100], [100, 95]];
+  const ko = [[170, 70], [180, 60], [175, 80], [185, 75], [190, 65], [165, 72], [178, 88], [188, 82], [172, 92], [195, 70]];
   wt.forEach((p, i) => { const c = svgEl('circle', { cx: p[0], cy: p[1], r: '4', fill: '#20B8B0', opacity: '0.8' }); c.style.animation = 'fadeIn .5s ease-out both'; c.style.animationDelay = (i * 0.1) + 's'; host.appendChild(c); });
   ko.forEach((p, i) => { const c = svgEl('circle', { cx: p[0], cy: p[1], r: '4', fill: '#AE3939', opacity: '0.8' }); c.style.animation = 'fadeIn .5s ease-out both'; c.style.animationDelay = (i * 0.1) + 's'; host.appendChild(c); });
   host.appendChild(svgEl('ellipse', { cx: '83', cy: '99', rx: '12', ry: '14', fill: 'none', stroke: '#20B8B0', 'stroke-width': '0.8', opacity: '0.4' }));
@@ -2149,66 +2284,148 @@ function renderPie(host) {
   });
 }
 
+// ===== 图表变体（同一能力的多种可视化） =====
+const demoVariants = {
+  'phylogeny.tree.visualize.v1': [
+    { id: 'rect', zh: '矩形', en: 'Rectangular', clone: true },
+    { id: 'radial', zh: '圆形', en: 'Circular', build: 'treeRadial' },
+  ],
+  'expression.clustered-heatmap.v1': [
+    { id: 'clust', zh: '聚类热图', en: 'Clustered', clone: true },
+    { id: 'corr', zh: '相关性', en: 'Correlation', build: 'heatCorr' },
+  ],
+  'comparative.dotplot.v1': [
+    { id: 'dot', zh: '点图', en: 'Dotplot', clone: true },
+    { id: 'density', zh: '密度视图', en: 'Density', build: 'dotDensity' },
+  ],
+};
+const variantBuilders = {
+  treeRadial(host) {
+    const cx = 130, cy = 100, R = 82;
+    const names = ['Homo sapiens', 'Pan troglodytes', 'Gorilla gorilla', 'Pongo abelii', 'Macaca mulatta', 'Mus musculus', 'Rattus norvegicus', 'Danio rerio', 'Xenopus laevis'];
+    host.appendChild(svgEl('circle', { cx, cy, r: R, fill: 'none', style: 'stroke:var(--chart-grid)', 'stroke-width': '0.8', 'stroke-dasharray': '3,3' }));
+    names.forEach((n, i) => {
+      const a = (i * 40 - 90) * Math.PI / 180;
+      const lx = cx + Math.cos(a) * R, ly = cy + Math.sin(a) * R;
+      const mx = cx + Math.cos(a) * R * 0.55, my = cy + Math.sin(a) * R * 0.55;
+      host.appendChild(svgEl('line', { x1: cx, y1: cy, x2: mx, y2: my, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2', opacity: '0.75' }));
+      host.appendChild(svgEl('line', { x1: mx, y1: my, x2: lx, y2: ly, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2' }));
+      host.appendChild(svgEl('circle', { cx: lx, cy: ly, r: '2.5', fill: '#20B8B0' }));
+      const tx = cx + Math.cos(a) * (R + 7), ty = cy + Math.sin(a) * (R + 7);
+      host.appendChild(svgText(tx, ty + 2, n, { 'font-size': '6.5', 'text-anchor': lx < cx ? 'end' : 'start' }));
+    });
+    host.appendChild(svgEl('circle', { cx, cy, r: '4', fill: '#20B8B0' }));
+    host.appendChild(svgText(cx, cy - 10, 'root', { 'font-size': '7' }));
+  },
+  heatCorr(host) {
+    const n = 6, cell = 26, x0 = 30, y0 = 20;
+    const rng = mulberry32(42);
+    const m = [];
+    for (let i = 0; i < n; i++) { m[i] = []; for (let j = 0; j < n; j++) m[i][j] = 0; }
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { const v = 0.25 + rng() * 0.7; m[i][j] = v; m[j][i] = v; }
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+      const c = svgEl('rect', { x: x0 + j * cell, y: y0 + i * cell, width: cell - 2, height: cell - 2, rx: '2', style: 'fill:var(--brand-teal)', opacity: (i === j ? 0.95 : 0.12 + m[i][j] * 0.75).toFixed(2) });
+      c.style.animation = 'fadeIn .4s ease-out both';
+      c.style.animationDelay = ((i * n + j) * 8) + 'ms';
+      host.appendChild(c);
+    }
+    const labels = ['WT_1', 'WT_2', 'WT_3', 'KO_1', 'KO_2', 'KO_3'];
+    labels.forEach((l, i) => {
+      host.appendChild(svgText(x0 + i * cell + cell / 2, y0 + n * cell + 12, l, { 'font-size': '6.5' }));
+      host.appendChild(svgText(x0 - 4, y0 + i * cell + cell / 2 + 2, l, { 'text-anchor': 'end', 'font-size': '6.5' }));
+    });
+    host.appendChild(svgText(x0 + n * cell / 2, 12, 'sample correlation (Pearson)', { 'font-size': '7' }));
+  },
+  dotDensity(host) {
+    const rng = mulberry32(2026);
+    for (let i = 0; i < 130; i++) {
+      const t = rng();
+      let x, y;
+      if (t < 0.7) { const p = rng(); x = 25 + p * 210; y = 20 + p * 160; }
+      else { const p = rng(); x = 25 + p * 210; y = 20 + (1 - p) * 160; }
+      const j = (rng() - 0.5) * 14;
+      const c = svgEl('circle', { cx: x + j, cy: y + j, r: '1.4', fill: '#20B8B0', opacity: '0.65' });
+      c.style.animation = 'fadeIn .5s ease-out both';
+      c.style.animationDelay = (i * 6) + 'ms';
+      host.appendChild(c);
+    }
+    host.appendChild(svgText(130, 188, '130k k-mer matches · Homo sapiens vs Mus musculus chr1', { 'font-size': '6.5' }));
+  },
+};
+let demoChartSource = null;
+function showDemoVariant(capId, vi) {
+  const box = document.querySelector('#demo-result .chart-box'); if (!box) return;
+  document.querySelectorAll('.dv-btn').forEach((b, i) => b.classList.toggle('active', i === vi));
+  renderVariantChart(capId, vi, box);
+}
+function renderVariantChart(capId, vi, box) {
+  box.innerHTML = '';
+  const v = (demoVariants[capId] || [])[vi];
+  if (!v) return;
+  if (v.clone && demoChartSource) box.appendChild(demoChartSource.cloneNode(true));
+  else if (v.build && variantBuilders[v.build]) variantBuilders[v.build](box);
+}
+
 // ===== Demo Modal（示例流程播放器） =====
 const demoDetails = {
-  'comparative.dotplot.v1': { file: 'genomeA.fa · genomeB.fa', logZh: ['读取参考基因组 chr1 (248 Mb)', '构建 k-mer 索引 (k=25)', '生成点图矩阵 4,096 × 4,096'], logEn: ['Reading reference genome chr1 (248 Mb)', 'Building k-mer index (k=25)', 'Rendering dotplot 4,096 × 4,096'], json: `{
+  'comparative.dotplot.v1': { file: 'Homo sapiens chr1 vs Mus musculus chr1', logZh: ['读取参考基因组 chr1 (248 Mb)', '构建 k-mer 索引 (k=25)', '生成点图矩阵 4,096 × 4,096'], logEn: ['Reading reference genome chr1 (248 Mb)', 'Building k-mer index (k=25)', 'Rendering dotplot 4,096 × 4,096'], json: `{
   <span style="color:var(--brand-teal)">"query"</span>: "genomeA.chr1",
   <span style="color:var(--brand-teal)">"reference"</span>: "genomeB.chr1",
   <span style="color:var(--brand-teal)">"k"</span>: 25,
   <span style="color:var(--brand-teal)">"matches"</span>: 1892043,
   <span style="color:var(--brand-teal)">"syntenic_blocks"</span>: 14
 }` },
-  'phylogeny.tree.visualize.v1': { file: 'primates.nwk', logZh: ['解析 Newick 树 (9 taxa)', '计算分支长度', '渲染 SVG 树图'], logEn: ['Parsing Newick tree (9 taxa)', 'Computing branch lengths', 'Rendering SVG tree'], json: `{
+  'phylogeny.tree.visualize.v1': { file: '9 vertebrate species · primates.nwk', logZh: ['解析 Newick 树 (9 taxa)', '计算分支长度', '渲染 SVG 树图'], logEn: ['Parsing Newick tree (9 taxa)', 'Computing branch lengths', 'Rendering SVG tree'], json: `{
   <span style="color:var(--brand-teal)">"taxa"</span>: 9,
   <span style="color:var(--brand-teal)">"format"</span>: "newick",
   <span style="color:var(--brand-teal)">"rooted"</span>: true,
   <span style="color:var(--brand-teal)">"tree_height"</span>: 0.42
 }` },
-  'expression.clustered-heatmap.v1': { file: 'expression_matrix.tsv', logZh: ['读取 18,752 × 6 表达矩阵', 'Z-score 标准化', '层次聚类 + 热图渲染'], logEn: ['Reading 18,752 × 6 matrix', 'Z-score normalization', 'Hierarchical clustering + heatmap'], json: `{
+  'expression.clustered-heatmap.v1': { file: 'Homo sapiens · expression_matrix.tsv', logZh: ['读取 18,752 × 6 表达矩阵', 'Z-score 标准化', '层次聚类 + 热图渲染'], logEn: ['Reading 18,752 × 6 matrix', 'Z-score normalization', 'Hierarchical clustering + heatmap'], json: `{
   <span style="color:var(--brand-teal)">"genes"</span>: 18752,
   <span style="color:var(--brand-teal)">"samples"</span>: 6,
   <span style="color:var(--brand-teal)">"distance"</span>: "euclidean",
   <span style="color:var(--brand-teal)">"linkage"</span>: "ward.D2",
   <span style="color:var(--brand-teal)">"clusters"</span>: 4
 }` },
-  'expression.pca.v1': { file: 'expression_matrix.tsv', logZh: ['读取表达矩阵 (18,752 × 6)', '中心化 + 缩放', 'PCA 计算 PC1 42.3% · PC2 18.7%'], logEn: ['Reading matrix (18,752 × 6)', 'Centering & scaling', 'PCA: PC1 42.3% · PC2 18.7%'], json: `{
+  'expression.pca.v1': { file: 'Arabidopsis thaliana · expression_matrix.tsv', logZh: ['读取表达矩阵 (18,752 × 6)', '中心化 + 缩放', 'PCA 计算 PC1 42.3% · PC2 18.7%'], logEn: ['Reading matrix (18,752 × 6)', 'Centering & scaling', 'PCA: PC1 42.3% · PC2 18.7%'], json: `{
   <span style="color:var(--brand-teal)">"variance_explained"</span>: [42.3, 18.7, 9.1],
   <span style="color:var(--brand-teal)">"samples"</span>: 6,
   <span style="color:var(--brand-teal)">"groups"</span>: ["WT", "KO"]
 }` },
-  'variant.stats.v1': { file: 'variants_sim.vcf', logZh: ['解析 VCF (128,450 位点)', '统计变异类型与转换/颠换', '计算杂合度'], logEn: ['Parsing VCF (128,450 sites)', 'Counting variant types & ts/tv', 'Computing heterozygosity'], json: `{
+  'variant.stats.v1': { file: 'Homo sapiens chr1 · variants_sim.vcf', logZh: ['解析 VCF (128,450 位点)', '统计变异类型与转换/颠换', '计算杂合度'], logEn: ['Parsing VCF (128,450 sites)', 'Counting variant types & ts/tv', 'Computing heterozygosity'], json: `{
   <span style="color:var(--brand-teal)">"variant_count"</span>: 128450,
   <span style="color:var(--brand-teal)">"ts_tv_ratio"</span>: 1.99,
   <span style="color:var(--brand-teal)">"heterozygosity"</span>: 0.0012
 }` },
-  'rna.secondary-structure.v1': { file: 'mirna_sim.fa', logZh: ['读取 RNA 序列 (92 nt)', 'RNAfold 最小自由能折叠', '输出 MFE 结构 + 能量'], logEn: ['Reading RNA (92 nt)', 'RNAfold MFE folding', 'Output structure + energy'], json: `{
+  'rna.secondary-structure.v1': { file: 'Homo sapiens · hsa-miR-21-5p', logZh: ['读取 RNA 序列 (92 nt)', 'RNAfold 最小自由能折叠', '输出 MFE 结构 + 能量'], logEn: ['Reading RNA (92 nt)', 'RNAfold MFE folding', 'Output structure + energy'], json: `{
   <span style="color:var(--brand-teal)">"length"</span>: 92,
   <span style="color:var(--brand-teal)">"mfe"</span>: -12.40,
   <span style="color:var(--brand-teal)">"energy_unit"</span>: "kcal/mol",
   <span style="color:var(--brand-teal)">"stems"</span>: 3
 }` },
-  'fastq.qc.v1': { file: 'reads.fastq.gz', logZh: ['解压并读取 FASTQ (2,481,532 reads)', '逐碱基质量统计', '生成 QC 摘要与箱线图'], logEn: ['Reading FASTQ (2,481,532 reads)', 'Per-base quality statistics', 'QC summary + boxplot'], json: `{
+  'fastq.qc.v1': { file: 'Homo sapiens WGS · reads.fastq.gz', logZh: ['解压并读取 FASTQ (2,481,532 reads)', '逐碱基质量统计', '生成 QC 摘要与箱线图'], logEn: ['Reading FASTQ (2,481,532 reads)', 'Per-base quality statistics', 'QC summary + boxplot'], json: `{
   <span style="color:var(--brand-teal)">"read_count"</span>: 2481532,
   <span style="color:var(--brand-teal)">"q30_percent"</span>: 93.7,
   <span style="color:var(--brand-teal)">"gc_percent"</span>: 48.2
 }` },
-  'enrichment.kegg.v1': { file: 'deg_genes.txt', logZh: ['读取 1,533 个差异基因', 'KEGG 通路注释映射 (142 通路)', '超几何检验 + FDR 校正'], logEn: ['Reading 1,533 DEGs', 'KEGG mapping (142 pathways)', 'Hypergeometric test + FDR'], json: `{
+  'enrichment.kegg.v1': { file: 'Homo sapiens · 1,533 DEGs', logZh: ['读取 1,533 个差异基因', 'KEGG 通路注释映射 (142 通路)', '超几何检验 + FDR 校正'], logEn: ['Reading 1,533 DEGs', 'KEGG mapping (142 pathways)', 'Hypergeometric test + FDR'], json: `{
   <span style="color:var(--brand-teal)">"significant_count"</span>: 23,
   <span style="color:var(--brand-teal)">"top_pathway"</span>: "ko04630",
   <span style="color:var(--brand-teal)">"p_adjusted"</span>: 1.2e-8
 }` },
-  'expression.differential.v1': { file: 'expression_matrix.tsv', logZh: ['构建 DESeq2 计数矩阵', '估算离散度 + apeglm 收缩', '差异检验 842 上调 / 691 下调'], logEn: ['Building DESeq2 count matrix', 'Dispersion + apeglm shrinkage', 'Testing: 842 up / 691 down'], json: `{
+  'expression.differential.v1': { file: 'Homo sapiens · KO_vs_WT matrix', logZh: ['构建 DESeq2 计数矩阵', '估算离散度 + apeglm 收缩', '差异检验 842 上调 / 691 下调'], logEn: ['Building DESeq2 count matrix', 'Dispersion + apeglm shrinkage', 'Testing: 842 up / 691 down'], json: `{
   <span style="color:var(--brand-teal)">"upregulated"</span>: 842,
   <span style="color:var(--brand-teal)">"downregulated"</span>: 691,
   <span style="color:var(--brand-teal)">"padj_005"</span>: 1533
 }` },
-  'enrichment.gsea.v1': { file: 'rnk_ranked.txt', logZh: ['读取排序基因列表 (18,752)', '随机置换 1,000 次', '计算 ES 0.68 · NES 1.92'], logEn: ['Reading ranked list (18,752)', '1,000 permutations', 'ES 0.68 · NES 1.92'], json: `{
+  'enrichment.gsea.v1': { file: 'Homo sapiens · ranked gene list', logZh: ['读取排序基因列表 (18,752)', '随机置换 1,000 次', '计算 ES 0.68 · NES 1.92'], logEn: ['Reading ranked list (18,752)', '1,000 permutations', 'ES 0.68 · NES 1.92'], json: `{
   <span style="color:var(--brand-teal)">"gene_set"</span>: "HALLMARK_OXIDATIVE_PHOS",
   <span style="color:var(--brand-teal)">"es"</span>: 0.68,
   <span style="color:var(--brand-teal)">"nes"</span>: 1.92,
   <span style="color:var(--brand-teal)">"fdr"</span>: 0.003
 }` },
-  'sequence.kmer.count.v1': { file: 'genome_sim.fa', logZh: ['扫描 16,204 条序列', '统计 5-mer 频数 (9,312 种)', '输出 Top-kmer 图表'], logEn: ['Scanning 16,204 sequences', 'Counting 5-mers (9,312 types)', 'Top k-mer chart'], json: `{
+  'sequence.kmer.count.v1': { file: 'Escherichia coli K-12 · genome_sim.fa', logZh: ['扫描 16,204 条序列', '统计 5-mer 频数 (9,312 种)', '输出 Top-kmer 图表'], logEn: ['Scanning 16,204 sequences', 'Counting 5-mers (9,312 types)', 'Top k-mer chart'], json: `{
   <span style="color:var(--brand-teal)">"k"</span>: 5,
   <span style="color:var(--brand-teal)">"distinct_kmers"</span>: 9312,
   <span style="color:var(--brand-teal)">"top"</span>: {<span style="color:var(--brand-teal)">"AAAAA"</span>: 4120}
@@ -2220,7 +2437,7 @@ function openDemo(el) {
   const isZh = currentLang === 'zh';
   const modal = document.getElementById('demo-modal');
   const body = document.getElementById('demo-modal-body');
-  const chartClone = el.querySelector('.gallery-item-body svg').cloneNode(true);
+  demoChartSource = el.querySelector('.gallery-item-body svg');
   document.getElementById('demo-modal-title').textContent = capId;
   body.innerHTML = `
     <div class="demo-flow">
@@ -2248,9 +2465,15 @@ function openDemo(el) {
       const dfOut = document.getElementById('df-out');
       dfOut.classList.add('running');
       const res = document.getElementById('demo-result');
-      res.querySelector('.chart-box').appendChild(chartClone);
-      res.querySelector('.demo-json').innerHTML = d.json;
+      const variants = demoVariants[capId] || null;
+      res.innerHTML = `
+        <div>
+          ${variants ? `<div class="demo-variants">${variants.map((v, vi) => `<button class="dv-btn${vi === 0 ? ' active' : ''}" onclick="showDemoVariant('${capId}', ${vi})">${isZh ? v.zh : v.en}</button>`).join('')}</div>` : ''}
+          <div class="chart-box"></div>
+        </div>
+        <pre class="demo-json">${d.json}</pre>`;
       res.style.display = 'grid';
+      renderVariantChart(capId, 0, res.querySelector('.chart-box'));
       setTimeout(() => dfOut.classList.remove('running'), 400);
       return;
     }
@@ -2404,6 +2627,126 @@ function renderDocCats() {
       <span class="dc-ico">${c[0]}</span>
       <div><div class="dc-name">${isZh ? c[1] : c[2]}</div><div class="dc-count">${c[3]} ${isZh ? '篇文档' : 'docs'}</div></div>
     </a>`).join('');
+}
+
+// ===== AI Assistant（模拟 Agent 对话） =====
+let aiBusy = false;
+const aiScenarios = [
+  {
+    q: '帮我检查一下 reads.fastq.gz 的测序质量',
+    channel: 'mcp', channelIco: '🤖',
+    tool: '{"tool": "linxira-bio", "capability": "fastq.qc.v1",\n "input": {"file": "reads.fastq.gz"}}',
+    planZh: '好的，我来分析这份人类全基因组测序数据（Homo sapiens WGS）。计划：通过 MCP 通道调用本地工具 fastq.qc.v1 做质量评估。',
+    planEn: 'Sure — analyzing this human WGS dataset (Homo sapiens). Plan: call local tool fastq.qc.v1 via the MCP channel for quality assessment.',
+    logZh: ['MCP 连接本地引擎 linxira-bio:fastq.qc.v1', '读取 2,481,532 条读段', '计算碱基质量与 GC 含量'],
+    logEn: ['MCP connected to local engine linxira-bio:fastq.qc.v1', 'Reading 2,481,532 reads', 'Computing base quality & GC content'],
+    chart: 'qc', json: `{
+  <span style="color:var(--brand-teal)">"read_count"</span>: 2481532,
+  <span style="color:var(--brand-teal)">"q30_percent"</span>: 93.7,
+  <span style="color:var(--brand-teal)">"gc_percent"</span>: 48.2
+}`,
+    sumZh: '质量很好：Q30 达 93.7%，GC 含量 48.2%，平均长度 150 bp，无接头污染迹象，可直接进入下游比对。',
+    sumEn: 'Quality is high: Q30 93.7%, GC 48.2%, mean length 150 bp, no adapter contamination — ready for alignment.',
+  },
+  {
+    q: '比较 WT 和 KO 组的差异表达基因',
+    channel: 'sdk', channelIco: '🐍',
+    tool: `import linxira_bio as lb
+
+res = lb.expression.differential(
+    matrix="expression_matrix.tsv",
+    design={"WT": ["WT_1", "WT_2", "WT_3"],
+            "KO": ["KO_1", "KO_2", "KO_3"]},
+    method="deseq2",
+    shrink="apeglm",
+)`,
+    planZh: '这是拟南芥（Arabidopsis thaliana）的表达矩阵。计划：通过 Python SDK 调用 DESeq2 工作流做差异表达分析，并用 apeglm 收缩效应量。',
+    planEn: 'This is an Arabidopsis thaliana expression matrix. Plan: run the DESeq2 workflow via the Python SDK with apeglm shrinkage.',
+    logZh: ['SDK 加载 Rust 核心引擎', '构建 DESeq2 计数矩阵 (18,752 × 6)', '离散度估计 + 差异检验'],
+    logEn: ['SDK loading Rust core engine', 'Building DESeq2 count matrix (18,752 × 6)', 'Dispersion estimation + differential testing'],
+    chart: 'volcano', json: `{
+  <span style="color:var(--brand-teal)">"upregulated"</span>: 842,
+  <span style="color:var(--brand-teal)">"downregulated"</span>: 691,
+  <span style="color:var(--brand-teal)">"padj_005"</span>: 1533
+}`,
+    sumZh: '共 1,533 个显著差异基因（padj<0.05）：842 个上调、691 个下调。KEGG 富集显示 IL-17 与 NF-κB 信号通路显著富集。',
+    sumEn: '1,533 significant DEGs (padj<0.05): 842 up, 691 down. KEGG enrichment highlights IL-17 and NF-κB pathways.',
+  },
+  {
+    q: '统计 variants_sim.vcf 的变异类型分布',
+    channel: 'cli', channelIco: '⌨️',
+    tool: 'linxira-bio variant stats variants_sim.vcf --json\n\n# output streamed to stdout, JSON machine-readable',
+    planZh: '这是人类 1 号染色体（Homo sapiens chr1）的变异文件。计划：通过 CLI 通道调用 variant.stats.v1 统计变异类型与 ts/tv。',
+    planEn: 'This is a Homo sapiens chr1 VCF. Plan: call variant.stats.v1 via the CLI channel for type counts and ts/tv.',
+    logZh: ['CLI 启动 linxira-bio (Rust 引擎)', '解析 VCF 128,450 位点', '统计变异类型与转换/颠换'],
+    logEn: ['CLI starting linxira-bio (Rust engine)', 'Parsing VCF: 128,450 sites', 'Counting variant types & ts/tv'],
+    chart: 'pie', json: `{
+  <span style="color:var(--brand-teal)">"variant_count"</span>: 128450,
+  <span style="color:var(--brand-teal)">"ts_tv_ratio"</span>: 1.99,
+  <span style="color:var(--brand-teal)">"heterozygosity"</span>: 0.0012
+}`,
+    sumZh: '共 128,450 个变异：SNP 占 45%（108,231），ts/tv 比值 1.99，杂合度 0.0012，数据质量良好。',
+    sumEn: '128,450 variants total: SNPs 45% (108,231), ts/tv 1.99, heterozygosity 0.0012 — clean dataset.',
+  },
+];
+function playAI(i) {
+  if (aiBusy) return;
+  const s = aiScenarios[i]; if (!s) return;
+  aiBusy = true;
+  const chat = document.getElementById('ai-chat'); if (!chat) return;
+  const isZh = currentLang === 'zh';
+  document.querySelectorAll('.ai-chip').forEach(c => { if (c.onclick && c.onclick.toString().includes('playAI')) c.disabled = true; });
+  const T = ms => new Promise(r => setTimeout(r, ms));
+  function msg(role, html) { const d = document.createElement('div'); d.className = 'ai-msg ' + role; d.innerHTML = html; chat.appendChild(d); chat.scrollTop = chat.scrollHeight; return d; }
+  (async () => {
+    msg('user', `<div class="ai-avatar">🧑</div><div class="ai-bubble">${s.q}</div>`);
+    await T(650);
+    const bot = msg('bot', `<div class="ai-avatar">🤖</div><div class="ai-bubble"><span class="ai-typing"><i></i><i></i><i></i></span></div>`);
+    await T(1350);
+    const bubble = bot.querySelector('.ai-bubble');
+    bubble.innerHTML = (isZh ? s.planZh : s.planEn) + `
+      <div class="ai-tool">
+        <div class="ai-tool-head"><span>${s.channelIco} linxira-bio · ${isZh ? '工具调用' : 'tool call'}</span><span class="ai-channel ${s.channel}">${s.channel.toUpperCase()}</span></div>
+        <pre>${s.tool}</pre>
+      </div>
+      <div class="runlog-body ai-log" style="padding:0.3rem 0"></div>
+      <div class="rl-bar"><i class="ai-bar"></i></div>
+      <div class="ai-result" style="display:none"></div>
+      <div class="ai-summary" style="display:none"></div>`;
+    const log = bubble.querySelector('.ai-log');
+    const bar = bubble.querySelector('.ai-bar');
+    const t0 = Date.now();
+    const lines = isZh ? s.logZh : s.logEn;
+    for (let k = 0; k < lines.length; k++) {
+      await T(500);
+      const prev = log.querySelector('.rl-glyph.run');
+      if (prev) { prev.textContent = '\u2713'; prev.classList.remove('run'); prev.classList.add('ok'); }
+      const div = document.createElement('div');
+      div.innerHTML = '<span class="rl-time">[' + fmtT(t0) + ']</span> <span class="rl-glyph run">●</span> <span class="rl-msg"></span>';
+      div.querySelector('.rl-msg').textContent = lines[k];
+      log.appendChild(div); log.scrollTop = log.scrollHeight;
+      bar.style.width = Math.round((k + 1) / lines.length * 100) + '%';
+    }
+    await T(450);
+    const res = bubble.querySelector('.ai-result');
+    res.style.display = 'block';
+    res.innerHTML = `<div class="demo-result" style="grid-template-columns:1fr 1fr">
+        <div class="chart-box" style="min-height:140px"><svg class="ai-chart-host" viewBox="0 0 260 200" width="100%" style="max-width:300px"></svg></div>
+        <pre class="demo-json">${s.json}</pre>
+      </div>`;
+    if (s.chart) renderResultChart(s.chart, res.querySelector('.ai-chart-host'));
+    await T(500);
+    const sum = bubble.querySelector('.ai-summary');
+    sum.style.display = 'block';
+    sum.innerHTML = '<b>' + (isZh ? '结论：' : 'Conclusion: ') + '</b>' + (isZh ? s.sumZh : s.sumEn);
+    chat.scrollTop = chat.scrollHeight;
+    aiBusy = false;
+    document.querySelectorAll('.ai-chip').forEach(c => { if (c.onclick && c.onclick.toString().includes('playAI')) c.disabled = false; });
+  })();
+}
+function clearAI() {
+  const chat = document.getElementById('ai-chat'); if (!chat) return;
+  chat.innerHTML = '';
 }
 
 // ===== Simulated Run Log（模拟运行日志动画） =====
