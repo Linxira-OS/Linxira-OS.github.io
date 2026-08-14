@@ -9,14 +9,7 @@ import Navbar from "../../components/Navbar.astro";
   <title>Linxira OS — 面向科学计算的 Arch Linux 发行版</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <meta name="theme-color" content="#0E1417" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#E8F7F6" media="(prefers-color-scheme: light)">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script is:inline>
-    // 深浅主题首帧应用（防闪烁）: localStorage 优先, 否则跟随系统
-    const savedTheme = localStorage.getItem('linxira-theme');
-    const prefersTheme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    document.documentElement.dataset.theme = savedTheme ?? prefersTheme;
-  </script>
   <style>
     /* ==========================================================================
        Linxira 官网首页 — 科技感 + 苹果液态玻璃
@@ -38,20 +31,7 @@ import Navbar from "../../components/Navbar.astro";
       --glow-teal: rgba(32,184,176,0.12); --glow-coral: rgba(243,111,93,0.10);
       --term-bg: rgba(2,6,10,0.55); --term-bar: rgba(0,0,0,0.35);
     }
-    [data-theme="light"] {
-      --bg: #E8F7F6; --bg-deep: #f2fbfa; --bg-alt: #ffffff;
-      --ink: #0E1417; --ink-strong: #0E1417;
-      --muted: #475569; --faint: #64748b; --soft: #334155;
-      --line: rgba(14, 20, 23, 0.18);
-      --grid-line: rgba(14,20,23,0.06);
-      --glass-a: rgba(255,255,255,0.55); --glass-b: rgba(255,255,255,0.35); --glass-c: rgba(14,20,23,0.04);
-      --glass-border: rgba(14,20,23,0.12);
-      --glass-hi: rgba(255,255,255,0.9); --glass-hi2: rgba(255,255,255,0.5);
-      --glass-sheen: rgba(255,255,255,0.55); --glass-glow: rgba(255,255,255,0.4);
-      --glow-teal: rgba(32,184,176,0.16); --glow-coral: rgba(243,111,93,0.14);
-      --term-bg: rgba(14,20,23,0.85); --term-bar: rgba(14,20,23,0.9);
-    }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; transition: background .2s, color .2s; }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
 
     /* ==========================================================================
        液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
@@ -272,7 +252,7 @@ import Navbar from "../../components/Navbar.astro";
   </style>
 </head>
 <body>
-  <Navbar lang="zh" active="home" themeToggle />
+  <Navbar lang="zh" active="home" />
 
   <section class="hero">
     <div class="grid-bg"></div>
