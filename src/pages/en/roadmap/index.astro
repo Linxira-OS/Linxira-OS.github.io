@@ -37,44 +37,74 @@ import Navbar from "../../../components/Navbar.astro";
     <div class="card">
       <h3>Beta released <span class="tag done">Done</span></h3>
       <ul>
-        <li>93 curated applications (catalog v3), 14 categories</li>
-        <li>Dual kernels: linux 7.1.5 (main) + linux-lts 6.18.41 (fallback)</li>
-        <li>Timeshift + grub-btrfs snapshot rollback infrastructure</li>
-        <li>Full container ecosystem: Podman / Distrobox / Apptainer / Docker</li>
-        <li>Self-signed repository [linxira] + 17 first-party tools</li>
+        <li>93 curated applications (catalog v3), 14 categories — scientific computing and gaming (Steam + gaming foundation components) pre-selected</li>
+        <li>Dual kernels: linux (main) + linux-lts (fallback), flat GRUB menu defaulting to the latest kernel</li>
+        <li>Timeshift + grub-btrfs snapshot rollback, one-command setup: linxira-config timeshift enable</li>
+        <li>Container ecosystem default-on: Podman / Distrobox / Apptainer / Docker out of the box</li>
+        <li>Headless server mode: linxira-config headless on/off, zero desktop footprint, all RAM for compute</li>
+        <li>Desktop choice at install: KDE Plasma / server (no desktop)</li>
+        <li>Chinese input method auto-configured from install language (fcitx5)</li>
+        <li>Self-signed repository [linxira] + 17 first-party tools (incl. lhwd hardware driver detection)</li>
+        <li>China mirror auto-fallback + [linxira] database pre-synced at install</li>
       </ul>
     </div>
 
     <h2>Official release (from source)</h2>
     <div class="card">
-      <h3>Core upgrades <span class="tag todo">In progress</span></h3>
+      <h3>Release path <span class="tag todo">In progress</span></h3>
       <ul>
-        <li>Image slimming: 4.6G → 2.5-3G (GNOME online-only, Plasma stays offline-installable)</li>
-        <li>Memory optimization: ZRAM compressed swap + sysctl tuning (community-verified params)</li>
-        <li>Dual-kernel GRUB menu: pick linux / linux-lts directly at boot</li>
-        <li>Timeshift one-command setup: linxira-config timeshift enable (daily 3 snapshots)</li>
-        <li>Containers default-on: Podman + Distrobox + Apptainer preselected at install</li>
-        <li>Headless server mode: linxira-config headless on/off, zero desktop footprint for compute</li>
-        <li>Pinned versions: OpenJDK 21 LTS, Node.js preinstalled</li>
+        <li>No fixed release date; the official release is built from source by users following the build guide</li>
+        <li>Official release ships alongside the source once remaining beta issues are closed</li>
       </ul>
     </div>
 
     <h2>Next iterations</h2>
     <div class="card">
-      <h3>Full multi-desktop selection <span class="tag plan">Planned</span></h3>
-      <p>Full multi-desktop selection at install time (KDE / GNOME / more), with desktop environments and tiling window managers managed separately.</p>
+      <h3>Pulse — system-level AI assistant <span class="tag plan">Planned</span></h3>
+      <p>An always-on, system-level AI assistant and runtime (native Rust), working alongside the Zeta coding agent and the skills platform.</p>
     </div>
     <div class="card">
-      <h3>Recovery mode enhancements <span class="tag plan">Planned</span></h3>
+      <h3>Skills — cross-runtime skill platform <span class="tag plan">Planned</span></h3>
+      <p>A cross-runtime skill distribution platform for research, engineering and execution workflows — system capabilities that can be reused and shared.</p>
+    </div>
+    <div class="card">
+      <h3>Standalone docs site <span class="tag plan">Planned</span></h3>
+      <p>linxira-wiki: an official docs site covering only Linxira-specific features, complementary to upstream Arch documentation.</p>
+    </div>
+    <div class="card">
+      <h3>First-party tools rolling into the ISO <span class="tag plan">Planned</span></h3>
+      <p>Gaming manager, kernel manager, completion agent, recovery diagnostics, package center and other initiated tools ship in the ISO over time.</p>
+    </div>
+
+    <h2>Long-term goals (long horizon)</h2>
+    <p class="card" style="color:#94a3b8;font-size:0.9rem;">These directions are harder — we study them step by step, with no timetable.</p>
+    <div class="card">
+      <h3>Image slimming <span class="tag plan">Long-term</span></h3>
+      <p>Image size 4.6G → 2.5-3G (GNOME online-only, Plasma stays offline-installable).</p>
+    </div>
+    <div class="card">
+      <h3>Memory optimization <span class="tag plan">Long-term</span></h3>
+      <p>ZRAM compressed swap + sysctl tuning (community-verified params).</p>
+    </div>
+    <div class="card">
+      <h3>Pinned runtime versions <span class="tag plan">Long-term</span></h3>
+      <p>OpenJDK 21 LTS, Node.js and other runtimes pinned and preinstalled.</p>
+    </div>
+    <div class="card">
+      <h3>Recovery mode enhancements <span class="tag plan">Long-term</span></h3>
       <p>Graphical restore UI: one-click image restore, boot repair, key repair; recovery environment defaults to KDE fallback desktop.</p>
     </div>
     <div class="card">
-      <h3>Self-built performance kernel <span class="tag plan">Planned</span></h3>
-      <p>Build from open-source kernels (BORE scheduler + x86-64-v3 optimizations) into our own signed repository. Current releases ship the generic linux / linux-lts kernels.</p>
+      <h3>Self-built performance kernel <span class="tag plan">Long-term</span></h3>
+      <p>Build from open-source kernels (BORE scheduler + x86-64-v3 optimizations) into our own signed repository.</p>
     </div>
     <div class="card">
-      <h3>Tiling window managers <span class="tag plan">Planned</span></h3>
+      <h3>Tiling window managers <span class="tag plan">Long-term</span></h3>
       <p>Niri / Hyprland and other tiling WMs into the software list, installable after KDE setup, switchable at the login screen.</p>
+    </div>
+    <div class="card">
+      <h3>Full multi-desktop selection <span class="tag plan">Long-term</span></h3>
+      <p>Full multi-desktop selection at install time (KDE / GNOME / more), with desktop environments and tiling window managers managed separately.</p>
     </div>
 
     <div class="footer">Linxira OS — a desktop supercomputer system for science and development</div>

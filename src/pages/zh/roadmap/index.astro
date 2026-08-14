@@ -37,44 +37,74 @@ import Navbar from "../../../components/Navbar.astro";
     <div class="card">
       <h3>测试版已发布 <span class="tag done">已完成</span></h3>
       <ul>
-        <li>93 个精选应用（catalog v3），14 大分类</li>
-        <li>双内核：linux 7.1.5（主）+ linux-lts 6.18.41（兜底）</li>
-        <li>Timeshift + grub-btrfs 快照回滚基础设施</li>
-        <li>完整容器生态：Podman / Distrobox / Apptainer / Docker</li>
-        <li>自研签名仓库 [linxira] + 17 个自研工具</li>
+        <li>93 个精选应用（catalog v3），14 大分类——科学计算与游戏（Steam + 游戏基础组件）默认装载</li>
+        <li>双内核：linux（主）+ linux-lts（兜底），GRUB 平铺菜单默认最新内核</li>
+        <li>Timeshift + grub-btrfs 快照回滚，一键配置：linxira-config timeshift enable</li>
+        <li>容器生态默认化：Podman / Distrobox / Apptainer / Docker 开箱即用</li>
+        <li>无头服务器模式：linxira-config headless on/off，桌面零占用、内存全给计算</li>
+        <li>桌面选择：KDE Plasma / 服务器（无桌面）安装时二选一</li>
+        <li>中文输入法按安装语言自动配置（fcitx5）</li>
+        <li>自研签名仓库 [linxira] + 17 个自研工具（含 lhwd 硬件驱动检测）</li>
+        <li>中国镜像自动 fallback + [linxira] 数据库安装期预同步</li>
       </ul>
     </div>
 
     <h2>正式版（源码自建）</h2>
     <div class="card">
-      <h3>核心升级 <span class="tag todo">实施中</span></h3>
+      <h3>发布路径 <span class="tag todo">实施中</span></h3>
       <ul>
-        <li>镜像瘦身：4.6G → 2.5-3G（GNOME 改在线安装，Plasma 保持离线可装）</li>
-        <li>内存优化：ZRAM 压缩交换 + sysctl 调优（社区验证参数）</li>
-        <li>多内核 GRUB 菜单：开机直接选择 linux / linux-lts</li>
-        <li>Timeshift 一键配置：linxira-config timeshift enable（每日 3 份）</li>
-        <li>容器默认化：Podman + Distrobox + Apptainer 安装时默认勾选</li>
-        <li>无头服务器模式：linxira-config headless on/off，桌面零占用给计算</li>
-        <li>版本精确定位：OpenJDK 21 LTS、Node.js 预装</li>
+        <li>正式版不预设固定发布日期，由用户按构建指南从源码自建</li>
+        <li>测试版遗留问题逐项收敛后，正式版随源码同步发布</li>
       </ul>
     </div>
 
     <h2>后续迭代</h2>
     <div class="card">
-      <h3>多桌面完整选择 <span class="tag plan">规划中</span></h3>
-      <p>安装时提供完整的多桌面选择（KDE / GNOME / 更多），桌面环境与平铺窗口管理器分类管理。</p>
+      <h3>Pulse — 系统级 AI 助手 <span class="tag plan">规划中</span></h3>
+      <p>常驻系统级 AI 助手与运行时（Rust 原生），与 Zeta 编码代理、技能平台协同工作。</p>
     </div>
     <div class="card">
-      <h3>恢复模式增强 <span class="tag plan">规划中</span></h3>
+      <h3>Skills — 跨运行时技能平台 <span class="tag plan">规划中</span></h3>
+      <p>研究、工程与执行工作流的跨运行时技能分发平台，让系统能力可以复用与共享。</p>
+    </div>
+    <div class="card">
+      <h3>独立文档站 <span class="tag plan">规划中</span></h3>
+      <p>linxira-wiki：仅记录 Linxira 独有特性的官方文档站，与上游 Arch 文档互补。</p>
+    </div>
+    <div class="card">
+      <h3>自研工具持续集成 <span class="tag plan">规划中</span></h3>
+      <p>游戏管理、内核管理、补全代理、恢复诊断、应用中心等已立项工具陆续进入 ISO。</p>
+    </div>
+
+    <h2>长期目标（长线研究）</h2>
+    <p class="card" style="color:#94a3b8;font-size:0.9rem;">以下方向难度较高，需要逐步研究、一步一步推进，不设时间表。</p>
+    <div class="card">
+      <h3>镜像瘦身 <span class="tag plan">长期</span></h3>
+      <p>镜像体积 4.6G → 2.5-3G（GNOME 改在线安装，Plasma 保持离线可装）。</p>
+    </div>
+    <div class="card">
+      <h3>内存优化 <span class="tag plan">长期</span></h3>
+      <p>ZRAM 压缩交换 + sysctl 调优（社区验证参数）。</p>
+    </div>
+    <div class="card">
+      <h3>版本精确定位 <span class="tag plan">长期</span></h3>
+      <p>OpenJDK 21 LTS、Node.js 等运行时版本精确定位与预装。</p>
+    </div>
+    <div class="card">
+      <h3>恢复模式增强 <span class="tag plan">长期</span></h3>
       <p>图形化还原界面：一键还原镜像、修复引导、密钥修复；恢复环境默认 KDE 兜底桌面。</p>
     </div>
     <div class="card">
-      <h3>性能内核自建 <span class="tag plan">规划中</span></h3>
-      <p>基于开源内核（BORE 调度器 + x86-64-v3 优化）自建编译，进我们自己的签名仓库。当前版本使用通用 linux / linux-lts 内核。</p>
+      <h3>性能内核自建 <span class="tag plan">长期</span></h3>
+      <p>基于开源内核（BORE 调度器 + x86-64-v3 优化）自建编译，进我们自己的签名仓库。</p>
     </div>
     <div class="card">
-      <h3>平铺窗口管理器 <span class="tag plan">规划中</span></h3>
+      <h3>平铺窗口管理器 <span class="tag plan">长期</span></h3>
       <p>Niri / Hyprland 等平铺 WM 进软件列表，装好 KDE 后按需安装，登录界面切换。</p>
+    </div>
+    <div class="card">
+      <h3>多桌面完整选择 <span class="tag plan">长期</span></h3>
+      <p>安装时提供完整的多桌面选择（KDE / GNOME / 更多），桌面环境与平铺窗口管理器分类管理。</p>
     </div>
 
     <div class="footer">Linxira OS — 面向科研与开发的桌面超算系统</div>
