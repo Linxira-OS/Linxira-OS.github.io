@@ -24,22 +24,21 @@ import Navbar from "../../components/Navbar.astro";
        ========================================================================== */
     .glass {
       position: relative;
-      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 35%, rgba(14,20,23,0.22));
-      -webkit-backdrop-filter: blur(18px) saturate(180%);
-      backdrop-filter: blur(18px) saturate(180%);
-      border: 1px solid rgba(255,255,255,0.14);
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 35%, rgba(14,20,23,0.12));
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.08);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.32),
-        inset 1px 0 0 rgba(255,255,255,0.10),
-        inset -1px -1px 0 rgba(255,255,255,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        inset 1px 0 0 rgba(255,255,255,0.06),
         0 20px 60px rgba(0,0,0,0.45);
     }
     /* 对角光泽 + 顶部辉光（液态玻璃的 specular 高光） */
     .glass::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
       background:
-        linear-gradient(115deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.05) 26%, transparent 42%),
-        radial-gradient(120% 70% at 18% 0%, rgba(255,255,255,0.10), transparent 55%);
+        linear-gradient(115deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
+        radial-gradient(120% 70% at 18% 0%, rgba(255,255,255,0.07), transparent 55%);
     }
 
     /* ---------- 滚动揭示动画 ---------- */
@@ -52,13 +51,15 @@ import Navbar from "../../components/Navbar.astro";
     @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
     /* ---------- Hero ---------- */
+    @property --border-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+    @keyframes rotating-border { from { --border-angle: 0deg; } to { --border-angle: 360deg; } }
     .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 5rem; overflow: hidden; }
     .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, rgba(32,184,176,0.12) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
     .hero::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(243,111,93,0.10) 0%, transparent 70%); animation: drift 25s ease-in-out infinite alternate-reverse; pointer-events: none; }
     @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-30px) scale(1.05); } }
-    .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(32,184,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(32,184,176,0.04) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(32,184,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(32,184,176,0.04) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); -webkit-mask-composite: source-in, xor; mask-composite: intersect; pointer-events: none; }
     /* 粒子网络画布 */
-    #particles { position: absolute; inset: 0; z-index: 0; opacity: 0.7; pointer-events: none; }
+    #particles { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.7; pointer-events: none; }
     .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid rgba(32,184,176,0.06); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
     .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid rgba(243,111,93,0.05); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
     .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(32,184,176,0.15), rgba(243,111,93,0.15), transparent); pointer-events: none; }
@@ -78,10 +79,36 @@ import Navbar from "../../components/Navbar.astro";
     .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: #cbd5e1; font-size: 1.02rem; }
     .hero-desc strong { color: #20B8B0; }
     .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.8rem; }
-    .cta { display: inline-block; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 12px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
+    .cta { display: inline-block; position: relative; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 12px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
+    /* 旋转渐变描边（hover 亮起 · DeepSeek 同款：conic-gradient + mask exclude） */
+    .cta::before {
+      content: ''; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; pointer-events: none;
+      background: conic-gradient(from var(--border-angle, 0deg), rgba(32,184,176,0.20) 0%, rgba(32,184,176,0.75) 25%, rgba(243,111,93,0.20) 50%, rgba(32,184,176,0.75) 75%, rgba(32,184,176,0.20) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0; transition: opacity .3s ease;
+      animation: rotating-border 6s linear infinite;
+    }
+    .cta:hover::before { opacity: 1; }
     .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(32,184,176,0.4); text-decoration: none; }
     .cta-ghost { display: inline-block; padding: 1rem 2rem; color: #e2e8f0; border: 1px solid rgba(51,65,85,0.8); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
     .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
+
+    /* ---------- 终端演示（一行命令，掌控一切） ---------- */
+    .terminal-section { position: relative; overflow: hidden; }
+    .terminal-section::before { content: ''; position: absolute; top: 50%; left: 50%; width: 90vw; height: 90vw; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(46,96,159,0.12) 0%, transparent 60%); pointer-events: none; }
+    .terminal { max-width: 740px; margin: 0 auto; border-radius: 14px; overflow: hidden; text-align: left; }
+    .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: rgba(0,0,0,0.35); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .term-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .term-dot.red { background: #ff5f57; } .term-dot.yellow { background: #febc2e; } .term-dot.green { background: #28c840; }
+    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: #64748b; font-family: ui-monospace, 'Cascadia Mono', monospace; }
+    .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: rgba(2,6,10,0.55); }
+    .term-line { color: #cbd5e1; margin-bottom: 0.35rem; white-space: pre-wrap; }
+    .term-prompt { color: #20B8B0; font-weight: 700; }
+    .term-out { color: #64748b; margin-bottom: 0.95rem; }
+    .term-typing::after { content: '▍'; color: #20B8B0; animation: blink-ty 1s step-end infinite; }
 
     /* ---------- 产品平级双卡（Zeta + Bio SDK） ---------- */
     .product-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 860px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
@@ -242,6 +269,33 @@ import Navbar from "../../components/Navbar.astro";
         <span class="badge">测试版 ISO 已通过完整安装测试</span>
         <span class="badge">签名软件仓库 [linxira]</span>
         <span class="badge badge-coral">测试版已通过 · 正式版源码自建</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 终端演示（一行命令，掌控一切 · 致敬 DeepSeek Harness 的终端叙事） -->
+  <section class="section-block terminal-section">
+    <div class="section">
+      <div class="section-header reveal">
+        <h2 class="section-title">一行命令，掌控一切</h2>
+        <p class="section-subtitle">无头切换、SSH、滚动更新、快照回滚——系统能力都在终端里</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="terminal glass reveal" id="terminal">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="term-title">linxira — zsh</span>
+        </div>
+        <div class="term-body" id="termBody">
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config headless on now</div>
+          <div class="term-out">已切换到无头模式：桌面已停止，内存全给计算 ✓</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config ssh on</div>
+          <div class="term-out">SSH 已开启：ssh user@192.168.1.42 ✓</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-update</div>
+          <div class="term-out">已是最新：上游补丁 0 个待装 ✓</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config timeshift status</div>
+          <div class="term-out">快照：每日 3 份 · 启动 3 份 · 更新前自动快照 ✓</div>
+        </div>
       </div>
     </div>
   </section>
@@ -457,6 +511,39 @@ import Navbar from "../../components/Navbar.astro";
         mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
       });
       canvas.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+    }
+
+    // ---------- 终端打字机演示（循环执行命令序列） ----------
+    const termBody = document.getElementById('termBody');
+    if (termBody && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const termScript = [
+        { cmd: 'linxira-config headless on now', out: '已切换到无头模式：桌面已停止，内存全给计算 ✓' },
+        { cmd: 'linxira-config ssh on', out: 'SSH 已开启：ssh user@192.168.1.42 ✓' },
+        { cmd: 'linxira-update', out: '已是最新：上游补丁 0 个待装 ✓' },
+        { cmd: 'linxira-config timeshift status', out: '快照：每日 3 份 · 启动 3 份 · 更新前自动快照 ✓' },
+      ];
+      const typeSpeed = 26, holdMs = 1100, gapMs = 350;
+      const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+      (async () => {
+        while (true) {
+          for (const s of termScript) {
+            const line = document.createElement('div');
+            line.className = 'term-line';
+            line.innerHTML = '<span class="term-prompt">$</span> <span class="term-typing"></span>';
+            termBody.appendChild(line);
+            const t = line.querySelector('.term-typing');
+            for (const ch of s.cmd) { t.textContent += ch; await sleep(typeSpeed); }
+            await sleep(gapMs);
+            const out = document.createElement('div');
+            out.className = 'term-out';
+            out.textContent = s.out;
+            termBody.appendChild(out);
+            termBody.scrollTop = termBody.scrollHeight;
+            await sleep(holdMs);
+          }
+          termBody.innerHTML = '';
+        }
+      })();
     }
 
     // ---------- 数字滚动动画（count-up） ----------
