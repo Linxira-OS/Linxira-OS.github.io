@@ -417,7 +417,7 @@ body.light .example-panel-body pre{background:#F0F3F7}
 </style>
 </head>
 <body class="dark">
-<Navbar lang={lang} active="products" themeToggle />
+<Navbar lang={lang} active="products" themeToggle logoLink={false} />
 
 <!-- ===== Sidebar ===== -->
 <aside class="sidebar">
@@ -427,7 +427,6 @@ body.light .example-panel-body pre{background:#F0F3F7}
       <span class="logo-text">LINXIRA BIO</span>
     </div>
     <div class="subtitle">{zh ? "本地分析工作台" : "Local Analysis Workbench"}</div>
-    <a class="sidebar-back" href={`/${lang}/`}>{zh ? "← 返回 Linxira 主站" : "← Back to Linxira"}</a>
   </div>
   <div class="lang-toggle">
     <a class={`lang-btn ${zh ? "active" : ""}`} href="/bio-sdk/zh/">中文</a>

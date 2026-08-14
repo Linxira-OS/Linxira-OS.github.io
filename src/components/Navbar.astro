@@ -30,9 +30,13 @@ interface Props {
 	 * 按钮与语言切换并排，图标式（太阳/月亮）。
 	 */
 	themeToggle?: boolean;
+	/**
+	 * logo 是否链回主站（产品子站传 false 关掉"返回主站"入口）。
+	 */
+	logoLink?: boolean;
 }
 
-const { lang, active, themeToggle = false } = Astro.props;
+const { lang, active, themeToggle = false, logoLink = true } = Astro.props;
 const zh = lang === "zh";
 
 const base = `/${lang}`;
@@ -101,10 +105,17 @@ const products = [
 ---
 
 <nav class="site-nav" data-astro-nav>
-  <a class="site-nav__logo" href={`${base}/`}>
-    <img src="/assets/linxira-l.svg" alt="Linxira" width="32" height="32" />
-    <span>Linxira OS</span>
-  </a>
+  {logoLink ? (
+    <a class="site-nav__logo" href={`${base}/`}>
+      <img src="/assets/linxira-l.svg" alt="Linxira" width="32" height="32" />
+      <span>Linxira OS</span>
+    </a>
+  ) : (
+    <span class="site-nav__logo site-nav__logo-static">
+      <img src="/assets/linxira-l.svg" alt="Linxira" width="32" height="32" />
+      <span>Linxira OS</span>
+    </span>
+  )}
 
   <div class="site-nav__links">
     {navItems.map((item) => (
@@ -187,6 +198,8 @@ const products = [
     gap: 0.6rem;
     text-decoration: none;
     flex-shrink: 0;
+  }
+  .site-nav__logo-static { cursor: default; }
   }
   .site-nav__logo img { width: 32px; height: 32px; }
   .site-nav__logo span { color: #e2e8f0; font-weight: 600; }
