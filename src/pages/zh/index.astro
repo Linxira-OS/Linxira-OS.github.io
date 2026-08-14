@@ -8,7 +8,15 @@ import Navbar from "../../components/Navbar.astro";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linxira OS — 面向科学计算的 Arch Linux 发行版</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <meta name="theme-color" content="#0E1417" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#E8F7F6" media="(prefers-color-scheme: light)">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script is:inline>
+    // 深浅主题首帧应用（防闪烁）: localStorage 优先, 否则跟随系统
+    const savedTheme = localStorage.getItem('linxira-theme');
+    const prefersTheme = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.dataset.theme = savedTheme ?? prefersTheme;
+  </script>
   <style>
     /* ==========================================================================
        Linxira 官网首页 — 科技感 + 苹果液态玻璃
@@ -16,7 +24,34 @@ import Navbar from "../../components/Navbar.astro";
        新增：粒子网络背景、产品平级双卡、滚动揭示、统计数字动画、液态玻璃卡片。
        ========================================================================== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.6; overflow-x: hidden; }
+    :root {
+      --bg: #0E1417; --bg-deep: #0a0f1a; --bg-alt: #141a26;
+      --ink: #e5e7eb; --ink-strong: #f1f5f9;
+      --muted: #94a3b8; --faint: #64748b; --soft: #cbd5e1;
+      --line: rgba(51, 65, 85, 0.5);
+      --teal: #20B8B0; --coral: #F36F5D;
+      --grid-line: rgba(32,184,176,0.04);
+      --glass-a: rgba(255,255,255,0.06); --glass-b: rgba(255,255,255,0.02); --glass-c: rgba(14,20,23,0.12);
+      --glass-border: rgba(255,255,255,0.08);
+      --glass-hi: rgba(255,255,255,0.18); --glass-hi2: rgba(255,255,255,0.06);
+      --glass-sheen: rgba(255,255,255,0.10); --glass-glow: rgba(255,255,255,0.07);
+      --glow-teal: rgba(32,184,176,0.12); --glow-coral: rgba(243,111,93,0.10);
+      --term-bg: rgba(2,6,10,0.55); --term-bar: rgba(0,0,0,0.35);
+    }
+    [data-theme="light"] {
+      --bg: #E8F7F6; --bg-deep: #f2fbfa; --bg-alt: #ffffff;
+      --ink: #0E1417; --ink-strong: #0E1417;
+      --muted: #475569; --faint: #64748b; --soft: #334155;
+      --line: rgba(14, 20, 23, 0.18);
+      --grid-line: rgba(14,20,23,0.06);
+      --glass-a: rgba(255,255,255,0.55); --glass-b: rgba(255,255,255,0.35); --glass-c: rgba(14,20,23,0.04);
+      --glass-border: rgba(14,20,23,0.12);
+      --glass-hi: rgba(255,255,255,0.9); --glass-hi2: rgba(255,255,255,0.5);
+      --glass-sheen: rgba(255,255,255,0.55); --glass-glow: rgba(255,255,255,0.4);
+      --glow-teal: rgba(32,184,176,0.16); --glow-coral: rgba(243,111,93,0.14);
+      --term-bg: rgba(14,20,23,0.85); --term-bar: rgba(14,20,23,0.9);
+    }
+    body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; transition: background .2s, color .2s; }
 
     /* ==========================================================================
        液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
@@ -24,21 +59,21 @@ import Navbar from "../../components/Navbar.astro";
        ========================================================================== */
     .glass {
       position: relative;
-      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 35%, rgba(14,20,23,0.12));
+      background: linear-gradient(135deg, var(--glass-a), var(--glass-b) 35%, var(--glass-c));
       -webkit-backdrop-filter: blur(12px) saturate(180%);
       backdrop-filter: blur(12px) saturate(180%);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid var(--glass-border);
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.18),
-        inset 1px 0 0 rgba(255,255,255,0.06),
+        inset 0 1px 0 var(--glass-hi),
+        inset 1px 0 0 var(--glass-hi2),
         0 20px 60px rgba(0,0,0,0.45);
     }
     /* 对角光泽 + 顶部辉光（液态玻璃的 specular 高光） */
     .glass::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
       background:
-        linear-gradient(115deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
-        radial-gradient(120% 70% at 18% 0%, rgba(255,255,255,0.07), transparent 55%);
+        linear-gradient(115deg, var(--glass-sheen) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
+        radial-gradient(120% 70% at 18% 0%, var(--glass-glow), transparent 55%);
     }
 
     /* ---------- 滚动揭示动画 ---------- */
@@ -53,15 +88,23 @@ import Navbar from "../../components/Navbar.astro";
     /* ---------- Hero ---------- */
     @property --border-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
     @keyframes rotating-border { from { --border-angle: 0deg; } to { --border-angle: 360deg; } }
+    .theme-toggle {
+      position: absolute; top: 1.2rem; right: 1.5rem; z-index: 5;
+      background: var(--glass-b); border: 1px solid var(--line); color: var(--ink);
+      font-size: .75rem; padding: .4rem .8rem; cursor: pointer; letter-spacing: .1em;
+      border-radius: 8px; backdrop-filter: blur(12px);
+      transition: border-color .2s, color .2s;
+    }
+    .theme-toggle:hover { border-color: var(--teal); color: var(--teal); }
     .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 5rem; overflow: hidden; }
-    .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, rgba(32,184,176,0.12) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
-    .hero::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(243,111,93,0.10) 0%, transparent 70%); animation: drift 25s ease-in-out infinite alternate-reverse; pointer-events: none; }
+    .hero::before { content: ''; position: absolute; top: -40%; left: -20%; width: 80vw; height: 80vw; background: radial-gradient(circle, var(--glow-teal) 0%, transparent 70%); animation: drift 20s ease-in-out infinite alternate; pointer-events: none; }
+    .hero::after { content: ''; position: absolute; bottom: -30%; right: -15%; width: 70vw; height: 70vw; background: radial-gradient(circle, var(--glow-coral) 0%, transparent 70%); animation: drift 25s ease-in-out infinite alternate-reverse; pointer-events: none; }
     @keyframes drift { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(40px,-30px) scale(1.05); } }
-    .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(32,184,176,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(32,184,176,0.04) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); -webkit-mask-composite: source-in, xor; mask-composite: intersect; pointer-events: none; }
+    .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); -webkit-mask-composite: source-in, xor; mask-composite: intersect; pointer-events: none; }
     /* 粒子网络画布 */
     #particles { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.7; pointer-events: none; }
-    .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid rgba(32,184,176,0.06); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
-    .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid rgba(243,111,93,0.05); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
+    .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid var(--grid-line); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
+    .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid var(--grid-line); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
     .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(32,184,176,0.15), rgba(243,111,93,0.15), transparent); pointer-events: none; }
     .beam-1 { top: 30%; left: 0; width: 100%; transform: rotate(-5deg); }
     .beam-2 { top: 60%; left: 0; width: 100%; transform: rotate(3deg); }
@@ -70,13 +113,13 @@ import Navbar from "../../components/Navbar.astro";
     .hero-content { position: relative; z-index: 1; max-width: 1000px; }
     .hero-logo { width: 130px; height: 130px; margin-bottom: 1.8rem; filter: drop-shadow(0 0 40px rgba(32,184,176,0.35)); animation: floaty 6s ease-in-out infinite; }
     @keyframes floaty { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
-    .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #E8F7F6, #F36F5D); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+    .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, var(--teal), var(--ink), var(--coral)); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
     @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-    .tagline { font-size: 1.3rem; color: #94a3b8; margin-bottom: 0.3rem; }
+    .tagline { font-size: 1.3rem; color: var(--muted); margin-bottom: 0.3rem; }
     .tagline .caret-ty { display: inline-block; width: 2px; height: 1.3em; margin-left: 2px; vertical-align: text-bottom; background: #20B8B0; animation: blink-ty 1s step-end infinite; }
     @keyframes blink-ty { 0%,49%{opacity:1} 50%,100%{opacity:0} }
-    .en-tagline { font-size: 1rem; color: #64748b; margin-bottom: 2rem; letter-spacing: 3px; text-transform: uppercase; }
-    .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: #cbd5e1; font-size: 1.02rem; }
+    .en-tagline { font-size: 1rem; color: var(--faint); margin-bottom: 2rem; letter-spacing: 3px; text-transform: uppercase; }
+    .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: var(--soft); font-size: 1.02rem; }
     .hero-desc strong { color: #20B8B0; }
     .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.8rem; }
     .cta { display: inline-block; position: relative; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 12px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
@@ -93,18 +136,18 @@ import Navbar from "../../components/Navbar.astro";
     }
     .cta:hover::before { opacity: 1; }
     .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(32,184,176,0.4); text-decoration: none; }
-    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: #e2e8f0; border: 1px solid rgba(51,65,85,0.8); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
+    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: var(--ink-strong); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
     .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
 
     /* ---------- 终端演示（一行命令，掌控一切） ---------- */
     .terminal-section { position: relative; overflow: hidden; }
     .terminal-section::before { content: ''; position: absolute; top: 50%; left: 50%; width: 90vw; height: 90vw; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(46,96,159,0.12) 0%, transparent 60%); pointer-events: none; }
     .terminal { max-width: 740px; margin: 0 auto; border-radius: 14px; overflow: hidden; text-align: left; }
-    .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: rgba(0,0,0,0.35); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: var(--term-bar); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .term-dot { width: 11px; height: 11px; border-radius: 50%; }
     .term-dot.red { background: #ff5f57; } .term-dot.yellow { background: #febc2e; } .term-dot.green { background: #28c840; }
     .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: #64748b; font-family: ui-monospace, 'Cascadia Mono', monospace; }
-    .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: rgba(2,6,10,0.55); }
+    .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: var(--term-bg); }
     .term-line { color: #cbd5e1; margin-bottom: 0.35rem; white-space: pre-wrap; }
     .term-prompt { color: #20B8B0; font-weight: 700; }
     .term-out { color: #64748b; margin-bottom: 0.95rem; }
@@ -120,8 +163,8 @@ import Navbar from "../../components/Navbar.astro";
     .pcard .pmark { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 10px; font-weight: 800; font-size: 1.1rem; }
     .pcard.zeta .pmark { color: #E20613; background: rgba(226,6,19,0.12); }
     .pcard.sdk .pmark { color: #20B8B0; background: rgba(32,184,176,0.14); }
-    .pcard h3 { color: #e2e8f0; font-size: 1.18rem; font-weight: 600; }
-    .pcard p { color: #94a3b8; font-size: 0.88rem; line-height: 1.55; flex: 1; }
+    .pcard h3 { color: var(--ink-strong); font-size: 1.18rem; font-weight: 600; }
+    .pcard p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; flex: 1; }
     .pcard .pgo { font-size: 0.85rem; font-weight: 600; }
     .pcard.zeta .pgo { color: #E20613; }
     .pcard.sdk .pgo { color: #20B8B0; }
@@ -138,8 +181,8 @@ import Navbar from "../../components/Navbar.astro";
     .section-products::before {
       content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(32,184,176,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(32,184,176,0.035) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: 56px 56px;
       -webkit-mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
       mask-image: radial-gradient(80% 85% at 50% 40%, #000, transparent);
@@ -153,18 +196,18 @@ import Navbar from "../../components/Navbar.astro";
     .show-card { position: relative; display: flex; flex-direction: column; gap: 1rem; padding: 2rem 2.1rem; border-radius: 26px; text-decoration: none; transform-style: preserve-3d; will-change: transform; overflow: hidden; }
     .show-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.2rem; }
     .show-mark { display: inline-flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border-radius: 14px; font-weight: 800; font-size: 1.3rem; }
-    .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: #cbd5e1; border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
+    .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
     .show-card.zeta .show-mark { color: #E20613; background: rgba(226,6,19,0.14); }
     .show-card.sdk .show-mark { color: #20B8B0; background: rgba(32,184,176,0.16); }
-    .show-card h3 { font-size: 1.9rem; font-weight: 700; color: #f1f5f9; }
-    .show-sub { font-size: 0.86rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
-    .show-card .show-desc { color: #94a3b8; font-size: 0.97rem; line-height: 1.6; flex: 1; }
+    .show-card h3 { font-size: 1.9rem; font-weight: 700; color: var(--ink-strong); }
+    .show-sub { font-size: 0.86rem; color: var(--faint); letter-spacing: 1px; text-transform: uppercase; }
+    .show-card .show-desc { color: var(--muted); font-size: 0.97rem; line-height: 1.6; flex: 1; }
     .show-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .show-chips span { font-size: 0.78rem; color: #cbd5e1; background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
+    .show-chips span { font-size: 0.78rem; color: var(--soft); background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
     .show-card.zeta .show-chips span { background: rgba(226,6,19,0.10); border-color: rgba(226,6,19,0.24); }
     .show-stats { display: flex; gap: 1.6rem; margin-top: 0.2rem; }
-    .show-stats .num { font-size: 1.5rem; font-weight: 700; color: #e2e8f0; }
-    .show-stats .lbl { font-size: 0.76rem; color: #64748b; }
+    .show-stats .num { font-size: 1.5rem; font-weight: 700; color: var(--ink-strong); }
+    .show-stats .lbl { font-size: 0.76rem; color: var(--faint); }
     .show-cta { font-weight: 600; font-size: 0.95rem; margin-top: 0.4rem; }
     .show-card.zeta .show-cta { color: #E20613; }
     .show-card.sdk .show-cta { color: #20B8B0; }
@@ -175,12 +218,12 @@ import Navbar from "../../components/Navbar.astro";
 
     /* ---------- 区块 ---------- */
     .section-block { padding: 5rem 0; }
-    .section-block-alt { background: linear-gradient(180deg, #0E1417 0%, #141a26 100%); }
-    .section-block-alt2 { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); }
+    .section-block-alt { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%); }
+    .section-block-alt2 { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); }
     .section { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
     .section-header { text-align: center; margin-bottom: 3rem; }
     .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .section-subtitle { color: #64748b; font-size: 1rem; }
+    .section-subtitle { color: var(--faint); font-size: 1rem; }
     .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, #20B8B0, #F36F5D); border-radius: 2px; }
 
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
@@ -188,15 +231,15 @@ import Navbar from "../../components/Navbar.astro";
     .feature:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
     .feature .feature-icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
     .feature h3 { color: #20B8B0; margin-bottom: 0.5rem; font-size: 1.08rem; }
-    .feature p { color: #94a3b8; font-size: 0.88rem; line-height: 1.55; }
+    .feature p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
 
     .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
-    .about-text h3 { color: #e2e8f0; font-size: 1.4rem; margin-bottom: 1rem; }
-    .about-text p { color: #94a3b8; margin-bottom: 1rem; font-size: 0.95rem; }
+    .about-text h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 1rem; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
     .about-text strong { color: #20B8B0; }
     .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
     .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .stat-label { color: #94a3b8; font-size: 0.8rem; margin-top: 0.3rem; }
+    .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
     .stat-card { padding: 1.2rem 0.8rem; border-radius: 16px; text-align: center; }
 
     .release-card { padding: 2.5rem 2rem; border-radius: 20px; text-align: center; }
@@ -205,25 +248,25 @@ import Navbar from "../../components/Navbar.astro";
     .ecosystem-link { display: block; text-align: center; padding: 2.4rem 2rem; border-radius: 20px; text-decoration: none; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
     .ecosystem-link:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
     .ecosystem-link h3 { color: #20B8B0; font-size: 1.3rem; margin-bottom: 0.6rem; }
-    .ecosystem-link p { color: #94a3b8; font-size: 0.92rem; margin-bottom: 0.8rem; }
+    .ecosystem-link p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
     .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
 
-    .blog-section { background: linear-gradient(180deg, #0a0f1a 0%, #0E1417 100%); padding: 5rem 0; }
+    .blog-section { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
     .blog-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
-    .blog-date { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; }
-    .blog-title { font-size: 1.2rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
-    .blog-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
+    .blog-date { font-size: 0.8rem; color: var(--faint); margin-bottom: 0.5rem; }
+    .blog-title { font-size: 1.2rem; font-weight: 600; color: var(--ink-strong); margin-bottom: 0.5rem; }
+    .blog-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
     .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
 
     .release-section { padding: 4rem 0; }
-    .release-card h3 { color: #e2e8f0; font-size: 1.4rem; margin-bottom: 0.8rem; }
-    .release-card p { color: #94a3b8; margin-bottom: 1.2rem; font-size: 0.95rem; }
+    .release-card h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 0.8rem; }
+    .release-card p { color: var(--muted); margin-bottom: 1.2rem; font-size: 0.95rem; }
     .release-status-line { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
-    .release-item { font-size: 0.82rem; color: #94a3b8; display: flex; align-items: center; gap: 0.4rem; }
+    .release-item { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
 
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); background: #0a0f1a; }
+    footer { text-align: center; padding: 3rem 2rem; color: var(--faint); font-size: 0.85rem; border-top: 1px solid var(--line); background: var(--bg-deep); }
 
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.5rem; }
@@ -240,6 +283,7 @@ import Navbar from "../../components/Navbar.astro";
   <Navbar lang="zh" active="home" />
 
   <section class="hero">
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="深浅主题切换"></button>
     <div class="grid-bg"></div>
     <canvas id="particles"></canvas>
     <div class="prism-deco"></div>
@@ -354,6 +398,8 @@ import Navbar from "../../components/Navbar.astro";
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🛡️</span><h3>滚动更新 · 紧跟安全补丁</h3><p>上游一发布补丁，滚动更新即可跟进修复高危 CVE，无需等待发行版统一调度。配合 Timeshift 快照 + grub-btrfs 回滚 + 双内核，安全与稳定兼得。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🐳</span><h3>容器化科研复现</h3><p>Podman、Distrobox、Apptainer 开箱即用——拉取别人的环境、复现实验结果、发布自己的镜像，无损且低开销。</p></div>
         <div class="feature glass reveal reveal-d3"><span class="feature-icon">⚡</span><h3>无头模式</h3><p>需要算力时一条命令切到命令行模式，桌面零占用、内存全给计算；用完随时回到桌面。你的电脑就是小型超算。</p></div>
+        <div class="feature glass reveal reveal-d1"><span class="feature-icon">🎮</span><h3>游戏开箱即用</h3><p>Steam 与游戏基础组件默认装载，开源 GPU 运行时开箱即用——工作学习之外，娱乐也认真对待。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">🈶</span><h3>中文开箱即用</h3><p>以中文安装系统即自动配好 Fcitx5 输入法；中、英、繁三语文档与社区全程跟进。</p></div>
       </div>
     </div>
   </section>
@@ -433,6 +479,21 @@ import Navbar from "../../components/Navbar.astro";
   <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。品牌资产见 <a href="/zh/legal/brand-assets/" style="color:#64748b;">品牌资产政策</a>。</p></footer>
 
   <script>
+    // ---------- 深浅主题切换（宣传页浅色/文档页保持深色） ----------
+    const themeBtn = document.getElementById('themeToggle');
+    const applyTheme = (t) => {
+      document.documentElement.dataset.theme = t;
+      if (themeBtn) themeBtn.textContent = t === 'dark' ? '浅色' : '深色';
+    };
+    applyTheme(document.documentElement.dataset.theme || 'dark');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('linxira-theme', next);
+        applyTheme(next);
+      });
+    }
+
     // ---------- 滚动揭示 ----------
     const revealEls = document.querySelectorAll('.reveal');
     if ('IntersectionObserver' in window) {
