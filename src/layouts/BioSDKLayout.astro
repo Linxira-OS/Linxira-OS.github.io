@@ -599,7 +599,8 @@ body.light .ai-channel.cli{color:#2A5E92}
 .rp-page .rp-fig{background:#F3F6FA;border:1px solid #E5E9EF;border-radius:6px;height:110px;display:flex;align-items:center;justify-content:center;color:#9AA5B1;font-size:0.7rem;margin:0.6rem 0}
 .rp-page .rp-foot{margin-top:1rem;padding-top:0.6rem;border-top:1px solid #E0E0E0;color:#9AA5B1;font-size:0.62rem;display:flex;justify-content:space-between}
 .rp-figs{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;max-width:640px;margin:0 auto}
-.rp-figs .rp-figcell{background:#0E1417;border-radius:6px;height:120px;display:flex;align-items:center;justify-content:center;color:#7A8A94;font-size:0.65rem;border:1px solid var(--border)}
+.rp-figs .rp-figcell{background:#0E1417;border-radius:6px;height:130px;display:flex;align-items:center;justify-content:center;color:#7A8A94;font-size:0.65rem;border:1px solid var(--border);transition:var(--transition)}
+.rp-figs .rp-figcell:hover{border-color:var(--brand-teal);transform:translateY(-2px);box-shadow:0 6px 18px rgba(32,184,176,0.15)}
 .rp-figs .rp-figcell svg{width:100%;height:100%}
 
 /* ===== 真实 3D 结构 ===== */
@@ -607,7 +608,7 @@ body.light .ai-channel.cli{color:#2A5E92}
 .mdl-tab{background:var(--bg-card);color:var(--text-dim);border:1px solid var(--border);border-radius:var(--radius);padding:0.4rem 0.85rem;font-size:0.78rem;transition:var(--transition)}
 .mdl-tab:hover{color:var(--brand-teal);border-color:var(--brand-teal)}
 .mdl-tab.active{background:var(--brand-dark);color:var(--text-bright);border-color:var(--brand-teal)}
-.mdl-viewer{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#101417;min-height:380px}
+.mdl-viewer{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#101417;min-height:380px;position:relative}
 .mdl-note{font-size:0.8rem;color:var(--text-dim);line-height:1.75;margin-top:0.75rem}
 .mdl-note b{color:var(--brand-teal)}
 
@@ -1928,7 +1929,11 @@ function switchPage(page) {
     target.classList.add('active');
     if (page === 'home') renderCapGrid();
     if (page === 'workbench') switchWorkbenchTab('w-import');
-    if (page === 'structure') { hbScene(hbCurrent); if (!mdlInitDone) { mdlInitDone = true; initMdl(); } }
+    if (page === 'structure') {
+      hbScene(hbCurrent);
+      if (!mdlInitDone) { mdlInitDone = true; initMdl(); }
+      else if (mdlViewer) { setTimeout(() => { mdlViewer.resize(); mdlViewer.render(); }, 60); }
+    }
   }
 }
 
@@ -2479,16 +2484,25 @@ const variantBuilders = {
 };
 let demoChartSource = null;
 function showDemoVariant(capId, vi) {
-  const box = document.querySelector('#demo-result .chart-box'); if (!box) return;
-  document.querySelectorAll('.dv-btn').forEach((b, i) => b.classList.toggle('active', i === vi));
-  renderVariantChart(capId, vi, box);
+  try {
+    const box = document.querySelector('#demo-result .chart-box'); if (!box) return;
+    document.querySelectorAll('.dv-btn').forEach((b, i) => b.classList.toggle('active', i === vi));
+    renderVariantChart(capId, vi, box);
+  } catch (e) {
+    const box = document.querySelector('#demo-result .chart-box');
+    if (box) box.innerHTML = '<div style="padding:1rem;color:var(--accent-red);font-size:0.75rem">⚠ 变体渲染失败</div>';
+  }
 }
 function renderVariantChart(capId, vi, box) {
-  box.innerHTML = '';
-  const v = (demoVariants[capId] || [])[vi];
-  if (!v) return;
-  if (v.clone && demoChartSource) box.appendChild(demoChartSource.cloneNode(true));
-  else if (v.build && variantBuilders[v.build]) variantBuilders[v.build](box);
+  try {
+    box.innerHTML = '';
+    const v = (demoVariants[capId] || [])[vi];
+    if (!v) return;
+    if (v.clone && demoChartSource) box.appendChild(demoChartSource.cloneNode(true));
+    else if (v.build && variantBuilders[v.build]) variantBuilders[v.build](box);
+  } catch (e) {
+    box.innerHTML = '<div style="padding:1rem;color:var(--accent-red);font-size:0.75rem">⚠ 变体渲染失败</div>';
+  }
 }
 
 // ===== Demo Modal（示例流程播放器） =====
@@ -2625,6 +2639,8 @@ function closeDemo() { document.getElementById('demo-modal').classList.remove('o
 
 // ===== Report Preview（报告子窗口预览） =====
 function closeReport() { document.getElementById('report-modal').classList.remove('open'); }
+const rpFigTypes = ['pie', 'qc', 'volcano', 'kegg', 'kmer', 'gsea', 'pca', 'motif'];
+const rpFigNames = { pie: 'variant types', qc: 'QC boxplot', volcano: 'volcano', kegg: 'KEGG', kmer: 'k-mer', gsea: 'GSEA', pca: 'PCA', motif: 'motif logo' };
 function openReportPreview(type) {
   const modal = document.getElementById('report-modal');
   const body = document.getElementById('report-modal-body');
@@ -2642,25 +2658,31 @@ function openReportPreview(type) {
     '<tr><td>SNP</td><td>108,231</td><td>45%</td></tr>' +
     '<tr><td>InDel</td><td>20,219</td><td>18%</td></tr>' +
     '<tr><td>ts/tv</td><td colspan="2">1.99</td></tr></tbody></table>';
+  const figCap = (n, zh) => '<div style="font-size:0.68rem;color:#5A6570;margin-bottom:0.3rem">' + (isZh ? zh : 'Fig ' + n + ' · ' + rpFigNames[rpFigTypes[n]]) + '</div>';
+  const figBox = (id) => '<div class="rp-fig" style="height:170px;padding:0.5rem"><svg id="' + id + '" viewBox="0 0 260 200" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto"></svg></div>';
+  const paper = '--chart-bg:#F7F9FB;--chart-grid:#E2E6EC;--text-dim:#5A6570;--text:#1F1F1F';
   let content = '';
   if (type === 'html') {
-    content = `<div class="rp-page">
+    content = `<div class="rp-page" style="${paper}">
       <h3>${isZh ? 'WES 变异分析报告' : 'WES Variant Analysis Report'}</h3>
       <div class="rp-sub">Homo sapiens · GRCh38 · ${isZh ? '样本' : 'sample'} reads.fastq.gz · linxira-bio v0.1.0</div>
       ${hbStat}
-      <div class="rp-fig">${isZh ? '图 1 · 变异类型分布（SVG）' : 'Fig 1 · Variant type distribution (SVG)'}</div>
+      ${figCap(0, '图 1 · 变异类型分布')}
+      ${figBox('rp-pie')}
       ${hbTable}
-      <div class="rp-fig">${isZh ? '图 2 · 覆盖深度分布（SVG）' : 'Fig 2 · Depth distribution (SVG)'}</div>
+      ${figCap(1, '图 2 · 碱基质量分布')}
+      ${figBox('rp-qc')}
       <div class="rp-foot"><span>${isZh ? '生成于' : 'Generated'} 2026-08-14 10:04</span><span>Linxira Bio SDK</span></div>
     </div>`;
   } else if (type === 'pdf') {
-    content = `<div class="rp-page" style="max-width:600px">
+    content = `<div class="rp-page" style="max-width:600px;${paper}">
       <h3 style="text-align:center">${isZh ? '全外显子组测序变异分析报告' : 'Whole-Exome Sequencing Variant Report'}</h3>
       <div class="rp-sub" style="text-align:center">${isZh ? '样本' : 'Sample'}: WES-01 · Homo sapiens (GRCh38) · linxira-bio v0.1.0</div>
       <p><b>${isZh ? '摘要' : 'Abstract'}:</b> ${isZh ? '本报告基于 2,481,532 条双端读段，比对率 97.2%，平均深度 32.4×。共检出 128,450 个变异位点（108,231 SNP / 20,219 InDel），ts/tv 1.99。' : '2,481,532 paired-end reads, 97.2% mapped, 32.4× mean depth. 128,450 variants called (108,231 SNPs / 20,219 InDels), ts/tv 1.99.'}</p>
       ${hbStat}
       ${hbTable}
-      <div class="rp-fig" style="height:150px">${isZh ? '图 1 · 变异类型分布' : 'Fig 1 · Variant type distribution'}</div>
+      ${figCap(0, '图 1 · 变异类型分布')}
+      ${figBox('rp-pie')}
       <div class="rp-foot"><span>Linxira Bio SDK · AGPL-3.0</span><span>2026-08-14</span></div>
     </div>`;
   } else if (type === 'json') {
@@ -2678,17 +2700,28 @@ function openReportPreview(type) {
   <span style="color:var(--brand-teal)">"status"</span>: "ok"
 }</pre>`;
   } else {
-    content = `<div class="rp-figs">
-      <div class="rp-figcell">${isZh ? 'fig01 · 变异类型' : 'fig01 · variant types'}</div>
-      <div class="rp-figcell">${isZh ? 'fig02 · 深度分布' : 'fig02 · depth'}</div>
-      <div class="rp-figcell">${isZh ? 'fig03 · ts/tv 直方图' : 'fig03 · ts/tv'}</div>
-      <div class="rp-figcell">${isZh ? 'fig04 · 染色体分布' : 'fig04 · per-chrom'}</div>
-      <div class="rp-figcell">${isZh ? 'fig05 · 基因型质量' : 'fig05 · GQ'}</div>
-      <div class="rp-figcell">${isZh ? 'fig06 · 等位基因频率' : 'fig06 · AF'}</div>
-    </div>`;
+    content = `<div style="font-size:0.78rem;color:var(--text-dim);margin-bottom:0.75rem">${isZh ? '点击缩略图查看大图' : 'Click a thumbnail to enlarge'}</div><div class="rp-figs">` +
+      rpFigTypes.map((t, i) => `<div class="rp-figcell" onclick="zoomFigure(${i})" style="cursor:pointer" title="${rpFigNames[t]}"><svg id="rp-fig-${i}" viewBox="0 0 260 200" width="100%" height="100%"></svg></div>`).join('') + '</div>';
   }
   body.innerHTML = content;
   modal.classList.add('open');
+  if (type === 'html' || type === 'pdf') {
+    renderPie(document.getElementById('rp-pie'));
+    if (type === 'html') renderQc(document.getElementById('rp-qc'));
+  } else if (type === 'figures') {
+    rpFigTypes.forEach((t, i) => renderResultChart(t, document.getElementById('rp-fig-' + i)));
+  }
+}
+function zoomFigure(i) {
+  const body = document.getElementById('report-modal-body');
+  const isZh = currentLang === 'zh';
+  const t = rpFigTypes[i];
+  body.innerHTML = `<div style="text-align:center">
+    <button class="env-check-btn" style="margin-bottom:0.75rem" onclick="openReportPreview('figures')">← ${isZh ? '返回图集' : 'back to figures'}</button>
+    <div class="chart-box" style="max-width:520px;margin:0 auto;padding:1rem"><svg id="zoom-host" viewBox="0 0 260 200" width="100%"></svg></div>
+    <div style="margin-top:0.6rem;color:var(--text-dim);font-size:0.75rem;font-family:var(--font-mono)">figures/fig${String(i + 1).padStart(2, '0')}.svg · ${rpFigNames[t]}</div>
+  </div>`;
+  renderResultChart(t, document.getElementById('zoom-host'));
 }
 
 // ===== Hemoglobin 模拟（结构查看器） =====
@@ -3027,6 +3060,7 @@ function renderMdl() {
     mdlViewer.zoomTo();
     if (mdlCur === 'hho') mdlViewer.spin('y', 1.2);
     mdlViewer.render();
+    setTimeout(() => { if (mdlViewer) { mdlViewer.resize(); mdlViewer.render(); } }, 80);
   }).catch(() => {
     el.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim)">⚠ PDB 文件加载失败</div>';
   });
