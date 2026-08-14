@@ -548,17 +548,20 @@ import Navbar from "../../components/Navbar.astro";
 
     // ---------- Terminal typewriter demo (looping command sequence) ----------
     const termBody = document.getElementById('termBody');
-    if (termBody && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    // dataset guards against duplicate loops on HMR/script re-runs
+    if (termBody && !termBody.dataset.started && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      termBody.dataset.started = '1';
       const termScript = [
         { cmd: 'linxira-config headless on now', out: 'Switched to headless: desktop stopped, RAM freed for compute ✓' },
         { cmd: 'linxira-config ssh on', out: 'SSH enabled: ssh user@192.168.1.42 ✓' },
         { cmd: 'linxira-update', out: 'Up to date: 0 upstream patches pending ✓' },
         { cmd: 'linxira-config timeshift status', out: 'Snapshots: daily 3 · boot 3 · auto-snapshot before updates ✓' },
       ];
-      const typeSpeed = 26, holdMs = 1100, gapMs = 350;
+      const typeSpeed = 26, holdMs = 1300, gapMs = 350, fullShowMs = 4500;
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       (async () => {
         while (true) {
+          termBody.innerHTML = ''; // clean start for every round
           for (const s of termScript) {
             const line = document.createElement('div');
             line.className = 'term-line';
@@ -574,7 +577,8 @@ import Navbar from "../../components/Navbar.astro";
             termBody.scrollTop = termBody.scrollHeight;
             await sleep(holdMs);
           }
-          termBody.innerHTML = '';
+          // full listing stays visible before the next round
+          await sleep(fullShowMs);
         }
       })();
     }
