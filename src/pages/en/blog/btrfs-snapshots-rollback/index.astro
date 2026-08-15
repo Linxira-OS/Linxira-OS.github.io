@@ -1,0 +1,68 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="btrfs Snapshots and grub-btrfs: Self-Healing and One-Key Rollback — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Technical</div>
+    <h1>btrfs Snapshots and grub-btrfs: Self-Healing and One-Key Rollback</h1>
+
+    <p>Rolling updates mean never waiting for a release cycle; the price is that every update carries some risk. Linxira's answer to that price is three layers of insurance: dual-kernel fallback, automatic pre-update snapshots, and direct rollback from the GRUB menu. This article covers what each layer defends against, how they fit together, and what an actual recovery drill should look like.</p>
+
+    <h2>The Risk of Rolling Updates</h2>
+    <p>Arch is a rolling-release distribution: upstream (including security fixes) lands in the repositories as soon as it is published, and the system keeps receiving updates via <code>sudo pacman -Syu</code>. The upside is always-current software and immediate security fixes; the risk is that <strong>a bad update can break the system</strong> — a regression in a new package version, a dependency resolution error, or a kernel update that refuses to boot.</p>
+    <p>Traditional distributions absorb this kind of problem with release cycles: wait for the next point release to fix it. On a rolling distribution fixes are usually fast too, but the time during which "the system is currently broken" has to be handled by the user. The way to handle it is not to pray that updates never break anything, but to give the system the ability to return to its pre-update state — that is exactly what snapshot rollback is for.</p>
+    <p>To be concrete: a bad update is usually not "everything broke" but "one thing broke" — the new kernel fails to boot, a library version is incompatible with the applications depending on it, a driver update leaves the GPU black. What these failures share is that they are only discovered afterwards: the update itself looks fine, and the problem surfaces at reboot or during use. So "leave a way back before updating" is not conservatism; it is the only sensible default strategy under the rolling model.</p>
+
+    <h2>Dual-Kernel Fallback</h2>
+    <p>The first layer is kernel-level redundancy: the system installs two Arch general-purpose kernels side by side — <code>linux</code> as primary and <code>linux-lts</code> as fallback, with the GRUB flat menu booting the newest kernel by default. When a single kernel update misbehaves (say, the new kernel fails to boot), you pick the other kernel from GRUB at reboot.</p>
+    <p>Dual kernels handle the "kernel update anomaly" class of problems: no recovery procedure needed, just a different menu entry at reboot. They do not fix "userspace package update broke something" — that is the snapshot's job. The division of labor between the two layers is clear: kernel anomalies are covered by dual kernels; system-level damage is rolled back with snapshots.</p>
+    <p>The GRUB flat menu plays the key role here: both kernels are listed side by side, the newest is the default, but the older one is always in the menu. In effect this is equivalent to always having "the last known-good kernel" on hand — it adds no recovery procedure, only one more selectable entry at boot. The linux-lts kernel follows a more conservative cadence, complementing the aggressively rolling mainline kernel.</p>
+
+    <h2>The Snapshot Mechanism</h2>
+    <p>Snapshots build on the btrfs filesystem: the system is installed on btrfs subvolumes, and a snapshot records the complete state of a subvolume at a point in time, managed by <strong>Timeshift</strong>. This is exactly why the installation guide recommends the <strong>btrfs + Timeshift partitioning scheme</strong> — the scheme is decided at install time, so snapshot capability exists from day one instead of being retrofitted after the system is set up.</p>
+    <p>Snapshots are cheap: btrfs snapshots are copy-on-write, taking almost no space initially, with only subsequently modified data producing deltas. That makes "take a snapshot before every update" effectively free, while buying the certainty that any broken update can be reverted to the pre-update state.</p>
+    <p>The subvolume layout determines what snapshots can cover: the system is installed on a documented btrfs subvolume structure, Timeshift snapshots the subvolumes, and both data and system state fall under the same mechanism's management. The installation guide writes btrfs + Timeshift into the recommended partitioning flow precisely because the partition structure at install time decides the boundary of snapshot capability — retrofitting it later is usually too late.</p>
+
+    <p>A word on disk space, since snapshots live on the same btrfs filesystem: each snapshot's initial cost is near zero thanks to copy-on-write, and the space it consumes grows only as the system changes after the snapshot is taken. Practical guidance follows from that: keep a reasonable retention policy (Timeshift's scheduling handles this), and you get continuous safety without watching your free space evaporate — the storage cost scales with how much you change the system, not with how many snapshots you keep.</p>
+
+    <h2>Direct Rollback from GRUB</h2>
+    <p>Having snapshots is one thing; restoring conveniently is another. A manual restore flow — mounting, copying, repairing the bootloader — is too complicated for most users to learn from scratch while the system is broken. Linxira's answer is <strong>grub-btrfs</strong>: it adds snapshots to the GRUB boot menu.</p>
+    <p>Once enabled, the GRUB menu lists existing snapshots alongside the normal kernel entries. Rolling back needs no terminal work — reboot, pick the target snapshot in GRUB, and the system boots directly from it. This design turns "recovery" from a technical procedure into a menu selection.</p>
+    <p>The difference between booting a snapshot and booting a kernel is worth making explicit: a snapshot entry boots the complete system at that moment in time, including its kernel, drivers, and userspace software — exactly the semantics "back to before the update" needs. Snapshots have a clear chronological order, the GRUB menu organizes them by time, and picking "the one before the update" is literally a rollback, with no extra judgment required in a recovery environment.</p>
+
+    <p>One practical note for after a real rollback: a snapshot restores the system to the state it was in, which also means the problematic update is gone — if you later want to retry it, the pre-update snapshot flow will take care of the safety again automatically. In other words, rollback is not a dead end; it is a clean restart of the update cycle, with the same safety net in place.</p>
+
+    <h2>Automation</h2>
+    <p>Relying on users to remember to take snapshots is unreliable, so snapshot creation is automated:</p>
+    <ul>
+      <li><strong><code>linxira-update</code></strong>: the system update notification and maintenance assistant, which <strong>creates a Timeshift snapshot automatically before updates by default</strong> — when you update the system through its prompts, the pre-update state has already been recorded.</li>
+      <li><strong><code>linxira-config timeshift enable</code></strong>: one-command enablement of Timeshift's automatic snapshot configuration, taking snapshots on a schedule / boot cadence.</li>
+    </ul>
+    <p>The division between the two tools: the former guarantees "every update has a pre-update snapshot", the latter guarantees "even if you rarely update, the system has periodic snapshots". The update assistant also supports custom pre/post-update tasks, driven by a systemd user service.</p>
+    <p>The value of automation is removing "forgetting" as a variable: a person in a hurry may skip a manual step, but an automatic snapshot enabled by default does not need to be remembered. Turning the act of updating itself into a safe operation — snapshot first, then touch the system — is a more fundamental advantage than "figure it out when something breaks". This is also why the snapshot flow is wired into the update assistant rather than left as a separate tool users must remember to invoke.</p>
+
+    <p>Putting the layers together for a typical update: you run the update (or linxira-update prompts you), a Timeshift snapshot of the pre-update state already exists, pacman applies the update, and you reboot into the new kernel via the GRUB flat menu. If everything works, nothing more to do; if the new kernel misbehaves, reboot into linux-lts; if the system is damaged beyond that, reboot into the snapshot. The three layers are not alternatives to choose from — they are a graduated response, each one cheaper to invoke than the last.</p>
+
+    <h2>Recovery Drill Suggestion</h2>
+    <p>The snapshot system only has value if you actually know how to use it when it matters. Run a drill once while the system is healthy and turn the flow into muscle memory:</p>
+    <ul>
+      <li>Take a snapshot, manually or automatically (linxira-update does this before updates; <code>linxira-config timeshift enable</code> sets up periodic snapshots).</li>
+      <li>Reboot, enter the GRUB menu, and confirm the snapshot entries appear (grub-btrfs active).</li>
+      <li>Boot from the snapshot and confirm the system comes up normally with data intact.</li>
+      <li>Reboot once more into the normal kernel to confirm everyday booting is unaffected.</li>
+    </ul>
+    <p>The point of the drill is not "restoring" itself, but confirming: when a bad update really happens, you only need to reboot, pick a snapshot, and keep working — not look up documentation on a broken system.</p>
+    <p>There is also a psychological layer: knowing you can always go back changes how you treat updates. Users of rolling systems tend toward two extremes — never updating for fear of breakage, or updating blindly and gambling. Snapshot rollback makes a third option real: update with confidence, and come back if something goes wrong. Self-healing is not a promise to never fail; it is a promise that failure has a way back, and the way back is prepared in advance.</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

@@ -5,6 +5,54 @@ import PageLayout from "../../../components/PageLayout.astro";
     <h1>博客</h1>
     <p class="subtitle">项目公告、版本更新和技术文章</p>
 
+    <a href="/zh/blog/direct-arch-transition/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">Linxira OS 现状：从 Mint 原型到 Direct Arch</div>
+      <div class="post-desc">为什么从 Linux Mint 转向 Direct Arch，现在的桌面超算定位、软件生态与自研工具链。</div>
+      <span class="post-tag">公告</span>
+    </a>
+    <a href="/zh/blog/experimental-stable-2026-08-14/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">首个实验性正式版：2026.08.14 发布说明</div>
+      <div class="post-desc">ISO 下载、发布要点、安装测试结果与从测试版以来的演进。</div>
+      <span class="post-tag">公告</span>
+    </a>
+    <a href="/zh/blog/headless-mode/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">无头模式：桌面⇄计算一键切换</div>
+      <div class="post-desc">systemd 标准目标切换：关掉桌面、内存全给计算。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
+    <a href="/zh/blog/signed-repository-supply-chain/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">签名仓库：Linxira 的供应链安全设计</div>
+      <div class="post-desc">pacman 签名强制、发布密钥轮换与 PKGBUILD CI 门禁如何防篡改。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
+    <a href="/zh/blog/catalog-v2-v3/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">一份审核目录驱动整个软件生态：catalog v2/v3</div>
+      <div class="post-desc">安装器、Welcome 与图形软件管理共享同一份审核元数据的架构。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
+    <a href="/zh/blog/btrfs-snapshots-rollback/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">btrfs 快照与 grub-btrfs：系统自愈与一键回滚</div>
+      <div class="post-desc">双内核兜底、更新前自动快照、GRUB 菜单直接回滚。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
+    <a href="/zh/blog/ai-cli-toolchain/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">AI 编码代理一键装：镜像加速与六个 CLI</div>
+      <div class="post-desc">npm 源加速 + Claude Code、Codex、Gemini CLI、Grok、OpenCode 一键安装。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
+    <a href="/zh/blog/newbie-guide-design/" class="post-card">
+      <div class="post-date">2026-08-15</div>
+      <div class="post-title">新手向导背后的设计：让 Linux 新手落地</div>
+      <div class="post-desc">终端基础、Arch Wiki 导航、中文输入法排查与桌面选择的页面设计。</div>
+      <span class="post-tag tech">技术</span>
+    </a>
     <a href="/zh/blog/introducing-linxira-os/" class="post-card">
       <div class="post-date">2026-06-27</div>
       <div class="post-title">Linxira OS 介绍</div>
@@ -19,5 +67,6 @@ import PageLayout from "../../../components/PageLayout.astro";
     .post-title { font-size: 1.3rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
     .post-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
     .post-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+    .post-tag.tech { background: rgba(139,92,246,0.15); color: #a78bfa; }
   </style>
 </PageLayout>

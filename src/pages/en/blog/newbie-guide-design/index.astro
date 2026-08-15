@@ -1,0 +1,70 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="Designing the Beginner's Guide: Landing Linxira for Linux Newcomers — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Technical</div>
+    <h1>Designing the Beginner's Guide: Landing Linxira for Linux Newcomers</h1>
+
+    <p>Not everyone in Linxira's target audience is a Linux veteran — many potential users are students and researchers touching Linux for the first time. For them the documentation site is not a "reference tool" but "the last gate before the system becomes usable". The beginner's guide (<a href="/en/docs/newbie/">/en/docs/newbie/</a>) was designed for exactly that gate. This article reviews its page design decisions: what problem it solves, how the content was chosen, and how it divides labor with the existing documentation.</p>
+
+    <h2>The Problem</h2>
+    <p>Visitors to the site do not necessarily know Linux. The people arriving might be a graduate student who wants a research environment, or an undergraduate just getting into open source — they do not know what a distribution is, what a package manager is, and some have never opened a terminal. For them, "a documentation site full of jargon" produces no help, only frustration.</p>
+    <p>And the docs' previous shape was unfriendly to newcomers: the entry points were bare Arch Wiki links plus post-install operational documents. Arch Wiki is extremely thorough, but it presumes readers who "already know how to use Linux"; the post-install documents presume readers who "already installed the system and know what they are doing". Both ends presume knowledge; neither covers the person using it for the first time.</p>
+    <p>What does "unfriendly" look like concretely? A newcomer opens a terminal, sees a wall of English output, and the first reaction is to close it rather than read it; opens an Arch Wiki entry and, faced with its density of jargon, concludes "this was not written for me". These reactions are not attitude problems — they are documentation presuming knowledge the reader does not have. The guide's job is to add the first rung of the ladder: starting from "what is a terminal", not from "how to configure Xorg".</p>
+
+    <h2>Content Decisions</h2>
+    <p>The beginner's guide converges what "first use" requires into five sections, each answering one concrete class of question:</p>
+    <ul>
+      <li><strong>What is Linxira</strong>: a one-sentence positioning — "a Linux computer with research software preconfigured" — explicitly telling newcomers they do not need to understand concepts like distributions.</li>
+      <li><strong>Terminal basics</strong>: starting from opening the terminal (<code>Ctrl+Alt+T</code>), with a command table — <code>pwd</code>, <code>ls</code>, <code>sudo pacman -Syu</code> and other most-used commands explained one by one. It also gives a general strategy for errors: copy the English error output from the terminal into a search box.</li>
+      <li><strong>Where to look when stuck: Arch Wiki</strong>: teaching newcomers how to actually use Arch Wiki — the in-page search box, switching to the Chinese version via the language menu, and recognizing the <code>(简体中文)</code> suffix on entries as the key clue.</li>
+      <li><strong>Chinese environment</strong>: choosing Chinese during install means nothing else to do; how to switch an English install to Chinese; and the full input-method troubleshooting flow (below).</li>
+      <li><strong>Desktop choice</strong>: KDE Plasma by default, the install-time either/or, installing other desktops afterwards, and headless mode not being a desktop switch — several easily confused concepts settled in one place.</li>
+    </ul>
+    <p>The selection principle: <strong>only answer the questions "first use" inevitably hits</strong>. No deep dive into package-manager internals, no primer on filesystem hierarchy — those belong to Arch Wiki and the deeper docs. The guide's goal is to get a newcomer through the minimal loop — open a terminal, update the system, look things up, type Chinese — in half an hour.</p>
+    <p>The command table is the typical product of that decision: it lists only the most-used commands (<code>pwd</code>, <code>ls</code>, <code>sudo pacman -Syu</code>, and a few more), one line each with a plain description of what it does, no syntax rules explained. "What to do when an error appears" follows the same minimal-loop principle — not a methodology course, just one action that always works: copy the English error output into a search box. Together, these two cover the 90% of situations a newcomer meets in the first days.</p>
+
+    <p>The Arch Wiki section deserves its own note, because it is the part that most directly teaches a skill rather than a fact: recognizing the <code>(简体中文)</code> suffix, switching the language menu, and searching within the page are three small habits that turn an intimidating resource into an answer source. Teaching the habit of looking things up — rather than handing over a list of pre-answered questions — is what lets newcomers survive beyond the first week without a guide at their side.</p>
+
+    <h2>The Three-Step Chinese Input Troubleshooting</h2>
+    <p>Within the Chinese environment section, the input method gets the most attention, because it is the classic newcomer killer: after install you discover you cannot type Chinese, the solutions you find are all over the place, and every change makes things worse. The guide reduces troubleshooting to three steps:</p>
+    <p class="term-item"><strong>1) Confirm it is installed</strong> — run <code>sudo pacman -S fcitx5 fcitx5-chinese-addons fcitx5-configtool</code> to make sure the input framework, Chinese addons, and configuration tool are all present.</p>
+    <p class="term-item"><strong>2) Enable Pinyin</strong> — System Settings → Input Method → Add Input Method → choose "Pinyin"; the switching shortcut is <code>Ctrl+Space</code>.</p>
+    <p class="term-item"><strong>3) Still broken → read the diagnostic report</strong> — run <code>fcitx5-diagnose | head -n 100</code> and paste the output to the community or into a search. Linxira uses Fcitx5 uniformly; do not install other input frameworks like ibus at the same time to avoid conflicts.</p>
+    <p>Two easy-to-miss additions are also in the doc: if you installed a non-KDE desktop like GNOME yourself and the input method does not take effect, write three environment variables into <code>~/.xprofile</code> and restart the session — <code>export GTK_IM_MODULE=fcitx</code>, <code>export QT_IM_MODULE=fcitx</code>, <code>export XMODIFIERS=@im=fcitx</code>; if the locale is not active, uncomment the <code>zh_CN.UTF-8 UTF-8</code> line in <code>/etc/locale.gen</code> with <code>sudo nano /etc/locale.gen</code>, then run <code>sudo locale-gen</code>.</p>
+    <p>The logic of these three steps: first confirm "is it there", then confirm "is it enabled", and only then move to "diagnose". Every step is self-contained and executable — newcomers do not need to understand the underlying mechanism; following the steps locates the problem.</p>
+    <p>The ordering of the steps is itself troubleshooting training: the vast majority of "input method does not work" cases are actually "not installed" or "not enabled", and the first two steps resolve them; only the rare remainder needs the third step's diagnostic report. Had we led with the report, most of its output would be noise to a newcomer. The division makes the correspondence between "what to check" and "why to check it" obvious at a glance, and keeps simple problems simple.</p>
+
+    <h2>Division of Labor with Existing Docs</h2>
+    <p>The beginner's guide is not a rewrite of all documentation; it only covers "from zero to first usable". The division with existing docs is:</p>
+    <ul>
+      <li><strong>Beginner's guide</strong>: the newcomer entry. For people using Linux for the first time — "what is this system, how does the terminal work, where do I look things up, how do I get Chinese, how do I choose a desktop".</li>
+      <li><strong>Quick start</strong>: the post-install manual. For people who have installed — "how to enable the signed repository, update the system, install software".</li>
+      <li><strong>Desktop and server modes</strong>: the deep-dive. For people who want to understand — the full details of desktop / server modes and headless mode.</li>
+    </ul>
+    <p>The three form a funnel: the beginner's guide carries the most people to a "usable" starting point, quick start picks them up for post-install configuration, and the specialized docs serve the few who want to go deeper. Each document only answers the questions of its own layer; none dilutes the others.</p>
+    <p>The division has a hidden benefit: the documents never develop two competing narratives for "those who know" and "those who do not". The beginner's guide says "update the system with <code>sudo pacman -Syu</code>", quick start uses it directly, and the desktop docs do not re-explain it — the same command is introduced exactly once across the whole documentation set, and everything else references it. For maintainers this means changing a term or command in one place does not require synchronizing three documents.</p>
+
+    <h2>Integration</h2>
+    <p>Good content is not enough — newcomers have to actually reach it. Three integration points:</p>
+    <ul>
+      <li><strong>Docs sidebar "Getting Started" section</strong>: the beginner's guide is the first item of the first group in the sidebar — position is priority; it is the root of the documentation tree.</li>
+      <li><strong>Quick-nav doc-card</strong>: on the docs home page, the beginner's guide is the first card in the quick navigation.</li>
+      <li><strong>quick-start top notice bar</strong>: the quick start page opens with a line — "First time with Linux? Read the beginner's guide" — steering people who entered through the wrong door back.</li>
+    </ul>
+    <p>The three entries cover three ways of arriving: browsing in from the sidebar, clicking in from the home page navigation, or opening quick start after installing and being guided back. Whatever entry a newcomer takes, one step gets them to the right place.</p>
+    <p>The integration itself embodies a design principle: newcomers should not need to understand the documentation structure to find the guide — the structure serves them instead of requiring them to understand it. The sidebar puts the guide first, the navigation card puts it first, and the notice bar steers back the people who walked through the wrong door; with these three guarantees, "could not find the entry" stops being a possible failure mode.</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

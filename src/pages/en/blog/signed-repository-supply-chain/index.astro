@@ -1,0 +1,69 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="Signed Repositories: Linxira's Supply-Chain Security Design — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Technical</div>
+    <h1>Signed Repositories: Linxira's Supply-Chain Security Design</h1>
+
+    <p>All of Linxira's first-party software ships through the official signed repository <code>[linxira]</code>. The signatures are not decoration: mandatory verification on the pacman side, release-key rotation, and a PKGBUILD CI gate — three layers that together answer one question: how can you be sure that every package you install is the exact package the project published? This article lays out the full design.</p>
+
+    <h2>Threat Model</h2>
+    <p>First, what exactly are we defending against. A software repository is essentially "a remote database plus a pile of binaries": pacman reads the database to get the package list and checksum information, then downloads the matching <code>.pkg.tar.zst</code> from the server and installs it. Two attack points matter most in this chain:</p>
+    <ul>
+      <li><strong>Repository database replaced</strong>: an attacker rewrites the download URLs or checksums in the database, making pacman download and install packages of the attacker's choosing.</li>
+      <li><strong>Package binaries tampered with</strong>: the database is fine, but the packages on the server or in transit are swapped for versions with injected malicious code.</li>
+    </ul>
+    <p>Both attacks end the same way: your system installs binaries that are not what the project published — a modified kernel, a backdoored tool — and to pacman everything "looks" completely normal. On a desktop supercomputer, that hands the trust root of every compute result to the attacker. The signature system exists so that neither replacement can pass verification.</p>
+    <p>Why would repositories be the target rather than individual websites? Because a repository is a one-to-many distribution point: one tampering event affects every user who installs or updates from it — concentrated gain, amortized cost, the classic supply-chain attack model. Real-world supply-chain attacks (against software repositories and upstream dependencies alike) repeatedly demonstrate the right defense posture: not "trust that the server was never compromised", but "even if the server is compromised, tampering cannot pass verification". That is precisely what the signature system provides.</p>
+
+    <h2>The pacman Signature System</h2>
+    <p>The [linxira] repository is configured as follows:</p>
+<pre><code>[linxira]
+Server = https://linxira-os.github.io/linxira-packages/x86_64
+SigLevel = Required DatabaseOptional</code></pre>
+    <p><code>SigLevel = Required DatabaseOptional</code> means: <strong>database signatures are mandatory, package signatures are optional but verified by default</strong> — the database (<code>linxira.db</code>) must pass signature verification, and packages must verify their signatures by default. Both checks are enforced on the pacman side; they do not depend on the user remembering to "verify", nor on whatever the download tool did. Even if a mirror or CDN is hijacked, pacman refuses to install as long as signature verification fails.</p>
+    <p>The only thing needed on the user side is a correct <code>Server</code> entry — and the system configures it automatically during install, so nothing needs to be added manually afterwards.</p>
+    <p>What users see on verification failure is an explicit refusal, not silent acceptance: a database or package whose signature does not match is rejected outright by pacman, with an error pointing at signature verification. For the ordinary user this means "a bad package slipped in mid-update" is intercepted up front — the problem surfaces before install, not after the system is damaged.</p>
+
+    <h2>Key Lifecycle</h2>
+    <p>Signature verification depends on a trust anchor: pacman must trust "the key that signed these packages". Linxira's approach is to ship a <code>linxira-keyring</code> package: installing it completes key import and local trust — pacman automatically imports the release key and marks it trusted, with no manual key commands needed.</p>
+    <p>The key is not immutable: the release key was <strong>rotated on 2026-08-04</strong>. Rotation means that even if an old key leaks or needs retirement, new signatures take effect immediately and the old key is no longer trusted — the supply chain never runs with a "valid forever" liability.</p>
+    <p>One deliberate design choice: <strong>the key fingerprint is not published on the website</strong>. The rationale is that the trust anchor must come from the package you install, not from text on a web page — web pages can be impersonated or tampered with, whereas the <code>linxira-keyring</code> you install arrives verified by pacman. The first-trust path is: <code>pacman-key --init</code> initializes the local keyring → install <code>linxira-keyring</code> → the key is imported and locally trusted. This path keeps "who do I trust" in the software layer, not the information layer.</p>
+    <p>Rotation can also be understood on a timeline: keys issued before 2026-08-04 are no longer trusted after the rotation, and anything still signed with the old key fails verification. This turns "key trust" from a one-time permanent grant into a manageable, revocable lifecycle — the same maintenance philosophy Arch applies to its own keyring.</p>
+
+    <p>From the user's point of view, key maintenance is just another package update: when the keyring is rotated, <code>linxira-keyring</code> ships the new key and pacman picks it up through the same signed-repository flow described below — no manual key ceremonies, no fingerprint typing, no "is this website real" decisions.</p>
+
+    <h2>Release Process</h2>
+    <p>The repository itself is generated and signed by the release process. Every release signs the database with <code>repo-add</code>:</p>
+<pre><code>repo-add --sign --key &lt;fingerprint&gt; linxira.db.tar.zst ./*.pkg.tar.zst</code></pre>
+    <p>This command registers every <code>.pkg.tar.zst</code> in the current directory into <code>linxira.db.tar.zst</code> and signs the database with the release key; the database and packages are then deployed to GitHub Pages together. The whole flow mirrors how the official Arch repositories are maintained: the database signature guarantees "this package list is what the project published", and package signatures guarantee "every package in the list was built by the project".</p>
+    <p>Deploying to GitHub Pages carries a side benefit: distribution runs over static hosting, and with HTTPS, transport integrity is covered by TLS while content integrity is covered by signatures — two lines of defense, each responsible for its own segment, neither depending on the other. No matter which mirror or which moment a user pulls from, what they fetch and verify is the same signed content.</p>
+
+    <p>The mechanics are worth a sentence, because they explain what "signing the database" actually produces. The <code>.tar.zst</code> extension is not a zip of packages — it is the compressed repository database format pacman expects: an archive of metadata records (package names, versions, file lists, checksums) plus the <code>.db.sig</code> sidecar signature that <code>--sign</code> generates. pacman downloads the database, verifies the signature against the trusted release key, and only then trusts the package list inside it. The packages themselves each carry their own signature, verified at download time.</p>
+
+    <h2>The Source Gate: check-boundaries.sh</h2>
+    <p>Signatures solve tampering in transit and at rest, but there is a further upstream question: where do the packages themselves come from? If a maintainer's PKGBUILD references an uncontrolled software source, then even with intact signatures, the package content may have been pulled from somewhere untrustworthy.</p>
+    <p>That is the job of <code>check-boundaries.sh</code> — the <strong>first gate</strong> in the linxira-packages CI: it validates PKGBUILD boundaries, including <strong>forbidding CachyOS / AUR / Seafoam repository references</strong>, <strong>forcing codeload / release-tarball sources</strong>, and <strong>verifying pinned commits and sha256 checksums</strong>. Any PKGBUILD change must pass it before it can be merged.</p>
+    <p>This layer answers the "source" question: most Linxira first-party packages use the codeload-commit pattern — source pinned to a specific commit, makepkg downloading the tarball from codeload automatically, then verifying integrity with sha256. Every source fetch has a fixed commit and checksum, and CI rejects anything that bypasses that pattern.</p>
+    <p>The codeload-commit pattern also brings "where the source comes from" into scope of verification: the commit and sha256 hardcoded in the PKGBUILD mean that even if the upstream repository is later modified or deleted, builds still use the exact source that was reviewed. Reproducibility is not a bonus; it is a precondition of review — a package that cannot be reproduced never enters this pipeline.</p>
+
+    <p>One more layer completes the picture for users who update often: the signed repository guarantees what you install is what the project published, and linxira-update pairs with it by creating a Timeshift snapshot before updates by default. Signature verification answers "is this authentic", snapshots answer "what if I do not like the result" — two different questions, and the update flow answers both without extra user action.</p>
+
+    <h2>What It Means for Users</h2>
+    <p>All of this lands on one everyday command: <code>sudo pacman -Syu</code>. Its safety precondition is — the repository you update is signed and trusted, every package you install is verified, and the package content passed the CI boundary check at the source. Remove any one of the three and an update can become an attack vector; with all three in place, updating is a trusted operation.</p>
+    <p>If you want to verify the system yourself, or build and reproduce these packages, see the <a href="/en/docs/building/">building guide</a> — it uses the same repository and signature mechanics as the release process. Supply-chain security is not a one-time configuration; it is a complete chain from PKGBUILD to pacman, auditable and reproducible at every link.</p>
+    <p>To close the loop back to the threat model: a replaced database is stopped by the database signature; a tampered package is stopped by the package signature; a package from an uncontrolled source is stopped by check-boundaries.sh before it is ever built. Each layer guards its own attack surface, and the user side needs no extra action for any of them — all three take effect automatically during install and update.</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

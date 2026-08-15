@@ -1,0 +1,68 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="Headless Mode: One-Command Switching Between Desktop and Compute — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Technical</div>
+    <h1>Headless Mode: One-Command Switching Between Desktop and Compute</h1>
+
+    <p>Linxira is positioned as a "Desktop Supercomputer": the same machine is a desktop workstation during the day and a pure compute node when needed. Headless mode is the switch between those two identities — it turns the desktop off through a standard systemd target switch, leaving the desktop at zero footprint and giving all RAM to compute. This article covers why it exists, how it works, how to use it, and how it differs from switching desktops.</p>
+
+    <h2>Why It Exists</h2>
+    <p>A rolling-update workstation often plays two roles at once: everyday desktop use, and heavy workloads like training, containers, and remote computation. The price of the former is desktop memory residency — KDE Plasma, the display manager, background services, plus whatever starts with the session, adds up to several GB. For a memory-tight compute job, those GB are a real loss.</p>
+    <p>The traditional answer is two machines, or a separate headless install on the server. But for Linxira users the desktop-and-compute-on-one-machine scenario is far too common: write code and run experiments during the day, leave a long training job running overnight, and come back to the GUI the next morning. The ideal in that case is one system, one install, with the ability to switch identity at any time — not two environments to maintain.</p>
+    <p>That is exactly what headless mode is for: one command turns the desktop off and gives all memory to compute; another command brings the desktop back for everyday use.</p>
+    <p>Looking at the resource ledger makes this concrete: a full KDE Plasma session consists of the display server, window manager, system tray, file manager, desktop search index, and the various applets that start with the session — a standing footprint usually in the 1-2 GB range. On an 8 GB machine that is a quarter of the RAM; even on 16 GB it is a solid 10%+. Training jobs and container workloads are precisely the loads most sensitive to memory ceilings — returning those gigabytes is often the difference between "runs" and "does not run".</p>
+    <p>Another common answer is dual-booting or a VM, but that is the "another machine" approach: two environments and two update streams to maintain. Headless mode takes the "same machine" approach — instead of duplicating the environment, it switches state when needed.</p>
+
+    <p>Who benefits most? Researchers running overnight training on laptops or mini workstations where RAM is tight; developers who leave containerized build or test pipelines running while they step away; anyone who wants the same machine to be a normal desktop at noon and a dedicated compute node at midnight. For all of them the alternative — a second machine, a VM, or a separate headless install — costs more time and maintenance than the one-command switch they get here.</p>
+
+    <h2>How It Works</h2>
+    <p>The implementation is deliberately restrained: it is a standard systemd <strong>target switch</strong>, not a custom script and not a different system. Once enabled, the desktop environment and display manager stop running, desktop components sit at zero footprint, and all memory is released to compute tasks; system tools, containers, and driver detection remain fully available.</p>
+    <p>A common misunderstanding is worth clearing up: <strong>headless mode is not switching desktops</strong>. The desktop / headless choice is made once at install time in the "desktop environment" step (KDE Plasma or server with no desktop); headless mode is a <strong>temporary switch</strong> available after either install path — whether you installed the desktop edition or the server edition, the system has this switching capability built in. It does not change your install shape, only the current running state.</p>
+    <p>Server mode itself is worth a mention: choosing server mode installs a system without a desktop environment or display manager, booting into a pure terminal environment (tty login), consistent with a base Arch Linux install, with all memory left for compute tasks. But server mode locks nothing in — after installation you can install any desktop environment yourself, exactly as on Arch. Headless mode is the means for desktop-edition users to temporarily enter a pure-compute state when needed.</p>
+    <p>What does "standard systemd target switch" mean concretely? systemd organizes system state with targets (for example, <code>graphical.target</code> for the graphical interface and <code>multi-user.target</code> for plain multi-user terminal). The headless-mode switch is a switch between these two standard targets — not a mechanism Linxira invented, but a native systemd capability, which makes it predictable, auditable, and understandable by any systemd-aware tool. After the switch, graphical-session services stop; SSH, containers, and system services keep running. The machine remains a complete Linux system — it just has no graphical interface.</p>
+
+    <p>It is also worth being precise about what a minimal system still contains. Even the server baseline keeps a small set of general-purpose tools — browsers, terminal tools, containers, and the like; only the actual desktop components (Plasma, SDDM, file managers, and so on) are absent until you choose KDE Plasma at install or install them yourself. In other words, "headless" means "no graphical session", not "a stripped system": the machine stays a fully capable Linux workstation, just without the desktop consuming memory.</p>
+
+    <h2>Usage</h2>
+    <p>Three commands, all through <code>linxira-config</code>:</p>
+<pre><code>linxira-config headless on now    # turn the desktop off immediately (confirmation required)
+linxira-config headless off now   # restore the desktop immediately
+linxira-config headless status    # check the current mode</code></pre>
+    <p>Note that <code>on now</code> shuts the desktop down immediately, hence the confirmation; <code>status</code> tells you at any moment whether you are in desktop or headless mode. The switch is immediate — no reboot needed. That is exactly the difference between a "temporary switch" and the install-time either/or.</p>
+    <p>A practical workflow suggestion: before starting a long-running job, confirm the current mode with <code>linxira-config headless status</code>; when the job is done, switch back with <code>off now</code>. If the job needs to run in the background without holding a terminal, pair headless mode with <a href="/en/docs/remote-access/">remote access (SSH)</a> — in the headless state, SSH sessions are the primary operating interface, so the two are natural complements. For repeated switches, the three commands are short enough to become muscle memory within a few days.</p>
+
+    <h2>Typical Use Cases</h2>
+    <p>Three scenarios fit headless mode best:</p>
+    <ul>
+      <li><strong>Training jobs</strong>: hand all memory and CPU to the training process; the desktop stops competing for resources.</li>
+      <li><strong>Containers and compute</strong>: run containerized compute workflows (Podman / Distrobox / Apptainer / Docker) with the host reduced to a pure execution environment.</li>
+      <li><strong>Remote computation</strong>: the machine does not need a GUI at all; log in over SSH and run jobs. Remote-access setup is covered in the <a href="/en/docs/remote-access/">remote access (SSH)</a> documentation.</li>
+    </ul>
+    <p>What these scenarios share: heavy, long-running, and nobody sitting in front of the machine. In headless mode there is no desktop to interfere and no graphical session grabbing resources — the compute process gets the whole machine.</p>
+    <p>The three scenarios also combine: training jobs usually run in containers, in which case headless mode + the container ecosystem + SSH remote access form one complete working combination — the host retreats to a pure execution environment, containers provide isolation and reproducibility, and SSH provides the operating interface. That is what the "desktop supercomputer" positioning looks like in real use: the desktop identity is the daily entry point, the compute identity is the job entry point, and the cost of switching is two commands.</p>
+
+    <p>The remote-compute scenario deserves one more sentence, because it is where headless mode pays off most visibly: with the desktop off, there is no display server, no session, and no screen locking to interfere with unattended operation — and, importantly, nothing to wake up or unlock when you connect over SSH to check on a job. The machine behaves exactly like a dedicated server, because in that moment, it is one.</p>
+
+    <h2>How It Differs from Switching Desktops</h2>
+    <p>Headless mode and "switching desktops" are two entirely different things:</p>
+    <ul>
+      <li><strong>Switching desktops</strong> (the install-time either/or, or installing Plasma / GNOME yourself afterwards): changes the desktop shape of the system and involves installing or removing desktop components.</li>
+      <li><strong>Headless mode</strong>: installs and uninstalls nothing — it only switches the runtime target temporarily. It works on the desktop edition and on the server edition alike; the server edition has the same capability built in.</li>
+    </ul>
+    <p>In one sentence: desktop / headless is "what shape you want", headless mode is "what it should temporarily become". They do not conflict and do not replace each other. The full desktop and server mode explanation lives in the <a href="/en/docs/desktop/">desktop and server modes</a> documentation.</p>
+    <p>An install-scenario example makes this clearer: if the goal is a pure server running long-term jobs, choosing "server (no desktop)" at install time is the right fit — the system is pure terminal from day one; if the goal is a desktop workstation that occasionally runs long jobs, choose KDE Plasma and use headless mode to temporarily turn the desktop off. The former avoids installing a desktop you will never use; the latter avoids reinstalling when you suddenly need one. The choice is decided by one install-time step, and can be adjusted later at any time via <code>linxira-config</code> or by installing a desktop yourself.</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

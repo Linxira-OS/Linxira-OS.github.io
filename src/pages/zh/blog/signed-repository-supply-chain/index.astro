@@ -1,0 +1,69 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="zh" active="blog" title="签名仓库：Linxira 的供应链安全设计 — 博客">
+    <a href="/zh/blog/" class="back">← 返回博客</a>
+    <div class="meta">2026-08-15 · 技术</div>
+    <h1>签名仓库：Linxira 的供应链安全设计</h1>
+
+    <p>Linxira 的自有软件全部通过官方签名仓库 <code>[linxira]</code> 交付。签名不是装饰：pacman 侧的强制校验、发布密钥的轮换机制、以及 PKGBUILD 的 CI 门禁，三层设计共同回答一个问题——你安装的每一个软件包，如何保证就是项目发布的那个包。本文展开这层设计的全貌。</p>
+
+    <h2>威胁模型</h2>
+    <p>先明确要防的是什么。软件仓库本质上是一个「远程数据库 + 一堆二进制包」：pacman 从仓库读取数据库得到包列表与校验信息，再从服务器下载对应的 <code>.pkg.tar.zst</code> 安装。这个链路里最危险的攻击点有两个：</p>
+    <ul>
+      <li><strong>仓库数据库被替换</strong>：攻击者改掉数据库里的下载地址或校验值，让 pacman 下载并安装攻击者指定的包。</li>
+      <li><strong>软件包本身被篡改</strong>：数据库没问题，但服务器上或传输链路中的包被替换成被植入恶意代码的版本。</li>
+    </ul>
+    <p>两种攻击的后果相同：你的系统装上了不是项目发布的二进制——可能是被修改过的内核、被植入后门的工具，而这一切对 pacman 而言「看起来」完全正常。对一台桌面超算来说，这等于把计算结果的信任根交给了攻击者。签名体系要做的就是让这两种替换都无法通过校验。</p>
+    <p>为什么仓库会成为攻击目标而不是个别网站？因为仓库是一对多的分发点：一次篡改影响所有从它安装更新的用户，收益集中、成本摊薄，是典型的供应链攻击模型。现实世界的供应链攻击（无论是软件仓库还是上游依赖）反复证明：防御的重点不是「相信服务器没被攻破」，而是「即使服务器被攻破，篡改也无法通过校验」——这正是签名体系存在的意义。</p>
+
+    <h2>pacman 签名体系</h2>
+    <p>[linxira] 仓库的配置是：</p>
+<pre><code>[linxira]
+Server = https://linxira-os.github.io/linxira-packages/x86_64
+SigLevel = Required DatabaseOptional</code></pre>
+    <p><code>SigLevel = Required DatabaseOptional</code> 的含义是：<strong>数据库签名必选、包签名可选但默认验证</strong>——数据库（<code>linxira.db</code>）必须通过签名校验，软件包默认也必须验证签名。这两层校验都在 pacman 侧强制执行，不依赖用户记得去「验证」，也不依赖下载工具做了什么。哪怕镜像或 CDN 被劫持，只要签名校验不过，pacman 就拒绝安装。</p>
+    <p>用户侧唯一需要做的，是确保配置了正确的 <code>Server</code> 地址——而系统安装时已经自动配置好，安装后无需手动添加。</p>
+    <p>校验失败时用户看到的是明确拒绝，而不是静默放行：签名不匹配的数据库或包会被 pacman 直接拒绝，报错信息会指出签名验证失败。对普通用户，这意味着「更新到一半装进了坏东西」这件事被前置拦截了——问题在安装前就暴露，而不是在系统损坏后才发现。</p>
+
+    <h2>密钥生命周期</h2>
+    <p>签名校验依赖信任锚：pacman 必须信任「签这些包的那把密钥」。Linxira 的做法是发行 <code>linxira-keyring</code> 包：安装它即完成密钥导入与本地信任——pacman 自动导入发布密钥并标记为可信，用户不需要手动操作任何密钥命令。</p>
+    <p>密钥不是一成不变的：发布密钥已于 <strong>2026-08-04 轮换</strong>。轮换意味着即使旧密钥泄露或需要退役，新签名立即生效，旧密钥不再被信任，供应链不会带着一个「永远有效」的隐患运行。</p>
+    <p>一个刻意的设计是：<strong>密钥指纹不在网站上公布</strong>。理由是信任锚必须来自你安装的包本身，而不是网页上的一段文本——网页可以被仿冒、被篡改，而你安装的 <code>linxira-keyring</code> 是经过 pacman 校验的。首次信任的建立路径是：<code>pacman-key --init</code> 初始化本机密钥环 → 安装 <code>linxira-keyring</code> → 密钥导入并被本地信任。这个路径让「我信任谁」这件事落在软件层面，而不是信息层面。</p>
+    <p>轮换的意义也可以在时间轴上理解：2026-08-04 之前签发的旧密钥在轮换后不再被信任，任何仍用旧密钥签名的内容都无法通过校验。这把「密钥可信」从一次性的永久信任，变成了可管理、可撤销的生命周期——与 Arch 官方对自身密钥环的维护思路一致。</p>
+
+    <p>从用户视角看，密钥维护只是又一次普通包更新：密钥轮换时，新密钥随 <code>linxira-keyring</code> 发布，pacman 通过下方描述的签名仓库流程自动获取——不需要手动密钥仪式、不需要输入指纹、不需要判断「这个网站是不是真的」。</p>
+
+    <h2>发布流程</h2>
+    <p>仓库本身由发布流程生成并签名。每次发布时，用 <code>repo-add</code> 生成并签名数据库：</p>
+<pre><code>repo-add --sign --key &lt;指纹&gt; linxira.db.tar.zst ./*.pkg.tar.zst</code></pre>
+    <p>这条命令把当前目录下的所有 <code>.pkg.tar.zst</code> 软件包登记进 <code>linxira.db.tar.zst</code>，并用发布密钥对数据库签名；随后数据库与软件包一起部署到 GitHub Pages。整个过程与 Arch 官方仓库的维护方式一致：数据库签名保证「这份包清单是项目发布的」，包签名保证「清单里每个包都是项目构建的」。</p>
+    <p>部署到 GitHub Pages 还有一层附带收益：分发走静态托管，配合 HTTPS，传输环节的完整性由 TLS 保证，内容环节的完整性由签名保证——两条防线各管一段，互不依赖。用户无论从哪个镜像或哪个时刻拉取，拿到并校验的是同一份带签名的内容。</p>
+
+    <p>机制本身值得说一句，因为它解释了「签名数据库」到底产出什么。<code>.tar.zst</code> 后缀不是包的压缩包——它是 pacman 期望的压缩仓库数据库格式：一份元数据记录归档（包名、版本、文件列表、校验值），加上 <code>--sign</code> 生成的 <code>.db.sig</code> 侧车签名。pacman 下载数据库、用可信的发布密钥验证签名，之后才信任其中的包列表；软件包各自携带签名，下载时逐一验证。</p>
+
+    <h2>源头防线：check-boundaries.sh</h2>
+    <p>签名解决的是「传输与存储环节的篡改」，但还有一个更靠前的问题：软件包本身从哪来？如果维护者在 PKGBUILD 里引用了不受控的软件源，那么即使签名完好，包的内容也可能是从不可信的地方拉来的。</p>
+    <p>这就是 <code>check-boundaries.sh</code> 的职责——它是 linxira-packages 仓库 CI 的<strong>第一道门</strong>：校验 PKGBUILD 边界，包括<strong>禁止 CachyOS / AUR / Seafoam 仓库引用</strong>、<strong>强制使用 codeload / release tarball 源码</strong>、<strong>校验固定 commit 与 sha256 等</strong>。任何 PKGBUILD 改动都必须同步通过它才能合并。</p>
+    <p>这层防线回答了「源头」问题：Linxira 自研包大多采用 codeload commit 模式——源码固定到某个 commit，makepkg 自动从 codeload 下载 tarball，再用 sha256 校验完整性。源码的每一次获取都有确定的 commit 与校验值，CI 拒绝一切绕过这个模式的引用。</p>
+    <p>codeload commit 模式把「源码来自哪里」也纳入了校验范围：PKGBUILD 里写死的 commit 与 sha256 值意味着，即使上游仓库后来被改动或删除，构建用的仍是当初审核过的那一份源码。可复现性不是加分项，而是审核的前提——不可复现的包根本进不了这条流水线。</p>
+
+    <p>对经常更新的用户，还有一层值得点明：签名仓库保证「装的是项目发布的」，而 <code>linxira-update</code> 默认在更新前创建 Timeshift 快照，两者配合——签名校验回答「是否真实」，快照回答「结果不满意怎么办」。这是两个不同的问题，而更新流程在用户无额外操作的情况下同时回答了它们。</p>
+
+    <h2>对用户意味着什么</h2>
+    <p>最终这一切落在一个日常命令上：<code>sudo pacman -Syu</code>。这个命令的安全前提是——你更新的仓库是签名且可信的，你安装的每个包都经过校验，而包的内容在源头就通过了 CI 的边界检查。三个环节少任何一个，更新都可能成为攻击入口；三个都在，更新才是一个可信操作。</p>
+    <p>如果你想验证这套体系，或者自己构建、复现这些包，参见 <a href="/zh/docs/building/">构建 ISO</a> 文档——构建指南会用到与发布相同的仓库与签名机制。供应链安全不是一次配置，而是一条从 PKGBUILD 到 pacman 的完整链路，每一环都可审计、可复现。</p>
+    <p>最后回到开头的威胁模型做个总结：数据库被替换——被数据库签名拦截；包被篡改——被包签名拦截；包来自不可控源头——被 check-boundaries.sh 在构建前拦截。三层各守一个攻击面，用户侧不需要为任何一层做额外操作，全部在安装与更新时自动生效。</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

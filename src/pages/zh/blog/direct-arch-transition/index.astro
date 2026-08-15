@@ -1,0 +1,57 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="zh" active="blog" title="Linxira OS 现状：从 Mint 原型到 Direct Arch — 博客">
+    <a href="/zh/blog/" class="back">← 返回博客</a>
+    <div class="meta">2026-08-15 · 公告</div>
+    <h1>Linxira OS 现状：从 Mint 原型到 Direct Arch</h1>
+
+    <p>2026 年 6 月 27 日，我们发布了 Linxira OS 的介绍文章。那篇文章描述的还是一个基于 Linux Mint 的方案原型——今天的情况已经完全不同：Linxira 现在是直接基于 Arch Linux 构建的 Direct Arch 工作站，并且发布了首个实验性正式版。本文取代那篇文章的现状描述，是当前项目状态的权威版本；旧文作为历史发布记录保留。</p>
+
+    <h2>为什么转型</h2>
+    <p>初期的 Linxira 建立在 Linux Mint（Ubuntu LTS 生态）之上，希望通过一个稳定的发行层承载预装软件与自研工具。这个方向的问题在于：我们真正需要的不是另一个 Ubuntu 衍生版，而是对上游更新与软件供应链的完全控制。Linux Mint 的发布节奏、Ubuntu LTS 的版本周期，都意味着 Linxira 的软件永远要等待发行层的统一调度。</p>
+    <p>因此我们转向了 Direct Arch 路线：直接基于 Arch Linux 构建，使用 <code>pacman</code> 与 Arch 官方仓库，不叠加任何发行层。Arch 是滚动更新发行版，上游（含安全补丁）发布后立即同步进入仓库，无需等待发行版统一调度；Linxira 自有软件则通过项目控制并签名的独立仓库提供。文档首页对这一现状的表述是：「Linxira 是 Direct Arch 工作站，使用 pacman 与 Arch 官方仓库」。这一决策让 Linxira 从「一个带工具的发行版」变成了「一台由我们自己完全掌控软件链的工作站」。</p>
+    <p>转型带来的直接好处是架构简单：系统里没有发行层叠加，没有来自下层的版本冲突，所有组件要么来自 Arch 官方仓库，要么来自我们签名并审核过的自有仓库。用户看到的就是 Arch，但多了一层经过审核的预装软件与自研工具。</p>
+    <p>Mint 原型阶段也留下了有价值的东西：预装软件的选择标准、分层组织软件的思路、以及对「开箱即用」的坚持。我们抛弃的是发行层，不是这些经验——它们被保留下来，换了一种载体：预装软件的清单现在由审核目录（catalog）驱动，而不是写死在发行版的包列表里。另一个附带收益是 Arch Wiki 直接适用：Linxira 基于 Arch，Arch 社区积累的海量文档、教程与排错经验对 Linxira 用户全部有效，不需要翻译成「发行版特有的说法」。</p>
+
+    <h2>现在是什么</h2>
+    <p>现在的 Linxira 定位是「桌面超算」（Desktop Supercomputer）：完整保留常规桌面功能，加上科学计算无头模式，用无损容器复现他人环境，也让别人复现我们。它首先是一台开箱即用的桌面电脑——KDE Plasma 桌面、浏览器、办公软件、中文输入法；同时又是一台科学计算工作站——训练、容器、远程计算都能承担。</p>
+    <p>对大多数用户，最简单的理解方式来自新手向导的一句话：把它当成「一台配好科研软件的 Linux 电脑」。你不需要理解发行版之类的概念，装完即可用。需要把内存全部让给计算任务时，无头模式可以一键关掉桌面；需要复现别人的科研环境时，容器生态（Podman、Distrobox、Apptainer、Docker）默认可用，宿主机的滚动更新不会污染固定版本的项目环境。</p>
+    <p>这个定位的关键在于「两不耽误」：桌面日常与科学计算不是二选一。系统设计上没有为「服务器」或「桌面」做阉割，两种用途共用同一套安装与更新机制。</p>
+    <p>它同时回答了「为谁而建」：研究人员和科学家（生物信息、物理化学、论文写作）、开发者（全栈、Rust/Go/Node.js/Python、AI/ML 与本地大模型）、学生（想学 Linux 或想要配置完善科研环境的本科生和研究生）。这些人共同的痛点是——装一台能用的科研电脑本身要花掉大量时间，而 Linxira 的目标是把这段时间压缩到「装完即用」。</p>
+
+    <h2>软件生态</h2>
+    <p>Linxira 的软件生态以一份经过审核的目录为核心：93 个精选应用，按 14 大分类组织，来自 catalog v3 的审查——许可证、来源与可用性逐项核对。科学计算与游戏软件在正式版中默认装载，外部生态（AUR 等）默认关闭，必须由用户显式启用。</p>
+    <p>自有软件全部托管在官方签名仓库 <code>[linxira]</code>（<code>https://linxira-os.github.io/linxira-packages/x86_64</code>），数据库与软件包签名均在 pacman 侧强制校验。未审核的 AUR 配方不会被当作官方软件展示；我们宁可目录少一些，也不把未经审核的来源放进默认推荐里。</p>
+    <p>这份目录不是一份静态清单，而是安装器、欢迎页、图形软件管理共同消费的唯一元数据源——关于这一点，详见后续的 catalog 文章。对用户而言，效果是：安装时选的、欢迎页推荐的、软件管理器里看到的，是同一套经过审核的软件，不会各说各话。</p>
+    <p>「审核」不是一句口号，它有三个具体维度：许可证（能否随 Linxira 分发）、来源（官方仓库还是第三方、是否可复现）、可用性（在当前架构与基线里是否真正可用）。93 个应用全部经过这三关，才会进入目录；目录里的每个应用都对应着有人负责、可追溯的决定，而不是「装上再说」。</p>
+
+    <h2>自研工具链</h2>
+    <p>围绕这个生态，我们构建了 17 个自研工具，设计原则可以概括为三句话：<strong>审核 catalog 元数据</strong>（软件清单由人工审核的目录驱动）、<strong>确定性事务后端</strong>（系统修改由受控后端执行确定性事务）、<strong>只读/规划式安全模型</strong>（界面只读展示与规划，写入操作集中且可确认）。</p>
+    <p>其中几个与日常使用最相关：<strong>Linxira Welcome</strong> 是 Plasma 原生的状态与路由中心，开机自动打开，只读展示 catalog 与安装 receipt；<strong>Config Hub（<code>linxira-config</code>）</strong> 是管理员命令行工具，负责 SSH、镜像源、网络诊断与安全状态；<strong>Shelly</strong> 是安装后的默认图形化软件管理器（CLI + GTK + 更新通知），只执行获准的软件包操作，不参与安装器事务；<strong>Package Center</strong> 提供精选应用的分类树安装，plan / confirm / apply 三步事务；<strong>Component Manager</strong> 管理能力包、运行时与工具链的三态选择（required / recommended / optional）。</p>
+    <p>底层还有 <strong><code>lhwd</code></strong>（硬件检测与驱动配置，Rust 实现的完整 CHWD 移植）和 <strong><code>linxira-update</code></strong>（系统更新通知与维护助手，默认更新前自动创建 Timeshift 快照）。这 17 个工具共享同一套安全模型：界面永远不直接动系统，系统修改永远经过确定性的、可确认的事务。</p>
+    <p>三个设计原则各自落在实处：「审核 catalog 元数据」意味着 Welcome 的推荐、软件管理器的分类树都来自同一份人工审核的目录，而不是各自硬编码的清单；「确定性事务后端」意味着对系统的每一次修改都是先规划、后执行、留记录，同样的规划永远产生同样的结果；「只读/规划式安全模型」意味着任何图形界面都没有直接执行任意命令的能力——它只能提交规划，由后端决定并执行。对用户来说，这套模型的效果是：无论从哪个入口安装软件，行为都是一致的、可预期的。</p>
+
+    <h2>可用性</h2>
+    <p>2026 年 8 月 14 日，Linxira 发布了<strong>首个实验性正式版</strong>（<code>linxira-2026.08.14-x86_64.iso</code>）。这个版本已通过完整安装测试——自研软件安装零报错、签名仓库可用。ISO 可从 <a href="/zh/download/">下载页</a> 获取，发布详情在 <a href="https://github.com/Linxira-OS/linxira-iso/releases" target="_blank">linxira-iso GitHub Releases</a>。</p>
+    <p>请留意「实验性」三个字：这是第一个公开的直基 Arch 正式版，意味着我们已经走通了「从源码构建 → 安装 → 使用」的完整链路，但后续仍会按构建指南持续迭代。安装前建议校验 ISO 的 SHA-256 确保文件完整。</p>
+    <p>「完整安装测试」不是只测「能不能启动安装器」：它覆盖从 Live 环境启动、Calamares 分区安装、首次进入系统，到自研软件安装与签名仓库更新的整条链路，结论是自研软件安装零报错、签名仓库可用。这也是「实验性正式版」而不是「测试版」的原因——链路已经完整走通，剩下的问题是覆盖更多硬件与使用场景，这需要真实用户的反馈来推动。</p>
+    <p>与 6 月那篇介绍文最大的区别就在这里：当时「尚无公开的直基 Arch ISO」，现在它已经可以下载、安装、使用了。</p>
+
+    <h2>路线图</h2>
+    <p>后续的公开信息都集中在两个页面：<a href="/zh/roadmap/">路线图</a> 说明我们计划做什么，<a href="/zh/releases/">发布日志</a> 记录已发布的每一个 ISO 构建。发布节奏、构建方式与自建 ISO 的步骤见 <a href="/zh/docs/building/">构建 ISO</a> 文档。</p>
+    <p>本文是「现状总览」，只回答「现在是什么」；「为什么这样设计」由本系列的技术文章逐一展开——签名仓库与供应链安全、catalog 审核目录、btrfs 快照回滚、无头模式、AI 工具链与新手向导设计。如果你只关心下载，直接去 <a href="/zh/download/">下载页</a> 即可。</p>
+    <p>最后给读者一个使用建议：安装完成后，先读 <a href="/zh/docs/quick-start/">快速开始</a> 完成签名仓库启用与系统更新，再按需安装软件；遇到问题从 <a href="/zh/docs/faq/">常见问题</a> 开始查。系统更新是滚动模型，配合 btrfs 快照回滚使用，日常维护压力并不比固定版本发行版更大——这正是「现状」里最值得体验的一部分。</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

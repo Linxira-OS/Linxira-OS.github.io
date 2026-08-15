@@ -1,0 +1,70 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="zh" active="blog" title="新手向导背后的设计：让 Linux 新手落地 — 博客">
+    <a href="/zh/blog/" class="back">← 返回博客</a>
+    <div class="meta">2026-08-15 · 技术</div>
+    <h1>新手向导背后的设计：让 Linux 新手落地</h1>
+
+    <p>Linxira 的目标用户不全是 Linux 老手——很多潜在用户是第一次接触 Linux 的学生和研究者。文档网站对他们来说不是「查阅工具」，而是「能否用起来的最后一道门槛」。新手向导（<a href="/zh/docs/newbie/">/zh/docs/newbie/</a>）就是为了这道门槛设计的。本文复盘它的页面设计决策：解决了什么问题、内容如何取舍、以及它和既有文档的分工。</p>
+
+    <h2>问题</h2>
+    <p>网站的访问者不一定懂 Linux。来这里的可能是想装一套科研环境的研究生，也可能是刚接触开源的本科生——他们不知道什么是发行版、什么是包管理器，甚至没打开过终端。对他们来说，一个「全是术语的文档站」不会产生任何帮助，只会产生挫败感。</p>
+    <p>而此前 docs 的形态对新手并不友好：文档入口只有裸的 Arch Wiki 链接与安装后的操作文档。Arch Wiki 极其详尽，但它的读者预设是「已经会用 Linux 的人」；安装后的操作文档预设是「已经装完系统、知道自己在干什么的人」。两头都预设了知识，唯独没有覆盖「第一次用」的人。</p>
+    <p>「不友好」的具体表现是什么？新手打开终端看到一串英文输出，第一反应是关掉它，而不是读它；打开 Arch Wiki 面对的是术语密度极高的条目，第一反应是「这不是给我看的」。这些反应不是学习态度问题，而是文档预设了读者已经拥有的知识。向导要做的，是把知识阶梯的第一级补上——从「终端是什么」开始，而不是从「如何配置 Xorg」开始。</p>
+
+    <h2>内容决策</h2>
+    <p>新手向导把「第一次用」需要的东西收敛成五个小节，每一节回答一类具体问题：</p>
+    <ul>
+      <li><strong>Linxira 是什么</strong>：一句话定位——「一台配好科研软件的 Linux 电脑」，明确告诉新手不需要理解发行版之类的概念。</li>
+      <li><strong>终端基础</strong>：从打开终端（<code>Ctrl+Alt+T</code>）开始，配一张命令表——<code>pwd</code>、<code>ls</code>、<code>sudo pacman -Syu</code> 等最常用的命令逐一说明作用。同时给出「报错怎么办」的通用策略：把终端输出的英文错误复制到搜索框里搜。</li>
+      <li><strong>遇到问题去哪查：Arch Wiki</strong>：教新手如何正确使用 Arch Wiki——用页面内搜索框、语言菜单切中文版、以及识别 <code>(简体中文)</code> 条目后缀这个关键线索。</li>
+      <li><strong>中文环境</strong>：安装时选中文就什么都不用做；装完是英文怎么切中文；以及完整的输入法排查流程（见下）。</li>
+      <li><strong>桌面选择</strong>：默认 KDE Plasma、安装时二选一、装完后可自行安装其他桌面、无头模式不是换桌面——把几个容易混淆的概念一次说清。</li>
+    </ul>
+    <p>取舍的原则是：<strong>只回答「第一次用」必然遇到的问题</strong>。不铺开讲包管理器原理，不科普文件系统层级——那些留给 Arch Wiki 与更深的文档。向导的目标是让新手在半小时内完成「能打开终端、能更新系统、能查资料、能打字」的最小闭环。</p>
+    <p>命令表是这个决策的典型产物：它只收录最常用的几条（<code>pwd</code>、<code>ls</code>、<code>sudo pacman -Syu</code> 等），每条一行、一列作用，不解释语法规则。「报错怎么办」同样遵循最小闭环原则——不教排错方法论，只给一个永远有效的动作：把英文错误信息复制到搜索框里搜。这两件事合起来，覆盖了新手在前几天会反复遇到的 90% 场景。</p>
+
+    <p>Arch Wiki 小节值得单独说一句，因为它是整个向导里最像「教技能」而非「教事实」的部分：识别 <code>(简体中文)</code> 后缀、切换语言菜单、在页面内搜索——三个小习惯把一份令人望而生畏的资料变成答案来源。教会「查资料」的习惯，而不是直接给一份预回答的问题清单，才能让新手在没有向导陪伴的情况下撑过第一周之后的日子。</p>
+
+    <h2>中文输入法排查三步</h2>
+    <p>中文环境小节里，输入法是投入最多的部分，因为它是最典型的新手杀手：装完系统发现打不了中文，搜到的解决方案五花八门，越改越乱。向导把排查收敛成三步：</p>
+    <p class="term-item"><strong>1) 确认已安装</strong> — 执行 <code>sudo pacman -S fcitx5 fcitx5-chinese-addons fcitx5-configtool</code>，确保输入法框架、中文插件与配置工具都在。</p>
+    <p class="term-item"><strong>2) 启用拼音</strong> — 系统设置 → 输入法（Input Method）→ 添加输入法 → 选「拼音（Pinyin）」；切换快捷键是 <code>Ctrl+Space</code>。</p>
+    <p class="term-item"><strong>3) 仍不行 → 看诊断报告</strong> — 执行 <code>fcitx5-diagnose | head -n 100</code>，把输出贴给社区或搜索。Linxira 系统统一使用 Fcitx5，不要同时装 ibus 等其他输入法框架，以免冲突。</p>
+    <p>两个容易踩的补充点也写进了文档：自行装了 GNOME 等非 KDE 桌面、输入法不生效时，把三行环境变量写入 <code>~/.xprofile</code> 后重启会话——<code>export GTK_IM_MODULE=fcitx</code>、<code>export QT_IM_MODULE=fcitx</code>、<code>export XMODIFIERS=@im=fcitx</code>；locale 未生效时，<code>sudo nano /etc/locale.gen</code> 取消 <code>zh_CN.UTF-8 UTF-8</code> 行的注释，然后 <code>sudo locale-gen</code>。</p>
+    <p>这三步的设计逻辑是：先确认「有没有」，再确认「开没开」，最后才进入「诊断」。每一步都是自包含的、可执行的，新手不需要理解背后的机制，照着做就能定位到问题所在。</p>
+    <p>三个步骤的顺序本身就是排错思维的训练：绝大多数「输入法不工作」其实是「没装」或「没启用」，前两步就解决了；只有极少数情况需要第三步的诊断报告。反过来，如果一上来就贴诊断报告，输出里的大部分信息对新手是噪音。步骤的划分让「检查什么」和「为什么检查」之间的对应关系一目了然，也避免了把简单问题复杂化。</p>
+
+    <h2>与既有文档的分工</h2>
+    <p>新手向导不是要把所有文档重新写一遍，它只负责「从零到第一次能用」这段，与既有文档的分工是：</p>
+    <ul>
+      <li><strong>新手向导</strong>：新手入口。面向「第一次用 Linux」的人，回答「这系统是什么、终端怎么用、问题去哪查、中文怎么弄、桌面怎么选」。</li>
+      <li><strong>快速开始</strong>：安装后的操作手册。面向「已经装完系统」的人，回答「签名仓库怎么启用、系统怎么更新、软件怎么装」。</li>
+      <li><strong>桌面与服务器模式</strong>：专项文档。面向「想深入理解」的人，展开桌面 / 服务器模式与无头模式的全部细节。</li>
+    </ul>
+    <p>三者的关系是漏斗：新手向导把最多的人带到「能用」的起点，快速开始接住他们做安装后的配置，专项文档再服务少数需要深挖的人。每份文档只回答自己那一层的问题，不互相稀释。</p>
+    <p>这个分工还有一个隐性的好处：文档之间不会互相制造「已经懂的人」和「不懂的人」两套叙述。新手向导说「更新系统用 <code>sudo pacman -Syu</code>」，快速开始直接用它，桌面文档也不再重复解释——同一个命令在整套文档里只被介绍一次，其余都是引用。对维护者，这意味着改动一处术语或命令，不需要同步改三份文档。</p>
+
+    <h2>接入方式</h2>
+    <p>内容做出来了，还要保证新手真的能走到它面前。接入做了三处：</p>
+    <ul>
+      <li><strong>docs 侧栏「开始」区</strong>：新手向导放在侧栏第一组的第一项，位置即优先级——它是文档树的起点。</li>
+      <li><strong>快速导航 doc-card</strong>：文档首页的快速导航卡片里，新手向导是第一张卡。</li>
+      <li><strong>quick-start 顶部指引条</strong>：快速开始页顶部有一行提示——「第一次用 Linux？先看新手向导」，把走错门的人导回来。</li>
+    </ul>
+    <p>三个入口覆盖三种到达方式：从侧栏浏览进来的、从首页导航点进来的、装完系统直接看快速开始结果被引导过来的。新手从任何一个入口进入，都能在一步之内被导向正确的位置。</p>
+    <p>接入方式本身也是一条设计原则的体现：新手不需要知道文档结构才能找到向导——结构为新手服务，而不是要求新手理解结构。侧栏把向导放在第一位，导航卡片把它放在第一张，指引条把走错门的人导回来；三重保障下，「找不到入口」不再是一个可能的失败模式。</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

@@ -1,0 +1,66 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="First Experimental Stable: 2026.08.14 Release Notes — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Announcement</div>
+    <h1>First Experimental Stable: 2026.08.14 Release Notes</h1>
+
+    <p>On August 14, 2026, Linxira OS shipped its <strong>first experimental stable release</strong>. It is the first public version where the entire chain — from source build, to install, to daily use — has been walked end to end, and the first ISO under the Direct Arch route that can be downloaded, installed, and used as a daily system. This post is the release note: version information, release highlights, install-test results, and what changed since the betas. It is written for two audiences: people deciding whether to download it, and people who have already installed it and want to know exactly what they are running.</p>
+
+    <h2>Version Information</h2>
+    <p>The release ISO is named <code>linxira-2026.08.14-x86_64.iso</code>, approximately <strong>4.79 GB</strong>, with SHA-256 checksum <code>b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code>.</p>
+    <p>Two download channels: the <a href="/en/download/">official download page</a> and <a href="https://github.com/Linxira-OS/linxira-iso/releases" target="_blank">linxira-iso GitHub Releases</a>. Verify the SHA-256 checksum before installing to make sure the file is intact — this matters here more than usual, because the full install test also confirmed the software chain we ship is self-consistent: first-party software installed with zero errors and the signed repository worked.</p>
+    <p>The filename convention is consistent with future versions: <code>linxira-YYYY.MM.DD-x86_64.iso</code>, with the date being the build date. The 4.79 GB size comes from the 93 curated applications and the dual kernel installed by default — we chose "preinstalled and ready" over "install it yourself later", and the size is the direct price of that default software set. Verification: after downloading, compute the ISO's SHA-256 and confirm it matches the value above before writing the bootable media.</p>
+    <p>The complete installation walkthrough (bootable media, partitioning schemes, system requirements) is in the <a href="/en/docs/install/">installation guide</a>. The recommended partitioning scheme is btrfs + Timeshift, which pairs with the built-in snapshot rollback. Plan for at least 20 GB of storage per the system requirements, with 50 GB or more recommended; a 8 GB USB stick is the minimum for the bootable media.</p>
+
+    <h2>Release Highlights</h2>
+    <ul>
+      <li><strong>93 curated applications (catalog v3) across 14 categories</strong>: scientific computing and gaming software installed by default, usable immediately.</li>
+      <li><strong>Dual kernel (linux + linux-lts) + Timeshift / grub-btrfs snapshot rollback</strong>: fall back when a single kernel update misbehaves; pick a snapshot directly from the GRUB menu.</li>
+      <li><strong>Container ecosystem by default</strong>: Podman / Distrobox / Apptainer / Docker work out of the box, so the rolling host never pollutes a pinned project environment.</li>
+      <li><strong>Headless compute mode</strong>: <code>linxira-config headless on/off</code> switches with one command — desktop at zero footprint, all RAM for compute.</li>
+      <li><strong>Signed repository [linxira] + 17 first-party tools</strong>: all first-party software is delivered through the signed repository, with database and package signatures enforced on the pacman side.</li>
+      <li><strong>Chinese input configured automatically by install language</strong>: choose Chinese during install and language, locale, and the Fcitx5 input method are all set up with nothing else to do.</li>
+    </ul>
+    <p>These six points together answer why this release can be called "stable": the software ecosystem now has a reviewed catalog behind it, system safety has the double protection of a signed repository and snapshot rollback, compute scenarios have headless-mode switching, and Chinese users get an input environment that works out of the box.</p>
+    <p>Unpacked point by point: the 93 curated applications are not "a lot installed" but "everything installed is reviewed" — license, source, and availability checked item by item, with the external ecosystem (AUR and similar) off by default; the dual kernel gives "updating the kernel" a fallback, and snapshots give "updating the system" an undo; containers by default mean reproducing someone else's environment (and letting others reproduce ours) needs no extra installation; headless mode puts the two identities of "desktop computer" and "compute node" into one machine; the signed repository makes every first-party package's origin verifiable; and Chinese input configured by install language removes the step newcomers most often get stuck on.</p>
+
+    <p>It is also worth mapping these highlights onto concrete daily scenarios: a bioinformatician reproduces a workflow in an Apptainer container from day one; a student types Chinese in papers immediately because Fcitx5 was configured at install; a developer updates the system before a long weekend and, if anything regresses, reboots into the pre-update Timeshift snapshot from GRUB; a researcher running an overnight training job switches headless mode on, hands every megabyte of RAM to the process, and switches back in the morning. These are not marketing claims — they are the exact paths the install test and the underlying architecture were built to support.</p>
+
+    <h2>Install-Test Results</h2>
+    <p>Before the release we ran a complete installation test. The conclusion: <strong>first-party software installed with zero errors, and the signed repository worked</strong>. The test covered the whole chain — booting the Live environment, Calamares install, first entry into the installed system, and first-party software installation and updates — with no blocking errors.</p>
+    <p>What "experimental" means here deserves precision: the release proves the chain works, but it is still the first public direct-Arch stable build, with limited hardware and use-case coverage. We are shipping it so more people use it in real environments and give feedback, which will drive the next iterations.</p>
+    <p>The test path was identical to a regular user's: write the bootable media with Rufus / balenaEtcher or <code>dd</code>, boot the Live environment from USB, open "Install Linxira OS" from Welcome or the application menu, choose language and keyboard layout, partitioning scheme (btrfs + Timeshift recommended), pick optional reviewed configurations from catalog v2 and create the user account, wait for the install to finish, and reboot. Every step was actually executed — not just "the installer opens".</p>
+
+    <p>Two details of that test are worth spelling out, because they are the parts a quick "does it boot" check would miss. First, first-party software installation was exercised through the signed [linxira] repository — packages fetched, signatures verified by pacman, installed, and launched, with zero errors; that is what "the signed repository worked" means in practice. Second, updates were tested through the same pacman chain, confirming the update link is traceable from repository to installed package. Together they cover the two operations every user will perform repeatedly: installing and updating.</p>
+
+    <h2>What Changed Since the Betas</h2>
+    <p>Two beta builds laid the baseline that 8.14 stands on:</p>
+    <ul>
+      <li><strong>8.12 (beta baseline)</strong>: KDE Plasma desktop with preinstalled software usable offline; automatic fallback to China mirrors; [linxira] database pre-synced during install. This is where the "usable right after install" shape appeared.</li>
+      <li><strong>8.13 (beta)</strong>: incremental fixes over 8.12 — boot / shutdown branding and terminal ASCII art finalized; all first-party software verified to install and launch; the signed-repository update chain (pacman) made traceable. Branding and software-install trust converged here.</li>
+      <li><strong>8.14 (experimental stable)</strong>: complete install test passed on top of both, then released publicly.</li>
+    </ul>
+    <p>Further back, the 8.09 RC candidate (17 iterations) was the predecessor of all this: installer, branding, and the default application set converged over those 17 rounds. The full record is in the <a href="/en/releases/">release log</a>.</p>
+    <p>The change from betas to stable is essentially the establishment of three kinds of trust: 8.12 established "usable after install" (desktop and preinstalled software working offline); 8.13 established "what is installed is trustworthy" (all first-party software installable and launchable, update chain traceable); and 8.14 completed "the whole chain is trustworthy" verification (full install test passed) on top of both. Each step stood on the previous one's conclusions; none was skipped.</p>
+
+    <h2>Known Boundaries and What's Next</h2>
+    <p>The boundaries of the current release are explicit: it is still an <strong>experimental stable</strong>, not a stability promise. Future versions will be built by users from source following the <a href="/en/docs/building/">build guide</a>; the project provides build scripts and artifact reproduction rather than endlessly rolling out new ISOs.</p>
+    <p>In other words: this version number is "the first", but it will not have a fixed support cycle like a traditional distribution. Our update model is rolling updates (direct Arch upstream) + snapshot rollback (Timeshift / grub-btrfs) + reproducible builds (the build guide) — these three working together are the complete shape of the system.</p>
+    <p>Concretely, that means a few things users should know: the system keeps receiving upstream Arch updates continuously, so the "installed on 8.14" state is a starting point rather than a frozen release; before each significant update, linxira-update creates a Timeshift snapshot by default, so a bad update is a reboot-away undo rather than a reinstall; and if you ever want the exact state of this release again, the build guide lets you reproduce the ISO from source. The release notes, therefore, describe a baseline, not a ceiling.</p>
+    <p>If you have installed — or are about to install — 8.14: the first step after install is the <a href="/en/docs/quick-start/">quick start guide</a>: enable the signed repository, update the system, and install software as needed. Check the <a href="/en/docs/faq/">FAQ</a> first when something goes wrong, then reach out to the community.</p>
+    <p>Feedback that helps us most is of these kinds: whether your hardware (especially GPU and Wi-Fi chipsets) works, which step of the install stalls, and your "first week after install" experience. Subsequent versions of the experimental stable will keep iterating per the build guide, and your feedback goes directly into the priority list of the next build. Every report of a working or failing device helps us close the gap between "the chain works" and "the chain works everywhere".</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

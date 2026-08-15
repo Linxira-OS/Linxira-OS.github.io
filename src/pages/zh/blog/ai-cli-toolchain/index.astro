@@ -1,0 +1,82 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="zh" active="blog" title="AI 编码代理一键装：镜像加速与六个 CLI — 博客">
+    <a href="/zh/blog/" class="back">← 返回博客</a>
+    <div class="meta">2026-08-15 · 技术</div>
+    <h1>AI 编码代理一键装：镜像加速与六个 CLI</h1>
+
+    <p>AI 编码代理已经成为开发者日常的一部分，但安装它们的第一步往往是痛苦的：npm 官方源在国内直连很慢，装一个 CLI 要等半天。Linxira 的 Config Hub 把「先切镜像、再装软件」压缩成了两条命令。本文是这套流程的完整说明：为什么先切镜像、六个官方包分别是什么、以及另外几个终端代理的安装方式。</p>
+    <p>本文的目标读者是已经装好系统、准备配置开发环境的开发者。整个过程不涉及系统级改动——镜像配置与 CLI 安装都发生在用户环境，随时可以撤销或重来。就算你只装其中一个代理，先读一遍镜像部分也值得：它影响后续所有 npm 安装的速度。</p>
+
+    <h2>为什么先切镜像</h2>
+    <p>这些 AI 编码代理全部通过 npm 分发，而 npm 官方源 <code>npmjs.org</code> 在国内直连速度不稳定——小包还好，像编码代理这种依赖较多的 CLI，安装过程会明显变慢，甚至超时失败。这不是网络问题，是物理距离问题：先切到国内可达的镜像源，安装速度会有质的提升。</p>
+    <p>Linxira 的做法是用 Config Hub 自动选择最快的源，不需要手动比较各家镜像：</p>
+<pre><code>linxira-config mirror npm auto   # 自动选最快的 npm 源（国内直连 npmjs.org 较慢，建议先执行）</code></pre>
+    <p>这条命令会测速并切换到当前最快的 npm 源。它管理的是 npm 生态的镜像；Arch 源（<code>linxira-config mirror arch list</code>）与 PyPI 源（<code>linxira-config mirror pip auto</code>）同理，但本文只涉及 npm 侧。</p>
+    <p>镜像切换对 npm 来说是一个配置项的事：npm 读取 <code>registry</code> 设置决定从哪里下载包，Config Hub 的 auto 模式替你测速并写入最优值。之后所有 <code>npm i -g</code>、<code>npm install</code> 与 <code>npm update</code> 都自动走镜像，不需要每个项目单独配置。如果网络环境变化导致镜像变慢，重新执行一次 auto 即可重新择优。</p>
+
+    <p>「慢」实际是什么样？对小工具，几秒延迟几乎无感；对依赖数百个包的代理 CLI，安装可能卡住几分钟、反复重试，偶尔半途失败，留下一个装了一半、还得靠重装修复的目录。失败模式不是「一次下载慢」，而是「安装不可靠，在最不该的时候打断你的流程」。先执行镜像命令，消除的正是这一类失败。</p>
+
+    <h2>六个官方包</h2>
+    <p>切换镜像后，六个 AI 编码代理各自一行命令安装（均为 npm 官方包，按需执行）：</p>
+<pre><code>npm i -g @anthropic-ai/claude-code@latest   # Claude Code
+npm i -g @openai/codex@latest                # Codex
+npm i -g @google/gemini-cli@latest           # Gemini CLI
+npm i -g @xai-official/grok@latest           # Grok Build
+npm i -g opencode-ai@latest                  # OpenCode
+npm i -g openclaw@latest                     # OpenClaw</code></pre>
+    <p>逐个说明（每个代理都配了对应的安装命令，都在上面的命令块里）：</p>
+    <h3>Claude Code</h3>
+    <p>Anthropic 的官方编码代理，面向在终端里直接对话式地修改代码的工作流。安装包名为 <code>@anthropic-ai/claude-code</code>，使用时通常需要 Anthropic 账号或 API 密钥。适合已经用 Claude 生态、希望把编码助手放进终端的开发者。</p>
+    <h3>Codex</h3>
+    <p>OpenAI 的官方编码代理，包名为 <code>@openai/codex</code>，面向终端工作流，与 OpenAI 的账号体系绑定。与 Claude Code 一样，它解决的是「在编辑器之外用自然语言驱动编码任务」的问题。</p>
+    <h3>Gemini CLI</h3>
+    <p>Google 的官方命令行代理，包名为 <code>@google/gemini-cli</code>。作为 Google 生态的官方入口，它与 Google 账号与 Gemini 服务配套使用。</p>
+    <h3>Grok Build</h3>
+    <p>xAI 的官方 CLI，包名为 <code>@xai-official/grok</code>，随 xAI 生态提供终端编码能力。</p>
+    <h3>OpenCode</h3>
+    <p>开源的终端编码代理，包名为 <code>opencode-ai</code>。与上述厂商代理不同，它不绑定特定厂商账号，可以对接多种模型后端，适合希望自己选择模型提供方的用户。</p>
+    <h3>OpenClaw</h3>
+    <p>开源的 CLI 代理，包名为 <code>openclaw</code>，同样不绑定厂商生态，提供通用的终端代理能力。</p>
+    <p>六个包全部来自各自厂商或项目的官方 npm 包名——这一点很重要：终端里跑的是官方分发的代码，而不是第三方转发的脚本。装哪个、装几个，完全按需决定；它们互不依赖，也不要求全部安装。装多个也很正常——不同代理各有所长，同时装一个厂商代理和一个开源代理，可以在同一份代码上直接对比；如果某个用不上，卸载它和安装它一样直接。</p>
+
+    <p>把整个流程串起来看实际操作：打开终端，先执行一次 <code>linxira-config mirror npm auto</code>，然后按需执行所用代理对应的安装行。这就是全部配置——没有 systemd 单元、没有要编辑的配置文件、没有要改的 PATH。npm 的全局安装会把二进制放到 shell 已经查找的位置，装完即用，当前与以后的终端都能直接调用。</p>
+
+    <h2>其他终端代理</h2>
+    <p>除了 npm 生态，还有两个通过官方安装脚本分发的终端代理：</p>
+    <ul>
+      <li><strong>Hermes</strong>：<code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code>；国内网络环境可用镜像 <code>res1.hermesagent.org.cn</code>。</li>
+      <li><strong>Pi / OMP</strong>：<code>curl -fsSL https://omp.sh/install | sh</code>。</li>
+    </ul>
+    <p>安装脚本模式与 npm 包模式的区别在信任模型：npm 包经过官方包名 + 版本锁定的分发；安装脚本则把脚本内容直接交给 bash 执行。两者都是官方渠道，但如果你在意供应链细节，优先选 npm 官方包。</p>
+    <p>镜像对这两者也同样适用：install.sh 类的脚本通常在脚本内部处理下载源，如果下载缓慢，可以留意脚本输出或文档中是否提供了镜像参数——Hermes 的国内镜像就是这类处理的例子。习惯上，先看官方文档确认当前推荐的安装方式，比在网络上搜索「加速版」脚本要安全得多。</p>
+
+    <p>关于每行安装命令里的 <code>@latest</code> 标签：它的意思是「最新发布的版本」——对这类快速演进的代理，首次安装时这正是你想要的。另外值得知道的是，之后执行一次 <code>npm update -g</code> 就会通过已配置的镜像把它们全部更新，即使你装了好几个代理，保持最新也始终是一条命令的事。</p>
+
+    <p>什么时候该选脚本安装的代理而不是 npm 包？主要是当工具本身的发行方式就是脚本时——Hermes 与 Pi / OMP 就是由项目方以脚本形式分发的，脚本是官方渠道而不是捷径。判断依据不是抽象的「脚本 vs npm」，而是「项目自己分发什么」：如果项目官方安装方式是 npm 包，就用 npm；如果是安装脚本，脚本就是事实来源。无论哪种，URL 一律取自项目自己的文档。</p>
+
+    <h2>注意</h2>
+    <p>几点使用提醒：</p>
+    <ul>
+      <li>以上均为 <strong>npm 官方包</strong>，按需安装——不需要的代理不装即可，不影响系统其他部分。</li>
+      <li>先切镜像再安装：顺序反了的话，慢的不是安装命令本身，而是整个下载过程。</li>
+      <li>这些代理多数需要各自的账号或 API 密钥才能工作，安装只是第一步；认证方式以各官方文档为准。</li>
+      <li>更新时同样走镜像：<code>npm update -g</code> 会复用已配置的源。</li>
+    </ul>
+    <p>这套流程来自 <a href="/zh/docs/quick-start/">快速开始</a> 文档的第 6 步；安装完系统后按文档顺序走一遍，签名仓库、系统更新与这些工具链就都就位了。</p>
+    <p>一个实用的选择启发：如果你已经在为某家厂商的服务付费，就从它的代理开始——它与你已经有的账号和 API 集成最深；如果你对模型无偏好或倾向自托管，就从开源代理开始，它们可以指向你选择的任意后端。代理周围的生态——插件、编辑器集成、文档质量——往往比头牌功能更重要，而这些只有真实用上几天才能看出来。</p>
+    <p>最后一条建议：第一次使用某个代理时，从它的官方文档开始，而不是从教程文章开始——官方文档会说明当前版本支持的认证方式与配置项，教程往往滞后。镜像解决了「装得上」的问题，而「用得好」取决于你选择的代理与工作流是否匹配：先各装一个体验，再决定长期用哪个，成本只有几条命令。</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>

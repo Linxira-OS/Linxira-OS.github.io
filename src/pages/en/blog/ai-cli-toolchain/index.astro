@@ -1,0 +1,82 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="AI Coding Agents in One Line: Mirror Acceleration and Six CLIs — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-08-15 · Technical</div>
+    <h1>AI Coding Agents in One Line: Mirror Acceleration and Six CLIs</h1>
+
+    <p>AI coding agents have become part of everyday development, but the first step of installing them is often the painful one: connecting to the npm registry directly can be slow, and installing a CLI with many dependencies takes forever. Linxira's Config Hub compresses "switch the mirror, then install" into two commands. This article is the full walkthrough: why to switch the mirror first, what the six official packages are, and how to install the other terminal agents.</p>
+    <p>The intended reader is a developer who has installed the system and is setting up the development environment. Nothing in this process touches the system level — mirror configuration and CLI installation both happen in the user environment and can be undone or redone at any time. Even if you only want one of the agents, the mirror section is worth reading: it affects the speed of every npm install from then on.</p>
+
+    <h2>Why Switch the Mirror First</h2>
+    <p>All of these AI coding agents are distributed through npm, and the official registry <code>npmjs.org</code> is slow or unstable to reach directly from many regions — small packages are fine, but CLIs with large dependency trees like coding agents visibly slow down during install and can even time out. This is not a network bug; it is physical distance. Switching to a reachable mirror source first makes installation dramatically faster.</p>
+    <p>Linxira's approach is to let Config Hub pick the fastest source automatically, so you never compare mirrors by hand:</p>
+<pre><code>linxira-config mirror npm auto   # automatically picks the fastest npm mirror (direct npmjs.org access is slow; run this first)</code></pre>
+    <p>This command measures latency and switches to the currently fastest npm source. It manages the npm ecosystem's mirrors; Arch mirrors (<code>linxira-config mirror arch list</code>) and PyPI mirrors (<code>linxira-config mirror pip auto</code>) work the same way, but this article only concerns the npm side.</p>
+    <p>For npm, a mirror switch is one configuration item: npm reads the <code>registry</code> setting to decide where packages come from, and Config Hub's auto mode measures latency for you and writes the best value. From then on every <code>npm i -g</code>, <code>npm install</code>, and <code>npm update</code> uses the mirror automatically — no per-project configuration. If your network situation changes and the mirror slows down, running auto again re-selects the best one.</p>
+
+    <p>What does "slow" actually look like without a mirror? For a small utility, a few seconds of latency is barely noticeable; for an agent CLI with hundreds of dependencies, the install can stall for minutes, retry, and occasionally fail partway, leaving a half-installed tree that <code>npm i -g</code> has to repair. The failure mode is not "one slow download" but "unreliable installs that interrupt your flow at the worst moment". Removing that class of failure is the concrete payoff of running the mirror command first.</p>
+
+    <h2>The Six Official Packages</h2>
+    <p>After switching the mirror, each of the six AI coding agents installs with a single command (all official npm packages; run only the ones you need):</p>
+<pre><code>npm i -g @anthropic-ai/claude-code@latest   # Claude Code
+npm i -g @openai/codex@latest                # Codex
+npm i -g @google/gemini-cli@latest           # Gemini CLI
+npm i -g @xai-official/grok@latest           # Grok Build
+npm i -g opencode-ai@latest                  # OpenCode
+npm i -g openclaw@latest                     # OpenClaw</code></pre>
+    <p>One by one (each with its install command in the block above):</p>
+    <h3>Claude Code</h3>
+    <p>Anthropic's official coding agent, built for conversational code modification directly in the terminal. The package is <code>@anthropic-ai/claude-code</code>, and using it typically requires an Anthropic account or API key. It fits developers already in the Claude ecosystem who want their coding assistant in the terminal.</p>
+    <h3>Codex</h3>
+    <p>OpenAI's official coding agent, package <code>@openai/codex</code>, aimed at terminal workflows and tied to OpenAI's account system. Like Claude Code, it solves "driving coding tasks with natural language outside the editor".</p>
+    <h3>Gemini CLI</h3>
+    <p>Google's official command-line agent, package <code>@google/gemini-cli</code>. As the official entry point to the Google ecosystem, it pairs with Google accounts and the Gemini service.</p>
+    <h3>Grok Build</h3>
+    <p>xAI's official CLI, package <code>@xai-official/grok</code>, bringing terminal coding capability within the xAI ecosystem.</p>
+    <h3>OpenCode</h3>
+    <p>The open-source terminal coding agent, package <code>opencode-ai</code>. Unlike the vendor agents above, it is not tied to one vendor's account and can talk to multiple model backends — a fit for users who want to choose their model provider.</p>
+    <h3>OpenClaw</h3>
+    <p>The open-source CLI agent, package <code>openclaw</code>, likewise not bound to a vendor ecosystem, providing general-purpose terminal agent capability.</p>
+    <p>All six packages use the official npm package names from their respective vendors or projects — that matters: what runs in your terminal is vendor-distributed code, not a third-party forwarding script. Which ones to install and how many is entirely up to you; they do not depend on each other and none is required. Installing several is normal — different agents have different strengths, and having both a vendor agent and an open-source one lets you compare them on the same codebase; if one turns out unused, uninstalling it is as straightforward as installing it.</p>
+
+    <p>Putting the whole flow together in practice: open a terminal, run <code>linxira-config mirror npm auto</code> once, then run the install lines for whichever agents you actually use. That is the entire setup — no systemd units, no config files to edit, no PATH changes to make. npm's global installs place the binaries where the shell already looks for them, so after install the agent's command is available in the current and future terminals.</p>
+
+    <h2>Other Terminal Agents</h2>
+    <p>Beyond the npm ecosystem, two more terminal agents ship through official install scripts:</p>
+    <ul>
+      <li><strong>Hermes</strong>: <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code>; a mirror (<code>res1.hermesagent.org.cn</code>) is available for some network environments.</li>
+      <li><strong>Pi / OMP</strong>: <code>curl -fsSL https://omp.sh/install | sh</code>.</li>
+    </ul>
+    <p>The difference between the install-script model and the npm model is the trust model: npm packages are distributed under official package names with pinned versions; install scripts hand their contents directly to bash. Both are official channels, but if supply-chain detail matters to you, prefer the official npm packages.</p>
+    <p>Mirrors apply to these two as well: install.sh scripts usually handle their download source inside the script, and if downloads are slow, check the script output or documentation for a mirror parameter — Hermes's mirror is an example of exactly that handling. As a habit, checking the official documentation for the currently recommended install method is far safer than searching the web for an "accelerated" script.</p>
+
+    <p>A note on the <code>@latest</code> tag in every install line: it means "the newest published version", which is what you want for a first install of these rapidly evolving agents. It is also worth knowing that a later <code>npm update -g</code> refreshes all of them through the configured mirror, so keeping agents current stays a single command even after you have installed several.</p>
+
+    <p>When would you pick a script-installed agent over the npm ones? Mainly when the tool's own distribution is script-based by design — Hermes and Pi / OMP are shipped that way by their projects, so the script is the official channel, not a shortcut. The deciding factor is not "script vs npm" in the abstract but "what does the project itself distribute": if the project's official install is an npm package, use npm; if it is an install script, the script is the source of truth. Either way, get the URL from the project's own documentation.</p>
+
+    <h2>Notes</h2>
+    <p>A few usage reminders:</p>
+    <ul>
+      <li>All of the above are <strong>official npm packages</strong> — install on demand. Agents you do not need simply are not installed, and nothing else on the system is affected.</li>
+      <li>Switch the mirror before installing: in the wrong order, what is slow is not the install command itself but the whole download process.</li>
+      <li>Most of these agents need their own account or API key to work; installation is only the first step. Follow each vendor's official documentation for authentication.</li>
+      <li>Updates go through the same mirror: <code>npm update -g</code> reuses the configured source.</li>
+    </ul>
+    <p>This flow comes from step 6 of the <a href="/en/docs/quick-start/">quick start guide</a>; after installing the system, walk through the document in order and the signed repository, system updates, and these toolchains are all in place.</p>
+    <p>A practical heuristic for choosing: if you already pay for one vendor's service, start with that vendor's agent — it will be the most integrated with the account and API you already have. If you are model-agnostic or self-host, start with the open-source ones, which let you point at whatever backend you choose. The ecosystem around an agent — plugins, editor integrations, documentation quality — often matters more than the agent's headline feature, and it is only visible after a few days of real use.</p>
+    <p>One last suggestion: when you first use an agent, start from its official documentation rather than from tutorial articles — official docs state the currently supported authentication methods and configuration options, while tutorials tend to lag. The mirror solves "can I install it"; "will I use it well" depends on whether the agent matches your workflow: install one of each, try them, then decide what to keep — the cost is a few commands.</p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>
