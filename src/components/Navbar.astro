@@ -51,7 +51,7 @@ const base = `/${lang}`;
 const otherLang = zh ? "en" : "zh";
 const langPathMatch = Astro.url.pathname.match(/^\/{0,}((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/);
 const langHref = langPathMatch
-  ? `/${langPathMatch[1]}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
+  ? `/${langPathMatch[1] ?? ""}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
   : Astro.url.pathname;
 
 /* ---------- 文案（中英） ---------- */

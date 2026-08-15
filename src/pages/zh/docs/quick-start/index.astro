@@ -4,6 +4,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
 <PageLayout lang="zh" active="docs" title="快速开始 — Linxira OS" maxWidth="720px">
   <a href="/zh/docs/" class="back">← 返回文档</a>
   <h1>快速开始</h1>
+  <p class="note">第一次用 Linux？先看 <a href="/zh/docs/newbie/">新手向导</a>——终端基础、查资料与中文环境。</p>
   <p>安装完成后的第一步：启用签名仓库、安装常用软件、开始使用。</p>
 
   <h2>1. 启用官方签名仓库 [linxira]</h2>
@@ -54,5 +55,7 @@ npm i -g openclaw@latest                     # OpenClaw</code></pre>
     h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
     pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
     pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
+    .note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+    .note p { color: #cbd5e1; margin: 0; }
   </style>
 </PageLayout>

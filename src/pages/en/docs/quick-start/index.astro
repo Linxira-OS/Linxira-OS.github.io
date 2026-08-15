@@ -4,6 +4,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
 <PageLayout lang="en" active="docs" title="Quick Start — Linxira OS" maxWidth="720px">
   <a href="/en/docs/" class="back">← Back to Docs</a>
   <h1>Quick Start</h1>
+  <p class="note">First time using Linux? Start with the <a href="/en/docs/newbie/">Beginner's Guide</a> — terminal basics, looking things up, and the Chinese environment.</p>
   <p>First steps after installation: enable the signed repository, install software, and start working.</p>
 
   <h2>1. Enable the official signed repository [linxira]</h2>
@@ -54,5 +55,7 @@ npm i -g openclaw@latest                     # OpenClaw</code></pre>
     h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
     pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
     pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
+    .note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 1.2rem 0; }
+    .note p { color: #cbd5e1; margin: 0; }
   </style>
 </PageLayout>
