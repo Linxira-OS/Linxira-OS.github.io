@@ -1,0 +1,56 @@
+---
+import PageLayout from "../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="docs" title="Security — Linxira OS" maxWidth="860px">
+  <h1>Security</h1>
+  <p class="subtitle">Signing trust chain, security updates and vulnerability reporting. The rolling-release security model: upstream patches land and are picked up immediately.</p>
+  <div class="section-divider"></div>
+
+  <h2>Signing &amp; Trust</h2>
+  <div class="sec-card glass reveal">
+    <p>All Linxira packages and repository databases are signed with our own key and verified by pacman at install time. Keys are <strong>Ed25519</strong>, with a master Certify key kept offline and a separate Signing subkey used for day-to-day package and repo signing.</p>
+    <p>The signing public key ships with the system keyring package: installing Linxira or adding the [linxira] repository makes pacman import and trust the signing key automatically — no manual steps. Key material is only distributed through official release announcements and repository metadata; fingerprints are not published on this site.</p>
+  </div>
+
+  <h2>Security Updates</h2>
+  <div class="sec-card glass reveal reveal-d1">
+    <ul>
+      <li><strong>Rolling updates</strong>: upstream (Arch) security patches flow into [linxira] and official repos as soon as they land — no distro release cycle in between</li>
+      <li><strong>Dual-kernel safety net</strong>: linux + linux-lts coexist; a broken single-kernel update can be rolled back</li>
+      <li><strong>Auto-snapshot before updates</strong>: linxira-update snapshots via Timeshift before applying changes, ready to roll back anytime</li>
+      <li><strong>Signature enforcement</strong>: repository databases and packages are signature-verified on the pacman side against man-in-the-middle tampering</li>
+    </ul>
+  </div>
+
+  <h2>Key Management Model</h2>
+  <div class="sec-card glass reveal reveal-d2">
+    <p>Private keys are protected with two independent layers:</p>
+    <ul>
+      <li><strong>Layer 1</strong>: a GPG passphrase protects the private key itself (AES-256 symmetric)</li>
+      <li><strong>Layer 2</strong>: a vault password encrypts the key files (Fernet / AES-256-CBC, PBKDF2-HMAC-SHA256 with 600,000 iterations)</li>
+    </ul>
+    <p>The two passphrases are kept separately; leaking either alone does not expose usable private keys. Key files are archived offline as <code>.asc.enc</code>; plaintext private keys never enter any repository. Rotation or new-key issuance happens offline by the holder, then is re-encrypted into the vault.</p>
+  </div>
+
+  <h2>Report a Vulnerability</h2>
+  <div class="sec-card glass reveal reveal-d3">
+    <p>For security issues in Linxira, please report privately via GitHub Security Advisory first:</p>
+    <ul>
+      <li>Organization: <a href="https://github.com/Linxira-OS" target="_blank">github.com/Linxira-OS</a></li>
+      <li>Use <em>Report a vulnerability</em> in the affected repository — visible only to maintainers</li>
+      <li>Do not post exploit details in public issues or discussions</li>
+    </ul>
+  </div>
+
+  <style>
+    .subtitle { color: var(--muted); margin-bottom: 0.3rem; }
+    .sec-card { padding: 1.4rem 1.6rem; border-radius: 16px; margin: 1.2rem 0; }
+    .sec-card p { color: var(--muted); font-size: 0.95rem; }
+    .sec-card ul { color: var(--muted); font-size: 0.95rem; padding-left: 1.2rem; }
+    .keyline { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0.6rem 0; }
+    .k-label { color: var(--faint); font-size: 0.82rem; min-width: 7.5em; }
+    .fp { font-size: 0.82rem; color: var(--soft); background: rgba(30,41,59,0.9); padding: 0.25rem 0.6rem; border-radius: 6px; word-break: break-all; }
+    pre { background: rgba(2,6,10,0.55); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; padding: 0; font-size: 0.85rem; color: var(--soft); }
+  </style>
+</PageLayout>

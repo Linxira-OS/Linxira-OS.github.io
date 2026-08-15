@@ -1,51 +1,28 @@
 ---
-import Navbar from "../../../../components/Navbar.astro";
+import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>workflows — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    h2 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
-    code { color: #67e8f9; }
-    pre { padding: 0.8rem 1rem; margin: 0.75rem 0 1rem; background: #111827; border-left: 3px solid #20B8B0; overflow-x: auto; }
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
-  </style>
-</head>
-<body>
-  <Navbar lang="en" active="docs" />
-
-  <div class="container">
-    <a href="/en/docs/" class="back">← Back to Docs</a>
-    <h1>Workstation Profiles</h1>
-    <p>Linxira catalog v2 is the shared source for profile choices in Welcome, Calamares, and Config Hub, and for Shelly recommendation links. List the profiles available on your installed release with <code>linxira-config workflow help</code>.</p>
-    <h2>Scientific computing</h2>
-    <pre><code>linxira-config workflow science</code></pre>
-    <p>R, Octave, Gnuplot, ParaView, JupyterLab, NumPy, SciPy, Matplotlib, and pandas.</p>
-    <h2>Software development</h2>
-    <pre><code>linxira-config workflow developer</code></pre>
-    <p>Build tools, Git, CMake, Code, Rust, Go, Node.js, npm, Python, and pip.</p>
-    <h2>AI and containers</h2>
-    <pre><code>linxira-config workflow ai
+<PageLayout lang="en" active="docs" title="Workstation Profiles — Linxira OS" maxWidth="720px">
+  <a href="/en/docs/" class="back">← Back to Docs</a>
+  <h1>Workstation Profiles</h1>
+  <p>Linxira catalog v2 is the shared source for profile choices in Welcome, Calamares, and Config Hub, and for Shelly recommendation links. List the profiles available on your installed release with <code>linxira-config workflow help</code>.</p>
+  <h2>Scientific computing</h2>
+  <pre><code>linxira-config workflow science</code></pre>
+  <p>R, Octave, Gnuplot, ParaView, JupyterLab, NumPy, SciPy, Matplotlib, and pandas.</p>
+  <h2>Software development</h2>
+  <pre><code>linxira-config workflow developer</code></pre>
+  <p>Build tools, Git, CMake, Code, Rust, Go, Node.js, npm, Python, and pip.</p>
+  <h2>AI and containers</h2>
+  <pre><code>linxira-config workflow ai
 linxira-config workflow containers</code></pre>
-    <p>The AI profile provides JupyterLab, PyTorch, and scikit-learn. Vendor GPU stacks remain an explicit hardware-specific decision. Podman and Distrobox keep fixed projects isolated from the rolling host.</p>
-    <h2>Bioinformatics</h2>
-    <pre><code>linxira-config workflow bioinformatics</code></pre>
-    <p>This installs Apptainer for reviewed, version-pinned workflow containers. Linxira does not present unreviewed AUR recipes as official bioinformatics packages.</p>
-    <h2>Deployment boundary</h2>
-    <p>Linxira targets personal scientific workstations and desktop compute. It is not recommended for large enterprise rolling-server fleets. Use fixed container images or another isolated environment for reproducible server-like development.</p>
-  </div>
+  <p>The AI profile provides JupyterLab, PyTorch, and scikit-learn. Vendor GPU stacks remain an explicit hardware-specific decision. Podman and Distrobox keep fixed projects isolated from the rolling host.</p>
+  <h2>Bioinformatics</h2>
+  <pre><code>linxira-config workflow bioinformatics</code></pre>
+  <p>This installs Apptainer for reviewed, version-pinned workflow containers. Linxira does not present unreviewed AUR recipes as official bioinformatics packages.</p>
+  <h2>Deployment boundary</h2>
+  <p>Linxira targets personal scientific workstations and desktop compute. It is not recommended for large enterprise rolling-server fleets. Use fixed container images or another isolated environment for reproducible server-like development.</p>
 
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
-</body>
-</html>
+  <style>
+    h2 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
+    pre { padding: 0.8rem 1rem; margin: 0.75rem 0 1rem; background: #111827; border-left: 3px solid #20B8B0; overflow-x: auto; }
+  </style>
+</PageLayout>

@@ -1,39 +1,16 @@
 ---
-import Navbar from "../../../../components/Navbar.astro";
+import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>package-managers — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<PageLayout lang="en" active="docs" title="Software Management — Linxira OS" maxWidth="720px">
+  <a href="/en/docs/" class="back">← Back to Docs</a>
+  <h1>Software Management</h1>
+  <p>Linxira is built directly on Arch Linux. Native packages use <code>pacman</code>, the official Arch repositories, and the separate signed Linxira repository.</p>
+  <h2>Shelly</h2>
+  <p>Shelly is the default graphical software manager after installation. It is optional post-install software, not an installer dependency; Calamares owns installation transactions.</p>
+  <h2>Optional Sources</h2>
+  <p>AUR, Flatpak, and AppImage support are disabled by default and require explicit user opt-in. Catalog v2 records reviewed recommendations and source boundaries, while Shelly performs the approved package operations.</p>
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
     h2 { color: #e2e8f0; font-size: 1.25rem; margin: 2rem 0 0.5rem; }
-    code { color: #67e8f9; }
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
   </style>
-</head>
-<body>
-  <Navbar lang="en" active="docs" />
-
-  <div class="container">
-    <a href="/en/docs/" class="back">← Back to Docs</a>
-    <h1>Software Management</h1>
-    <p>Linxira is built directly on Arch Linux. Native packages use <code>pacman</code>, the official Arch repositories, and the separate signed Linxira repository.</p>
-    <h2>Shelly</h2>
-    <p>Shelly is the default graphical software manager after installation. It is optional post-install software, not an installer dependency; Calamares owns installation transactions.</p>
-    <h2>Optional Sources</h2>
-    <p>AUR, Flatpak, and AppImage support are disabled by default and require explicit user opt-in. Catalog v2 records reviewed recommendations and source boundaries, while Shelly performs the approved package operations.</p>
-  </div>
-
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
-</body>
-</html>
+</PageLayout>

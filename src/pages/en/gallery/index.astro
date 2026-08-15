@@ -1,0 +1,225 @@
+---
+import PageLayout from "../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="home" title="Gallery — Linxira OS" maxWidth="1000px">
+  <h1>Highlights Gallery</h1>
+  <p class="subtitle">From the desktop to headless compute, from bioinformatics to gaming and Chinese input. Click any card to zoom.</p>
+  <div class="section-divider"></div>
+
+  <div class="gal-grid">
+    <!-- 1 KDE Plasma -->
+    <figure class="gal-card glass reveal" data-cap="KDE Plasma desktop · Ready out of the box: Bluetooth / Wi-Fi / printing / Chinese IME">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#0d1b20"/>
+        <circle cx="120" cy="90" r="180" fill="#20B8B0" opacity="0.10"/>
+        <circle cx="840" cy="420" r="220" fill="#F36F5D" opacity="0.08"/>
+        <line x1="0" y1="46" x2="960" y2="46" stroke="#000" stroke-width="46" opacity="0.55"/>
+        <circle cx="30" cy="23" r="7" fill="#20B8B0"/>
+        <text x="48" y="27" fill="#cbd5e1" font-size="14">Launcher</text>
+        <text x="860" y="27" fill="#cbd5e1" font-size="13" text-anchor="end">9:41 · Fri</text>
+        <rect x="120" y="120" width="520" height="300" rx="10" fill="#111827" stroke="#374151"/>
+        <rect x="120" y="120" width="520" height="34" rx="10" fill="#1b2434"/>
+        <circle cx="148" cy="137" r="6" fill="#ff5f57"/><circle cx="168" cy="137" r="6" fill="#febc2e"/><circle cx="188" cy="137" r="6" fill="#28c840"/>
+        <text x="140" y="185" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config headless on now</text>
+        <text x="140" y="210" fill="#64748b" font-size="13" font-family="monospace">→ Headless: desktop stopped, RAM freed ✓</text>
+        <text x="140" y="240" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-update</text>
+        <text x="140" y="265" fill="#64748b" font-size="13" font-family="monospace">→ Up to date: 0 patches pending ✓</text>
+        <rect x="680" y="140" width="230" height="200" rx="10" fill="#111827" stroke="#374151"/>
+        <text x="795" y="160" fill="#64748b" font-size="12" text-anchor="middle">File Manager</text>
+        <rect x="696" y="182" width="198" height="18" rx="4" fill="#0d131c"/>
+        <text x="704" y="195" fill="#64748b" font-size="11">~/research/RNA-seq</text>
+        <rect x="696" y="208" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.14"/>
+        <text x="704" y="220" fill="#cbd5e1" font-size="11">sample_R1.fastq.gz</text>
+        <line x1="0" y1="502" x2="960" y2="502" stroke="#000" stroke-width="38" opacity="0.55"/>
+        <rect x="430" y="509" width="100" height="24" rx="6" fill="#20B8B0" opacity="0.25"/>
+        <text x="480" y="526" fill="#a7f3d0" font-size="11" text-anchor="middle">Terminal · active</text>
+      </svg>
+      <figcaption><b>KDE Plasma Desktop</b><span>Ready out of the box: Bluetooth / Wi-Fi / printing / Chinese IME</span></figcaption>
+    </figure>
+
+    <!-- 2 Headless -->
+    <figure class="gal-card glass reveal reveal-d1" data-cap="Headless compute mode · One command to switch: zero desktop overhead, all RAM &amp; GPU for compute">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#050a0f"/>
+        <text x="48" y="60" fill="#20B8B0" font-size="15" font-family="monospace">linxira — headless compute mode</text>
+        <text x="48" y="130" fill="#20B8B0" font-size="14" font-family="monospace">$ systemctl status linxira-headless</text>
+        <text x="48" y="158" fill="#94a3b8" font-size="13" font-family="monospace">● headless.service — compute-mode daemon</text>
+        <text x="48" y="178" fill="#cbd5e1" font-size="13" font-family="monospace">     Active: active (running) since 08:02:14</text>
+        <text x="48" y="198" fill="#cbd5e1" font-size="13" font-family="monospace">     Memory: desktop stopped · 11.2 GiB freed</text>
+        <rect x="48" y="218" width="560" height="14" rx="7" fill="#1f2937"/>
+        <rect x="48" y="218" width="470" height="14" rx="7" fill="#20B8B0"/>
+        <text x="622" y="230" fill="#94a3b8" font-size="12" font-family="monospace">84% for compute</text>
+        <text x="48" y="266" fill="#20B8B0" font-size="14" font-family="monospace">$ nvidia-smi</text>
+        <text x="48" y="294" fill="#cbd5e1" font-size="13" font-family="monospace">RTX 5090 · 32 GB · 412 W · 61°C</text>
+        <rect x="48" y="330" width="560" height="14" rx="7" fill="#1f2937"/>
+        <rect x="48" y="330" width="486" height="14" rx="7" fill="#F36F5D"/>
+        <text x="622" y="342" fill="#94a3b8" font-size="12" font-family="monospace">87% utilization</text>
+        <text x="48" y="390" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config headless off</text>
+        <text x="48" y="418" fill="#94a3b8" font-size="13" font-family="monospace">→ Back to desktop mode · welcome back ✓</text>
+      </svg>
+      <figcaption><b>Headless Compute Mode</b><span>One command to switch: zero desktop overhead, all RAM &amp; GPU for compute</span></figcaption>
+    </figure>
+
+    <!-- 3 Bio SDK -->
+    <figure class="gal-card glass reveal" data-cap="Bio SDK local workbench · Data never leaves your machine: QC / alignment / enrichment, fully visualized">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#0d131c"/>
+        <rect x="0" y="0" width="200" height="540" fill="#101724"/>
+        <text x="24" y="40" fill="#20B8B0" font-size="15" font-weight="700">Bio SDK</text>
+        <rect x="20" y="62" width="160" height="28" rx="6" fill="#20B8B0" opacity="0.16"/>
+        <text x="32" y="81" fill="#a7f3d0" font-size="12">▸ Pipelines</text>
+        <text x="240" y="40" fill="#cbd5e1" font-size="14" font-weight="600">Sample QC · fastq.qc.v1</text>
+        <rect x="240" y="58" width="330" height="250" rx="10" fill="#141b26" stroke="#1f2937"/>
+        <rect x="260" y="190" width="16" height="90" rx="2" fill="#20B8B0" opacity="0.9"/>
+        <rect x="282" y="170" width="16" height="110" rx="2" fill="#20B8B0" opacity="0.8"/>
+        <rect x="304" y="150" width="16" height="130" rx="2" fill="#20B8B0" opacity="0.7"/>
+        <rect x="326" y="140" width="16" height="140" rx="2" fill="#F36F5D" opacity="0.85"/>
+        <rect x="348" y="130" width="16" height="150" rx="2" fill="#F36F5D" opacity="0.75"/>
+        <rect x="370" y="125" width="16" height="155" rx="2" fill="#F36F5D" opacity="0.65"/>
+        <rect x="392" y="122" width="16" height="158" rx="2" fill="#31679E" opacity="0.9"/>
+        <rect x="414" y="128" width="16" height="152" rx="2" fill="#31679E" opacity="0.8"/>
+        <line x1="252" y1="280" x2="560" y2="280" stroke="#374151"/>
+        <rect x="600" y="58" width="310" height="120" rx="10" fill="#141b26" stroke="#1f2937"/>
+        <circle cx="630" cy="108" r="5" fill="#20B8B0"/><text x="644" y="112" fill="#94a3b8" font-size="12">Read FASTQ data</text>
+        <circle cx="630" cy="132" r="5" fill="#20B8B0"/><text x="644" y="136" fill="#94a3b8" font-size="12">QC statistics</text>
+        <rect x="600" y="196" width="310" height="112" rx="10" fill="#141b26" stroke="#1f2937"/>
+        <text x="620" y="222" fill="#cbd5e1" font-size="13" font-weight="600">Run log</text>
+        <text x="620" y="246" fill="#64748b" font-size="11" font-family="monospace">✓ 20,000 reads processed</text>
+        <text x="620" y="266" fill="#64748b" font-size="11" font-family="monospace">✓ Avg quality Q36.2 · passed</text>
+        <rect x="240" y="320" width="670" height="180" rx="10" fill="#141b26" stroke="#1f2937"/>
+        <text x="260" y="348" fill="#cbd5e1" font-size="13" font-weight="600">Comparison · Species: Homo sapiens</text>
+        <text x="276" y="379" fill="#64748b" font-size="11">Sample</text><text x="420" y="379" fill="#64748b" font-size="11">Reads</text><text x="560" y="379" fill="#64748b" font-size="11">Avg quality</text><text x="700" y="379" fill="#64748b" font-size="11">Status</text>
+        <rect x="260" y="392" width="630" height="24" rx="4" fill="#111827"/>
+        <text x="276" y="409" fill="#cbd5e1" font-size="11">sample_A</text><text x="420" y="409" fill="#cbd5e1" font-size="11">20,000</text><text x="560" y="409" fill="#cbd5e1" font-size="11">Q36.2</text><text x="700" y="409" fill="#a7f3d0" font-size="11">✓ Passed</text>
+      </svg>
+      <figcaption><b>Bio SDK Local Workbench</b><span>Data never leaves your machine: QC / alignment / enrichment, fully visualized</span></figcaption>
+    </figure>
+
+    <!-- 4 Ecosystem -->
+    <figure class="gal-card glass reveal reveal-d1" data-cap="Signed [linxira] repository · 93 curated apps in 14 categories, pacman-tracked updates">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#0a1119"/>
+        <text x="48" y="50" fill="#20B8B0" font-size="15" font-weight="700">[linxira] signed repo · catalog v3</text>
+        <rect x="48" y="70" width="864" height="1" fill="#1f2937"/>
+        <text x="48" y="106" fill="#20B8B0" font-size="14" font-family="monospace">$ pacman -Ss bioinformatics</text>
+        <rect x="48" y="128" width="700" height="40" rx="8" fill="#111827"/>
+        <circle cx="76" cy="148" r="6" fill="#20B8B0"/>
+        <text x="92" y="152" fill="#cbd5e1" font-size="13" font-family="monospace">bioconductor-biocparallel 1.40.0  [linxira]</text>
+        <rect x="48" y="176" width="700" height="40" rx="8" fill="#111827"/>
+        <circle cx="76" cy="196" r="6" fill="#20B8B0"/>
+        <text x="92" y="200" fill="#cbd5e1" font-size="13" font-family="monospace">rstudio-desktop 2026.08   [linxira]</text>
+        <rect x="48" y="224" width="700" height="40" rx="8" fill="#111827"/>
+        <circle cx="76" cy="244" r="6" fill="#20B8B0"/>
+        <text x="92" y="248" fill="#cbd5e1" font-size="13" font-family="monospace">python-numpy 2.2.1       [core]</text>
+        <rect x="48" y="280" width="700" height="1" fill="#1f2937"/>
+        <text x="48" y="316" fill="#94a3b8" font-size="13">Audited categories:</text>
+        <text x="48" y="344" fill="#cbd5e1" font-size="13">Scientific Desktop · Development · Bioinformatics · Containers · AI Coding · Gaming</text>
+        <text x="48" y="376" fill="#94a3b8" font-size="13">14 categories · 93 curated apps · license / source / availability reviewed</text>
+        <rect x="48" y="410" width="260" height="52" rx="10" fill="#20B8B0" opacity="0.14"/>
+        <text x="68" y="432" fill="#a7f3d0" font-size="13" font-weight="600">17 first-party tools</text>
+        <text x="68" y="450" fill="#94a3b8" font-size="12">Welcome → Config Hub → Components</text>
+        <rect x="330" y="410" width="260" height="52" rx="10" fill="#F36F5D" opacity="0.12"/>
+        <text x="350" y="432" fill="#fecaca" font-size="13" font-weight="600">Signature checks</text>
+        <text x="350" y="450" fill="#94a3b8" font-size="12">pacman enforces package signatures</text>
+      </svg>
+      <figcaption><b>Software Ecosystem</b><span>Signed [linxira] repo · 93 curated apps · pacman-tracked updates</span></figcaption>
+    </figure>
+
+    <!-- 5 Gaming -->
+    <figure class="gal-card glass reveal" data-cap="Gaming out of the box · Steam and gaming foundation components pre-selected, open GPU runtime ready">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#0c1016"/>
+        <circle cx="480" cy="180" r="170" fill="#1a2332"/>
+        <circle cx="480" cy="180" r="150" fill="#232f44"/>
+        <path d="M480 60 a120 120 0 0 1 0 240 a120 120 0 0 1 0 -240" fill="none" stroke="#20B8B0" stroke-width="10" opacity="0.85"/>
+        <circle cx="480" cy="180" r="46" fill="#141b26" stroke="#20B8B0" stroke-width="3"/>
+        <text x="480" y="190" fill="#e5e7eb" font-size="26" font-weight="700" text-anchor="middle" font-family="sans-serif">L</text>
+        <rect x="180" y="340" width="600" height="120" rx="14" fill="#141b26" stroke="#1f2937"/>
+        <rect x="200" y="360" width="540" height="14" rx="7" fill="#1f2937"/>
+        <rect x="200" y="360" width="400" height="14" rx="7" fill="#20B8B0"/>
+        <text x="200" y="394" fill="#cbd5e1" font-size="13">Installing: Steam foundation · open GPU runtime</text>
+        <text x="200" y="420" fill="#64748b" font-size="12">DXVK / Vulkan ready · 8 GB VRAM available</text>
+        <text x="200" y="446" fill="#94a3b8" font-size="12">Games launch right after install — entertainment taken as seriously as work</text>
+      </svg>
+      <figcaption><b>Gaming Out of the Box</b><span>Steam and gaming foundation components pre-selected, open GPU runtime ready</span></figcaption>
+    </figure>
+
+    <!-- 6 Chinese IME -->
+    <figure class="gal-card glass reveal reveal-d1" data-cap="Chinese-ready · Installing in Chinese auto-configures the Fcitx5 input method">
+      <svg viewBox="0 0 960 540">
+        <rect width="960" height="540" fill="#0d131c"/>
+        <rect x="150" y="90" width="660" height="200" rx="12" fill="#111827" stroke="#1f2937"/>
+        <text x="190" y="150" fill="#e2e8f0" font-size="20" font-weight="600">Install language → Chinese (Simplified)</text>
+        <text x="190" y="190" fill="#94a3b8" font-size="14">✓ System language set · locale zh_CN.UTF-8</text>
+        <text x="190" y="222" fill="#a7f3d0" font-size="14">✓ Fcitx5 input method auto-configured</text>
+        <text x="190" y="254" fill="#94a3b8" font-size="14">Candidates: science / compute / workbench / lab</text>
+        <rect x="150" y="330" width="660" height="120" rx="12" fill="#111827" stroke="#1f2937"/>
+        <text x="190" y="370" fill="#20B8B0" font-size="15" font-family="monospace">$</text>
+        <text x="220" y="370" fill="#cbd5e1" font-size="15" font-family="monospace">echo "science compute" | fcitx5</text>
+        <rect x="190" y="392" width="420" height="34" rx="6" fill="#0d131c"/>
+        <text x="210" y="414" fill="#e5e7eb" font-size="14">kexue jisuan ▍</text>
+        <rect x="210" y="426" width="440" height="30" rx="6" fill="#1a2332"/>
+        <text x="228" y="446" fill="#4DD8D0" font-size="13">1 science compute</text>
+        <text x="380" y="446" fill="#94a3b8" font-size="13">2 scientific computing</text>
+        <text x="620" y="446" fill="#64748b" font-size="12">EN / 中文 / 繁體</text>
+      </svg>
+      <figcaption><b>Chinese-Ready</b><span>Installing in Chinese auto-configures the Fcitx5 input method</span></figcaption>
+    </figure>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Zoomed view">
+    <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+    <div class="lb-body" id="lbBody"></div>
+    <button class="lb-next" id="lbNext" aria-label="Next">›</button>
+    <div class="lb-cap" id="lbCap"></div>
+  </div>
+
+  <style>
+    .subtitle { color: var(--muted); margin-bottom: 0.3rem; }
+    .gal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.5rem; }
+    .gal-card { border-radius: 18px; overflow: hidden; cursor: zoom-in; transition: transform 0.3s, border-color 0.3s; margin: 0; }
+    .gal-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.45); }
+    .gal-card svg { display: block; width: 100%; height: auto; }
+    .gal-card figcaption { padding: 0.9rem 1.1rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .gal-card figcaption b { color: var(--ink-strong); font-size: 0.98rem; }
+    .gal-card figcaption span { color: var(--faint); font-size: 0.82rem; }
+    .lightbox { position: fixed; inset: 0; background: rgba(4,8,12,0.92); z-index: 999; display: none; align-items: center; justify-content: center; flex-direction: column; backdrop-filter: blur(6px); }
+    .lightbox.open { display: flex; }
+    .lb-body { width: min(1100px, 92vw); }
+    .lb-body svg { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 30px 90px rgba(0,0,0,0.7); }
+    .lb-cap { color: var(--soft); font-size: 0.92rem; margin-top: 1rem; text-align: center; max-width: 720px; }
+    .lb-close, .lb-prev, .lb-next { position: absolute; background: rgba(20,27,38,0.8); border: 1px solid var(--line); color: var(--ink-strong); width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: all 0.2s; z-index: 2; }
+    .lb-close:hover, .lb-prev:hover, .lb-next:hover { border-color: var(--teal); color: var(--teal); }
+    .lb-close { top: 1.4rem; right: 1.4rem; }
+    .lb-prev { left: 1.4rem; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 1.4rem; top: 50%; transform: translateY(-50%); }
+    @media (max-width: 768px) { .gal-grid { grid-template-columns: 1fr; } .lb-prev { left: 0.6rem; } .lb-next { right: 0.6rem; } }
+  </style>
+
+  <script>
+    const gals = Array.from(document.querySelectorAll('.gal-card'));
+    const lb = document.getElementById('lightbox');
+    const lbBody = document.getElementById('lbBody');
+    const lbCap = document.getElementById('lbCap');
+    let cur = 0;
+    const show = (i) => {
+      cur = (i + gals.length) % gals.length;
+      lbBody.innerHTML = '';
+      lbBody.appendChild(gals[cur].querySelector('svg').cloneNode(true));
+      lbCap.textContent = gals[cur].dataset.cap;
+    };
+    gals.forEach((g, i) => g.addEventListener('click', () => { show(i); lb.classList.add('open'); }));
+    document.getElementById('lbClose').addEventListener('click', () => lb.classList.remove('open'));
+    document.getElementById('lbPrev').addEventListener('click', () => show(cur - 1));
+    document.getElementById('lbNext').addEventListener('click', () => show(cur + 1));
+    lb.addEventListener('click', (e) => { if (e.target === lb) lb.classList.remove('open'); });
+    document.addEventListener('keydown', (e) => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') lb.classList.remove('open');
+      if (e.key === 'ArrowLeft') show(cur - 1);
+      if (e.key === 'ArrowRight') show(cur + 1);
+    });
+  </script>
+</PageLayout>

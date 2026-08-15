@@ -1,39 +1,7 @@
 ---
-import Navbar from "../../../../components/Navbar.astro";
+import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introducing Linxira OS — Blog</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    strong { color: #e2e8f0; }
-    a { color: #20B8B0; }
-    ul { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
-    li { margin-bottom: 0.3rem; }
-    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
-  </style>
-</head>
-<body>
-  <Navbar lang="en" active="blog" />
-
-  <div class="container">
+<PageLayout lang="en" active="blog" title="Introducing Linxira OS — Blog">
     <a href="/en/blog/" class="back">← Back to Blog</a>
     <div class="meta">2026-06-27 · Announcement</div>
     <h1>Introducing Linxira OS</h1>
@@ -96,8 +64,15 @@ import Navbar from "../../../../components/Navbar.astro";
 
     <h2>What's Next?</h2>
     <p>We are currently working on v1.0 release, workflow templates, and Config Hub. Follow our progress on <a href="https://github.com/Linxira-OS" style="color:#20B8B0;">GitHub</a>.</p>
-  </div>
-
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
-</body>
-</html>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+  </style>
+</PageLayout>

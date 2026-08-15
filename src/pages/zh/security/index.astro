@@ -1,0 +1,56 @@
+---
+import PageLayout from "../../../components/PageLayout.astro";
+---
+<PageLayout lang="zh" active="docs" title="安全中心 — Linxira OS" maxWidth="860px">
+  <h1>安全中心</h1>
+  <p class="subtitle">签名信任链、安全更新与漏洞报告。滚动发行版的安全模型：上游补丁一发布，立即跟进。</p>
+  <div class="section-divider"></div>
+
+  <h2>签名与信任</h2>
+  <div class="sec-card glass reveal">
+    <p>Linxira 全部软件包与仓库数据库由自有签名密钥签发，pacman 在安装时验证签名。密钥为 <strong>Ed25519</strong>，主密钥（Certify）与签名子密钥（Sign）分离：主密钥离线保管、仅用于管理子密钥，日常签名只使用子密钥。</p>
+    <p>签名公钥随系统 keyring 包分发：安装 Linxira 或添加 [linxira] 仓库时，pacman 自动导入并信任对应签名密钥，无需手动操作。公钥材料仅在官方发布公告与仓库元数据中提供，网站不陈列指纹。</p>
+  </div>
+
+  <h2>安全更新</h2>
+  <div class="sec-card glass reveal reveal-d1">
+    <ul>
+      <li><strong>滚动更新</strong>：上游（Arch）安全补丁发布即同步进入 [linxira] 与官方仓库，无需等待发行版统一调度</li>
+      <li><strong>双内核兜底</strong>：linux + linux-lts 双内核并存，单一内核更新异常时可回退</li>
+      <li><strong>更新前自动快照</strong>：linxira-update 默认在更新前创建 Timeshift 快照，可随时回滚</li>
+      <li><strong>签名验证</strong>：仓库数据库与软件包签名均在 pacman 侧强制校验，防中间人篡改</li>
+    </ul>
+  </div>
+
+  <h2>密钥管理模型</h2>
+  <div class="sec-card glass reveal reveal-d2">
+    <p>私钥采用双层加密保管：</p>
+    <ul>
+      <li><strong>第一层</strong>：GPG 口令保护私钥本身（AES-256 对称加密）</li>
+      <li><strong>第二层</strong>：保险箱密码加密私钥文件（Fernet / AES-256-CBC，PBKDF2-HMAC-SHA256 60 万次迭代）</li>
+    </ul>
+    <p>两层口令分离保管，任一泄露都无法直接使用私钥。私钥文件以 <code>.asc.enc</code> 形式离线归档，明文私钥永不入库。需要签发新密钥或轮换时，由持有者离线操作后加密归档。</p>
+  </div>
+
+  <h2>报告漏洞</h2>
+  <div class="sec-card glass reveal reveal-d3">
+    <p>发现 Linxira 相关安全问题时，请优先通过 GitHub 安全通告（Security Advisory）私密报告：</p>
+    <ul>
+      <li>GitHub 组织：<a href="https://github.com/Linxira-OS" target="_blank">github.com/Linxira-OS</a></li>
+      <li>在对应仓库使用 <em>Report a vulnerability</em> 功能，仅仓库维护者可见</li>
+      <li>公开渠道（Issue / 讨论区）请勿张贴漏洞细节，避免被利用</li>
+    </ul>
+  </div>
+
+  <style>
+    .subtitle { color: var(--muted); margin-bottom: 0.3rem; }
+    .sec-card { padding: 1.4rem 1.6rem; border-radius: 16px; margin: 1.2rem 0; }
+    .sec-card p { color: var(--muted); font-size: 0.95rem; }
+    .sec-card ul { color: var(--muted); font-size: 0.95rem; padding-left: 1.2rem; }
+    .keyline { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0.6rem 0; }
+    .k-label { color: var(--faint); font-size: 0.82rem; min-width: 7.5em; }
+    .fp { font-size: 0.82rem; color: var(--soft); background: rgba(30,41,59,0.9); padding: 0.25rem 0.6rem; border-radius: 6px; word-break: break-all; }
+    pre { background: rgba(2,6,10,0.55); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; padding: 0; font-size: 0.85rem; color: var(--soft); }
+  </style>
+</PageLayout>

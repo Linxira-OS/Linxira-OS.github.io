@@ -1,0 +1,82 @@
+---
+/**
+ * SiteShared.astro — 官网子页面共享 head：字体、品牌变量、玻璃卡、reveal 动效、正文排版
+ * 供 DocsLayout / PageLayout 使用（子页面不再各自硬编码重复 CSS）
+ * 注意：Astro 组件内 <style is:global> 避免 scoped；reveal 脚本 is:inline 全站生效
+ */
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style is:global>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --teal: #20B8B0; --coral: #F36F5D;
+    --bg: #0E1417; --bg-deep: #0a0f1a; --bg-alt: #141a26;
+    --ink: #e5e7eb; --ink-strong: #f1f5f9;
+    --muted: #94a3b8; --faint: #64748b; --soft: #cbd5e1;
+    --line: rgba(51, 65, 85, 0.5);
+    --glass-a: rgba(255,255,255,0.06); --glass-b: rgba(255,255,255,0.02); --glass-c: rgba(14,20,23,0.12);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-hi: rgba(255,255,255,0.18); --glass-hi2: rgba(255,255,255,0.06);
+    --glass-sheen: rgba(255,255,255,0.10); --glass-glow: rgba(255,255,255,0.07);
+  }
+  body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.8; overflow-x: hidden; }
+
+  /* ---------- 液态玻璃卡（与首页一致） ---------- */
+  .glass {
+    position: relative;
+    background: linear-gradient(135deg, var(--glass-a), var(--glass-b) 35%, var(--glass-c));
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 var(--glass-hi), inset 1px 0 0 var(--glass-hi2), 0 20px 60px rgba(0,0,0,0.45);
+  }
+  .glass::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(115deg, var(--glass-sheen) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
+      radial-gradient(120% 70% at 18% 0%, var(--glass-glow), transparent 55%);
+  }
+
+  /* ---------- 滚动揭示（与首页一致） ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+
+  /* ---------- 正文排版（容器型页面共用） ---------- */
+  h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, var(--teal), var(--coral)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+  h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+  p { color: var(--muted); margin-bottom: 1rem; }
+  strong { color: #e2e8f0; }
+  a { color: var(--teal); }
+  ul { color: var(--muted); margin: 0.5rem 0 1rem 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: var(--teal); }
+  .container { max-width: 760px; margin: 0 auto; padding: 8rem 2rem 4rem; }
+  .back { color: var(--teal); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+  .back:hover { text-decoration: underline; }
+  .section-divider { width: 60px; height: 3px; margin: 0.4rem 0 1.5rem; background: linear-gradient(90deg, var(--teal), var(--coral)); border-radius: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+<script is:inline>
+  // 滚动揭示（全站子页面共用；dataset 防重入）
+  if (!document.body.dataset.revealReady && 'IntersectionObserver' in window) {
+    document.body.dataset.revealReady = '1';
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  }
+</script>

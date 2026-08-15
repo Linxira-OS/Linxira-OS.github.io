@@ -1,82 +1,58 @@
 ---
-import Navbar from "../../../../components/Navbar.astro";
+import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>快速开始 — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; line-height: 1.8; }
-    .container { max-width: 720px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    .back { color: #20B8B0; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
-    h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
-    p { color: #94a3b8; margin-bottom: 1rem; }
-    a { color: #20B8B0; }
-    code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: #20B8B0; }
-    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
-    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
-  </style>
-</head>
-<body>
-  <Navbar lang="zh" active="docs" />
+<PageLayout lang="zh" active="docs" title="快速开始 — Linxira OS" maxWidth="720px">
+  <a href="/zh/docs/" class="back">← 返回文档</a>
+  <h1>快速开始</h1>
+  <p>安装完成后的第一步：启用签名仓库、安装常用软件、开始使用。</p>
 
-  <div class="container">
-    <a href="/zh/docs/" class="back">← 返回文档</a>
-    <h1>快速开始</h1>
-    <p>安装完成后的第一步：启用签名仓库、安装常用软件、开始使用。</p>
-
-    <h2>1. 启用官方签名仓库 [linxira]</h2>
-    <p>Linxira 官方自研软件托管在签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>。安装系统后会自动配置；若需手动添加，编辑 <code>/etc/pacman.conf</code> 追加：</p>
+  <h2>1. 启用官方签名仓库 [linxira]</h2>
+  <p>Linxira 官方自研软件托管在签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>。安装系统后会自动配置；若需手动添加，编辑 <code>/etc/pacman.conf</code> 追加：</p>
 <pre><code>[linxira]
 Server = https://linxira-os.github.io/linxira-packages/x86_64
 SigLevel = Required DatabaseOptional</code></pre>
 
-    <h3>导入并信任签名密钥</h3>
-    <p>安装 <code>linxira-keyring</code> 包会自动完成密钥导入与本地信任：</p>
+  <h3>导入并信任签名密钥</h3>
+  <p>安装 <code>linxira-keyring</code> 包会自动完成密钥导入与本地信任：</p>
 <pre><code>sudo pacman-key --init
 sudo pacman -Sy linxira-keyring</code></pre>
-    <p>密钥指纹（2026-08-04 轮换后）：主密钥 <code>E1A4155F457D1481CA85EE6BF9D157739534BC29</code>，签名子密钥 <code>D477286C296F1E1C35735E52B22DF3E636274191</code>。</p>
+  <p>密钥指纹（2026-08-04 轮换后）：主密钥 <code>E1A4155F457D1481CA85EE6BF9D157739534BC29</code>，签名子密钥 <code>D477286C296F1E1C35735E52B22DF3E636274191</code>。</p>
 
-    <h2>2. 更新系统</h2>
+  <h2>2. 更新系统</h2>
 <pre><code>sudo pacman -Syu</code></pre>
 
-    <h2>3. 安装软件</h2>
-    <p>常用软件可从 <a href="/zh/docs/ecosystem/">软件生态</a> 选择（92 个精选应用），也可直接通过 pacman 安装：</p>
+  <h2>3. 安装软件</h2>
+  <p>常用软件可从 <a href="/zh/docs/ecosystem/">软件生态</a> 选择（92 个精选应用），也可直接通过 pacman 安装：</p>
 <pre><code>sudo pacman -S firefox libreoffice-fresh vlc</code></pre>
 
-    <h2>4. 配置镜像源（可选）</h2>
-    <p>使用 <code>linxira-config</code> 管理各语言生态的镜像源，支持自动测速：</p>
+  <h2>4. 配置镜像源（可选）</h2>
+  <p>使用 <code>linxira-config</code> 管理各语言生态的镜像源，支持自动测速：</p>
 <pre><code>linxira-config mirror pip auto   # 自动选最快的 PyPI 源
 linxira-config mirror arch list  # 查看 Arch 源
 linxira-config mirror npm auto   # 自动选最快的 npm 源（国内直连 npmjs.org 较慢，建议先执行）</code></pre>
 
-    <h2>5. 开启远程访问（可选）</h2>
-    <p>把系统变成服务器：</p>
+  <h2>5. 开启远程访问（可选）</h2>
+  <p>把系统变成服务器：</p>
 <pre><code>linxira-config ssh on
 linxira-config ssh key add</code></pre>
-    <p>详见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
+  <p>详见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
 
-    <h2>6. AI 工具一键安装（可选）</h2>
-    <p>先切换 npm 源再安装会快很多：</p>
+  <h2>6. AI 工具一键安装（可选）</h2>
+  <p>先切换 npm 源再安装会快很多：</p>
 <pre><code>linxira-config mirror npm auto</code></pre>
-    <p>然后选择要安装的 AI 编码代理（按需执行，均为 npm 官方包）：</p>
+  <p>然后选择要安装的 AI 编码代理（按需执行，均为 npm 官方包）：</p>
 <pre><code>npm i -g @anthropic-ai/claude-code@latest   # Claude Code
 npm i -g @openai/codex@latest                # Codex
 npm i -g @google/gemini-cli@latest           # Gemini CLI
 npm i -g @xai-official/grok@latest           # Grok Build
 npm i -g opencode-ai@latest                  # OpenCode
 npm i -g openclaw@latest                     # OpenClaw</code></pre>
-    <p>其他终端代理：Hermes 用 <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code>（国内镜像 <code>res1.hermesagent.org.cn</code>）；Pi / OMP 用 <code>curl -fsSL https://omp.sh/install | sh</code>。</p>
-  </div>
+  <p>其他终端代理：Hermes 用 <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code>（国内镜像 <code>res1.hermesagent.org.cn</code>）；Pi / OMP 用 <code>curl -fsSL https://omp.sh/install | sh</code>。</p>
 
-  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。</p></footer>
-</body>
-</html>
+  <style>
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
+  </style>
+</PageLayout>

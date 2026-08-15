@@ -1,27 +1,7 @@
 ---
-import Navbar from "../../../components/Navbar.astro";
+import PageLayout from "../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>品牌资产 — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #0E1417; color: #e5e7eb; font: 16px/1.8 system-ui, sans-serif; }
-    main { max-width: 820px; margin: auto; padding: 6rem 2rem 5rem; }
-    h1 { color: #20B8B0; line-height: 1.2; }
-    h2 { margin-top: 2.5rem; color: #e5e7eb; border-top: 1px solid #263238; padding-top: 1.2rem; }
-    p, li { color: #aab7bd; }
-    .notice { border-left: 3px solid #F36F5D; background: #172125; padding: 1rem 1.2rem; }
-    footer { border-top: 1px solid #263238; padding: 2rem; text-align: center; color: #718087; }
-  </style>
-</head>
-<body>
-  <Navbar lang="zh" active="brand" />
-  <main>
+<PageLayout lang="zh" active="home" title="品牌资产 — Linxira OS">
     <p><a href="/zh/legal/license/">← 法律与协议</a></p>
     <h1>Linxira 品牌资产</h1>
     <p class="notice"><strong>版权所有 (c) 2026 Linxira OS 贡献者。以下 Linxira 品牌资产保留全部权利。</strong></p>
@@ -75,7 +55,9 @@ import Navbar from "../../../components/Navbar.astro";
     <h2>授权申请</h2>
     <p>衍生发行版、再分发、活动、翻译或其他用途需要授权时，请通过<a href="https://github.com/Linxira-OS">官方 Linxira OS 组织</a>联系维护者。</p>
     <p>第三方软件、字体和上游美术仍分别遵守各自的协议。</p>
-  </main>
-  <footer>Linxira OS 是独立项目，与 Arch Linux 无隶属关系且未经其官方认可。</footer>
-</body>
-</html>
+<style>
+    h2 { margin-top: 2.5rem; color: #e5e7eb; border-top: 1px solid #263238; padding-top: 1.2rem; }
+    li { color: #aab7bd; }
+    .notice { border-left: 3px solid #F36F5D; background: #172125; padding: 1rem 1.2rem; }
+  </style>
+</PageLayout>

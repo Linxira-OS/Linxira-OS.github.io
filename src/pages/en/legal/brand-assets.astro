@@ -1,27 +1,7 @@
 ---
-import Navbar from "../../../components/Navbar.astro";
+import PageLayout from "../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brand Assets — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #0E1417; color: #e5e7eb; font: 16px/1.8 system-ui, sans-serif; }
-    main { max-width: 820px; margin: auto; padding: 6rem 2rem 5rem; }
-    h1 { color: #20B8B0; line-height: 1.2; }
-    h2 { margin-top: 2.5rem; color: #e5e7eb; border-top: 1px solid #263238; padding-top: 1.2rem; }
-    p, li { color: #aab7bd; }
-    .notice { border-left: 3px solid #F36F5D; background: #172125; padding: 1rem 1.2rem; }
-    footer { border-top: 1px solid #263238; padding: 2rem; text-align: center; color: #718087; }
-  </style>
-</head>
-<body>
-  <Navbar lang="en" active="brand" />
-  <main>
+<PageLayout lang="en" active="home" title="Brand Assets — Linxira OS">
     <p><a href="/en/legal/license/">← Legal and licensing</a></p>
     <h1>Linxira Brand Assets</h1>
     <p class="notice"><strong>Copyright (c) 2026 Linxira OS contributors. All rights reserved for the Linxira brand assets listed here.</strong></p>
@@ -75,7 +55,9 @@ import Navbar from "../../../components/Navbar.astro";
     <h2>Permission requests</h2>
     <p>For approved forks, redistributors, events, translations, or other uses, contact the maintainers through the <a href="https://github.com/Linxira-OS">official Linxira OS organization</a>.</p>
     <p>Third-party software, fonts, and upstream artwork remain under their own licenses.</p>
-  </main>
-  <footer>Linxira OS is independent from and not endorsed by Arch Linux.</footer>
-</body>
-</html>
+<style>
+    h2 { margin-top: 2.5rem; color: #e5e7eb; border-top: 1px solid #263238; padding-top: 1.2rem; }
+    li { color: #aab7bd; }
+    .notice { border-left: 3px solid #F36F5D; background: #172125; padding: 1rem 1.2rem; }
+  </style>
+</PageLayout>

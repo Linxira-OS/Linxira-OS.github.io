@@ -1,33 +1,7 @@
 ---
-import Navbar from "../../../components/Navbar.astro";
+import PageLayout from "../../../components/PageLayout.astro";
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog — Linxira OS</title>
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: #0E1417; color: #e5e7eb; min-height: 100vh; }
-    .container { max-width: 800px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .subtitle { color: #64748b; margin-bottom: 3rem; font-size: 1.1rem; }
-    .post-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; margin-bottom: 1.5rem; }
-    .post-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
-    .post-date { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; }
-    .post-title { font-size: 1.3rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
-    .post-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
-    .post-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
-    footer { text-align: center; padding: 3rem 2rem; color: #475569; font-size: 0.85rem; border-top: 1px solid rgba(51,65,85,0.3); }
-  </style>
-</head>
-<body>
-  <Navbar lang="en" active="blog" />
-
-  <div class="container">
+<PageLayout lang="en" active="blog" title="Blog — Linxira OS">
     <h1>Blog</h1>
     <p class="subtitle">Announcements, releases, and technical articles</p>
 
@@ -37,8 +11,13 @@ import Navbar from "../../../components/Navbar.astro";
       <div class="post-desc">What is Linxira OS, who is it for, and why we built it. Design philosophy, technical architecture, and target users.</div>
       <span class="post-tag">Announcement</span>
     </a>
-  </div>
-
-  <footer><p>Linxira OS is built directly on Arch Linux and is an independent project not affiliated with or endorsed by Arch Linux.</p></footer>
-</body>
-</html>
+<style>
+    .subtitle { color: #64748b; margin-bottom: 3rem; font-size: 1.1rem; }
+    .post-card { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; margin-bottom: 1.5rem; }
+    .post-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
+    .post-date { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; }
+    .post-title { font-size: 1.3rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem; }
+    .post-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
+    .post-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+  </style>
+</PageLayout>

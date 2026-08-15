@@ -1,0 +1,38 @@
+---
+/**
+ * PageLayout.astro — 文章/单页子页面布局（顶部 Navbar + 居中容器 + footer）
+ * 用法：<PageLayout lang="zh" title="…">…内容…</PageLayout>
+ * 页面特有样式用 <style> 或内联保留；正文排版与玻璃卡/reveal 由 SiteShared 提供。
+ */
+import Navbar from "./Navbar.astro";
+import SiteShared from "./SiteShared.astro";
+
+interface Props {
+  lang: "zh" | "en";
+  active?: string;
+  title: string;
+  maxWidth?: string;
+}
+const { lang, active = "docs", title, maxWidth = "760px" } = Astro.props;
+const zh = lang === "zh";
+const footer = zh
+  ? "Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。"
+  : "Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux.";
+---
+<!DOCTYPE html>
+<html lang={zh ? "zh-CN" : "en-US"}>
+<head>
+  <SiteShared title={title} />
+  <style is:global>
+    .container { max-width: {maxWidth}; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    footer { text-align: center; padding: 3rem 2rem; color: var(--faint); font-size: 0.85rem; border-top: 1px solid var(--line); background: var(--bg-deep); }
+  </style>
+</head>
+<body>
+  <Navbar lang={lang} active={active} />
+  <div class="container">
+    <slot />
+  </div>
+  <footer><p>{footer}</p></footer>
+</body>
+</html>
