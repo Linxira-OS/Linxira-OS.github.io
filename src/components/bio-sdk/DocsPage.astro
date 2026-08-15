@@ -1,0 +1,37 @@
+---
+const { zh } = Astro.props;
+---
+    <!-- ===== DOCS ===== -->
+    <div class="page" id="page-docs">
+      <div class="hero animate-in" style="padding:2rem;margin-bottom:1.5rem">
+        <h2>{zh ? "文档与使用指南" : "Documentation & Guides"}</h2>
+        <p class="hero-subtitle">{zh ? "完整的中英文文档，每个能力都有详细的参数说明和示例" : "Full bilingual documentation with detailed parameters and examples for each capability"}</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat-card animate-in"><div class="stat-value">108</div><div class="stat-label">{zh ? "能力文档（中/英）" : "Capability docs (zh/en)"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">14</div><div class="stat-label">{zh ? "分析领域" : "Analysis domains"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">30+</div><div class="stat-label">{zh ? "分析技能 Skills" : "Skills"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "语言 SDK" : "Language SDKs"}</div><div class="stat-unit">Python · R · Rust</div></div>
+      </div>
+
+      <h2 class="section-title">{zh ? "文档分类" : "Document Categories"}</h2>
+      <div class="doc-cats" id="doc-cats"></div>
+
+      <div class="steps">
+        <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="step-num" style="background:var(--accent-blue)">W</div>
+          <div class="step-title">{zh ? "项目 Wiki" : "Project Wiki"}</div>
+          <div class="step-desc">{zh ? "完整的使用手册、入门教程和常见问题" : "Full user manual, tutorials, and FAQ"}</div>
+        </a>
+        <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="step-num" style="background:var(--accent-purple)">D</div>
+          <div class="step-title">{zh ? "能力文档" : "Capability Docs"}</div>
+          <div class="step-desc">{zh ? "每种分析能力的中英文参考文档（108 个能力）" : "Bilingual reference for each capability (108 capabilities)"}</div>
+        </a>
+        <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="step-num" style="background:var(--accent-green)">G</div>
+          <div class="step-title">{zh ? "GitHub 仓库" : "GitHub Repo"}</div>
+          <div class="step-desc">{zh ? "源代码、构建说明和贡献指南" : "Source code, build instructions, and contribution guide"}</div>
+        </a>
+      </div>
+    </div>

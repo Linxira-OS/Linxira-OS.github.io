@@ -1,0 +1,23 @@
+---
+const { zh } = Astro.props;
+---
+    <!-- ===== AI ASSISTANT ===== -->
+    <div class="page" id="page-ai">
+      <div class="card">
+        <div class="card-title">🤖 {zh ? "AI 分析助手（模拟演示）" : "AI Analysis Assistant (Simulated)"}</div>
+        <div class="card-desc">{zh ? "SDK 内置 Agent 规划即将上线：通过自然语言对话调用 50+ 分析能力，并支持三种外部工具调用通道——MCP 工具、Python SDK、命令行 CLI。以下为交互模拟。" : "Built-in Agent (planned): conversational access to 50+ capabilities via three external tool channels — MCP tools, Python SDK, and CLI. Interactive simulation below."}</div>
+      </div>
+      <div class="card">
+        <div id="ai-chat" class="ai-chat"></div>
+        <div class="ai-chips">
+          <button class="ai-chip" onclick="playAI(0)">🔬 {zh ? "FASTQ 质量检查" : "FASTQ quality check"}</button>
+          <button class="ai-chip" onclick="playAI(1)">📊 {zh ? "差异表达分析" : "Differential expression"}</button>
+          <button class="ai-chip" onclick="playAI(2)">🧬 {zh ? "变异统计" : "Variant stats"}</button>
+          <button class="ai-chip" onclick="clearAI()">🗑 {zh ? "清空对话" : "Clear chat"}</button>
+        </div>
+        <div class="ai-input">
+          <input type="text" placeholder="{zh ? '在此输入…（演示版由上方示例驱动）' : 'Type here… (demo driven by the examples above)'}" readonly>
+          <button onclick="playAI(Math.floor(Math.random()*3))">{zh ? "发送" : "Send"}</button>
+        </div>
+      </div>
+    </div>

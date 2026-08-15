@@ -1,0 +1,54 @@
+---
+const { zh } = Astro.props;
+---
+    <!-- ===== WORKBENCH ===== -->
+    <div class="page" id="page-workbench">
+      <div class="tab-bar">
+        <div class="tab active" data-tab="w-import"><span>{zh ? "1  导入" : "1  Import"}</span></div>
+        <div class="tab" data-tab="w-inspect"><span>{zh ? "2  数据检查" : "2  Inspect"}</span></div>
+        <div class="tab" data-tab="w-analyze"><span>{zh ? "3  分析" : "3  Analyze"}</span></div>
+        <div class="tab" data-tab="w-results"><span>{zh ? "4  结果" : "4  Results"}</span></div>
+      </div>
+
+      <div class="wb-page active" id="wb-w-import">
+        <div class="card">
+          <div class="card-title">{zh ? "导入本地数据" : "Import Local Data"}</div>
+          <div class="card-desc">{zh ? "支持格式：FASTA, FASTQ, GFF3/GTF, VCF, BED, CSV/TSV, PDB, mmCIF, Newick 及 gzip 压缩。点击下方示例文件，体验完整模拟流程（导入 → 检查 → 分析 → 结果）：" : "Supported formats: FASTA, FASTQ, GFF3/GTF, VCF, BED, CSV/TSV, PDB, mmCIF, Newick, gzip. Click a sample file to run the full simulated workflow (Import → Inspect → Analyze → Results):"}</div>
+        </div>
+        <div class="sim-files" id="sim-file-grid"></div>
+        <div class="card" style="border:2px dashed var(--border);text-align:center;padding:2rem;margin-top:1rem">
+          <div style="font-size:0.875rem;font-weight:500;color:var(--text-dim)">{zh ? "拖拽文件到此处 或 点击选择本地文件（桌面版支持）" : "Drag files here or click to browse (desktop app)"}</div>
+          <div style="font-size:0.75rem;color:var(--text-dim);margin-top:0.35rem">{zh ? "Web 版为演示界面，自动使用上方模拟数据集" : "Web demo auto-uses the simulated datasets above"}</div>
+        </div>
+      </div>
+
+      <div class="wb-page" id="wb-w-inspect">
+        <div class="card">
+          <div class="card-title">{zh ? "数据集摘要" : "Dataset Summary"}</div>
+          <div class="card-desc">{zh ? "自动检测格式并显示摘要统计" : "Auto-detected format and summary statistics"}</div>
+        </div>
+        <div id="sim-inspect" class="fade-in"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+          <button class="btn btn-primary" onclick="wbNext('w-analyze')">{zh ? "检查通过，继续分析 →" : "Passed inspection, analyze →"}</button>
+        </div>
+      </div>
+
+      <div class="wb-page" id="wb-w-analyze">
+        <div class="card">
+          <div class="card-title">{zh ? "选择分析能力" : "Choose Analysis Capability"}</div>
+          <div class="card-desc" id="sim-analyze-desc">{zh ? "根据「已导入文件」的格式自动匹配可用能力（Web 演示展示模拟子集），点击能力卡片开始模拟运行。" : "Capabilities auto-matched to the imported file format (simulated subset in web demo). Click a capability to run."}</div>
+        </div>
+        <div class="cap-grid" id="analyze-cap-grid"></div>
+      </div>
+
+      <div class="wb-page" id="wb-w-results">
+        <div class="card">
+          <div class="card-title">{zh ? "分析结果" : "Analysis Results"}</div>
+          <div class="card-desc" id="sim-result-desc">{zh ? "运行分析后，结果将显示在此处。支持表格、SVG 图表和交互式结构查看。" : "Results appear here after running an analysis. Tables, SVG plots, and interactive structure viewing supported."}</div>
+        </div>
+        <div id="sim-result" class="fade-in"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:1rem">
+          <button class="btn btn-secondary" onclick="wbRestart()">↻ {zh ? "重新开始" : "Restart"}</button>
+        </div>
+      </div>
+    </div>

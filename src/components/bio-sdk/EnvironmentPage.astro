@@ -1,0 +1,54 @@
+---
+const { zh } = Astro.props;
+---
+    <!-- ===== ENVIRONMENT ===== -->
+    <div class="page" id="page-environment">
+      <div class="card">
+        <div class="card-title">{zh ? "运行环境检测" : "Environment Check"}</div>
+        <div class="card-desc">{zh ? "Linxira Bio SDK 自动检测本地工具链与运行时（Rust 引擎 + Python/R 工作流 + Java 插件层），支持 Windows、Debian 和 Arch Linux。" : "Auto-detects toolchains and runtimes (Rust engine + Python/R workflows + Java plugin layer). Supports Windows, Debian, and Arch Linux."}</div>
+      </div>
+      <div class="card">
+        <div class="env-check">
+          <span class="env-status"><span class="env-dot"></span><span id="env-state-text">{zh ? "检测完成" : "Detection complete"}</span></span>
+          <button class="env-check-btn" onclick="recheckEnv()">↻ {zh ? "重新检测" : "Re-check"}</button>
+        </div>
+        <div class="stat-row">
+          <div class="stat-card"><div class="stat-value" style="font-size:1.05rem">x86_64</div><div class="stat-label">{zh ? "架构" : "Arch"}</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.05rem">Windows 11</div><div class="stat-label">{zh ? "操作系统" : "OS"}</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.05rem">4/4</div><div class="stat-label">{zh ? "核心运行时" : "Core runtimes"}</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.05rem">2</div><div class="stat-label">{zh ? "可选工具缺失" : "Optional tools absent"}</div></div>
+        </div>
+        <div id="env-log" class="runlog-body" style="padding:0.5rem 0;max-height:190px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">{zh ? "组件与运行时" : "Components & Runtimes"}</div>
+        <div style="overflow-x:auto">
+          <table class="result-table">
+            <thead><tr><th>{zh ? "组件" : "Component"}</th><th>{zh ? "版本" : "Version"}</th><th>{zh ? "状态" : "Status"}</th><th>{zh ? "用途" : "Use"}</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">rustc / cargo</td><td class="mono">1.97.1</td><td><span class="env-ok">✓ {zh ? "可用" : "OK"}</span></td><td>{zh ? "SDK 核心引擎（Rust）" : "SDK core engine (Rust)"}</td></tr>
+              <tr><td class="mono">python</td><td class="mono">3.10.11</td><td><span class="env-ok">✓ {zh ? "可用" : "OK"}</span></td><td>{zh ? "Python SDK · Biopython · NumPy" : "Python SDK · Biopython · NumPy"}</td></tr>
+              <tr><td class="mono">R</td><td class="mono">4.6.1</td><td><span class="env-ok">✓ {zh ? "可用" : "OK"}</span></td><td>{zh ? "DESeq2 / WGCNA 等工作流运行时" : "DESeq2 / WGCNA workflow runtime"}</td></tr>
+              <tr><td class="mono">java</td><td class="mono">21.0.10</td><td><span class="env-ok">✓ {zh ? "可用" : "OK"}</span></td><td>{zh ? "TBtools 生态插件兼容层" : "TBtools-ecosystem plugin layer"}</td></tr>
+              <tr><td class="mono">samtools</td><td class="mono">—</td><td><span class="env-opt">{zh ? "可选" : "Optional"}</span></td><td>{zh ? "BAM/CRAM 处理（缺失时走内置实现）" : "BAM/CRAM processing (built-in fallback)"}</td></tr>
+              <tr><td class="mono">docker</td><td class="mono">—</td><td><span class="env-no">{zh ? "未检测到" : "Not found"}</span></td><td>{zh ? "容器化扩展工作流" : "Containerized extended workflows"}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">{zh ? "平台支持矩阵" : "Platform Support Matrix"}</div>
+        <div style="overflow-x:auto">
+          <table class="env-table">
+            <thead><tr><th>{zh ? "组件" : "Component"}</th><th>Windows 11</th><th>Debian 12</th><th>Arch Linux</th></tr></thead>
+            <tbody>
+              <tr><td>{zh ? "核心引擎 (Rust)" : "Core engine (Rust)"}</td><td class="env-ok">✓</td><td class="env-ok">✓</td><td class="env-ok">✓</td></tr>
+              <tr><td>{zh ? "Python SDK" : "Python SDK"}</td><td class="env-ok">✓</td><td class="env-ok">✓</td><td class="env-ok">✓</td></tr>
+              <tr><td>{zh ? "R 工作流 (DESeq2/WGCNA)" : "R workflows"}</td><td class="env-ok">✓</td><td class="env-ok">✓</td><td class="env-ok">✓</td></tr>
+              <tr><td>{zh ? "Java 插件层" : "Java plugin layer"}</td><td class="env-ok">✓</td><td class="env-opt">◐</td><td class="env-opt">◐</td></tr>
+              <tr><td>{zh ? "安装方式" : "Install"}</td><td class="mono">msi / winget</td><td class="mono">deb / apt</td><td class="mono">pacman / AUR</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>

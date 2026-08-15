@@ -1,0 +1,54 @@
+---
+const { zh } = Astro.props;
+---
+<!-- ===== Sidebar ===== -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo">
+      <svg viewBox="0 0 32 32"><path fill="#20B8B0" d="M4 0h12v24h20v8H4z"/><path d="M8 8v24h20" fill="none" stroke="#0E1417" stroke-width="2" stroke-linecap="square"/><path d="M7 12h4M7 18h2M7 24h4" fill="none" stroke="#E8F7F6" stroke-width="2" stroke-linecap="square"/></svg>
+      <span class="logo-text">LINXIRA BIO</span>
+    </div>
+    <div class="subtitle">{zh ? "本地分析工作台" : "Local Analysis Workbench"}</div>
+  </div>
+  <div class="lang-toggle">
+    <a class={`lang-btn ${zh ? "active" : ""}`} href="/bio-sdk/zh/">中文</a>
+    <a class={`lang-btn ${zh ? "" : "active"}`} href="/bio-sdk/en/">English</a>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">{zh ? "页面" : "PAGES"}</div>
+    <div class="nav-item active" data-page="home">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>{zh ? "概览" : "Overview"}</span>
+    </div>
+    <div class="nav-item" data-page="demo">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>{zh ? "示例结果" : "Demo Results"}</span>
+    </div>
+    <div class="nav-item" data-page="workbench">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <span>{zh ? "数据工作台" : "Data Workbench"}</span>
+    </div>
+    <div class="nav-item" data-page="ai">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      <span>{zh ? "AI 助手" : "AI Assistant"}</span>
+    </div>
+    <div class="nav-item" data-page="structure">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>{zh ? "结构查看器" : "Structure Viewer"}</span>
+    </div>
+    <div class="nav-item" data-page="environment">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      <span>{zh ? "运行环境" : "Environment"}</span>
+    </div>
+    <div class="nav-item" data-page="docs">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>{zh ? "文档" : "Docs"}</span>
+    </div>
+    <div style="margin-top:auto;padding-top:1rem">
+      <div class="nav-item" data-page="licenses">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>{zh ? "许可证" : "Licenses"}</span>
+      </div>
+    </div>
+  </nav>
+</aside>

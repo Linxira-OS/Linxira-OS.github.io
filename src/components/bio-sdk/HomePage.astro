@@ -1,0 +1,518 @@
+---
+const { zh, lang } = Astro.props;
+---
+    <!-- ===== HOME ===== -->
+    <div class="page active" id="page-home">
+      <div class="hero animate-in">
+        <h1>Linxira Bio SDK</h1>
+        <p class="hero-subtitle">{zh ? "本地优先、开箱即用的生物信息学分析平台。支持 50+ 种分析能力，覆盖序列、结构、表达、变异、比较基因组等全流程。" : "A local-first, ready-to-use bioinformatics analysis platform. 50+ capabilities covering sequences, structures, expression, variants, and comparative genomics."}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a class="btn btn-secondary" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>{zh ? "使用指南" : "User Guide"}</span>
+          </a>
+          <button class="btn btn-ghost" onclick="switchPage('demo')">
+            <span>{zh ? "查看示例结果 →" : "View Demo Results →"}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Start Steps -->
+      <h2 class="section-title">{zh ? "快速开始" : "Quick Start"}</h2>
+      <div class="steps">
+        <div class="step animate-in">
+          <div class="step-num">1</div>
+          <div class="step-title">{zh ? "导入数据" : "Import Data"}</div>
+          <div class="step-desc">{zh ? "拖拽或选择 FASTA、FASTQ、GFF、VCF、BED、CSV、PDB 等格式文件" : "Drag or select FASTA, FASTQ, GFF, VCF, BED, CSV, PDB files"}</div>
+        </div>
+        <div class="step animate-in">
+          <div class="step-num">2</div>
+          <div class="step-title">{zh ? "数据检查" : "Inspect"}</div>
+          <div class="step-desc">{zh ? "自动检测格式并显示摘要统计（序列数、长度、GC 含量等）" : "Auto-detect format and show summary statistics"}</div>
+        </div>
+        <div class="step animate-in">
+          <div class="step-num">3</div>
+          <div class="step-title">{zh ? "选择分析" : "Analyze"}</div>
+          <div class="step-desc">{zh ? "从 50+ 种分析能力中选择，自动匹配数据格式" : "Choose from 50+ capabilities, auto-matched to your data format"}</div>
+        </div>
+        <div class="step animate-in">
+          <div class="step-num">4</div>
+          <div class="step-title">{zh ? "查看结果" : "Results"}</div>
+          <div class="step-desc">{zh ? "表格、SVG 图表、交互式结构查看器，支持导出 CSV/TSV/JSON/XLSX" : "Tables, SVG plots, interactive structure viewer, export to CSV/TSV/JSON/XLSX"}</div>
+        </div>
+      </div>
+
+      <!-- Simulated Pipeline Flow -->
+      <h2 class="section-title">{zh ? "分析流程演示（模拟动画）" : "Simulated Pipeline Flow"}</h2>
+      <div class="pipeline animate-in">
+        <div class="pipe-step running">
+          <div class="pipe-node">📥</div>
+          <div class="pipe-name">{zh ? "导入" : "Import"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">✅</div>
+          <div class="pipe-name">{zh ? "质控" : "QC"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">🧹</div>
+          <div class="pipe-name">{zh ? "修剪" : "Trim"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">📐</div>
+          <div class="pipe-name">{zh ? "比对" : "Align"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">🧬</div>
+          <div class="pipe-name">{zh ? "变异" : "Variant"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">🎓</div>
+          <div class="pipe-name">{zh ? "富集" : "Enrich"}</div>
+        </div>
+        <div class="pipe-link"><svg viewBox="0 0 60 10" preserveAspectRatio="none"><line x1="0" y1="5" x2="60" y2="5" class="pipe-flow"/><circle cx="0" cy="5" r="2.5" class="flow-dot" style="fill:var(--brand-teal)"/></svg></div>
+        <div class="pipe-step">
+          <div class="pipe-node">📄</div>
+          <div class="pipe-name">{zh ? "报告" : "Report"}</div>
+        </div>
+      </div>
+
+      <div class="code-block runlog animate-in">
+        <div class="code-header">
+          <div class="dot"><span></span><span></span><span></span></div>
+          <span>{zh ? "模拟运行日志 · linxira-bio pipeline" : "Simulated Run Log · linxira-bio pipeline"}</span>
+          <button class="runlog-restart" onclick="restartRunLog()" title="Replay">↻</button>
+        </div>
+        <div id="runlog-output" class="runlog-body"></div>
+        <div class="rl-bar"><i id="runlog-bar"></i></div>
+      </div>
+
+      <!-- Simulated Report Output -->
+      <div class="card animate-in" style="margin-top:1rem">
+        <div class="card-title">📄 {zh ? "模拟报告输出 · report/" : "Simulated Report Output · report/"}</div>
+        <div class="card-desc" style="margin-bottom:0.9rem">{zh ? "流程结束后自动生成以下报告（桌面版可导出）：" : "Reports auto-generated after the pipeline (exportable in desktop app):"}</div>
+        <div class="report-grid">
+          <div class="report-item animate-in" onclick="openReportPreview('html')">
+            <span class="ri-ico">📊</span>
+            <div><div class="ri-name">report.html</div><div class="ri-desc">{zh ? "交互式图表报告" : "Interactive chart report"}</div><div class="ri-size">2.4 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
+          </div>
+          <div class="report-item animate-in" onclick="openReportPreview('pdf')">
+            <span class="ri-ico">📄</span>
+            <div><div class="ri-name">report.pdf</div><div class="ri-desc">{zh ? "论文级排版" : "Publication layout"}</div><div class="ri-size">1.8 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
+          </div>
+          <div class="report-item animate-in" onclick="openReportPreview('json')">
+            <span class="ri-ico">📋</span>
+            <div><div class="ri-name">report.json</div><div class="ri-desc">{zh ? "机器可读结果" : "Machine-readable results"}</div><div class="ri-size">312 KB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
+          </div>
+          <div class="report-item animate-in" onclick="openReportPreview('figures')">
+            <span class="ri-ico">🖼</span>
+            <div><div class="ri-name">figures/</div><div class="ri-desc">{zh ? "8 张 SVG 图表" : "8 SVG figures"}</div><div class="ri-size">6.1 MB · 2026-08-14 10:04</div></div>
+            <span class="ri-preview">👁 {zh ? "预览" : "preview"}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Stats -->
+      <h2 class="section-title">{zh ? "平台数据" : "Platform Stats"}</h2>
+      <div class="stat-row">
+        <div class="stat-card animate-in"><div class="stat-value">50+</div><div class="stat-label">{zh ? "分析能力" : "Capabilities"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">108</div><div class="stat-label">{zh ? "中英文文档" : "Bilingual Docs"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "支持平台" : "Platforms"}</div><div class="stat-unit">Windows · Debian · Arch</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">4</div><div class="stat-label">{zh ? "原生语言" : "Languages"}</div><div class="stat-unit">Rust · Python · R · Java</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">AGPL</div><div class="stat-label">{zh ? "开源协议" : "License"}</div><div class="stat-unit">v3.0-or-later</div></div>
+      </div>
+
+      <!-- Example Data Preview -->
+      <h2 class="section-title">{zh ? "示例数据 & 分析结果" : "Example Data & Results"}</h2>
+      <div class="example-grid">
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="2"><polyline points="4 17 10 11 16 17"/><polyline points="4 11 10 5 16 11"/></svg>
+            <span>{zh ? "序列统计 (sequence.stats.v1)" : "Sequence Stats (sequence.stats.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"sequence_count"</span>: 3,
+  <span style="color:var(--brand-teal)">"total_bases"</span>: 12,
+  <span style="color:var(--brand-teal)">"min_length"</span>: 2,
+  <span style="color:var(--brand-teal)">"max_length"</span>: 6,
+  <span style="color:var(--brand-teal)">"mean_length"</span>: 4.0,
+  <span style="color:var(--brand-teal)">"n50"</span>: 6,
+  <span style="color:var(--brand-teal)">"gc_percent"</span>: 60.0
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="2" x2="8" y2="22"/><line x1="16" y1="2" x2="16" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+            <span>{zh ? "表达矩阵 PCA (expression.pca.v1)" : "Expression PCA (expression.pca.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"pca"</span>: {
+    <span style="color:var(--brand-teal)">"variance_explained"</span>: [42.3, 18.7, 9.1],
+    <span style="color:var(--brand-teal)">"samples"</span>: [
+      {<span style="color:var(--brand-teal)">"id"</span>: "WT_1", <span style="color:var(--brand-teal)">"PC1"</span>: -2.34, <span style="color:var(--brand-teal)">"PC2"</span>: 1.02},
+      {<span style="color:var(--brand-teal)">"id"</span>: "KO_1", <span style="color:var(--brand-teal)">"PC1"</span>: 2.15, <span style="color:var(--brand-teal)">"PC2"</span>: -0.87}
+    ]
+  }
+}</pre>
+          </div>
+        </div>
+<div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M12 20V10"/><path d="M12 10l-4 4"/><path d="M12 10l4 4"/></svg>
+            <span>{zh ? "GO 富集分析 (enrichment.go.v1)" : "GO Enrichment (enrichment.go.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"analysis_type"</span>: "go",
+  <span style="color:var(--brand-teal)">"query_input_count"</span>: 4,
+  <span style="color:var(--brand-teal)">"query_mapped_count"</span>: 3,
+  <span style="color:var(--brand-teal)">"tested_term_count"</span>: 1,
+  <span style="color:var(--brand-teal)">"terms"</span>: [{
+    <span style="color:var(--brand-teal)">"term_id"</span>: "GO:0000001",
+    <span style="color:var(--brand-teal)">"term_name"</span>: "Process A",
+    <span style="color:var(--brand-teal)">"fold_enrichment"</span>: 1.33,
+    <span style="color:var(--brand-teal)">"p_value"</span>: 0.5
+  }]
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span>{zh ? "蛋白质性质 (protein.properties.v1)" : "Protein Properties (protein.properties.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"sequence_count"</span>: 2,
+  <span style="color:var(--brand-teal)">"records"</span>: [{
+    <span style="color:var(--brand-teal)">"id"</span>: "standard",
+    <span style="color:var(--brand-teal)">"length"</span>: 20,
+    <span style="color:var(--brand-teal)">"molecular_weight_da"</span>: 2395.74,
+    <span style="color:var(--brand-teal)">"isoelectric_point"</span>: 7.15,
+    <span style="color:var(--brand-teal)">"gravy"</span>: -0.49,
+    <span style="color:var(--brand-teal)">"aromaticity_percent"</span>: 15.0
+  }]
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5"/></svg>
+            <span>{zh ? "集合交集 (set.venn.v1)" : "Set Intersection (set.venn.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"set_count"</span>: 3,
+  <span style="color:var(--brand-teal)">"union_size"</span>: 6,
+  <span style="color:var(--brand-teal)">"set_sizes"</span>: [
+    {<span style="color:var(--brand-teal)">"name"</span>: "control", <span style="color:var(--brand-teal)">"count"</span>: 3},
+    {<span style="color:var(--brand-teal)">"name"</span>: "treatment", <span style="color:var(--brand-teal)">"count"</span>: 4},
+  <span style="color:var(--brand-teal)">"name"</span>: "validated", <span style="color:var(--brand-teal)">"count"</span>: 4}
+  ]
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <span>{zh ? "FASTQ 质控 (fastq.qc.v1)" : "FASTQ QC (fastq.qc.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"read_count"</span>: 2481532,
+  <span style="color:var(--brand-teal)">"total_bases"</span>: 372229800,
+  <span style="color:var(--brand-teal)">"mean_read_length"</span>: 150.0,
+  <span style="color:var(--brand-teal)">"gc_percent"</span>: 48.2,
+  <span style="color:var(--brand-teal)">"q20_percent"</span>: 97.9,
+  <span style="color:var(--brand-teal)">"q30_percent"</span>: 93.7,
+  <span style="color:var(--brand-teal)">"mean_quality"</span>: 36.4
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span>{zh ? "变异统计 (variant.stats.v1)" : "Variant Stats (variant.stats.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"variant_count"</span>: 128450,
+  <span style="color:var(--brand-teal)">"snp_count"</span>: 108231,
+  <span style="color:var(--brand-teal)">"indel_count"</span>: 20219,
+  <span style="color:var(--brand-teal)">"transition_count"</span>: 72014,
+  <span style="color:var(--brand-teal)">"transversion_count"</span>: 36217,
+  <span style="color:var(--brand-teal)">"ts_tv_ratio"</span>: 1.99,
+  <span style="color:var(--brand-teal)">"heterozygosity"</span>: 0.0012
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>{zh ? "KEGG 富集 (enrichment.kegg.v1)" : "KEGG Enrichment (enrichment.kegg.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"analysis_type"</span>: "kegg",
+  <span style="color:var(--brand-teal)">"tested_pathway_count"</span>: 142,
+  <span style="color:var(--brand-teal)">"significant_count"</span>: 23,
+  <span style="color:var(--brand-teal)">"top_terms"</span>: [{
+    <span style="color:var(--brand-teal)">"pathway_id"</span>: "ko04630",
+    <span style="color:var(--brand-teal)">"pathway_name"</span>: "IL-17 signaling",
+    <span style="color:var(--brand-teal)">"p_adjusted"</span>: 1.2e-8,
+    <span style="color:var(--brand-teal)">"gene_ratio"</span>: 0.21
+  }]
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+            <span>{zh ? "差异表达 (expression.differential.v1)" : "Differential Expression (expression.differential.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"comparison"</span>: "KO_vs_WT",
+  <span style="color:var(--brand-teal)">"total_genes"</span>: 18752,
+  <span style="color:var(--brand-teal)">"upregulated"</span>: 842,
+  <span style="color:var(--brand-teal)">"downregulated"</span>: 691,
+  <span style="color:var(--brand-teal)">"significant_padj_005"</span>: 1533,
+  <span style="color:var(--brand-teal)">"lfc_shrinkage"</span>: "apeglm"
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="2"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span>{zh ? "K-mer 计数 (sequence.kmer.count.v1)" : "K-mer Count (sequence.kmer.count.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"k"</span>: 5,
+  <span style="color:var(--brand-teal)">"distinct_kmers"</span>: 9312,
+  <span style="color:var(--brand-teal)">"total_kmers"</span>: 120000,
+  <span style="color:var(--brand-teal)">"top_kmers"</span>: [
+    {<span style="color:var(--brand-teal)">"kmer"</span>: "AAAAA", <span style="color:var(--brand-teal)">"count"</span>: 4120},
+    {<span style="color:var(--brand-teal)">"kmer"</span>: "TTTTT", <span style="color:var(--brand-teal)">"count"</span>: 3987},
+    {<span style="color:var(--brand-teal)">"kmer"</span>: "GCGCG", <span style="color:var(--brand-teal)">"count"</span>: 2451}
+  ]
+}</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            <span>{zh ? "比对质控 (alignment.qc.v1)" : "Alignment QC (alignment.qc.v1)"}</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>{
+  <span style="color:var(--brand-teal)">"total_reads"</span>: 4963064,
+  <span style="color:var(--brand-teal)">"mapped_reads"</span>: 4821918,
+  <span style="color:var(--brand-teal)">"mapped_percent"</span>: 97.2,
+  <span style="color:var(--brand-teal)">"properly_paired_percent"</span>: 96.1,
+  <span style="color:var(--brand-teal)">"mean_depth"</span>: 32.4,
+  <span style="color:var(--brand-teal)">"duplicate_percent"</span>: 8.9
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sequence Stats Bar Chart -->
+      <div class="chart-container animate-in">
+        <div style="font-size:0.8125rem;font-weight:600;color:var(--text-dim);margin-bottom:0.75rem">{zh ? "序列长度分布 (示例)" : "Sequence Length Distribution (Example)"}</div>
+        <svg viewBox="0 0 500 200" width="100%" height="200" style="max-width:600px">
+          <defs>
+            <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#20B8B0"/><stop offset="100%" style="stop-color:var(--brand-dark)"/></linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="60" y1="20" x2="480" y2="20" style="stroke:var(--chart-grid)" stroke-width="0.5"/>
+          <line x1="60" y1="60" x2="480" y2="60" style="stroke:var(--chart-grid)" stroke-width="0.5"/>
+          <line x1="60" y1="100" x2="480" y2="100" style="stroke:var(--chart-grid)" stroke-width="0.5"/>
+          <line x1="60" y1="140" x2="480" y2="140" style="stroke:var(--chart-grid)" stroke-width="0.5"/>
+          <line x1="60" y1="180" x2="480" y2="180" style="stroke:var(--chart-grid)" stroke-width="0.5"/>
+          <!-- Y-axis labels -->
+          <text x="55" y="24" text-anchor="end" style="fill:var(--text-dim)" font-size="10">50</text>
+          <text x="55" y="64" text-anchor="end" style="fill:var(--text-dim)" font-size="10">40</text>
+          <text x="55" y="104" text-anchor="end" style="fill:var(--text-dim)" font-size="10">30</text>
+          <text x="55" y="144" text-anchor="end" style="fill:var(--text-dim)" font-size="10">20</text>
+          <text x="55" y="184" text-anchor="end" style="fill:var(--text-dim)" font-size="10">10</text>
+          <!-- Bars with animation -->
+          <rect x="80" y="40" width="60" height="140" fill="url(#barGrad)" rx="3" style="animation:barGrow 0.6s ease-out;transform-origin:bottom">
+            <animate attributeName="height" from="0" to="140" dur="0.6s" fill="freeze"/>
+            <animate attributeName="y" from="180" to="40" dur="0.6s" fill="freeze"/>
+          </rect>
+          <text x="110" y="35" text-anchor="middle" style="fill:var(--text)" font-size="10">45</text>
+          <text x="110" y="195" text-anchor="middle" style="fill:var(--text-dim)" font-size="9">0-500bp</text>
+          <rect x="170" y="60" width="60" height="120" fill="url(#barGrad)" rx="3" style="animation:barGrow 0.6s ease-out 0.1s;transform-origin:bottom">
+            <animate attributeName="height" from="0" to="120" dur="0.6s" begin="0.1s" fill="freeze"/>
+            <animate attributeName="y" from="180" to="60" dur="0.6s" begin="0.1s" fill="freeze"/>
+          </rect>
+          <text x="200" y="55" text-anchor="middle" style="fill:var(--text)" font-size="10">38</text>
+          <text x="200" y="195" text-anchor="middle" style="fill:var(--text-dim)" font-size="9">500-1kb</text>
+          <rect x="260" y="80" width="60" height="100" fill="url(#barGrad)" rx="3" style="animation:barGrow 0.6s ease-out 0.2s;transform-origin:bottom">
+            <animate attributeName="height" from="0" to="100" dur="0.6s" begin="0.2s" fill="freeze"/>
+            <animate attributeName="y" from="180" to="80" dur="0.6s" begin="0.2s" fill="freeze"/>
+          </rect>
+          <text x="290" y="75" text-anchor="middle" style="fill:var(--text)" font-size="10">32</text>
+          <text x="290" y="195" text-anchor="middle" style="fill:var(--text-dim)" font-size="9">1-2kb</text>
+          <rect x="350" y="110" width="60" height="70" fill="url(#barGrad)" rx="3" style="animation:barGrow 0.6s ease-out 0.3s;transform-origin:bottom">
+            <animate attributeName="height" from="0" to="70" dur="0.6s" begin="0.3s" fill="freeze"/>
+            <animate attributeName="y" from="180" to="110" dur="0.6s" begin="0.3s" fill="freeze"/>
+          </rect>
+          <text x="380" y="105" text-anchor="middle" style="fill:var(--text)" font-size="10">22</text>
+          <text x="380" y="195" text-anchor="middle" style="fill:var(--text-dim)" font-size="9">2-5kb</text>
+          <rect x="440" y="140" width="40" height="40" fill="url(#barGrad)" rx="3" style="animation:barGrow 0.6s ease-out 0.4s;transform-origin:bottom">
+            <animate attributeName="height" from="0" to="40" dur="0.6s" begin="0.4s" fill="freeze"/>
+            <animate attributeName="y" from="180" to="140" dur="0.6s" begin="0.4s" fill="freeze"/>
+          </rect>
+          <text x="460" y="135" text-anchor="middle" style="fill:var(--text)" font-size="10">12</text>
+          <text x="460" y="195" text-anchor="middle" style="fill:var(--text-dim)" font-size="9">5kb+</text>
+        </svg>
+      </div>
+
+      <!-- Simulated Dataset Preview -->
+      <h2 class="section-title">{zh ? "模拟数据集预览" : "Simulated Dataset Preview"}</h2>
+      <p style="color:var(--text-dim);margin-bottom:1rem;font-size:0.8125rem">{zh ? "SDK 内置程序生成的模拟数据集（FASTQ / FASTA / VCF / GFF3），开箱即可体验各类分析，无需准备真实数据。以下为截取片段。" : "Built-in programmatically generated datasets (FASTQ / FASTA / VCF / GFF3) let you try analyses out of the box — no real data needed. Snippets below."}</p>
+      <div class="example-grid">
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span>FASTQ · reads.fastq.gz</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>@SIM:1:FC01:1:1101:1000:1000 1:N:0:ATCACG
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>CCCCCCC65
+@SIM:1:FC01:1:1101:1000:1001 2:N:0:ATCACG
+TGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTG
++
+IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+@SIM:1:FC01:1:1101:1000:1002 1:N:0:ATCACG
+GGTGATGGCCGCTGCCGATTGCAGGCGCTGCGCTTTGCTTCGCCGCAGGGTTCTTCACTT
++
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand-teal)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            <span>FASTA · genome_sim.fa</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>&gt;chr1_sim_0001 length=150 gc=48.5
+ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT
+GGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGCGGC
+&gt;chr2_sim_0002 length=150 gc=51.0
+TTAATTAATTAATTAATTAATTAATTAATTAATTAATTAATTAATTAATTAATTAATTAA
+CCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCGCCG</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg>
+            <span>VCF · variants_sim.vcf</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>##fileformat=VCFv4.2
+##source=LinxiraBioSim
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO
+chr1    11869   .       G       A       962.77  PASS    DP=154;AF=0.482
+chr1    14409   .       C       T       184.30  PASS    DP=51;AF=0.235
+chr1    14933   .       G       A       2102.51 PASS    DP=382;AF=0.512
+chr1    16298   .       T       C       55.10   PASS    DP=14;AF=0.129</pre>
+          </div>
+        </div>
+        <div class="example-panel animate-in">
+          <div class="example-panel-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>GFF3 · annotation_sim.gff3</span>
+          </div>
+          <div class="example-panel-body">
+            <pre is:raw>##gff-version 3
+chr1    sim     gene    11869   14409   .   +   .   ID=gene1;Name=DDX11L1
+chr1    sim     mRNA    11869   14409   .   +   .   ID=tx1;Parent=gene1
+chr1    sim     exon    11869   12227   .   +   .   Parent=tx1
+chr1    sim     CDS     12010   12127   .   +   0   Parent=tx1
+chr1    sim     exon    12595   12721   .   +   .   Parent=tx1
+chr1    sim     gene    14362   29370   .   -   .   ID=gene2;Name=WASH7P</pre>
+          </div>
+        </div>
+      </div>
+      <p style="color:var(--text-dim);font-size:0.75rem;margin-bottom:1.5rem">{zh ? "以上数据全部由程序模拟生成，仅用于界面演示。" : "All data above is programmatically simulated for UI demonstration only."}</p>
+
+      <!-- CLI Quick Start -->
+      <h2 class="section-title">{zh ? "命令行快速开始" : "CLI Quick Start"}</h2>
+      <div class="code-block animate-in">
+        <div class="code-header">
+          <div class="dot"><span></span><span></span><span></span></div>
+          <span>PowerShell / Bash</span>
+        </div>
+        <pre><code><span style="color:var(--text-dim)">{zh ? "# 序列统计" : "# Sequence stats"}</span>
+linxira-bio sequence stats sequences.fa --json
+
+<span style="color:var(--text-dim)">{zh ? "# FASTQ 质量控制" : "# FASTQ quality control"}</span>
+linxira-bio fastq qc reads.fastq --json
+
+<span style="color:var(--text-dim)">{zh ? "# 基因组注释统计" : "# Genome annotation stats"}</span>
+linxira-bio annotation gxf-stats annotations.gff --json
+
+<span style="color:var(--text-dim)">{zh ? "# 表达矩阵 PCA" : "# Expression matrix PCA"}</span>
+linxira-bio expression pca matrix.tsv pca.json --json
+
+<span style="color:var(--text-dim)">{zh ? "# 系统发育树可视化" : "# Phylogenetic tree plot"}</span>
+linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
+      </div>
+
+      <!-- Capabilities -->
+      <h2 class="section-title">{zh ? "分析能力一览" : "Capabilities"}</h2>
+      <div class="cap-grid" id="cap-grid"></div>
+<!-- Quick Links -->
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "快速链接" : "Quick Links"}</h2>
+      <div class="cap-grid">
+        <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color:var(--text)"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></div>
+          <div class="cap-name">{zh ? "GitHub 仓库" : "GitHub Repository"}</div>
+          <div class="cap-desc">{zh ? "源代码、Issue、PR" : "Source code, Issues, PRs"}</div>
+        </a>
+        <a class="cap-card animate-in" href="https://github.com/Linxira-OS" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--brand-teal)"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="cap-name">{zh ? "Linxira-OS 组织" : "Linxira-OS Org"}</div>
+          <div class="cap-desc">{zh ? "组织主页与所有项目" : "Organization homepage & all projects"}</div>
+        </a>
+        <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/wiki" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div class="cap-name">{zh ? "使用指南 Wiki" : "User Guide Wiki"}</div>
+          <div class="cap-desc">{zh ? "快速入门、CLI 参考、FAQ" : "Quick Start, CLI Reference, FAQ"}</div>
+        </a>
+        <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+          <div class="cap-name">{zh ? "能力文档" : "Capability Docs"}</div>
+          <div class="cap-desc">{zh ? "108 个中英文能力文档" : "108 bilingual capability docs"}</div>
+        </a>
+        <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/THIRD_PARTY.md" target="_blank" style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="cap-name">{zh ? "第三方许可" : "Third-Party Licenses"}</div>
+          <div class="cap-desc">{zh ? "完整依赖许可信息" : "Full dependency license info"}</div>
+        </a>
+        <a class="cap-card animate-in" href={`/bio-sdk/${lang}/`} style="text-decoration:none;color:inherit">
+          <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+          <div class="cap-name">{zh ? "项目官网" : "Official Site"}</div>
+          <div class="cap-desc">{zh ? "在线演示与文档" : "Online demo & documentation"}</div>
+        </a>
+      </div>
+    </div>

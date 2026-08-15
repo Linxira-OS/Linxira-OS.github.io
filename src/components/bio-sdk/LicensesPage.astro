@@ -1,0 +1,83 @@
+---
+const { zh } = Astro.props;
+---
+    <!-- ===== LICENSES ===== -->
+    <div class="page" id="page-licenses">
+      <div class="card">
+        <div class="card-title">Linxira Bio SDK</div>
+        <div class="card-desc">{zh ? "本软件采用 GNU Affero General Public License v3.0 (AGPL-3.0-or-later) 许可。项目自有组件使用 AGPL-3.0-or-later，不替换或重新许可第三方代码。每个依赖项、改编体、链接库、模型、数据库和外部可执行文件必须保留其自己的许可和声明。" : "Licensed under GNU Affero General Public License v3.0 (AGPL-3.0-or-later). Project-owned components use AGPL-3.0-or-later. This does not replace or relicense third-party code."}</div>
+      </div>
+
+      <h2 class="section-title">{zh ? "注册研究来源" : "Registered Research Sources"}</h2>
+      <div style="overflow-x:auto">
+        <table class="result-table">
+          <thead><tr><th>{zh ? "来源" : "Source"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "当前角色" : "Current Role"}</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">GPTomics/bioSkills</td><td>MIT</td><td>{zh ? "主要方法和示例审查来源" : "Primary method and example review source"}</td></tr>
+            <tr><td class="mono">BioTender-max/awesome-bio-agent-skills</td><td>{zh ? "合集索引；嵌套条款各异" : "Collection index; nested terms vary"}</td><td>{zh ? "发现和分类来源" : "Discovery and classification source"}</td></tr>
+            <tr><td class="mono">Linxira-OS/linxira-skills</td><td>MIT</td><td>{zh ? "通用技能平台和策略参考" : "General skill platform and policy reference"}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "初始运行时组件" : "Initial Runtime Components"}</h2>
+      <div style="overflow-x:auto">
+        <table class="result-table">
+          <thead><tr><th>{zh ? "组件" : "Component"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "用途" : "Use"}</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">serde, serde_json</td><td>MIT OR Apache-2.0</td><td>{zh ? "作业、结果和能力序列化" : "Job, result, and capability serialization"}</td></tr>
+            <tr><td class="mono">csv</td><td>Unlicense OR MIT</td><td>{zh ? "RFC 4180 CSV 和可配置 TSV 写入" : "RFC 4180-compatible CSV and configurable TSV writing"}</td></tr>
+            <tr><td class="mono">flate2</td><td>MIT OR Apache-2.0</td><td>{zh ? "流式 gzip 和 BGZF 兼容解压" : "Streaming gzip and BGZF-compatible decompression"}</td></tr>
+            <tr><td class="mono">eframe, egui</td><td>MIT OR Apache-2.0</td><td>{zh ? "原生桌面 GUI（无嵌入式 WebView）" : "Native desktop GUI without an embedded WebView"}</td></tr>
+            <tr><td class="mono">png</td><td>MIT OR Apache-2.0</td><td>{zh ? "本地结构查看器快照编码" : "Local structure-view snapshot encoding"}</td></tr>
+            <tr><td class="mono">rfd</td><td>MIT</td><td>{zh ? "原生操作系统文件对话框" : "Native operating-system file dialogs"}</td></tr>
+            <tr><td class="mono">rust_xlsxwriter</td><td>MIT OR Apache-2.0</td><td>{zh ? "原生 XLSX 结果导出" : "Native XLSX result export"}</td></tr>
+            <tr><td class="mono">same-file</td><td>Unlicense OR MIT</td><td>{zh ? "跨平台文件身份检查" : "Cross-platform file identity checks"}</td></tr>
+            <tr><td class="mono">sha2</td><td>MIT OR Apache-2.0</td><td>{zh ? "SHA-256 完整性校验" : "Artifact SHA-256 integrity checks"}</td></tr>
+            <tr><td class="mono">tempfile</td><td>MIT OR Apache-2.0</td><td>{zh ? "原子表导出的临时输出" : "Temporary output for atomic table export"}</td></tr>
+            <tr><td class="mono">zip</td><td>MIT</td><td>{zh ? "ZIP 签名和元数据检查" : "Bounded ZIP signature and metadata inspection"}</td></tr>
+            <tr><td class="mono">jsonschema 验证栈</td><td>MIT, BSD-3, Apache-2.0, ISC, MPL-2.0, GPL-3.0-or-later</td><td>{zh ? "CI 专用 JSON Schema 验证" : "CI-only JSON Schema validation"}</td></tr>
+            <tr><td class="mono">epaint_default_fonts</td><td>OFL-1.1 AND Ubuntu-font-1.0</td><td>{zh ? "默认原生 GUI 字体" : "Default native GUI fonts"}</td></tr>
+            <tr><td class="mono">Noto Sans SC 2.002</td><td>OFL-1.1</td><td>{zh ? "简体中文 GUI 回退字体" : "Bundled Simplified Chinese GUI fallback"}</td></tr>
+            <tr><td class="mono">hexf-parse</td><td>CC0-1.0</td><td>{zh ? "GPU 渲染器着色器数字解析" : "Transitive shader-number parsing"}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="section-title" style="margin-top:2rem">{zh ? "工作流运行时依赖" : "Workflow Runtime Dependencies"}</h2>
+      <div style="overflow-x:auto">
+        <table class="result-table">
+          <thead><tr><th>{zh ? "组件" : "Component"}</th><th>{zh ? "许可" : "License"}</th><th>{zh ? "状态" : "Status"}</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">Biopython 1.85</td><td>Biopython License Agreement</td><td>{zh ? "已编目，尚未再分发" : "Cataloged, not redistributed yet"}</td></tr>
+            <tr><td class="mono">NumPy 2.2.4</td><td>BSD-3-Clause</td><td>{zh ? "已编目，尚未再分发" : "Cataloged, not redistributed yet"}</td></tr>
+            <tr><td class="mono">DESeq2 ≥1.52.0</td><td>LGPL-3.0-or-later</td><td>{zh ? "差异表达工作流依赖（未再分发）" : "Differential-expression workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">jsonlite ≥1.8.9</td><td>MIT</td><td>{zh ? "R 工作流依赖（未再分发）" : "R workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">digest ≥0.6.37</td><td>GPL-2.0-or-later</td><td>{zh ? "R 工作流依赖（未再分发）" : "R workflow dependency (not redistributed)"}</td></tr>
+            <tr><td class="mono">MCScanX</td><td>BSD-2-Clause</td><td>{zh ? "可选外部可执行文件（不捆绑）" : "Optional external executable (not bundled)"}</td></tr>
+            <tr><td class="mono">KaKs Calculator</td><td>{zh ? "用户选择的分发版许可" : "License of user-selected distribution"}</td><td>{zh ? "可选外部可执行文件（不捆绑）" : "Optional external executable (not bundled)"}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:2rem">
+        <div class="card-title">{zh ? "依赖门禁" : "Dependency Gate"}</div>
+        <div class="card-desc">
+          <ol style="font-size:0.8125rem;line-height:1.8;padding-left:1.25rem">
+            <li>{zh ? "记录 SPDX 标识符和源仓库" : "Record SPDX identifier and source repository"}</li>
+            <li>{zh ? "确认与 AGPL-3.0-or-later 的兼容性" : "Confirm compatibility with AGPL-3.0-or-later"}</li>
+            <li>{zh ? "优先选择 MIT、Apache-2.0、BSD、ISC、Zlib 等兼容组件" : "Prefer permissive MIT, Apache-2.0, BSD, ISC, Zlib, or similarly compatible components"}</li>
+            <li>{zh ? "单独审查 LGPL、MPL、GPL、模型权重、数据库条款等" : "Review LGPL, MPL, GPL, model weights, database terms individually"}</li>
+            <li>{zh ? "拒绝专有、源码可用、使用领域限制、非商业或模糊条款" : "Reject proprietary, source-available, field-of-use, non-commercial, or ambiguous terms"}</li>
+            <li>{zh ? "生成机器可读的依赖报告，保留必要声明" : "Generate machine-readable dependency report and retain required notices"}</li>
+          </ol>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:1.5rem">
+        <a class="btn btn-secondary" href="https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/THIRD_PARTY.md" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>{zh ? "查看完整 THIRD_PARTY.md" : "View Full THIRD_PARTY.md"}</span>
+        </a>
+      </div>
+    </div>
