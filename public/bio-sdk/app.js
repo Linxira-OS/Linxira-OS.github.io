@@ -512,20 +512,36 @@ function renderPca(host) {
   host.appendChild(svgEl('rect', { x: 120, y: 170, width: '8', height: '8', fill: '#AE3939', rx: '1' }));
   host.appendChild(svgText(132, 179, isZh ? 'KO 敲除' : 'KO', { 'text-anchor': 'start', 'font-size': '8' }));
 }
-function renderPie(host) {
-  const data = [['SNP', 45, '#20B8B0'], ['INS', 20, '#31679E'], ['DEL', 18, '#AE3939'], ['MNP', 10, '#B06818'], ['Other', 7, '#6B4EA0']];
-  const C = 2 * Math.PI * 50; let off = 0;
+function solidPie(host, data, cx, cy, r) {
+  let start = 0;
+  const total = data.reduce((s, d) => s + d[1], 0);
   data.forEach((d, i) => {
-    const len = C * d[1] / 100;
-    const c = svgEl('circle', { cx: '120', cy: '92', r: '50', fill: 'none', stroke: d[2], 'stroke-width': '24', 'stroke-dasharray': len + ' ' + (C - len), 'stroke-dashoffset': -off, opacity: '0.85' });
-    c.style.animation = 'fadeIn .5s ease-out both'; c.style.animationDelay = (i * 0.15) + 's';
-    host.appendChild(c);
-    off += len;
+    const end = start + (d[1] / total) * 360;
+    const sA = (start - 90) * Math.PI / 180;
+    const eA = (end - 90) * Math.PI / 180;
+    const x1 = cx + r * Math.cos(sA), y1 = cy + r * Math.sin(sA);
+    const x2 = cx + r * Math.cos(eA), y2 = cy + r * Math.sin(eA);
+    const large = (end - start) > 180 ? 1 : 0;
+    const p = svgEl('path', {
+      d: 'M' + cx + ',' + cy + ' L' + x1.toFixed(2) + ',' + y1.toFixed(2) + ' A' + r + ',' + r + ' 0 ' + large + ' 1 ' + x2.toFixed(2) + ',' + y2.toFixed(2) + ' Z',
+      fill: d[2], opacity: '0.92',
+    });
+    p.style.animation = 'fadeIn .4s ease-out both';
+    p.style.animationDelay = (i * 0.12) + 's';
+    host.appendChild(p);
+    start = end;
   });
-  host.appendChild(svgText(120, 88, '128,450', { 'font-size': '12', 'font-weight': '700', style: 'fill:var(--text)' }));
-  host.appendChild(svgText(120, 102, 'variants', { 'font-size': '7' }));
+  host.appendChild(svgEl('circle', { cx, cy, r: r * 0.62, fill: 'var(--chart-bg)' }));
+}
+function renderPie(hostEl) {
+  const host = hostEl || document.getElementById('vpie-host');
+  if (!host) return;
+  const data = [['SNP', 45, '#20B8B0'], ['INS', 20, '#31679E'], ['DEL', 18, '#AE3939'], ['MNP', 10, '#B06818'], ['Other', 7, '#6B4EA0']];
+  solidPie(host, data, 120, 92, 58);
+  host.appendChild(svgText(120, 86, '128,450', { 'font-size': '12', 'font-weight': '700', style: 'fill:var(--text)' }));
+  host.appendChild(svgText(120, 101, 'variants', { 'font-size': '7' }));
   data.forEach((d, i) => {
-    const ly = 156 + i * 8;
+    const ly = 158 + i * 8;
     host.appendChild(svgEl('rect', { x: 15, y: ly, width: '7', height: '7', rx: '1', fill: d[2] }));
     host.appendChild(svgText(25, ly + 6, d[0] + ' ' + d[1] + '%', { 'text-anchor': 'start', 'font-size': '7' }));
   });
@@ -546,25 +562,128 @@ const demoVariants = {
     { id: 'density', zh: '密度视图', en: 'Density', build: 'dotDensity' },
   ],
 };
-const variantBuilders = {
-  treeRadial(host) {
-    const cx = 130, cy = 100, R = 82;
-    const names = ['Homo sapiens', 'Pan troglodytes', 'Gorilla gorilla', 'Pongo abelii', 'Macaca mulatta', 'Mus musculus', 'Rattus norvegicus', 'Danio rerio', 'Xenopus laevis'];
-    host.appendChild(svgEl('circle', { cx, cy, r: R, fill: 'none', style: 'stroke:var(--chart-grid)', 'stroke-width': '0.8', 'stroke-dasharray': '3,3' }));
-    names.forEach((n, i) => {
-      const a = (i * 40 - 90) * Math.PI / 180;
-      const lx = cx + Math.cos(a) * R, ly = cy + Math.sin(a) * R;
-      const mx = cx + Math.cos(a) * R * 0.55, my = cy + Math.sin(a) * R * 0.55;
-      host.appendChild(svgEl('line', { x1: cx, y1: cy, x2: mx, y2: my, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2', opacity: '0.75' }));
-      host.appendChild(svgEl('line', { x1: mx, y1: my, x2: lx, y2: ly, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2' }));
-      host.appendChild(svgEl('circle', { cx: lx, cy: ly, r: '2.5', fill: '#20B8B0' }));
-      const tx = cx + Math.cos(a) * (R + 7), ty = cy + Math.sin(a) * (R + 7);
-      host.appendChild(svgText(tx, ty + 2, n, { 'font-size': '6.5', 'text-anchor': lx < cx ? 'end' : 'start' }));
+// ===== 系统发育树（二分树 · 真实简化拓扑） =====
+// 拓扑：((Xenopus, (Danio, ((Rattus, Mus), (Macaca, (Pongo, (Gorilla, (Pan, Homo))))))))
+const SP_TREE = {
+  name: 'root',
+  children: [
+    { name: 'Xenopus laevis' },
+    { name: 'Euteleostomi', children: [
+      { name: 'Danio rerio' },
+      { name: 'Amniota', children: [
+        { name: 'Rodentia', children: [
+          { name: 'Rattus norvegicus' },
+          { name: 'Mus musculus' },
+        ] },
+        { name: 'Euarchontoglires', children: [
+          { name: 'Primates', children: [
+            { name: 'Macaca mulatta' },
+            { name: 'Hominoidea', children: [
+              { name: 'Pongo abelii' },
+              { name: 'Hominidae', children: [
+                { name: 'Gorilla gorilla' },
+                { name: 'Homininae', children: [
+                  { name: 'Pan troglodytes' },
+                  { name: 'Homo sapiens' },
+                ] },
+              ] },
+            ] },
+          ] },
+        ] },
+      ] },
+    ] },
+  ],
+};
+function layoutTree(root, leafStart, leafStep, rootX, xStep) {
+  let idx = 0, maxDepth = 0;
+  function walk(n, depth) {
+    n._depth = depth;
+    maxDepth = Math.max(maxDepth, depth);
+    if (!n.children || !n.children.length) {
+      n._y = leafStart + idx * leafStep;
+      n._x = rootX + depth * xStep;
+      n._leaf = true;
+      idx++;
+      return;
+    }
+    n.children.forEach(c => walk(c, depth + 1));
+    n._y = n.children.reduce((s, c) => s + c._y, 0) / n.children.length;
+    n._x = rootX + depth * xStep;
+  }
+  walk(root, 0);
+  return maxDepth;
+}
+function collectLeaves(node, arr) {
+  if (node._leaf) { arr.push(node); return; }
+  node.children.forEach(c => collectLeaves(c, arr));
+}
+function renderTreeRect(hostEl) {
+  const host = hostEl || document.getElementById('tree-host');
+  if (!host) return;
+  layoutTree(SP_TREE, 12, 21, 16, 22);
+  host.appendChild(svgEl('line', { x1: 6, y1: SP_TREE._y, x2: SP_TREE._x, y2: SP_TREE._y, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
+  (function draw(n) {
+    if (!n.children) return;
+    n.children.forEach(c => {
+      host.appendChild(svgEl('line', { x1: c._x, y1: c._y, x2: n._x, y2: c._y, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
+      host.appendChild(svgEl('line', { x1: n._x, y1: c._y, x2: n._x, y2: n._y, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
+      draw(c);
     });
-    host.appendChild(svgEl('circle', { cx, cy, r: '4', fill: '#20B8B0' }));
-    host.appendChild(svgText(cx, cy - 10, 'root', { 'font-size': '7' }));
-  },
+  })(SP_TREE);
+  (function leaf(n) {
+    if (n._leaf) {
+      host.appendChild(svgEl('circle', { cx: n._x, cy: n._y, r: '2.5', fill: '#20B8B0' }));
+      host.appendChild(svgText(n._x + 5, n._y + 3, n.name, { 'text-anchor': 'start', 'font-size': '7.5' }));
+      return;
+    }
+    n.children.forEach(leaf);
+  })(SP_TREE);
+}
+function renderTreeRadial(hostEl) {
+  const host = hostEl || document.getElementById('tree-radial-host');
+  if (!host) return;
+  host.setAttribute('viewBox', '0 0 340 340');
+  const cx = 170, cy = 170, rRoot = 18, rStep = 15;
+  layoutTree(SP_TREE, 0, 1, 0, 1);
+  const leaves = [];
+  collectLeaves(SP_TREE, leaves);
+  leaves.forEach((lf, i) => { lf._angle = -90 + (i / leaves.length) * 360; });
+  (function ang(n) {
+    if (n._leaf) return n._angle;
+    n.children.forEach(ang);
+    n._angle = n.children.reduce((s, c) => s + c._angle, 0) / n.children.length;
+    return n._angle;
+  })(SP_TREE);
+  (function rad(n, r) {
+    n._r = r;
+    if (n.children) n.children.forEach(c => rad(c, r + rStep));
+  })(SP_TREE, rRoot);
+  host.appendChild(svgEl('circle', { cx, cy, r: rRoot + 9 * rStep, fill: 'none', style: 'stroke:var(--chart-grid)', 'stroke-width': '0.8', 'stroke-dasharray': '3,3' }));
+  (function edges(n) {
+    if (n._leaf) return;
+    n.children.forEach(c => {
+      const x1 = cx + Math.cos(n._angle * Math.PI / 180) * n._r;
+      const y1 = cy + Math.sin(n._angle * Math.PI / 180) * n._r;
+      const x2 = cx + Math.cos(c._angle * Math.PI / 180) * c._r;
+      const y2 = cy + Math.sin(c._angle * Math.PI / 180) * c._r;
+      host.appendChild(svgEl('line', { x1, y1, x2, y2, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.4' }));
+      edges(c);
+    });
+  })(SP_TREE);
+  leaves.forEach(lf => {
+    const x = cx + Math.cos(lf._angle * Math.PI / 180) * lf._r;
+    const y = cy + Math.sin(lf._angle * Math.PI / 180) * lf._r;
+    host.appendChild(svgEl('circle', { cx: x, cy: y, r: '2.5', fill: '#20B8B0' }));
+    const tx = cx + Math.cos(lf._angle * Math.PI / 180) * (lf._r + 8);
+    const ty = cy + Math.sin(lf._angle * Math.PI / 180) * (lf._r + 8);
+    host.appendChild(svgText(tx, ty + 2.5, lf.name, { 'font-size': '7', 'text-anchor': tx < cx ? 'end' : 'start' }));
+  });
+  host.appendChild(svgEl('circle', { cx, cy, r: '4', fill: '#20B8B0' }));
+}
+const variantBuilders = {
+  treeRadial: renderTreeRadial,
   heatCorr(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
     const n = 6, cell = 26, x0 = 30, y0 = 20;
     const rng = mulberry32(42);
     const m = [];
@@ -584,6 +703,7 @@ const variantBuilders = {
     host.appendChild(svgText(x0 + n * cell / 2, 12, 'sample correlation (Pearson)', { 'font-size': '7' }));
   },
   dotDensity(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
     const rng = mulberry32(2026);
     for (let i = 0; i < 130; i++) {
       const t = rng();
@@ -614,12 +734,14 @@ function renderVariantChart(capId, vi, box) {
   try {
     box.innerHTML = '';
     const v = (demoVariants[capId] || [])[vi];
-    if (!v) return;
+    if (!v) {
+      if (demoChartSource) box.appendChild(demoChartSource.cloneNode(true));
+      return;
+    }
     if (v.clone && demoChartSource) {
       box.appendChild(demoChartSource.cloneNode(true));
     } else if (v.build && variantBuilders[v.build]) {
       const host = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      host.setAttribute('viewBox', '0 0 260 200');
       host.setAttribute('width', '100%');
       host.setAttribute('style', 'height:auto');
       variantBuilders[v.build](host);
@@ -1270,6 +1392,7 @@ function restartRunLog() { startRunLog(); }
 document.addEventListener('DOMContentLoaded', () => {
   renderCapGrid();
   renderQc(); renderKegg(); renderVolcano(); renderGsea(); renderKmer(); renderMotif(); renderKaKs();
+  renderTreeRect(); renderPie();
   renderSimFiles();
   renderDocCats();
   tagGallery();
