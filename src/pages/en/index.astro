@@ -234,6 +234,48 @@ import Navbar from "../../components/Navbar.astro";
       .nav-links { gap: 1rem; }
       .product-showcase { grid-template-columns: 1fr; }
     }
+
+    /* ---------- Update ticker (auto-scroll) ---------- */
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(2,6,10,0.4); }
+    .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
+    .ticker-wrap:hover .ticker { animation-play-state: paused; }
+    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
+    .ticker-item b { color: #20B8B0; font-weight: 600; }
+    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: #20B8B0; box-shadow: 0 0 10px rgba(32,184,176,0.8); flex: none; }
+    @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- Highlight slideshow (auto-play) ---------- */
+    .slideshow { position: relative; max-width: 900px; margin: 0 auto; border-radius: 22px; user-select: none; }
+    .slide { position: absolute; inset: 0; opacity: 0; transform: scale(0.982); transition: opacity 0.9s ease, transform 0.9s ease; pointer-events: none; }
+    .slide.active { position: relative; opacity: 1; transform: none; pointer-events: auto; }
+    .slide-frame { border-radius: 20px; overflow: hidden; box-shadow: 0 30px 90px rgba(0,0,0,0.5); border: 1px solid var(--glass-border); }
+    .slide-frame svg { display: block; width: 100%; height: auto; }
+    .slide-caption { position: absolute; left: 1.5rem; bottom: 1.3rem; z-index: 2; display: flex; flex-direction: column; gap: 0.15rem; }
+    .slide-caption .c-t { font-size: 1.2rem; font-weight: 700; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,0.65); }
+    .slide-caption .c-s { font-size: 0.85rem; color: rgba(255,255,255,0.88); text-shadow: 0 1px 8px rgba(0,0,0,0.65); }
+    .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(10,15,26,0.55); color: var(--ink-strong); cursor: pointer; font-size: 1.05rem; line-height: 1; transition: all 0.2s; }
+    .nav-btn:hover { border-color: #20B8B0; color: #20B8B0; background: rgba(10,15,26,0.8); }
+    .nav-prev { left: 1.1rem; } .nav-next { right: 1.1rem; }
+    .slide-dots { position: absolute; bottom: 1.1rem; right: 1.5rem; z-index: 3; display: flex; gap: 0.45rem; }
+    .slide-dots button { width: 9px; height: 9px; border-radius: 999px; border: none; background: rgba(255,255,255,0.4); cursor: pointer; padding: 0; transition: all 0.3s; }
+    .slide-dots button.active { width: 26px; background: #20B8B0; }
+
+    /* ---------- Ecosystem dual marquee ---------- */
+    .eco-marquee { position: relative; overflow: hidden; margin-top: 1.7rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .eco-marquee + .eco-marquee { margin-top: 0.7rem; }
+    .eco-track { display: flex; width: max-content; gap: 0.7rem; animation: eco-scroll 44s linear infinite; }
+    .eco-track.rev { animation-direction: reverse; animation-duration: 54s; }
+    .eco-marquee:hover .eco-track { animation-play-state: paused; }
+    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.2); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
+    .eco-track.rev span { background: rgba(243,111,93,0.07); border-color: rgba(243,111,93,0.2); }
+    @keyframes eco-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker, .eco-track { animation: none; width: 100%; flex-wrap: wrap; }
+      .ticker-item { white-space: normal; }
+      .slide { position: relative; opacity: 1; transform: none; pointer-events: auto; }
+      .slide + .slide { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -273,6 +315,24 @@ import Navbar from "../../components/Navbar.astro";
       </div>
     </div>
   </section>
+
+  <!-- Update ticker (auto-scroll · pause on hover) -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="tdot"></span><b>Test ISO</b> passed full installation testing</span>
+      <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
+      <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
+      <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
+      <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
+      <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
+      <span class="ticker-item"><span class="tdot"></span><b>Test ISO</b> passed full installation testing</span>
+      <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
+      <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
+      <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
+      <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
+      <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
+    </div>
+  </div>
 
   <!-- Terminal demo (one command, full control · DeepSeek Harness-style terminal story) -->
   <section class="section-block terminal-section">
@@ -339,6 +399,163 @@ import Navbar from "../../components/Navbar.astro";
     </div>
   </section>
 
+  <!-- Highlights (simulated UI slideshow · auto-play) -->
+  <section class="section-block section-block-alt2">
+    <div class="section">
+      <div class="section-header reveal">
+        <h2 class="section-title">Out of the Box</h2>
+        <p class="section-subtitle">From desktop to headless compute to local bioinformatics — one machine, three modes</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="slideshow glass reveal" id="slideshow">
+        <!-- Slide 1 · KDE Plasma desktop -->
+        <div class="slide active">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="dsk-bg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#0d1b20"/><stop offset="0.55" stop-color="#122a2e"/><stop offset="1" stop-color="#0a0f1a"/>
+                </linearGradient>
+                <linearGradient id="win-g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1f2937"/><stop offset="1" stop-color="#111827"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="url(#dsk-bg)"/>
+              <circle cx="120" cy="90" r="180" fill="#20B8B0" opacity="0.10"/>
+              <circle cx="840" cy="420" r="220" fill="#F36F5D" opacity="0.08"/>
+              <line x1="0" y1="46" x2="960" y2="46" stroke="#000" stroke-width="46" opacity="0.55"/>
+              <circle cx="30" cy="23" r="7" fill="#20B8B0"/>
+              <text x="48" y="27" fill="#cbd5e1" font-size="14" font-family="sans-serif">Launcher</text>
+              <text x="860" y="27" fill="#cbd5e1" font-size="13" font-family="sans-serif" text-anchor="end">9:41 · Fri Aug 14</text>
+              <!-- desktop terminal window -->
+              <rect x="120" y="120" width="520" height="300" rx="10" fill="url(#win-g)" stroke="#374151" stroke-width="1"/>
+              <rect x="120" y="120" width="520" height="34" rx="10" fill="#1b2434"/>
+              <circle cx="148" cy="137" r="6" fill="#ff5f57"/><circle cx="168" cy="137" r="6" fill="#febc2e"/><circle cx="188" cy="137" r="6" fill="#28c840"/>
+              <text x="380" y="142" fill="#64748b" font-size="12" font-family="sans-serif" text-anchor="middle">linxira — zsh</text>
+              <text x="140" y="185" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="185" fill="#cbd5e1" font-size="14" font-family="monospace">linxira-config headless on now</text>
+              <text x="140" y="210" fill="#64748b" font-size="13" font-family="monospace">→ Headless: desktop stopped, RAM freed ✓</text>
+              <text x="140" y="240" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="240" fill="#cbd5e1" font-size="14" font-family="monospace">linxira-update</text>
+              <text x="140" y="265" fill="#64748b" font-size="13" font-family="monospace">→ Up to date: 0 patches pending ✓</text>
+              <text x="140" y="300" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="300" fill="#cbd5e1" font-size="14" font-family="monospace">▍</text>
+              <!-- file manager -->
+              <rect x="680" y="140" width="230" height="200" rx="10" fill="url(#win-g)" stroke="#374151" stroke-width="1"/>
+              <rect x="680" y="140" width="230" height="30" rx="10" fill="#1b2434"/>
+              <text x="795" y="160" fill="#64748b" font-size="12" font-family="sans-serif" text-anchor="middle">File Manager</text>
+              <rect x="696" y="182" width="198" height="18" rx="4" fill="#111827"/>
+              <text x="704" y="195" fill="#64748b" font-size="11" font-family="sans-serif">~/research/RNA-seq</text>
+              <rect x="696" y="208" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.14"/>
+              <text x="704" y="220" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_R1.fastq.gz</text>
+              <rect x="696" y="228" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.10"/>
+              <text x="704" y="240" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_R2.fastq.gz</text>
+              <rect x="696" y="248" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.07"/>
+              <text x="704" y="260" fill="#cbd5e1" font-size="11" font-family="sans-serif">results/</text>
+              <!-- taskbar -->
+              <line x1="0" y1="502" x2="960" y2="502" stroke="#000" stroke-width="38" opacity="0.55"/>
+              <circle cx="40" cy="521" r="9" fill="#20B8B0"/>
+              <rect x="70" y="512" width="26" height="18" rx="4" fill="#F36F5D" opacity="0.9"/>
+              <rect x="110" y="512" width="26" height="18" rx="4" fill="#31679E" opacity="0.9"/>
+              <rect x="430" y="509" width="100" height="24" rx="6" fill="#20B8B0" opacity="0.25"/>
+              <text x="480" y="526" fill="#a7f3d0" font-size="11" font-family="sans-serif" text-anchor="middle">Terminal · active</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">KDE Plasma Desktop</span><span class="c-s">Ready out of the box: Bluetooth / WiFi / printing / Chinese IME</span></div>
+        </div>
+        <!-- Slide 2 · Headless compute mode -->
+        <div class="slide">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#050a0f"/><stop offset="1" stop-color="#0a1119"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="url(#hbg)"/>
+              <text x="48" y="60" fill="#20B8B0" font-size="15" font-family="monospace">linxira — headless compute mode</text>
+              <rect x="48" y="90" width="864" height="1" fill="#1f2937"/>
+              <text x="48" y="130" fill="#20B8B0" font-size="14" font-family="monospace">$ systemctl status linxira-headless</text>
+              <text x="48" y="158" fill="#94a3b8" font-size="13" font-family="monospace">● headless.service — compute-mode daemon</text>
+              <text x="48" y="178" fill="#cbd5e1" font-size="13" font-family="monospace">     Active: active (running) since 08:02:14</text>
+              <text x="48" y="198" fill="#cbd5e1" font-size="13" font-family="monospace">     Memory: desktop stopped · 11.2 GiB freed</text>
+              <rect x="48" y="218" width="560" height="14" rx="7" fill="#1f2937"/>
+              <rect x="48" y="218" width="470" height="14" rx="7" fill="#20B8B0"/>
+              <text x="622" y="230" fill="#94a3b8" font-size="12" font-family="monospace">84% for compute</text>
+              <text x="48" y="266" fill="#20B8B0" font-size="14" font-family="monospace">$ nvidia-smi</text>
+              <text x="48" y="294" fill="#cbd5e1" font-size="13" font-family="monospace">RTX 5090 · 32 GB · 412 W · 61°C</text>
+              <text x="48" y="314" fill="#cbd5e1" font-size="13" font-family="monospace">Process: python3 train.py — VRAM 27.9 / 32 GB</text>
+              <rect x="48" y="330" width="560" height="14" rx="7" fill="#1f2937"/>
+              <rect x="48" y="330" width="486" height="14" rx="7" fill="#F36F5D"/>
+              <text x="622" y="342" fill="#94a3b8" font-size="12" font-family="monospace">87% utilization</text>
+              <text x="48" y="390" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config timeshift status</text>
+              <text x="48" y="418" fill="#94a3b8" font-size="13" font-family="monospace">Snapshots: daily 3 · boot 3 · pre-update auto-snapshot ✓</text>
+              <text x="48" y="458" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config headless off</text>
+              <text x="48" y="486" fill="#94a3b8" font-size="13" font-family="monospace">→ Back to desktop mode · welcome back ✓</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">Headless Compute Mode</span><span class="c-s">One command to switch: zero desktop overhead, all RAM &amp; GPU for compute</span></div>
+        </div>
+        <!-- Slide 3 · Bio SDK workbench -->
+        <div class="slide">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bw-g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#141b26"/><stop offset="1" stop-color="#0d131c"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="#0d131c"/>
+              <rect x="0" y="0" width="200" height="540" fill="#101724"/>
+              <text x="24" y="40" fill="#20B8B0" font-size="15" font-family="sans-serif" font-weight="700">Bio SDK</text>
+              <rect x="20" y="62" width="160" height="28" rx="6" fill="#20B8B0" opacity="0.16"/>
+              <text x="32" y="81" fill="#a7f3d0" font-size="12" font-family="sans-serif">▸ Pipelines</text>
+              <rect x="20" y="98" width="160" height="28" rx="6" fill="none"/>
+              <text x="32" y="117" fill="#94a3b8" font-size="12" font-family="sans-serif">  Data files</text>
+              <rect x="20" y="134" width="160" height="28" rx="6" fill="none"/>
+              <text x="32" y="153" fill="#94a3b8" font-size="12" font-family="sans-serif">  Reports</text>
+              <text x="240" y="40" fill="#cbd5e1" font-size="14" font-family="sans-serif" font-weight="600">Sample QC · fastq.qc.v1</text>
+              <rect x="240" y="58" width="330" height="250" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="260" y="90" fill="#64748b" font-size="11" font-family="sans-serif">Base quality distribution (Q-score)</text>
+              <rect x="260" y="120" width="16" height="90" rx="2" fill="#20B8B0" opacity="0.9"/>
+              <rect x="282" y="100" width="16" height="110" rx="2" fill="#20B8B0" opacity="0.8"/>
+              <rect x="304" y="80" width="16" height="130" rx="2" fill="#20B8B0" opacity="0.7"/>
+              <rect x="326" y="70" width="16" height="140" rx="2" fill="#F36F5D" opacity="0.85"/>
+              <rect x="348" y="60" width="16" height="150" rx="2" fill="#F36F5D" opacity="0.75"/>
+              <rect x="370" y="55" width="16" height="155" rx="2" fill="#F36F5D" opacity="0.65"/>
+              <rect x="392" y="52" width="16" height="158" rx="2" fill="#31679E" opacity="0.9"/>
+              <rect x="414" y="58" width="16" height="152" rx="2" fill="#31679E" opacity="0.8"/>
+              <line x1="252" y1="280" x2="560" y2="280" stroke="#374151" stroke-width="1"/>
+              <text x="252" y="296" fill="#64748b" font-size="10" font-family="sans-serif">1</text>
+              <text x="430" y="296" fill="#64748b" font-size="10" font-family="sans-serif">150</text>
+              <rect x="600" y="58" width="310" height="120" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="620" y="84" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">Pipeline</text>
+              <circle cx="630" cy="108" r="5" fill="#20B8B0"/><text x="644" y="112" fill="#94a3b8" font-size="12" font-family="sans-serif">Read FASTQ data</text>
+              <circle cx="630" cy="132" r="5" fill="#20B8B0"/><text x="644" y="136" fill="#94a3b8" font-size="12" font-family="sans-serif">QC statistics</text>
+              <rect x="600" y="196" width="310" height="112" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="620" y="222" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">Run log</text>
+              <text x="620" y="246" fill="#64748b" font-size="11" font-family="monospace">✓ 20,000 reads processed</text>
+              <text x="620" y="266" fill="#64748b" font-size="11" font-family="monospace">✓ Avg quality Q36.2 · passed</text>
+              <text x="620" y="286" fill="#94a3b8" font-size="11" font-family="monospace">▍awaiting next step</text>
+              <rect x="240" y="320" width="670" height="180" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="260" y="348" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">Comparison · Species: Homo sapiens</text>
+              <rect x="260" y="362" width="630" height="24" rx="4" fill="#1f2937"/>
+              <text x="276" y="379" fill="#64748b" font-size="11" font-family="sans-serif">Sample</text><text x="420" y="379" fill="#64748b" font-size="11" font-family="sans-serif">Reads</text><text x="560" y="379" fill="#64748b" font-size="11" font-family="sans-serif">Avg quality</text><text x="700" y="379" fill="#64748b" font-size="11" font-family="sans-serif">Status</text>
+              <rect x="260" y="392" width="630" height="24" rx="4" fill="#111827"/>
+              <text x="276" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_A</text><text x="420" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">20,000</text><text x="560" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">Q36.2</text><text x="700" y="409" fill="#a7f3d0" font-size="11" font-family="sans-serif">✓ Passed</text>
+              <rect x="260" y="420" width="630" height="24" rx="4" fill="#111827"/>
+              <text x="276" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_B</text><text x="420" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">18,420</text><text x="560" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">Q35.8</text><text x="700" y="437" fill="#a7f3d0" font-size="11" font-family="sans-serif">✓ Passed</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">Bio SDK Local Workbench</span><span class="c-s">Data never leaves your machine: QC / alignment / enrichment, fully visualized</span></div>
+        </div>
+        <button class="nav-btn nav-prev" aria-label="Previous">‹</button>
+        <button class="nav-btn nav-next" aria-label="Next">›</button>
+        <div class="slide-dots"><button class="active" aria-label="Slide 1"></button><button aria-label="Slide 2"></button><button aria-label="Slide 3"></button></div>
+      </div>
+    </div>
+  </section>
+
   <!-- Why Linxira -->
   <section class="section-block section-block-alt">
     <div class="section">
@@ -393,6 +610,18 @@ import Navbar from "../../components/Navbar.astro";
         <p>93 curated applications in 14 categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">Containers</span><span class="eco-tag">Dev Tools</span><span class="eco-tag">Bioinformatics</span><span class="eco-tag">Scientific Computing</span><span class="eco-tag">AI Coding</span><span class="eco-tag">Office</span><span class="eco-tag">Gaming</span>
+        </div>
+        <div class="eco-marquee">
+          <div class="eco-track">
+            <span>Web &amp; Browser</span><span>Mail &amp; Communication</span><span>Office</span><span>Docs &amp; Reading</span><span>Passwords &amp; Personal Data</span><span>Graphics, Photo &amp; CAD</span><span>Video &amp; Audio Creation</span><span>Media Playback</span><span>File &amp; Sync Tools</span><span>Development Apps</span><span>Education &amp; Geography</span><span>Scientific Desktop</span><span>Gaming</span><span>System Tools</span>
+            <span>Web &amp; Browser</span><span>Mail &amp; Communication</span><span>Office</span><span>Docs &amp; Reading</span><span>Passwords &amp; Personal Data</span><span>Graphics, Photo &amp; CAD</span><span>Video &amp; Audio Creation</span><span>Media Playback</span><span>File &amp; Sync Tools</span><span>Development Apps</span><span>Education &amp; Geography</span><span>Scientific Desktop</span><span>Gaming</span><span>System Tools</span>
+          </div>
+        </div>
+        <div class="eco-marquee">
+          <div class="eco-track rev">
+            <span>Firefox</span><span>Chromium</span><span>Thunderbird</span><span>LibreOffice</span><span>Krita</span><span>GIMP</span><span>Blender</span><span>OBS Studio</span><span>VLC</span><span>Syncthing</span><span>Nextcloud</span><span>Kate</span><span>Code - OSS</span><span>Docker</span><span>Podman</span><span>Distrobox</span><span>R</span><span>Python</span><span>Julia</span><span>Jupyter</span><span>RStudio</span><span>Steam</span><span>KeePassXC</span><span>DBeaver</span>
+            <span>Firefox</span><span>Chromium</span><span>Thunderbird</span><span>LibreOffice</span><span>Krita</span><span>GIMP</span><span>Blender</span><span>OBS Studio</span><span>VLC</span><span>Syncthing</span><span>Nextcloud</span><span>Kate</span><span>Code - OSS</span><span>Docker</span><span>Podman</span><span>Distrobox</span><span>R</span><span>Python</span><span>Julia</span><span>Jupyter</span><span>RStudio</span><span>Steam</span><span>KeePassXC</span><span>DBeaver</span>
+          </div>
         </div>
       </a>
     </div>
@@ -580,6 +809,29 @@ import Navbar from "../../components/Navbar.astro";
         card.addEventListener('mousemove', onMove);
         card.addEventListener('mouseleave', onLeave);
       });
+    }
+
+    // ---------- Highlight slideshow (auto-play · arrows / dots / hover pause) ----------
+    const slideshow = document.getElementById('slideshow');
+    if (slideshow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const slides = Array.from(slideshow.querySelectorAll('.slide'));
+      const dots = Array.from(slideshow.querySelectorAll('.slide-dots button'));
+      const prev = slideshow.querySelector('.nav-prev');
+      const next = slideshow.querySelector('.nav-next');
+      let cur = 0, timer = null;
+      const go = (n) => {
+        cur = (n + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+      };
+      const play = () => { if (!timer) timer = setInterval(() => go(cur + 1), 5200); };
+      const pause = () => { if (timer) { clearInterval(timer); timer = null; } };
+      dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+      prev.addEventListener('click', () => go(cur - 1));
+      next.addEventListener('click', () => go(cur + 1));
+      slideshow.addEventListener('mouseenter', pause);
+      slideshow.addEventListener('mouseleave', play);
+      play();
     }
   </script>
 </body>

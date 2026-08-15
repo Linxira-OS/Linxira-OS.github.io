@@ -249,6 +249,48 @@ import Navbar from "../../components/Navbar.astro";
       .product-duo { grid-template-columns: 1fr; }
       .product-showcase { grid-template-columns: 1fr; }
     }
+
+    /* ---------- 动态更新滚动条（ticker · 自动滚动） ---------- */
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(2,6,10,0.4); }
+    .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
+    .ticker-wrap:hover .ticker { animation-play-state: paused; }
+    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
+    .ticker-item b { color: #20B8B0; font-weight: 600; }
+    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: #20B8B0; box-shadow: 0 0 10px rgba(32,184,176,0.8); flex: none; }
+    @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ---------- 实机亮点轮播（模拟界面 · 自动播放） ---------- */
+    .slideshow { position: relative; max-width: 900px; margin: 0 auto; border-radius: 22px; user-select: none; }
+    .slide { position: absolute; inset: 0; opacity: 0; transform: scale(0.982); transition: opacity 0.9s ease, transform 0.9s ease; pointer-events: none; }
+    .slide.active { position: relative; opacity: 1; transform: none; pointer-events: auto; }
+    .slide-frame { border-radius: 20px; overflow: hidden; box-shadow: 0 30px 90px rgba(0,0,0,0.5); border: 1px solid var(--glass-border); }
+    .slide-frame svg { display: block; width: 100%; height: auto; }
+    .slide-caption { position: absolute; left: 1.5rem; bottom: 1.3rem; z-index: 2; display: flex; flex-direction: column; gap: 0.15rem; }
+    .slide-caption .c-t { font-size: 1.2rem; font-weight: 700; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,0.65); }
+    .slide-caption .c-s { font-size: 0.85rem; color: rgba(255,255,255,0.88); text-shadow: 0 1px 8px rgba(0,0,0,0.65); }
+    .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(10,15,26,0.55); color: var(--ink-strong); cursor: pointer; font-size: 1.05rem; line-height: 1; transition: all 0.2s; }
+    .nav-btn:hover { border-color: #20B8B0; color: #20B8B0; background: rgba(10,15,26,0.8); }
+    .nav-prev { left: 1.1rem; } .nav-next { right: 1.1rem; }
+    .slide-dots { position: absolute; bottom: 1.1rem; right: 1.5rem; z-index: 3; display: flex; gap: 0.45rem; }
+    .slide-dots button { width: 9px; height: 9px; border-radius: 999px; border: none; background: rgba(255,255,255,0.4); cursor: pointer; padding: 0; transition: all 0.3s; }
+    .slide-dots button.active { width: 26px; background: #20B8B0; }
+
+    /* ---------- 生态分类 / 软件双行滚动 ---------- */
+    .eco-marquee { position: relative; overflow: hidden; margin-top: 1.7rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+    .eco-marquee + .eco-marquee { margin-top: 0.7rem; }
+    .eco-track { display: flex; width: max-content; gap: 0.7rem; animation: eco-scroll 44s linear infinite; }
+    .eco-track.rev { animation-direction: reverse; animation-duration: 54s; }
+    .eco-marquee:hover .eco-track { animation-play-state: paused; }
+    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.2); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
+    .eco-track.rev span { background: rgba(243,111,93,0.07); border-color: rgba(243,111,93,0.2); }
+    @keyframes eco-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker, .eco-track { animation: none; width: 100%; flex-wrap: wrap; }
+      .ticker-item { white-space: normal; }
+      .slide { position: relative; opacity: 1; transform: none; pointer-events: auto; }
+      .slide + .slide { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -288,6 +330,24 @@ import Navbar from "../../components/Navbar.astro";
       </div>
     </div>
   </section>
+
+  <!-- 动态更新滚动条（自动滚动 · hover 暂停） -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="tdot"></span><b>测试版 ISO</b> 已通过完整安装测试</span>
+      <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
+      <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
+      <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
+      <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
+      <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
+      <span class="ticker-item"><span class="tdot"></span><b>测试版 ISO</b> 已通过完整安装测试</span>
+      <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
+      <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
+      <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
+      <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
+      <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
+    </div>
+  </div>
 
   <!-- 终端演示（一行命令，掌控一切 · 致敬 DeepSeek Harness 的终端叙事） -->
   <section class="section-block terminal-section">
@@ -354,6 +414,166 @@ import Navbar from "../../components/Navbar.astro";
     </div>
   </section>
 
+  <!-- 实机亮点（模拟界面轮播 · 自动播放） -->
+  <section class="section-block section-block-alt2">
+    <div class="section">
+      <div class="section-header reveal">
+        <h2 class="section-title">开箱即用</h2>
+        <p class="section-subtitle">从桌面到无头计算，再到本地生信分析——一台机器，三种姿态</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="slideshow glass reveal" id="slideshow">
+        <!-- Slide 1 · KDE Plasma 桌面 -->
+        <div class="slide active">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="dsk-bg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#0d1b20"/><stop offset="0.55" stop-color="#122a2e"/><stop offset="1" stop-color="#0a0f1a"/>
+                </linearGradient>
+                <linearGradient id="win-g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#1f2937"/><stop offset="1" stop-color="#111827"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="url(#dsk-bg)"/>
+              <circle cx="120" cy="90" r="180" fill="#20B8B0" opacity="0.10"/>
+              <circle cx="840" cy="420" r="220" fill="#F36F5D" opacity="0.08"/>
+              <line x1="0" y1="46" x2="960" y2="46" stroke="#000" stroke-width="46" opacity="0.55"/>
+              <circle cx="30" cy="23" r="7" fill="#20B8B0"/>
+              <text x="48" y="27" fill="#cbd5e1" font-size="14" font-family="sans-serif">启动器</text>
+              <text x="860" y="27" fill="#cbd5e1" font-size="13" font-family="sans-serif" text-anchor="end">9:41 · 8月14日 周五</text>
+              <!-- 桌面终端窗口 -->
+              <rect x="120" y="120" width="520" height="300" rx="10" fill="url(#win-g)" stroke="#374151" stroke-width="1"/>
+              <rect x="120" y="120" width="520" height="34" rx="10" fill="#1b2434"/>
+              <circle cx="148" cy="137" r="6" fill="#ff5f57"/><circle cx="168" cy="137" r="6" fill="#febc2e"/><circle cx="188" cy="137" r="6" fill="#28c840"/>
+              <text x="380" y="142" fill="#64748b" font-size="12" font-family="sans-serif" text-anchor="middle">linxira — zsh</text>
+              <text x="140" y="185" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="185" fill="#cbd5e1" font-size="14" font-family="monospace">linxira-config headless on now</text>
+              <text x="140" y="210" fill="#64748b" font-size="13" font-family="monospace">→ 已切换无头模式：内存全给计算 ✓</text>
+              <text x="140" y="240" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="240" fill="#cbd5e1" font-size="14" font-family="monospace">linxira-update</text>
+              <text x="140" y="265" fill="#64748b" font-size="13" font-family="monospace">→ 已是最新：上游补丁 0 个待装 ✓</text>
+              <text x="140" y="300" fill="#20B8B0" font-size="14" font-family="monospace">$</text>
+              <text x="160" y="300" fill="#cbd5e1" font-size="14" font-family="monospace">▍</text>
+              <!-- 右侧文件管理器 -->
+              <rect x="680" y="140" width="230" height="200" rx="10" fill="url(#win-g)" stroke="#374151" stroke-width="1"/>
+              <rect x="680" y="140" width="230" height="30" rx="10" fill="#1b2434"/>
+              <text x="795" y="160" fill="#64748b" font-size="12" font-family="sans-serif" text-anchor="middle">文件管理器</text>
+              <rect x="696" y="182" width="198" height="18" rx="4" fill="#111827"/>
+              <text x="704" y="195" fill="#64748b" font-size="11" font-family="sans-serif">~/research/RNA-seq</text>
+              <rect x="696" y="208" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.14"/>
+              <text x="704" y="220" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_R1.fastq.gz</text>
+              <rect x="696" y="228" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.10"/>
+              <text x="704" y="240" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_R2.fastq.gz</text>
+              <rect x="696" y="248" width="198" height="16" rx="3" fill="#20B8B0" opacity="0.07"/>
+              <text x="704" y="260" fill="#cbd5e1" font-size="11" font-family="sans-serif">results/</text>
+              <!-- 任务栏 -->
+              <line x1="0" y1="502" x2="960" y2="502" stroke="#000" stroke-width="38" opacity="0.55"/>
+              <circle cx="40" cy="521" r="9" fill="#20B8B0"/>
+              <rect x="70" y="512" width="26" height="18" rx="4" fill="#F36F5D" opacity="0.9"/>
+              <rect x="110" y="512" width="26" height="18" rx="4" fill="#31679E" opacity="0.9"/>
+              <rect x="430" y="509" width="100" height="24" rx="6" fill="#20B8B0" opacity="0.25"/>
+              <text x="480" y="526" fill="#a7f3d0" font-size="11" font-family="sans-serif" text-anchor="middle">终端 · 活跃</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">KDE Plasma 桌面</span><span class="c-s">开箱即用：蓝牙 / WiFi / 打印 / 中文输入法</span></div>
+        </div>
+        <!-- Slide 2 · 无头计算模式 -->
+        <div class="slide">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#050a0f"/><stop offset="1" stop-color="#0a1119"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="url(#hbg)"/>
+              <text x="48" y="60" fill="#20B8B0" font-size="15" font-family="monospace">linxira — 无头计算模式 · headless</text>
+              <rect x="48" y="90" width="864" height="1" fill="#1f2937"/>
+              <text x="48" y="130" fill="#20B8B0" font-size="14" font-family="monospace">$ systemctl status linxira-headless</text>
+              <text x="48" y="158" fill="#94a3b8" font-size="13" font-family="monospace">● headless.service — 计算模式守护进程</text>
+              <text x="48" y="178" fill="#cbd5e1" font-size="13" font-family="monospace">     Active: active (running) since 08:02:14</text>
+              <text x="48" y="198" fill="#cbd5e1" font-size="13" font-family="monospace">     Memory: 桌面已停止 · 释放 11.2 GiB</text>
+              <rect x="48" y="218" width="560" height="14" rx="7" fill="#1f2937"/>
+              <rect x="48" y="218" width="470" height="14" rx="7" fill="#20B8B0"/>
+              <text x="622" y="230" fill="#94a3b8" font-size="12" font-family="monospace">84% 给计算</text>
+              <text x="48" y="266" fill="#20B8B0" font-size="14" font-family="monospace">$ nvidia-smi</text>
+              <text x="48" y="294" fill="#cbd5e1" font-size="13" font-family="monospace">RTX 5090 · 32 GB · 功耗 412 W · 温度 61°C</text>
+              <text x="48" y="314" fill="#cbd5e1" font-size="13" font-family="monospace">进程: python3 train.py — 显存 27.9 / 32 GB</text>
+              <rect x="48" y="330" width="560" height="14" rx="7" fill="#1f2937"/>
+              <rect x="48" y="330" width="486" height="14" rx="7" fill="#F36F5D"/>
+              <text x="622" y="342" fill="#94a3b8" font-size="12" font-family="monospace">87% 利用率</text>
+              <text x="48" y="390" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config timeshift status</text>
+              <text x="48" y="418" fill="#94a3b8" font-size="13" font-family="monospace">快照：每日 3 份 · 启动 3 份 · 更新前自动快照 ✓</text>
+              <text x="48" y="458" fill="#20B8B0" font-size="14" font-family="monospace">$ linxira-config headless off</text>
+              <text x="48" y="486" fill="#94a3b8" font-size="13" font-family="monospace">→ 已回到桌面模式 · 欢迎回来 ✓</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">无头计算模式</span><span class="c-s">一条命令切换：桌面零占用，内存与 GPU 全给计算</span></div>
+        </div>
+        <!-- Slide 3 · Bio SDK 分析台 -->
+        <div class="slide">
+          <div class="slide-frame">
+            <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bw-g" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#141b26"/><stop offset="1" stop-color="#0d131c"/>
+                </linearGradient>
+              </defs>
+              <rect width="960" height="540" fill="#0d131c"/>
+              <rect x="0" y="0" width="200" height="540" fill="#101724"/>
+              <text x="24" y="40" fill="#20B8B0" font-size="15" font-family="sans-serif" font-weight="700">Bio SDK</text>
+              <rect x="20" y="62" width="160" height="28" rx="6" fill="#20B8B0" opacity="0.16"/>
+              <text x="32" y="81" fill="#a7f3d0" font-size="12" font-family="sans-serif">▸ 分析流程</text>
+              <rect x="20" y="98" width="160" height="28" rx="6" fill="none"/>
+              <text x="32" y="117" fill="#94a3b8" font-size="12" font-family="sans-serif">  数据文件</text>
+              <rect x="20" y="134" width="160" height="28" rx="6" fill="none"/>
+              <text x="32" y="153" fill="#94a3b8" font-size="12" font-family="sans-serif">  结果报告</text>
+              <!-- 主区：统计图 -->
+              <text x="240" y="40" fill="#cbd5e1" font-size="14" font-family="sans-serif" font-weight="600">样本质控 · fastq.qc.v1</text>
+              <rect x="240" y="58" width="330" height="250" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="260" y="90" fill="#64748b" font-size="11" font-family="sans-serif">碱基质量分布 (Q-score)</text>
+              <rect x="260" y="120" width="16" height="90" rx="2" fill="#20B8B0" opacity="0.9"/>
+              <rect x="282" y="100" width="16" height="110" rx="2" fill="#20B8B0" opacity="0.8"/>
+              <rect x="304" y="80" width="16" height="130" rx="2" fill="#20B8B0" opacity="0.7"/>
+              <rect x="326" y="70" width="16" height="140" rx="2" fill="#F36F5D" opacity="0.85"/>
+              <rect x="348" y="60" width="16" height="150" rx="2" fill="#F36F5D" opacity="0.75"/>
+              <rect x="370" y="55" width="16" height="155" rx="2" fill="#F36F5D" opacity="0.65"/>
+              <rect x="392" y="52" width="16" height="158" rx="2" fill="#31679E" opacity="0.9"/>
+              <rect x="414" y="58" width="16" height="152" rx="2" fill="#31679E" opacity="0.8"/>
+              <line x1="252" y1="280" x2="560" y2="280" stroke="#374151" stroke-width="1"/>
+              <text x="252" y="296" fill="#64748b" font-size="10" font-family="sans-serif">1</text>
+              <text x="430" y="296" fill="#64748b" font-size="10" font-family="sans-serif">150</text>
+              <!-- 右侧：流程卡片 -->
+              <rect x="600" y="58" width="310" height="120" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="620" y="84" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">分析流程</text>
+              <circle cx="630" cy="108" r="5" fill="#20B8B0"/><text x="644" y="112" fill="#94a3b8" font-size="12" font-family="sans-serif">读取 FASTQ 数据</text>
+              <circle cx="630" cy="132" r="5" fill="#20B8B0"/><text x="644" y="136" fill="#94a3b8" font-size="12" font-family="sans-serif">质控统计</text>
+              <rect x="600" y="196" width="310" height="112" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="620" y="222" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">运行日志</text>
+              <text x="620" y="246" fill="#64748b" font-size="11" font-family="monospace">✓ 20,000 条序列读取完成</text>
+              <text x="620" y="266" fill="#64748b" font-size="11" font-family="monospace">✓ 平均质量 Q36.2 · 通过</text>
+              <text x="620" y="286" fill="#94a3b8" font-size="11" font-family="monospace">▍等待下一个步骤</text>
+              <!-- 底部状态 -->
+              <rect x="240" y="320" width="670" height="180" rx="10" fill="url(#bw-g)" stroke="#1f2937"/>
+              <text x="260" y="348" fill="#cbd5e1" font-size="13" font-family="sans-serif" font-weight="600">对比表 · 物种：Homo sapiens</text>
+              <rect x="260" y="362" width="630" height="24" rx="4" fill="#1f2937"/>
+              <text x="276" y="379" fill="#64748b" font-size="11" font-family="sans-serif">样本</text><text x="420" y="379" fill="#64748b" font-size="11" font-family="sans-serif">序列数</text><text x="560" y="379" fill="#64748b" font-size="11" font-family="sans-serif">平均质量</text><text x="700" y="379" fill="#64748b" font-size="11" font-family="sans-serif">状态</text>
+              <rect x="260" y="392" width="630" height="24" rx="4" fill="#111827"/>
+              <text x="276" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_A</text><text x="420" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">20,000</text><text x="560" y="409" fill="#cbd5e1" font-size="11" font-family="sans-serif">Q36.2</text><text x="700" y="409" fill="#a7f3d0" font-size="11" font-family="sans-serif">✓ 通过</text>
+              <rect x="260" y="420" width="630" height="24" rx="4" fill="#111827"/>
+              <text x="276" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">sample_B</text><text x="420" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">18,420</text><text x="560" y="437" fill="#cbd5e1" font-size="11" font-family="sans-serif">Q35.8</text><text x="700" y="437" fill="#a7f3d0" font-size="11" font-family="sans-serif">✓ 通过</text>
+            </svg>
+          </div>
+          <div class="slide-caption"><span class="c-t">Bio SDK 本地分析台</span><span class="c-s">数据不出本机：质控 / 比对 / 富集全流程可视化</span></div>
+        </div>
+        <button class="nav-btn nav-prev" aria-label="上一屏">‹</button>
+        <button class="nav-btn nav-next" aria-label="下一屏">›</button>
+        <div class="slide-dots"><button class="active" aria-label="第 1 屏"></button><button aria-label="第 2 屏"></button><button aria-label="第 3 屏"></button></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 核心特性 -->
   <section class="section-block section-block-alt">
     <div class="section">
@@ -408,6 +628,18 @@ import Navbar from "../../components/Navbar.astro";
         <p>93 款精选软件，14 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">容器</span><span class="eco-tag">开发工具</span><span class="eco-tag">生信工作流</span><span class="eco-tag">科学计算</span><span class="eco-tag">AI 编码</span><span class="eco-tag">办公</span><span class="eco-tag">游戏</span>
+        </div>
+        <div class="eco-marquee">
+          <div class="eco-track">
+            <span>网络与浏览器</span><span>邮件与通信</span><span>办公</span><span>文档与阅读</span><span>密码与个人数据</span><span>图形、摄影与 CAD</span><span>视频与音频创作</span><span>媒体播放</span><span>文件与同步工具</span><span>开发应用</span><span>教育与地理</span><span>科学桌面应用</span><span>游戏</span><span>系统工具</span>
+            <span>网络与浏览器</span><span>邮件与通信</span><span>办公</span><span>文档与阅读</span><span>密码与个人数据</span><span>图形、摄影与 CAD</span><span>视频与音频创作</span><span>媒体播放</span><span>文件与同步工具</span><span>开发应用</span><span>教育与地理</span><span>科学桌面应用</span><span>游戏</span><span>系统工具</span>
+          </div>
+        </div>
+        <div class="eco-marquee">
+          <div class="eco-track rev">
+            <span>Firefox</span><span>Chromium</span><span>Thunderbird</span><span>LibreOffice</span><span>Krita</span><span>GIMP</span><span>Blender</span><span>OBS Studio</span><span>VLC</span><span>Syncthing</span><span>Nextcloud</span><span>Kate</span><span>Code - OSS</span><span>Docker</span><span>Podman</span><span>Distrobox</span><span>R</span><span>Python</span><span>Julia</span><span>Jupyter</span><span>RStudio</span><span>Steam</span><span>KeePassXC</span><span>DBeaver</span>
+            <span>Firefox</span><span>Chromium</span><span>Thunderbird</span><span>LibreOffice</span><span>Krita</span><span>GIMP</span><span>Blender</span><span>OBS Studio</span><span>VLC</span><span>Syncthing</span><span>Nextcloud</span><span>Kate</span><span>Code - OSS</span><span>Docker</span><span>Podman</span><span>Distrobox</span><span>R</span><span>Python</span><span>Julia</span><span>Jupyter</span><span>RStudio</span><span>Steam</span><span>KeePassXC</span><span>DBeaver</span>
+          </div>
         </div>
       </a>
     </div>
@@ -608,6 +840,29 @@ import Navbar from "../../components/Navbar.astro";
         card.addEventListener('mousemove', onMove);
         card.addEventListener('mouseleave', onLeave);
       });
+    }
+
+    // ---------- 亮点轮播（自动播放 · 箭头 / 指示点 / hover 暂停） ----------
+    const slideshow = document.getElementById('slideshow');
+    if (slideshow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const slides = Array.from(slideshow.querySelectorAll('.slide'));
+      const dots = Array.from(slideshow.querySelectorAll('.slide-dots button'));
+      const prev = slideshow.querySelector('.nav-prev');
+      const next = slideshow.querySelector('.nav-next');
+      let cur = 0, timer = null;
+      const go = (n) => {
+        cur = (n + slides.length) % slides.length;
+        slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+      };
+      const play = () => { if (!timer) timer = setInterval(() => go(cur + 1), 5200); };
+      const pause = () => { if (timer) { clearInterval(timer); timer = null; } };
+      dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+      prev.addEventListener('click', () => go(cur - 1));
+      next.addEventListener('click', () => go(cur + 1));
+      slideshow.addEventListener('mouseenter', pause);
+      slideshow.addEventListener('mouseleave', play);
+      play();
     }
   </script>
 </body>
