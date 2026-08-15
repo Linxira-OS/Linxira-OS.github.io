@@ -1,15 +1,156 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="contributing — Linxira OS" maxWidth="720px">
+<PageLayout lang="zh" active="docs" title="参与贡献 — Linxira OS" maxWidth="900px">
   <a href="/zh/docs/" class="back">← 返回文档</a>
-  <h1>contributing</h1>
-  <div class="placeholder">
-    <p>📝 此页面正在编写中，敬请期待。</p>
-  </div>
+  <h1>参与贡献</h1>
+  <p><a href="https://github.com/Linxira-OS/packages" target="_blank">Linxira-OS/packages</a> 仓库集中管理 Linxira OS 所有自研包的 PKGBUILD。CI 在干净的 Arch Linux 容器里构建每个包，签名后发布到 GitHub Pages 上的 <code>[linxira]</code> 仓库。本文说明仓库结构、四种包来源模式，以及如何更新或添加一个包。</p>
+
+  <h2>仓库结构</h2>
+<pre><code>packages/
+├── packages/                  # 每个子目录 = 一个包
+│   ├── calamares/             # 采用的上游安装器(release tarball + patch)
+│   ├── linxira-catalog/       # 自研包(codeload commit 模式)
+│   ├── linxira-hwd-detector/ # 自研包
+│   ├── shelly/                # 采用的上游包(codeload commit 模式)
+│   └── ...                    # 共 18 个包
+├── scripts/
+│   ├── check-boundaries.sh    # 边界校验(CI 第一道门,改 PKGBUILD 必须同步改)
+│   └── publish-repo.sh        # 签名 + repo-add + GitHub Pages 发布
+├── .github/workflows/
+│   └── packages.yml           # CI:boundaries → build(4包) + system-stack(13包) → publish
+├── README.md                  # 仓库说明 + 各包用途
+├── RELEASE.md                 # 发布流程 + 密钥管理
+└── CONTRIBUTING.md            # 本文件</code></pre>
+
+  <h2>包模式</h2>
+  <p>PKGBUILD 的 <code>source=()</code> 有四种写法，对应四种包来源模式：</p>
+
+  <h3>模式 A：codeload commit 模式（大多数自研包）</h3>
+  <p>源码固定到某个 commit，makepkg 自动从 codeload 下载，sha256 校验完整性。</p>
+<pre><code>_commit=&lt;40位SHA&gt;
+source=("$pkgname-$_commit.tar.gz::https://codeload.github.com/Linxira-OS/$pkgname/tar.gz/$_commit")
+sha256sums=('&lt;tarball的sha256&gt;')</code></pre>
+
+  <h3>模式 B：release tarball 模式（calamares）</h3>
+  <p>用上游 release tarball，靠 tag 不可变。</p>
+<pre><code>source=("https://github.com/calamares/calamares/releases/download/v$&#123;pkgver&#125;/calamares-$&#123;pkgver&#125;.tar.gz")
+sha256sums=('&lt;上游发布的sha256&gt;')</code></pre>
+
+  <h3>模式 C：git source 模式（linxira-hooks）</h3>
+  <p>git source 不校验 sha256（git clone 自带完整性校验）。</p>
+<pre><code>source=("git+$url.git#commit=$_commit")
+sha256sums=('SKIP')</code></pre>
+
+  <h3>模式 D：本地文件模式（linxira-keyring）</h3>
+  <p>keyring 的 .gpg 文件直接放在 PKGBUILD 同目录。</p>
+<pre><code>source=("linxira.gpg")
+sha256sums=('&lt;本地文件的sha256&gt;')</code></pre>
+
+  <h2>更新一个包（最常见操作）</h2>
+  <p>当某个自研仓库（如 linxira-catalog）有了新 commit，需要更新 packages 仓库里的 PKGBUILD：</p>
+
+  <h3>第 1 步：获取新 commit 的完整 SHA</h3>
+<pre><code># 在源码仓库
+git log --oneline -1
+# 输出: 9dd16cda... (取完整 40 位 SHA)</code></pre>
+
+  <h3>第 2 步：更新 PKGBUILD</h3>
+  <p>改两个地方：<code>_commit=&lt;新的40位SHA&gt;</code> 和 <code>sha256sums=('&lt;新tarball的sha256&gt;')</code>。计算新 sha256（Arch 环境）有三种方法：</p>
+<pre><code># 方法 1:updpkgsums(推荐,自动改 PKGBUILD)
+cd packages/linxira-catalog
+updpkgsums
+
+# 方法 2:makepkg -g(只输出新 sha256,手动粘贴)
+cd packages/linxira-catalog
+makepkg -g
+
+# 方法 3:手动下载算
+curl -L "https://codeload.github.com/Linxira-OS/linxira-catalog/tar.gz/&lt;commit&gt;" -o /tmp/tarball.tar.gz
+sha256sum /tmp/tarball.tar.gz</code></pre>
+  <p>如果 pkgver 或 pkgrel 也需要更新，一并修改。</p>
+
+  <h3>第 3 步：同步 check-boundaries.sh</h3>
+  <div class="note"><strong>这一步最容易遗漏。</strong></div>
+  <p><a href="https://github.com/Linxira-OS/packages/blob/main/scripts/check-boundaries.sh" target="_blank">scripts/check-boundaries.sh</a> 把每个包的 <code>_commit</code> 和 <code>sha256sums</code> 硬编码了，改了 PKGBUILD 必须同步改这个脚本里的对应行，否则 CI 的 boundaries job 会失败。</p>
+<pre><code># 找到你的包在 check-boundaries.sh 里的行
+grep linxira-catalog scripts/check-boundaries.sh
+# 输出两行:
+#   grep -q '89b25593...' packages/linxira-catalog/PKGBUILD
+#   grep -q 'bdf3657d...' packages/linxira-catalog/PKGBUILD
+# 把这两个 hash 更新成 PKGBUILD 里的新值</code></pre>
+
+  <h3>第 4 步：本地验证</h3>
+<pre><code># 跑边界校验(CI 同款)
+bash scripts/check-boundaries.sh
+
+# 如果本地有 Arch 环境,试着构建
+cd packages/linxira-catalog
+makepkg -f</code></pre>
+
+  <h3>第 5 步：提交</h3>
+<pre><code>git add packages/&lt;pkg&gt;/PKGBUILD scripts/check-boundaries.sh
+git commit -m "update &lt;pkg&gt; to &lt;commit前7位&gt;"
+git push</code></pre>
+  <p>push 后 CI 自动跑：boundaries → build/system-stack。如果 CI 绿了，包就自动构建好了（artifact 可下载）。</p>
+
+  <h2>CI 流水线</h2>
+<pre><code>push/PR
+  │
+  ├─ boundaries          # check-boundaries.sh(秒级)
+  │
+  ├─ build (matrix)      # calamares / artwork / hooks / shelly
+  │   └─ docker archlinux:base-devel → makepkg
+  │
+  ├─ system-stack        # 13 个 linxira-* 包,按依赖顺序构建
+  │   └─ docker archlinux:base-devel → makepkg + pacman -U(装进容器供后续包依赖)
+  │
+  └─ publish (仅手动触发)  # 签名 + repo-add → GitHub Pages</code></pre>
+
+  <h2>CI 失败的常见原因</h2>
+  <table>
+    <tr><th>原因</th><th>表现</th><th>解决</th></tr>
+    <tr><td>sha256 不匹配</td><td><code>==&gt; ERROR: One or more files did not pass the validity check!</code></td><td>重算 sha256：<code>makepkg -g</code></td></tr>
+    <tr><td>_commit 过期但 sha256 没更新</td><td>同上</td><td>同时更新 _commit 和 sha256</td></tr>
+    <tr><td>check-boundaries.sh 没同步</td><td><code>boundaries</code> job 失败</td><td>同步硬编码的 _commit/sha256</td></tr>
+    <tr><td>makedepends 缺失</td><td><code>error: header file not found</code> 或 <code>bindgen failed</code></td><td>在 PKGBUILD makedepends 里加缺失的包</td></tr>
+    <tr><td>CRLF 问题</td><td>makepkg 解析 PKGBUILD 报奇怪错误</td><td>确保 PKGBUILD 是 LF 行尾（用 <code>.gitattributes</code> 或 <code>dos2unix</code>）</td></tr>
+  </table>
+
+  <h2>添加新包</h2>
+  <ol>
+    <li>在 <code>packages/</code> 下创建子目录，放 PKGBUILD</li>
+    <li>如果有 patch 或额外文件，放在同目录</li>
+    <li>如果包需要进 system-stack，在 <code>packages.yml</code> 的 <code>packages=(...)</code> 数组里加包名</li>
+    <li>如果需要边界校验，在 <code>check-boundaries.sh</code> 里加校验规则</li>
+    <li>确保包的 <code>groups=('linxira')</code>，这样 <code>pacman -S linxira</code> 能发现它</li>
+  </ol>
+
+  <h2>密钥与签名</h2>
+  <p>详见 <a href="https://github.com/Linxira-OS/packages/blob/main/RELEASE.md" target="_blank">RELEASE.md</a>。要点：</p>
+  <ul>
+    <li>包签名用签名子密钥（2026-08-04 轮换后生效），GitHub Actions secret <code>LINXIRA_GPG_PRIVATE_KEY</code> + <code>LINXIRA_GPG_FINGERPRINT</code>；具体指纹不在网站上公布</li>
+    <li>主密钥离线保管，签名子密钥仅在 CI 使用</li>
+    <li><code>linxira-keyring</code> 包分发公钥，用户装了这个包才能验证 <code>[linxira]</code> 仓库的包</li>
+  </ul>
+
+  <h2>不要做的事</h2>
+  <ul>
+    <li><strong>不要用 <code>git add -A</code></strong>：可能带入意外文件（如 <code>.pkg.tar.zst</code> 构建产物）。用具体文件名 <code>git add packages/&lt;pkg&gt;/PKGBUILD</code></li>
+    <li><strong>不要手工 tar 打包源码</strong>：PKGBUILD 的 source 必须用 codeload URL 或 release tarball，不能引用本地路径（linxira-keyring 除外）</li>
+    <li><strong>不要跳过 check-boundaries.sh</strong>：它是 CI 第一道门，本地跑不过 CI 一定挂</li>
+    <li><strong>不要改 _commit 但不改 sha256</strong>：不同 commit 的 tarball 必然有不同的 sha256</li>
+    <li><strong>不要在 PKGBUILD 里写 CachyOS/AUR/Seafoam 仓库引用</strong>：check-boundaries.sh 会拒绝</li>
+  </ul>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+    th { background: rgba(30,41,59,0.6); color: #e2e8f0; text-align: left; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+    td { color: #94a3b8; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+    .note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.3); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 1.2rem 0; color: #a7f3d0; }
   </style>
 </PageLayout>

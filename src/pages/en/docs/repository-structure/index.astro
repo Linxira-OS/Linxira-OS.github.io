@@ -1,15 +1,110 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="repository-structure — Linxira OS" maxWidth="720px">
+<PageLayout lang="en" active="docs" title="Repository Structure — Linxira OS" maxWidth="900px">
   <a href="/en/docs/" class="back">← Back to Docs</a>
-  <h1>repository-structure</h1>
-  <div class="placeholder">
-    <p>📝 This page is under construction.</p>
-  </div>
+  <h1>Repository Structure</h1>
+  <p>All source code and artifacts of Linxira OS live under the <code>Linxira-OS</code> GitHub organization, organized into four groups: core repositories, first-party system tools, adopted upstream projects, and documentation. This page lists the responsibility of each repository and how they relate, from source to ISO delivery.</p>
+
+  <h2>Core Repositories</h2>
+  <p>Repositories that carry the distribution's overall architecture, package supply chain, and ISO artifacts:</p>
+  <table>
+    <thead><tr><th>Repository</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-os</code></td><td>Project overview and governance: product architecture documents, repository governance manifest (<code>governance/repositories.yaml</code>), release notes (<code>releases/</code>), and support matrix</td></tr>
+      <tr><td><code>packages</code></td><td>Official package definitions and publishing pipeline: one pinned PKGBUILD per first-party package, with CI that builds in an isolated Arch container, signs, runs <code>repo-add</code>, and deploys to GitHub Pages</td></tr>
+      <tr><td><code>linxira-packages</code></td><td>The signed [linxira] package repository (x86_64), served by GitHub Pages; enable it after installing <code>linxira-keyring</code></td></tr>
+      <tr><td><code>linxira-iso-direct</code></td><td>Current ISO build profile (Direct-Arch): complete offline installation closure, <code>linux</code> + <code>linux-lts</code> dual-kernel fallback, and Calamares installer configuration</td></tr>
+      <tr><td><code>linxira-iso</code></td><td>Deprecated legacy ISO build system (forked from CachyOS-Live-ISO), kept for historical reference only</td></tr>
+      <tr><td><code>linxira-keys</code></td><td>Private repository: GPG signing-key vault (double-layer encryption), accessible only to key holders; contains no passphrases or plaintext private keys</td></tr>
+    </tbody>
+  </table>
+
+  <h2>First-party System Tools</h2>
+  <p>17 tool repositories maintained by Linxira (<code>shelly</code> is a source-built packaging exception):</p>
+  <table>
+    <thead><tr><th>Repository</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-welcome</code></td><td>Plasma-native status and routing surface: shows system status and install completion, offers fixed tool entry points, never runs software transactions</td></tr>
+      <tr><td><code>linxira-config-hub</code></td><td>Configuration and diagnostics CLI (<code>linxira-config</code>): mirrors (Arch/npm/PyPI/AUR/Go/Flatpak), SSH, network, and headless switching</td></tr>
+      <tr><td><code>linxira-update</code></td><td>System updater: first-party continuation of the Cachy-Update/Arch-Update code line, with a system tray and pre/post-update checks</td></tr>
+      <tr><td><code>linxira-package-center</code></td><td>Curated application installer (Quick System Software Setup): catalog-bound planning, delegating the transaction to <code>linxira-components</code></td></tr>
+      <tr><td><code>linxira-component-manager</code></td><td>Component/capability tree selector (Quick System Runtime Setup): nested capability tree with a plan/confirm/apply flow</td></tr>
+      <tr><td><code>linxira-components</code></td><td>Catalog-bound pacman transaction backend: creates deterministic plans, confirms them, applies a single root-only pacman transaction, and persists receipts</td></tr>
+      <tr><td><code>linxira-completion-agent</code></td><td>First-online completion agent: presents software and operations deferred by the installer receipt</td></tr>
+      <tr><td><code>linxira-gaming-manager</code></td><td>Gaming library and compatibility workspace: Steam library discovery, fixed-argument launching, restic encrypted backups</td></tr>
+      <tr><td><code>linxira-hwd-detector</code></td><td>Read-only hardware detection derivative of CHWD 1.23.0 (Rust): emits a versioned JSON hardware report</td></tr>
+      <tr><td><code>linxira-hardware-driver-manager</code></td><td>Hardware and driver manager: read-only reports and fixed-policy plans, with no privileged apply backend</td></tr>
+      <tr><td><code>linxira-kernel-manager</code></td><td>Read-only kernel and boot reporting: <code>linux</code> / <code>linux-lts</code> support matrix, GRUB entries, and DKMS state</td></tr>
+      <tr><td><code>linxira-recovery-diagnostics</code></td><td>Recovery diagnostics: Btrfs/Timeshift/boot/keyring readiness reports and a privacy-filtered support bundle</td></tr>
+      <tr><td><code>linxira-catalog</code></td><td>Canonical, versioned software component metadata (Catalog v2/v3): applications, components, presets, and offline policy</td></tr>
+      <tr><td><code>linxira-artwork</code></td><td>Official brand assets: logos, wallpapers, icons, and welcome banners; brand assets retain all rights</td></tr>
+      <tr><td><code>linxira-hooks</code></td><td>ALPM/Pacman hooks and helper scripts: os-release branding, reboot-required marker, and initramfs regeneration</td></tr>
+      <tr><td><code>linxira-keyring</code></td><td>Signing keyring package (trusted release key): imports and locally trusts the Linxira release key on install</td></tr>
+      <tr><td><code>shelly</code></td><td>Graphical package manager (GPL-3.0, source-built from a pinned upstream commit as a packaging exception): manages Arch/AUR/Flatpak/AppImage packages</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Adopted Upstream</h2>
+  <p>Upstream projects adopted as forks or re-packages, retaining upstream licenses and attribution:</p>
+  <table>
+    <thead><tr><th>Repository</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>CachyOS-Welcome</code></td><td>Rebase-history candidate of CachyOS Welcome (Rust); superseded by first-party <code>linxira-welcome</code>, kept for archival reference</td></tr>
+      <tr><td><code>CachyOS-Settings</code></td><td>CachyOS system performance and optimization configuration (localized as Linxira-Settings with Linxira branding)</td></tr>
+      <tr><td><code>cachyos-plymouth-theme</code></td><td>Plymouth boot theme (Jimmac spinner over an ACPI BGRT background, rebranded for Linxira, GPL-3.0)</td></tr>
+      <tr><td><code>cachyos-kde-settings</code></td><td>KDE desktop settings (localized as linxira-kde-settings, GPL-1.0)</td></tr>
+      <tr><td><code>cachyos-fish-config</code></td><td>fish shell configuration</td></tr>
+      <tr><td><code>cachyos-zsh-config</code></td><td>zsh configuration</td></tr>
+      <tr><td><code>cachyos-calamares</code></td><td>Calamares installer configuration (settings and branding modules)</td></tr>
+      <tr><td><code>cachyos-wallpapers</code></td><td>Wallpaper collection</td></tr>
+      <tr><td><code>cachyos-hypr-noctalia</code></td><td>Hyprland + Noctalia compositor configuration</td></tr>
+      <tr><td><code>cachyos-niri-noctalia</code></td><td>Niri + Noctalia compositor configuration</td></tr>
+      <tr><td><code>cachyos-mangowc-dms</code></td><td>MangoHud + DMS gaming performance monitoring settings</td></tr>
+      <tr><td><code>chwd</code></td><td>CHWD hardware detection and driver configuration tool (upstream of <code>linxira-hwd-detector</code>, version 1.23.0)</td></tr>
+      <tr><td><code>rate-mirrors</code></td><td>Fast mirror ranking tool (Rust): finds the fastest mirrors in about 30 seconds</td></tr>
+      <tr><td><code>calamares</code></td><td>Installer framework: built from the official upstream 3.3.14 release archive (not the CachyOS fork)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Documentation</h2>
+  <table>
+    <thead><tr><th>Repository</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-wiki</code></td><td>Official wiki (MkDocs Material): documents only Linxira-specific features</td></tr>
+      <tr><td><code>Linxira-OS.github.io</code></td><td>Official website repository (this site)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>How the Repositories Relate</h2>
+  <p>The main pipeline from source to the ISO: </p>
+<pre><code>packages (PKGBUILDs + CI)
+   │  build in an isolated Arch container → sign with the signing subkey → repo-add
+   ▼
+linxira-packages (signed [linxira] repository, hosted on GitHub Pages)
+   │  scripts/fetch-linxira-packages.sh fetches the 16 first-party packages
+   ▼
+linxira-iso-direct → build-direct-iso.sh → ISO
+   │  offline closure: Arch mirrors → build cache → /opt/linxira/offline-repo
+   ▼
+Calamares installer → pacstrap, fully offline install</code></pre>
+
+  <p>The signing chain:</p>
+<pre><code>linxira-keys (private, double-layer encrypted vault for signing keys)
+   │  the linxira-keyring package ships the public key and trusts it on install
+   ▼
+enable the signed [linxira] repository (SigLevel = Required DatabaseOptional)</code></pre>
+
+  <p>Application selection and installation data flow: <code>linxira-catalog</code> provides the canonical catalog → <code>linxira-package-center</code> / <code>linxira-component-manager</code> build catalog-bound selection plans → <code>linxira-components</code> applies a single root-only pacman transaction and persists receipts. The ISO build, the installer, and every manager share the same catalog and package identities; the <code>packages</code> publishing pipeline is enabled only when the signing Secrets (<code>LINXIRA_GPG_PRIVATE_KEY</code> / <code>LINXIRA_GPG_FINGERPRINT</code>) are configured.</p>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+    th { text-align: left; color: #e2e8f0; background: rgba(30,41,59,0.6); border: 1px solid rgba(51,65,85,0.4); padding: 0.6rem 0.8rem; }
+    td { color: #cbd5e1; border: 1px solid rgba(51,65,85,0.3); padding: 0.6rem 0.8rem; vertical-align: top; }
+    td code, th code { font-size: 0.82rem; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
   </style>
 </PageLayout>

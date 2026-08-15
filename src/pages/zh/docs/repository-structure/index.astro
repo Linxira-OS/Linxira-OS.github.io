@@ -1,15 +1,110 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="repository-structure — Linxira OS" maxWidth="720px">
+<PageLayout lang="zh" active="docs" title="仓库结构 — Linxira OS" maxWidth="900px">
   <a href="/zh/docs/" class="back">← 返回文档</a>
-  <h1>repository-structure</h1>
-  <div class="placeholder">
-    <p>📝 此页面正在编写中，敬请期待。</p>
-  </div>
+  <h1>仓库结构</h1>
+  <p>Linxira OS 的源码与制品统一托管在 <code>Linxira-OS</code> GitHub 组织下，分为核心仓库、自研系统工具、采用的上游项目与文档四类。本文列出各仓库的职责，以及它们从源码构建到 ISO 交付之间的关系。</p>
+
+  <h2>核心仓库</h2>
+  <p>承载发行版整体架构、软件包供应链与 ISO 产物的仓库：</p>
+  <table>
+    <thead><tr><th>仓库</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-os</code></td><td>项目总览与治理：产品架构文档、仓库治理清单（<code>governance/repositories.yaml</code>）、发行说明（<code>releases/</code>）与支持矩阵</td></tr>
+      <tr><td><code>packages</code></td><td>官方软件包定义与发布流水线：每个自研包一个锁定版本的 PKGBUILD，CI 在 Arch 容器内隔离构建、签名、<code>repo-add</code> 并发布到 GitHub Pages</td></tr>
+      <tr><td><code>linxira-packages</code></td><td>[linxira] 签名软件包仓库（x86_64），由 GitHub Pages 托管；安装 <code>linxira-keyring</code> 后即可启用</td></tr>
+      <tr><td><code>linxira-iso-direct</code></td><td>现行 ISO 构建档案（Direct-Arch）：完整离线安装闭包、<code>linux</code> + <code>linux-lts</code> 双内核回退、Calamares 安装器配置</td></tr>
+      <tr><td><code>linxira-iso</code></td><td>已废弃的旧 ISO 构建系统（fork 自 CachyOS-Live-ISO），仅保留作历史归档</td></tr>
+      <tr><td><code>linxira-keys</code></td><td>私有仓库：GPG 签名密钥保险箱（双层加密），仅密钥持有者可访问；仓库中不含任何口令或明文私钥</td></tr>
+    </tbody>
+  </table>
+
+  <h2>自研系统工具</h2>
+  <p>17 个由 Linxira 维护的工具仓库（<code>shelly</code> 是源码构建的打包例外）：</p>
+  <table>
+    <thead><tr><th>仓库</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-welcome</code></td><td>Plasma 原生状态与路由入口：展示系统状态与安装完成度，提供固定的工具入口，不执行软件事务</td></tr>
+      <tr><td><code>linxira-config-hub</code></td><td>配置与诊断 CLI（<code>linxira-config</code>）：镜像源（Arch/npm/PyPI/AUR/Go/Flatpak）、SSH、网络与 headless 切换</td></tr>
+      <tr><td><code>linxira-update</code></td><td>系统更新工具：Cachy-Update/Arch-Update 代码线的自研延续，含系统托盘与更新前/后检查</td></tr>
+      <tr><td><code>linxira-package-center</code></td><td>精选应用安装器（Quick System Software Setup）：目录绑定计划，委托 <code>linxira-components</code> 执行事务</td></tr>
+      <tr><td><code>linxira-component-manager</code></td><td>组件/能力树选择器（Quick System Runtime Setup）：嵌套能力树，plan/confirm/apply 事务流</td></tr>
+      <tr><td><code>linxira-components</code></td><td>目录绑定的 pacman 事务后端：生成确定性计划、确认，以 root 执行单次 pacman 事务并持久化回执</td></tr>
+      <tr><td><code>linxira-completion-agent</code></td><td>首次联网完成代理：展示安装回执中延后的软件与操作</td></tr>
+      <tr><td><code>linxira-gaming-manager</code></td><td>游戏库与兼容性工作区：Steam 库发现、固定参数启动、restic 加密备份</td></tr>
+      <tr><td><code>linxira-hwd-detector</code></td><td>CHWD 1.23.0 的只读硬件检测派生（Rust）：输出版本化 JSON 硬件报告</td></tr>
+      <tr><td><code>linxira-hardware-driver-manager</code></td><td>硬件与驱动管理器：只读报告与固定策略计划，无特权变更后端</td></tr>
+      <tr><td><code>linxira-kernel-manager</code></td><td>内核与启动只读报告：<code>linux</code> / <code>linux-lts</code> 支持矩阵、GRUB 条目与 DKMS 状态</td></tr>
+      <tr><td><code>linxira-recovery-diagnostics</code></td><td>恢复诊断：Btrfs/Timeshift/引导/密钥环就绪性报告与脱敏支持包</td></tr>
+      <tr><td><code>linxira-catalog</code></td><td>规范化、带版本的软件组件元数据（Catalog v2/v3）：应用、组件、预设与离线策略</td></tr>
+      <tr><td><code>linxira-artwork</code></td><td>品牌美术资源：Logo、壁纸、图标、欢迎横幅；品牌资产保留所有权利</td></tr>
+      <tr><td><code>linxira-hooks</code></td><td>ALPM/Pacman 钩子与辅助脚本：os-release 品牌、reboot-required 标记、initramfs 重建</td></tr>
+      <tr><td><code>linxira-keyring</code></td><td>签名公钥环包（trusted release key）：安装时导入并信任 Linxira 发布密钥</td></tr>
+      <tr><td><code>shelly</code></td><td>图形化软件包管理器（GPL-3.0，固定上游提交源码构建的打包例外）：管理 Arch/AUR/Flatpak/AppImage 软件包</td></tr>
+    </tbody>
+  </table>
+
+  <h2>采用上游</h2>
+  <p>以 fork 或 re-package 方式采用的上游项目，均保留上游许可证与归属：</p>
+  <table>
+    <thead><tr><th>仓库</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>CachyOS-Welcome</code></td><td>CachyOS Welcome（Rust）rebase 历史候选；已由自研 <code>linxira-welcome</code> 取代，仅归档参考</td></tr>
+      <tr><td><code>CachyOS-Settings</code></td><td>CachyOS 系统性能与优化配置（本地为 Linxira-Settings，品牌资产替换为 Linxira）</td></tr>
+      <tr><td><code>cachyos-plymouth-theme</code></td><td>Plymouth 开机主题（Jimmac spinner + ACPI BGRT 背景，替换为 Linxira 品牌，GPL-3.0）</td></tr>
+      <tr><td><code>cachyos-kde-settings</code></td><td>KDE 桌面设置（本地为 linxira-kde-settings，GPL-1.0）</td></tr>
+      <tr><td><code>cachyos-fish-config</code></td><td>fish shell 配置</td></tr>
+      <tr><td><code>cachyos-zsh-config</code></td><td>zsh 配置</td></tr>
+      <tr><td><code>cachyos-calamares</code></td><td>Calamares 安装器配置（settings 与 branding 模块）</td></tr>
+      <tr><td><code>cachyos-wallpapers</code></td><td>壁纸集</td></tr>
+      <tr><td><code>cachyos-hypr-noctalia</code></td><td>Hyprland + Noctalia 合成器配置</td></tr>
+      <tr><td><code>cachyos-niri-noctalia</code></td><td>Niri + Noctalia 合成器配置</td></tr>
+      <tr><td><code>cachyos-mangowc-dms</code></td><td>MangoHud + DMS 游戏性能监控设置</td></tr>
+      <tr><td><code>chwd</code></td><td>CHWD 硬件检测与驱动配置工具（<code>linxira-hwd-detector</code> 的上游，版本 1.23.0）</td></tr>
+      <tr><td><code>rate-mirrors</code></td><td>镜像测速排名工具（Rust）：约 30 秒找出最快镜像</td></tr>
+      <tr><td><code>calamares</code></td><td>安装器框架：采用上游官方 3.3.14 发布归档构建（不采用 CachyOS fork）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>文档</h2>
+  <table>
+    <thead><tr><th>仓库</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>linxira-wiki</code></td><td>官方 Wiki（MkDocs Material）：仅记录 Linxira 独有特性</td></tr>
+      <tr><td><code>Linxira-OS.github.io</code></td><td>官方网站仓库（即本网站）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>仓库之间的关系</h2>
+  <p>软件包从源码构建到随 ISO 交付的主链路：</p>
+<pre><code>packages（PKGBUILD + CI）
+   │  Arch 容器内隔离构建 → 签名子密钥签名 → repo-add
+   ▼
+linxira-packages（[linxira] 签名仓库，GitHub Pages 托管）
+   │  scripts/fetch-linxira-packages.sh 拉取 16 个自研包
+   ▼
+linxira-iso-direct → build-direct-iso.sh → ISO
+   │  离线闭包：Arch 镜像 → 构建缓存 → /opt/linxira/offline-repo
+   ▼
+Calamares 安装器 → pacstrap 完全离线安装</code></pre>
+
+  <p>签名链：</p>
+<pre><code>linxira-keys（私有，双层加密保管签名密钥）
+   │  linxira-keyring 包携带公钥，安装即导入并信任
+   ▼
+启用 [linxira] 签名仓库（SigLevel = Required DatabaseOptional）</code></pre>
+
+  <p>应用选择与安装的数据流：<code>linxira-catalog</code> 提供规范目录 → <code>linxira-package-center</code> / <code>linxira-component-manager</code> 生成目录绑定的选择计划 → <code>linxira-components</code> 以 root 执行单次 pacman 事务并持久化回执。ISO 构建、安装器与各管理器共用同一份目录与包身份；<code>packages</code> 的发布流水线仅在配置了签名 Secrets（<code>LINXIRA_GPG_PRIVATE_KEY</code> / <code>LINXIRA_GPG_FINGERPRINT</code>）时启用。</p>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+    th { text-align: left; color: #e2e8f0; background: rgba(30,41,59,0.6); border: 1px solid rgba(51,65,85,0.4); padding: 0.6rem 0.8rem; }
+    td { color: #cbd5e1; border: 1px solid rgba(51,65,85,0.3); padding: 0.6rem 0.8rem; vertical-align: top; }
+    td code, th code { font-size: 0.82rem; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
   </style>
 </PageLayout>

@@ -1,15 +1,60 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="glossary — Linxira OS" maxWidth="720px">
+<PageLayout lang="en" active="docs" title="Glossary — Linxira OS" maxWidth="760px">
   <a href="/en/docs/" class="back">← Back to Docs</a>
-  <h1>glossary</h1>
-  <div class="placeholder">
-    <p>📝 This page is under construction.</p>
-  </div>
+  <h1>Glossary</h1>
+  <p>This page collects the key terms used across Linxira OS documentation and the project, grouped by topic, each explained in the context of this project. General Arch Linux concepts are covered further by the <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>.</p>
+
+  <h2>System &amp; Distribution</h2>
+  <p class="term-item"><strong>Direct Arch</strong> — Linxira's approach to distribution: a workstation built directly on Arch Linux, using <code>pacman</code> and the official Arch repositories with no extra distro layer; first-party packages are delivered through a separate signed repository.</p>
+  <p class="term-item"><strong>Rolling release</strong> — No fixed release cycle: upstream updates keep flowing in, and upstream (Arch) security patches land in the repositories as soon as they are published, with no distro release schedule in between.</p>
+  <p class="term-item"><strong>Dual kernel (linux + linux-lts)</strong> — Two Arch generic kernels installed side by side: <code>linux</code> as the main kernel and <code>linux-lts</code> as the fallback, with a flat GRUB menu defaulting to the latest kernel; a broken single-kernel update can be rolled back.</p>
+  <p class="term-item"><strong>Snapshots (Timeshift / grub-btrfs)</strong> — btrfs system snapshots: Timeshift manages them and grub-btrfs adds them to the GRUB boot menu for rollback; <code>linxira-update</code> auto-snapshots before applying updates, and <code>linxira-config timeshift enable</code> sets it up in one command.</p>
+  <p class="term-item"><strong>Headless mode</strong> — Turning the desktop off via a standard systemd target switch — zero desktop footprint, all RAM for compute; switch and inspect with <code>linxira-config headless on / off / status</code>.</p>
+  <p class="term-item"><strong>Desktop Supercomputer</strong> — Linxira's positioning: full regular desktop functionality plus a headless mode for scientific computing, with lossless containers to reproduce other environments and let others reproduce ours.</p>
+
+  <h2>Package Management</h2>
+  <p class="term-item"><strong><code>pacman</code></strong> — Arch Linux's package manager and Linxira's underlying software management tool: <code>sudo pacman -Syu</code> updates the system, <code>sudo pacman -S &lt;package&gt;</code> installs software.</p>
+  <p class="term-item"><strong><code>pacman-key</code></strong> — pacman's GnuPG key management tool: <code>sudo pacman-key --init</code> initializes the local keyring, which together with <code>linxira-keyring</code> imports and locally signs the Linxira release key.</p>
+  <p class="term-item"><strong><code>PKGBUILD</code></strong> — The script describing how to build an Arch package (<code>pkgver</code>, <code>source</code>, <code>sha256sums</code>, etc.). Most Linxira first-party packages use the codeload commit mode to pin the source commit.</p>
+  <p class="term-item"><strong><code>repo-add</code></strong> — The tool that generates pacman repository databases. The publish flow runs <code>repo-add --sign --key &lt;fingerprint&gt; linxira.db.tar.zst ./*.pkg.tar.zst</code> to create and sign the [linxira] database, then deploys it to GitHub Pages.</p>
+  <p class="term-item"><strong>[linxira] signed repository</strong> — Linxira's official first-party software repository (<code>https://linxira-os.github.io/linxira-packages/x86_64</code>) with <code>SigLevel = Required DatabaseOptional</code>: database and package signatures are enforced on the pacman side against tampering.</p>
+  <p class="term-item"><strong><code>linxira-keyring</code></strong> — The Linxira package signing keyring: installing it imports and trusts the release key automatically (rotated 2026-08-04; fingerprints are not published on this site).</p>
+  <p class="term-item"><strong>AUR (Arch User Repository)</strong> — A collection of user-maintained, unaudited packages. Linxira disables AUR by default and requires explicit user opt-in; unreviewed AUR recipes are never presented as official software.</p>
+  <p class="term-item"><strong>Catalog v2 / v3 (audited catalog)</strong> — The reviewed software metadata catalog. v2 is the shared source for Welcome, Calamares, Config Hub, and Shelly recommendation links (kept for compatibility); v3 is the new application/component/capability graph (desktops / applications / components / bundles) with review covering license, source, and availability, curated applications organized into 14 categories, external ecosystems off by default.</p>
+  <p class="term-item"><strong><code>check-boundaries.sh</code></strong> — The first CI gate of the linxira-packages repository: it enforces PKGBUILD boundaries (no CachyOS/AUR/Seafoam repository references, codeload/release-tarball sources only, pinned commits and sha256 checksums, etc.). PKGBUILD changes must pass it.</p>
+
+  <h2>First-Party Components</h2>
+  <p class="term-item"><strong>Linxira Welcome</strong> — The Plasma-native status and routing center: Home / Status / Help pages, opened automatically at boot; read-only catalog and install-receipt views plus pinned tool launchers.</p>
+  <p class="term-item"><strong>Shelly</strong> — The default graphical software manager after installation (CLI + GTK UI + update notifications); optional post-install software, not an installer dependency, performing only approved package operations.</p>
+  <p class="term-item"><strong>Config Hub (<code>linxira-config</code>)</strong> — The administrator CLI: SSH service and key management, mirrors (Arch/npm/PyPI/AUR/Go/Flatpak), network diagnostics, security status, and read-only catalog queries.</p>
+  <p class="term-item"><strong>Package Center</strong> — The curated-app installer (Quick System Software Setup): catalog v3 application tree with a plan / confirm / apply three-step transaction. General software management stays with Shelly.</p>
+  <p class="term-item"><strong>Component Manager</strong> — Capability / runtime / toolchain selection (Quick System Runtime Setup): a three-state component tree (required / recommended / optional); install-only, no uninstall support.</p>
+  <p class="term-item"><strong><code>linxira-components</code> backend</strong> — The catalog-bound pacman transaction planning and receipt backend: deterministic plans, SHA-256 canonical JSON digests, root-only pacman, persistent receipts; D-Bus service <code>org.linxira.Components1</code>.</p>
+  <p class="term-item"><strong><code>linxira-update</code></strong> — The update notification and maintenance assistant: interactive update prompts, a system tray applet, custom pre/post-update tasks, and an automatic Timeshift snapshot before updates; driven by a systemd user service.</p>
+  <p class="term-item"><strong><code>lhwd</code> (hardware driver detection)</strong> — <code>linxira-hwd-detector</code>: hardware detection and driver configuration in Rust (a full CHWD port); the <code>lhwd</code> command offers list / autoconfigure / install / remove.</p>
+
+  <h2>Containers &amp; Reproducibility</h2>
+  <p class="term-item"><strong>Podman</strong> — The daemonless container engine; part of the default container ecosystem, used with Distrobox to isolate version-pinned project environments.</p>
+  <p class="term-item"><strong>Distrobox</strong> — Run other distributions inside containers, providing portable environments for projects, isolated from the rolling host.</p>
+  <p class="term-item"><strong>Apptainer</strong> — The HPC/bioinformatics workflow container runtime; used to run reviewed, version-pinned workflow containers.</p>
+  <p class="term-item"><strong>Docker</strong> — Container runtime and tooling, available out of the box; <code>docker-compose</code> provides multi-container orchestration.</p>
+
+  <h2>Installation &amp; Desktop</h2>
+  <p class="term-item"><strong>Calamares (manual)</strong> — The installer Linxira adopts. It does not auto-start on the Live desktop: launch it manually from Welcome or the application menu when ready. The current slice supports an unencrypted, GPT, Btrfs (documented subvolumes) installation including GRUB, dual kernels, Plasma, and Shelly.</p>
+  <p class="term-item"><strong>KDE Plasma</strong> — The default desktop environment; at install time the "Desktop environment" step offers a choice between KDE Plasma and server (no desktop), with Plasma as the default desktop in both the Live and target environments.</p>
+  <p class="term-item"><strong>Fcitx5 (Chinese input method)</strong> — The Chinese input method framework; installing in Chinese auto-configures Fcitx5.</p>
+  <p class="term-item"><strong>Discover (deliberately excluded)</strong> — KDE's default app store is not shipped: Linxira Package Center is the catalog application installer, and Shelly remains for reviewed recommendations and package browsing.</p>
+
+  <h2>Building</h2>
+  <p class="term-item"><strong>codeload commit mode</strong> — A PKGBUILD source strategy: the source is pinned to a commit and makepkg downloads the tarball from codeload automatically, verified by sha256. Most first-party packages use this mode.</p>
+  <p class="term-item"><strong><code>fetch-linxira-packages.sh</code></strong> — Pulls the full first-party package closure from the official [linxira] repository (by default the complete build-direct-iso.sh artifact set) into a local artifacts directory, so official builds can be reproduced from released artifacts.</p>
+  <p class="term-item"><strong><code>build-direct-iso.sh</code></strong> — The full build wrapper of linxira-iso-direct: validates each package's identity and key archive paths, rebuilds profile symlinks, and invokes <code>mkarchiso</code> to produce <code>linxira-YYYY.MM.DD-x86_64.iso</code> plus the matching <code>.sha256</code> file.</p>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    .term-item { margin: 0.9rem 0; color: #94a3b8; line-height: 1.7; }
+    .term-item strong { color: #20B8B0; font-weight: 600; }
   </style>
 </PageLayout>

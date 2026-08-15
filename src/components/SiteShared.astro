@@ -71,12 +71,24 @@ const { title } = Astro.props;
   }
 </style>
 <script is:inline>
-  // 滚动揭示（全站子页面共用；dataset 防重入）
-  if (!document.body.dataset.revealReady && 'IntersectionObserver' in window) {
-    document.body.dataset.revealReady = '1';
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
-  }
+  // 滚动揭示（全站子页面共用）。head 内联执行时 body 尚不存在，
+  // 必须等 DOMContentLoaded 再观察 .reveal，否则元素永远 opacity:0。
+  (function () {
+    if (document.body && document.body.dataset.revealReady) return;
+    var init = function () {
+      if (document.body.dataset.revealReady) return;
+      document.body.dataset.revealReady = '1';
+      var els = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        els.forEach(function (el) { io.observe(el); });
+      } else {
+        els.forEach(function (el) { el.classList.add('in'); });
+      }
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
 </script>

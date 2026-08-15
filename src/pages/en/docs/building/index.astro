@@ -1,15 +1,130 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="building — Linxira OS" maxWidth="720px">
+<PageLayout lang="en" active="docs" title="Building the ISO — Linxira OS" maxWidth="900px">
   <a href="/en/docs/" class="back">← Back to Docs</a>
-  <h1>building</h1>
-  <div class="placeholder">
-    <p>📝 This page is under construction.</p>
-  </div>
+  <h1>Building the ISO</h1>
+  <p>Linxira OS installation images are built by <a href="https://github.com/Linxira-OS/linxira-iso-direct" target="_blank">linxira-iso-direct</a> (Direct-Arch ISO Profile): Arch packages plus pinned local artifacts for Calamares, Shelly, artwork, and Linxira system software produce a development installer ISO that installs fully offline. This page covers fetching the signed packages, running the build, and verifying the artifacts.</p>
+
+  <h2>1. Prerequisites</h2>
+  <h3>Install dependencies</h3>
+  <p>Build dependencies come from the Quick Start of the legacy repository (linxira-iso, deprecated — see <a href="#history">History</a>):</p>
+<pre><code>sudo pacman -S archiso mkinitcpio-archiso git squashfs-tools grub --needed</code></pre>
+
+  <h3>Clone the repository</h3>
+<pre><code>git clone https://github.com/Linxira-OS/linxira-iso-direct.git
+cd linxira-iso-direct</code></pre>
+  <div class="note">Building must run on Linux. <code>profile-symlinks.list</code> records the Linux symlinks that cannot be represented reliably when the profile is stored on Windows; the build wrapper recreates them in its temporary Linux profile before invoking <code>mkarchiso</code>.</div>
+
+  <h2>2. Fetch the signed packages</h2>
+  <p>Download the full self-built package closure (16 packages) reproducibly from the official signed repository <code>https://linxira-os.github.io/linxira-packages/x86_64</code> into a local artifact directory:</p>
+<pre><code>./scripts/fetch-linxira-packages.sh --output ./.linxira-packages</code></pre>
+  <p>This makes official builds reproducible from released artifacts. Local <code>.pkg.tar.zst</code> paths remain supported for third-party packages cached locally; Linxira self-built packages should normally come from the official repo.</p>
+
+  <h2>3. Build command</h2>
+  <p>Run the full build with the verified local package artifacts (parameters identical to the <code>README.md</code>):</p>
+<pre><code>./build-direct-iso.sh \
+  --shelly-package ./.linxira-packages/shelly-*.pkg.tar.zst \
+  --calamares-package ./.linxira-packages/calamares-*.pkg.tar.zst \
+  --artwork-package ./.linxira-packages/linxira-artwork-*.pkg.tar.zst \
+  --catalog-package ./.linxira-packages/linxira-catalog-*.pkg.tar.zst \
+  --components-package ./.linxira-packages/linxira-components-*.pkg.tar.zst \
+  --component-manager-package ./.linxira-packages/linxira-component-manager-*.pkg.tar.zst \
+  --completion-agent-package ./.linxira-packages/linxira-completion-agent-*.pkg.tar.zst \
+  --gaming-manager-package ./.linxira-packages/linxira-gaming-manager-*.pkg.tar.zst \
+  --hwd-detector-package ./.linxira-packages/linxira-hwd-detector-*.pkg.tar.zst \
+  --hardware-driver-manager-package ./.linxira-packages/linxira-hardware-driver-manager-*.pkg.tar.zst \
+  --recovery-diagnostics-package ./.linxira-packages/linxira-recovery-diagnostics-*.pkg.tar.zst \
+  --update-package ./.linxira-packages/linxira-update-*.pkg.tar.zst \
+  --config-hub-package ./.linxira-packages/linxira-config-hub-*.pkg.tar.zst \
+  --package-center-package ./.linxira-packages/linxira-package-center-*.pkg.tar.zst \
+  --welcome-package ./.linxira-packages/linxira-welcome-*.pkg.tar.zst \
+  --keyring-package ./.linxira-packages/linxira-keyring-*.pkg.tar.zst \
+  --plymouth-theme-directory ./linxira-plymouth-theme \
+  --output ./out</code></pre>
+  <p>The wrapper validates each package identity and critical archive path, then copies the profile to a temporary directory and creates two repositories:</p>
+  <ul>
+    <li><code>linxira-local</code>: a build-only repository for all supplied artifacts, removed afterward.</li>
+    <li><code>linxira-offline</code>: the exact target package closure from a fresh build-scoped cache, embedded under <code>/opt/linxira/offline-repo</code>; Calamares uses it without copying that repository configuration into the target.</li>
+  </ul>
+  <p>Live and target environments install the same Linxira-owned files through pacman; the build never copies sibling working-tree source. The build-only <code>linxira-local</code> stanza is removed from the live pacman configuration before the SquashFS image is created.</p>
+  <div class="warn">Both repositories accept unsigned development packages. Release images must replace them with packages and repository metadata signed by the Linxira signing key (key material is not published on this site).</div>
+
+  <h3>Image content conventions</h3>
+  <ul>
+    <li>KDE Plasma is the default desktop in both environments (Live and target).</li>
+    <li>Discover is deliberately excluded; Linxira Package Center is the catalog application installer, and Shelly remains available for reviewed recommendations and package browsing.</li>
+    <li>Fresh Shelly profiles leave AUR, Flatpak, AppImage, and background tray checks disabled; enabling background checks does not enable or query another source.</li>
+    <li>The current Calamares slice supports an unencrypted, GPT, Btrfs installation with the documented subvolumes, including GRUB, <code>linux</code> plus <code>linux-lts</code>, Plasma, and Shelly.</li>
+    <li>The installer uses a fixed offline Plasma baseline plus a reviewed offline candidate manifest; the install-time online transaction runs against core/extra/multilib only, and the official <code>[linxira]</code> repository is appended to the target only after it, so installation never depends on linxira-os.github.io availability.</li>
+    <li>Image size target is 2.5–4.3 GB (currently ~4.3 GB = ~2.1 GB system + ~2.2 GB offline package source); the offline-install capability must not be traded away.</li>
+  </ul>
+
+  <h2>4. Artifacts and verification</h2>
+  <p><code>--output ./out</code> selects the output directory. ISOs are named <code>linxira-YYYY.MM.DD-x86_64.iso</code> (date = build date), each with a matching <code>.sha256</code> checksum file:</p>
+<pre><code>out/
+├── linxira-2026.08.14-x86_64.iso
+└── linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+  <p>Verify a build artifact:</p>
+<pre><code>cd out
+sha256sum -c linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+  <p>Released images live in the <code>iso-release/</code> directory with a <code>SHA256SUMS</code> manifest, one line per image in the form <code>&lt;sha256 hash&gt;&nbsp;&nbsp;linxira-YYYY.MM.DD-x86_64.iso</code>.</p>
+
+  <h2>5. Build options</h2>
+  <p><code>build-direct-iso.sh</code> takes one <code>--*-package</code> parameter per Linxira self-built package (local <code>.pkg.tar.zst</code> path), plus two path options:</p>
+  <table>
+    <thead>
+      <tr><th>Option</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>--shelly-package</code></td><td>Shelly package (reviewed recommendations and package browsing)</td></tr>
+      <tr><td><code>--calamares-package</code></td><td>Calamares installer package (offline baseline + online candidate manifest)</td></tr>
+      <tr><td><code>--artwork-package</code></td><td>linxira-artwork theming package (wallpapers, etc.)</td></tr>
+      <tr><td><code>--catalog-package</code></td><td>linxira-catalog application catalog package (Catalog v3)</td></tr>
+      <tr><td><code>--components-package</code></td><td>linxira-components backend (root-only; executes one pacman transaction and persists its receipt)</td></tr>
+      <tr><td><code>--component-manager-package</code></td><td>linxira-component-manager (nested capability tree)</td></tr>
+      <tr><td><code>--completion-agent-package</code></td><td>linxira-completion-agent</td></tr>
+      <tr><td><code>--gaming-manager-package</code></td><td>linxira-gaming-manager</td></tr>
+      <tr><td><code>--hwd-detector-package</code></td><td>linxira-hwd-detector hardware detection</td></tr>
+      <tr><td><code>--hardware-driver-manager-package</code></td><td>linxira-hardware-driver-manager</td></tr>
+      <tr><td><code>--recovery-diagnostics-package</code></td><td>linxira-recovery-diagnostics</td></tr>
+      <tr><td><code>--update-package</code></td><td>linxira-update system updater</td></tr>
+      <tr><td><code>--config-hub-package</code></td><td>linxira-config-hub configuration hub</td></tr>
+      <tr><td><code>--package-center-package</code></td><td>linxira-package-center (catalog application installer; creates application plans and confirmations)</td></tr>
+      <tr><td><code>--welcome-package</code></td><td>linxira-welcome welcome screen</td></tr>
+      <tr><td><code>--keyring-package</code></td><td>linxira-keyring signing keyring</td></tr>
+      <tr><td><code>--plymouth-theme-directory</code></td><td>Plymouth theme directory (e.g. <code>./linxira-plymouth-theme</code>)</td></tr>
+      <tr><td><code>--output</code></td><td>ISO output directory (e.g. <code>./out</code>)</td></tr>
+    </tbody>
+  </table>
+  <p>The fetch script <code>fetch-linxira-packages.sh</code> uses <code>--output</code> for its download directory (e.g. <code>./.linxira-packages</code>).</p>
+
+  <h2 id="history">6. History</h2>
+  <p>The legacy build repository <a href="https://github.com/Linxira-OS/linxira-iso" target="_blank">linxira-iso</a> (forked from CachyOS-Live-ISO) is deprecated: ISO building has migrated to linxira-iso-direct. The old repository is kept for archival reference only and is no longer maintained. Its Quick Start dependency command is the one used in <a href="#prerequisites">Prerequisites</a> above:</p>
+<pre><code>sudo pacman -S archiso mkinitcpio-archiso git squashfs-tools grub --needed
+git clone https://github.com/Linxira-OS/linxira-iso.git
+cd linxira-iso
+sudo ./buildiso.sh -p desktop -v -w</code></pre>
+
+  <h2>7. Related links</h2>
+  <ul>
+    <li><a href="/en/docs/">← Back to Docs</a></li>
+    <li><a href="/en/docs/repository-structure/">Repository Structure</a></li>
+    <li><a href="/en/docs/install/">Installing Linxira OS</a></li>
+    <li><a href="/en/docs/contributing/">Contributing</a></li>
+  </ul>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.05rem; color: #cbd5e1; margin: 1.4rem 0 0.5rem; }
+    pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
+    pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.85rem; }
+    th, td { border: 1px solid rgba(51,65,85,0.4); padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
+    th { background: rgba(30,41,59,0.6); color: #e2e8f0; font-weight: 600; }
+    td { color: #cbd5e1; }
+    td code { white-space: nowrap; }
+    .note { background: rgba(32,184,176,0.08); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0 1.5rem; color: #cbd5e1; }
+    .warn { background: rgba(245,158,11,0.08); border-left: 3px solid #f59e0b; border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0 1.5rem; color: #cbd5e1; }
   </style>
 </PageLayout>

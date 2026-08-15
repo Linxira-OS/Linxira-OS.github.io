@@ -3,14 +3,14 @@ import PageLayout from "../../../components/PageLayout.astro";
 ---
 <PageLayout lang="en" active="roadmap" title="Release Log — Linxira OS" maxWidth="860px">
   <h1>Release Log</h1>
-  <p class="subtitle">Archived ISO builds. The full release is built from source by users following the build guide — no fixed release date; test builds are archived here.</p>
+  <p class="subtitle">Archived ISO builds. The first Experimental Stable (2026-08-14) passed full installation testing; future releases are built from source by users following the build guide.</p>
   <div class="section-divider"></div>
 
   <div class="rel-item reveal">
     <div class="rel-head">
       <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
       <span class="tag latest">Latest</span>
-      <span class="tag beta">Test</span>
+      <span class="tag stable">Experimental Stable</span>
     </div>
     <div class="rel-meta">2026-08-14 · 4.79 GB · SHA256 <code class="sha">b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code></div>
     <ul>
@@ -72,6 +72,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     .sha { font-size: 0.75rem; color: var(--soft); background: rgba(30,41,59,0.9); padding: 0.1rem 0.4rem; border-radius: 4px; word-break: break-all; }
     .tag { display: inline-block; font-size: 0.72rem; padding: 0.12rem 0.6rem; border-radius: 99px; font-weight: 600; }
     .tag.latest { background: rgba(32,184,176,0.2); color: #4DD8D0; }
+    .tag.stable { background: rgba(32,184,176,0.28); color: #5EEAD4; border: 1px solid rgba(32,184,176,0.4); }
     .tag.beta { background: rgba(234,179,8,0.15); color: #FACC15; }
     .tag.rc { background: rgba(148,163,184,0.15); color: #94a3b8; }
     .rel-item ul { color: var(--muted); font-size: 0.9rem; padding-left: 1.2rem; margin: 0.3rem 0 0; }

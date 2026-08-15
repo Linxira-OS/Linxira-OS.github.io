@@ -18,21 +18,31 @@ const zh = lang === "zh";
 const footer = zh
   ? "Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。"
   : "Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux.";
+const footLinks = zh
+  ? [["/zh/releases/", "发布日志"], ["/zh/security/", "安全中心"], ["/zh/gallery/", "亮点画廊"]]
+  : [["/en/releases/", "Release Log"], ["/en/security/", "Security"], ["/en/gallery/", "Gallery"]];
 ---
 <!DOCTYPE html>
 <html lang={zh ? "zh-CN" : "en-US"}>
 <head>
   <SiteShared title={title} />
   <style is:global>
-    .container { max-width: {maxWidth}; margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .container { margin: 0 auto; padding: 8rem 2rem 4rem; }
     footer { text-align: center; padding: 3rem 2rem; color: var(--faint); font-size: 0.85rem; border-top: 1px solid var(--line); background: var(--bg-deep); }
   </style>
 </head>
 <body>
   <Navbar lang={lang} active={active} />
-  <div class="container">
+  <div class="container" style={maxWidth ? `max-width:${maxWidth}` : undefined}>
     <slot />
   </div>
-  <footer><p>{footer}</p></footer>
+  <footer>
+    <div style="margin-bottom:0.8rem; display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;">
+      {footLinks.map(([href, label]) => (
+        <a href={href} style="color:#20B8B0; text-decoration:none; font-size:0.85rem;">{label}</a>
+      ))}
+    </div>
+    <p>{footer}</p>
+  </footer>
 </body>
 </html>

@@ -36,7 +36,7 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <h1>远程访问：SSH</h1>
       <p>Linxira OS 内置 OpenSSH 服务端与 <code>linxira-config</code> SSH 管理工具。本文介绍如何快速把 Linxira 电脑变成可远程连接的服务器，以及如何从其他设备安全地连入。</p>
 
-      <div class="note">📌 当前测试版状态：<code>linxira-config ssh status / key / authorized</code> 命令完全可用；<code>ssh on / off / port</code> 已实现但需等待事务后端正式启用，本文第 1 步提供了当前可直接使用的等效命令。</div>
+      <div class="note">📌 当前实验性正式版状态：<code>linxira-config ssh status / key / authorized</code> 命令完全可用；<code>ssh on / off / port</code> 已实现但需等待事务后端正式启用，本文第 1 步提供了当前可直接使用的等效命令。</div>
 
       <h2>1. 开启 SSH 服务</h2>
       <p>先查看 SSH 当前状态：</p>
@@ -53,7 +53,7 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <p><strong>启用并启动 sshd 服务</strong>（当前测试版使用等效命令，后续版本将统一为 <code>linxira-config ssh on</code>）：</p>
+          <p><strong>启用并启动 sshd 服务</strong>（当前实验性正式版使用等效命令，后续版本将统一为 <code>linxira-config ssh on</code>）：</p>
           <pre><code>sudo systemctl enable --now sshd</code></pre>
           <p>如果启用了 UFW 防火墙，放行 SSH 端口：</p>
           <pre><code>sudo ufw allow ssh   # 或指定端口: sudo ufw allow 22/tcp</code></pre>
@@ -134,7 +134,7 @@ rm /tmp/mykey.pub</code></pre>
       <div class="warn">⚠️ 暴露公网前请务必确认已启用密钥认证并关闭密码登录。Linxira 的 <code>ssh authorized add</code> 只接受无 options 的纯公钥，这是刻意的安全设计——它不会把带 <code>command=</code> 或 <code>environment=</code> 的条目写入 <code>authorized_keys</code>。</div>
 
       <h2>6. 关闭与移除</h2>
-      <pre><code># 关闭 SSH 服务（当前测试版等效命令，后续为 linxira-config ssh off）
+      <pre><code># 关闭 SSH 服务（当前实验性正式版等效命令，后续为 linxira-config ssh off）
 sudo systemctl disable --now sshd
 
 # 移除某个已授权密钥（先 authorized list 拿到指纹）

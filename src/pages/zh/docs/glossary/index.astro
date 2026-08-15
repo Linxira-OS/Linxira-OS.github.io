@@ -1,15 +1,60 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="glossary — Linxira OS" maxWidth="720px">
+<PageLayout lang="zh" active="docs" title="术语表 — Linxira OS" maxWidth="760px">
   <a href="/zh/docs/" class="back">← 返回文档</a>
-  <h1>glossary</h1>
-  <div class="placeholder">
-    <p>📝 此页面正在编写中，敬请期待。</p>
-  </div>
+  <h1>术语表</h1>
+  <p>本页汇集 Linxira OS 文档与项目中使用的主要术语，按主题分类，每个词条说明其在项目语境下的含义。通用 Arch Linux 概念可进一步参考 <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>。</p>
+
+  <h2>系统与发行</h2>
+  <p class="term-item"><strong>Direct Arch</strong> — Linxira 的发行方式：直接基于 Arch Linux 构建的工作站，使用 <code>pacman</code> 与 Arch 官方仓库，不叠加发行层；自有软件包通过项目控制并签名的独立仓库提供。</p>
+  <p class="term-item"><strong>滚动更新（rolling release）</strong> — 无固定版本周期，持续接收上游更新；Arch 上游（含安全补丁）发布后立即同步进入仓库，无需等待发行版统一调度。</p>
+  <p class="term-item"><strong>双内核（linux + linux-lts）</strong> — 同时安装两个 Arch 通用内核：<code>linux</code> 为主、<code>linux-lts</code> 为兜底，GRUB 平铺菜单默认最新内核；单一内核更新异常时可回退。</p>
+  <p class="term-item"><strong>快照（Timeshift / grub-btrfs）</strong> — btrfs 系统快照：Timeshift 负责快照管理，grub-btrfs 把快照加入 GRUB 启动菜单以便回滚；<code>linxira-update</code> 默认在更新前自动创建快照，也可用 <code>linxira-config timeshift enable</code> 一键配置。</p>
+  <p class="term-item"><strong>无头模式（headless）</strong> — 通过 systemd 标准目标切换关闭桌面，桌面零占用、内存全给计算；用 <code>linxira-config headless on / off / status</code> 切换与查看。</p>
+  <p class="term-item"><strong>桌面超算（Desktop Supercomputer）</strong> — Linxira 的定位：完整保留常规桌面功能，加上科学计算无头模式，用无损容器复现他人环境，也让别人复现我们。</p>
+
+  <h2>软件包管理</h2>
+  <p class="term-item"><strong><code>pacman</code></strong> — Arch Linux 的包管理器，也是 Linxira 的底层软件管理工具：<code>sudo pacman -Syu</code> 更新系统，<code>sudo pacman -S &lt;包名&gt;</code> 安装软件。</p>
+  <p class="term-item"><strong><code>pacman-key</code></strong> — pacman 的 GnuPG 密钥管理工具：<code>sudo pacman-key --init</code> 初始化本机密钥环，配合 <code>linxira-keyring</code> 导入并本地信任 Linxira 发布密钥。</p>
+  <p class="term-item"><strong><code>PKGBUILD</code></strong> — 描述如何构建 Arch 软件包的脚本（含 <code>pkgver</code>、<code>source</code>、<code>sha256sums</code> 等）。Linxira 自研包多采用 codeload commit 模式固定源码 commit。</p>
+  <p class="term-item"><strong><code>repo-add</code></strong> — 生成 pacman 仓库数据库的工具。发布流程中用它以 <code>repo-add --sign --key &lt;指纹&gt; linxira.db.tar.zst ./*.pkg.tar.zst</code> 生成并签名 [linxira] 仓库数据库，随后部署到 GitHub Pages。</p>
+  <p class="term-item"><strong>[linxira] 签名仓库</strong> — Linxira 官方自研软件仓库（<code>https://linxira-os.github.io/linxira-packages/x86_64</code>），<code>SigLevel = Required DatabaseOptional</code>：数据库与软件包签名均在 pacman 侧强制校验，防篡改。</p>
+  <p class="term-item"><strong><code>linxira-keyring</code></strong> — Linxira 包签名密钥环包：安装后自动导入并信任发布密钥（2026-08-04 轮换；指纹不在网站上公布）。</p>
+  <p class="term-item"><strong>AUR（Arch 用户仓库）</strong> — 用户维护的软件包集合，未经过审核。Linxira 默认关闭 AUR，必须由用户显式启用；未审核的 AUR 配方不会被当作官方软件展示。</p>
+  <p class="term-item"><strong>catalog v2 / v3（审核目录）</strong> — 经过审核的软件元数据目录。v2 是 Welcome、Calamares、Config Hub 与 Shelly 推荐链接的共同来源（兼容保留）；v3 是新的应用/组件/能力图（desktops / applications / components / bundles），审查覆盖许可证、来源与可用性，精选应用按 14 个分类组织，外部生态默认关闭。</p>
+  <p class="term-item"><strong><code>check-boundaries.sh</code></strong> — linxira-packages 仓库的 CI 第一道门：校验 PKGBUILD 边界（禁止 CachyOS/AUR/Seafoam 仓库引用、强制 codeload/release tarball 源码、校验固定 commit 与 sha256 等）。改 PKGBUILD 必须同步通过它。</p>
+
+  <h2>自研组件</h2>
+  <p class="term-item"><strong>Linxira Welcome</strong> — Plasma 原生状态与路由中心：Home / Status / Help 三页，开机自动打开；只读展示 catalog 与安装 receipt，固定工具启动器。</p>
+  <p class="term-item"><strong>Shelly</strong> — 安装后的默认图形化软件管理器（CLI + GTK 界面 + 更新通知），可选、非安装器依赖；执行获准的软件包操作，不参与安装器事务。</p>
+  <p class="term-item"><strong>Config Hub（<code>linxira-config</code>）</strong> — 管理员命令行工具：SSH 服务与密钥管理、镜像源（Arch/npm/PyPI/AUR/Go/Flatpak）、网络诊断、安全状态与只读 catalog 查询。</p>
+  <p class="term-item"><strong>Package Center</strong> — 精选应用安装工具（Quick System Software Setup）：catalog v3 应用分类树，plan / confirm / apply 三步事务。通用软件中心由 Shelly 负责。</p>
+  <p class="term-item"><strong>Component Manager</strong> — 能力包 / 运行时 / 工具链选择（Quick System Runtime Setup）：组件三态树（required / recommended / optional），仅安装、不支持卸载。</p>
+  <p class="term-item"><strong><code>linxira-components</code> 后端</strong> — 目录绑定的 pacman 事务规划与 receipt 后端：确定性 plan、SHA-256 规范 JSON 摘要、root-only pacman、持久 receipt；D-Bus 服务 <code>org.linxira.Components1</code>。</p>
+  <p class="term-item"><strong><code>linxira-update</code></strong> — 系统更新通知与维护助手：交互式更新提示、系统托盘小程序、更新前后自定义任务，默认更新前创建 Timeshift 快照；由 systemd 用户服务驱动。</p>
+  <p class="term-item"><strong><code>lhwd</code>（硬件驱动检测）</strong> — <code>linxira-hwd-detector</code>：硬件检测与驱动配置工具（Rust，完整 CHWD 移植）；<code>lhwd</code> 命令提供 list / autoconfigure / install / remove。</p>
+
+  <h2>容器与复现</h2>
+  <p class="term-item"><strong>Podman</strong> — 无守护进程的容器引擎；Linxira 容器生态默认化的一部分，与 Distrobox 一起用于隔离固定版本的项目环境。</p>
+  <p class="term-item"><strong>Distrobox</strong> — 在容器中运行其他发行版，为项目提供可移植环境，与滚动更新的宿主机隔离。</p>
+  <p class="term-item"><strong>Apptainer</strong> — 面向 HPC/生信的工作流容器运行时；用于运行经过审核、固定版本的工作流容器。</p>
+  <p class="term-item"><strong>Docker</strong> — 容器运行时与工具链，开箱即用；配套 <code>docker-compose</code> 提供多容器编排。</p>
+
+  <h2>安装与桌面</h2>
+  <p class="term-item"><strong>Calamares（手动运行）</strong> — Linxira 采用的安装器。Live 桌面不会自动启动它：准备好后从 Welcome 或应用菜单手动打开。当前分片支持无加密、GPT、Btrfs（含文档化子卷）安装，含 GRUB、双内核、Plasma 与 Shelly。</p>
+  <p class="term-item"><strong>KDE Plasma</strong> — 默认桌面环境；安装时在「桌面环境」一步二选一（KDE Plasma 或服务器无桌面），Plasma 为 Live 与目标系统两个环境的默认桌面。</p>
+  <p class="term-item"><strong>Fcitx5（中文输入法）</strong> — 中文输入法框架；安装时选择中文即自动配置好 Fcitx5。</p>
+  <p class="term-item"><strong>Discover（刻意排除）</strong> — KDE 默认应用商店未随系统提供：Linxira Package Center 是目录式应用安装器，Shelly 保留用于审核推荐与包浏览。</p>
+
+  <h2>构建</h2>
+  <p class="term-item"><strong>codeload commit 模式</strong> — PKGBUILD 的源码获取方式：源码固定到某个 commit，makepkg 自动从 codeload 下载 tarball，sha256 校验完整性。大多数自研包采用此模式。</p>
+  <p class="term-item"><strong><code>fetch-linxira-packages.sh</code></strong> — 从官方 [linxira] 仓库拉取完整自研包闭包（默认覆盖 build-direct-iso.sh 全部产物）到本地产物目录，使官方构建可从已发布产物复现。</p>
+  <p class="term-item"><strong><code>build-direct-iso.sh</code></strong> — linxira-iso-direct 的完整构建包装脚本：校验每个包的标识与关键归档路径、重建 profile 符号链接并调用 <code>mkarchiso</code>，产出 <code>linxira-YYYY.MM.DD-x86_64.iso</code> 及同名 <code>.sha256</code>。</p>
 
   <style>
-    .placeholder { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px dashed rgba(51,65,85,0.5); border-radius: 12px; padding: 3rem; text-align: center; margin-top: 2rem; }
-    .placeholder p { color: #64748b; }
+    h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    .term-item { margin: 0.9rem 0; color: #94a3b8; line-height: 1.7; }
+    .term-item strong { color: #20B8B0; font-weight: 600; }
   </style>
 </PageLayout>
