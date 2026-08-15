@@ -1,5 +1,6 @@
 ---
 import Navbar from "../../components/Navbar.astro";
+import { blogPosts } from "../../data/blog";
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -231,6 +232,7 @@ import Navbar from "../../components/Navbar.astro";
     .blog-title { font-size: 1.2rem; font-weight: 600; color: var(--ink-strong); margin-bottom: 0.5rem; }
     .blog-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
     .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+    .blog-tag.tech { background: rgba(139,92,246,0.15); color: #a78bfa; }
 
     .release-section { padding: 4rem 0; }
     .release-card h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 0.8rem; }
@@ -673,12 +675,14 @@ import Navbar from "../../components/Navbar.astro";
         <div class="section-divider"></div>
       </div>
       <div class="blog-grid">
-        <a href="/zh/blog/introducing-linxira-os/" class="blog-card glass reveal">
-          <div class="blog-date">2026-06-27</div>
-          <div class="blog-title">Linxira OS 介绍</div>
-          <div class="blog-desc">Linxira OS 是什么，为谁而建，为什么要做这个项目。设计理念、技术架构和目标用户。</div>
-          <span class="blog-tag">公告</span>
-        </a>
+        {blogPosts.map((p) => (
+          <a href={`/zh/blog/${p.slug}/`} class="blog-card glass reveal">
+            <div class="blog-date">{p.date}</div>
+            <div class="blog-title">{p.zh.title}</div>
+            <div class="blog-desc">{p.zh.desc}</div>
+            <span class={p.tag === "technical" ? "blog-tag tech" : "blog-tag"}>{p.tag === "announcement" ? "公告" : "技术"}</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
