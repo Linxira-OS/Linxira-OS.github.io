@@ -25,21 +25,32 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 				<div class="tabs">
 					<button class="tab active" type="button" data-tab="npm">npm</button>
 					<button class="tab" type="button" data-tab="bun">bun</button>
-					<button class="tab" type="button" data-tab="curl">curl</button>
+					<button class="tab" type="button" data-tab="linux">Linux</button>
+					<button class="tab" type="button" data-tab="windows">Windows</button>
 					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
 				</div>
 				<div class="code" data-pane="npm">
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @zeta/pi-coding-agent">npm install -g @zeta/pi-coding-agent</span></span>
-					<button class="copy-btn" type="button" data-copy="npm install -g @zeta/pi-coding-agent" data-done="Copied">Copy</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/zeta">npm install -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button>
 				</div>
 				<div class="code" data-pane="bun" hidden>
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @zeta/pi-coding-agent">bun add -g @zeta/pi-coding-agent</span></span>
-					<button class="copy-btn" type="button" data-copy="bun add -g @zeta/pi-coding-agent" data-done="Copied">Copy</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/zeta">bun add -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/zeta" data-done="Copied">Copy</button>
 				</div>
-				<div class="code" data-pane="curl" hidden>
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install | sh">curl -fsSL https://linxira-os.github.io/install | sh</span></span>
-					<button class="copy-btn" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install | sh" data-done="Copied">Copy</button>
+				<div class="code" data-pane="linux" hidden>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install.sh | sh">curl -fsSL https://linxira-os.github.io/install.sh | sh</span></span>
+					<button class="copy-btn" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install.sh | sh" data-done="Copied">Copy</button>
 				</div>
+				<div class="code" data-pane="windows" hidden>
+					<span class="cmd"><span class="prompt">PS&gt;</span><span class="type" data-typing="irm https://linxira-os.github.io/install.ps1 | iex">irm https://linxira-os.github.io/install.ps1 | iex</span></span>
+					<button class="copy-btn" type="button" data-copy="irm https://linxira-os.github.io/install.ps1 | iex" data-done="Copied">Copy</button>
+				</div>
+				<p class="install-note">
+					In China: if the official registry is slow, use the Tencent mirror
+					<code>npm install -g @linxiraos/zeta --registry=https://mirrors.cloud.tencent.com/npm/</code>.
+					Alibaba's npmmirror has previously lagged on <code>pi-natives@1.0.2</code> and broken installs — if you hit an error, switch to the official registry or the Tencent mirror.
+					Desktop (GUI) builds: <a href="https://github.com/Linxira-OS/linxira-zeta/releases" target="_blank" rel="noopener">GitHub Releases</a>.
+				</p>
 			</div>
 		</div>
 	</section>
