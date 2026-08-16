@@ -92,15 +92,25 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 		}
 		.container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
 
-		.zeta-bar {
-			position: sticky; top: 0; z-index: 20;
-			border-bottom: 1px solid var(--line);
-			background: color-mix(in srgb, var(--bg) 90%, transparent);
-			backdrop-filter: blur(12px);
+		/* 子页面导航：banner 改造为右侧工具栏（桌面为右侧栏，窄屏还原为顶部横条） */
+		.zeta-body {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 13rem;
+			gap: 2.5rem;
+			align-items: start;
+			max-width: 1360px;
+			margin: 0 auto;
+			padding: 0 5vw;
 		}
-		.zeta-nav {
-			display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-			max-width: 1200px; margin: 0 auto; padding: 0.7rem 5vw;
+		.zeta-body .container { max-width: none; padding: 0; min-width: 0; }
+
+		.zeta-rail {
+			position: sticky; top: calc(var(--zeta-nav-h, 4.5rem) + 1rem); z-index: 10;
+			display: flex; flex-direction: column; gap: .2rem;
+			padding: 1.1rem 1rem;
+			border: 1px solid var(--line);
+			background: var(--panel);
+			backdrop-filter: blur(12px);
 		}
 		.zeta-brand {
 			display: inline-flex; align-items: center; gap: .5rem;
@@ -110,20 +120,27 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 			display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center;
 			background: var(--teal); color: var(--bg); font-size: 1rem; font-weight: 800;
 		}
-		.zeta-links { display: flex; align-items: center; gap: 1.4rem; }
-		.zeta-links a {
-			color: var(--muted); text-decoration: none; font-size: .8rem;
+		.zeta-rail .zeta-brand { padding-bottom: .9rem; margin-bottom: .7rem; border-bottom: 1px solid var(--line); }
+		.zeta-rail .zeta-links { display: flex; flex-direction: column; gap: .1rem; }
+		.zeta-rail .zeta-links a {
+			color: var(--muted); text-decoration: none; font-size: .78rem;
 			letter-spacing: .08em; text-transform: uppercase;
+			padding: .5rem .55rem; border-left: 2px solid transparent;
+			transition: color .15s, border-color .15s, background .15s;
 		}
-		.zeta-links a:hover { color: var(--teal); }
-		.zeta-links a.active { color: var(--teal); border-bottom: 2px solid var(--teal); padding-bottom: .2rem; }
-		.zeta-actions { display: flex; align-items: center; gap: .8rem; flex-shrink: 0; }
-		.theme-toggle, .zeta-actions .lang-toggle {
+		.zeta-rail .zeta-links a:hover { color: var(--teal); background: var(--panel-solid); border-left-color: var(--teal); }
+		.zeta-rail .zeta-links a.active { color: var(--teal); border-left-color: var(--teal); }
+		.zeta-rail .zeta-actions {
+			display: flex; flex-direction: column; gap: .5rem;
+			margin-top: .9rem; padding-top: .9rem; border-top: 1px solid var(--line);
+		}
+		.theme-toggle, .zeta-rail .lang-toggle {
 			background: none; border: 1px solid var(--line); color: var(--ink);
 			font-family: var(--font); font-size: .75rem; padding: .4rem .8rem;
 			cursor: pointer; letter-spacing: .1em; text-transform: uppercase; text-decoration: none;
 		}
-		.theme-toggle:hover, .zeta-actions .lang-toggle:hover { border-color: var(--teal); color: var(--teal); }
+		.theme-toggle:hover, .zeta-rail .lang-toggle:hover { border-color: var(--teal); color: var(--teal); }
+		.zeta-rail .theme-toggle, .zeta-rail .lang-toggle { width: 100%; text-align: center; }
 
 		.hero { padding: 6.5rem 0 4rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
 		.hero::before {
@@ -291,10 +308,29 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 		html[lang="zh"] .page-hero h1 { letter-spacing: 0; }
 		html[lang="zh"] .section-head h2 { letter-spacing: 0; }
 
+		@media (max-width: 1023px) {
+			.zeta-body { display: flex; flex-direction: column-reverse; gap: 0; max-width: none; padding: var(--zeta-nav-h, 4.5rem) 0 0; }
+			.zeta-body .container { max-width: 1200px; margin: 0 auto; padding: 0 5vw; }
+			.zeta-rail {
+				position: sticky; top: var(--zeta-nav-h, 4.5rem); z-index: 20;
+				flex-direction: row; align-items: center; justify-content: space-between;
+				gap: 1rem; padding: .7rem 5vw;
+				border: none; border-bottom: 1px solid var(--line);
+				background: color-mix(in srgb, var(--bg) 90%, transparent);
+			}
+			.zeta-rail .zeta-brand { padding: 0; margin: 0; border: none; }
+			.zeta-rail .zeta-links { flex-direction: row; gap: 1rem; }
+			.zeta-rail .zeta-links a { padding: 0; border-left: none; }
+			.zeta-rail .zeta-links a:hover { background: none; }
+			.zeta-rail .zeta-links a.active { border-left: none; border-bottom: 2px solid var(--teal); padding-bottom: .2rem; }
+			.zeta-rail .zeta-actions { flex-direction: row; margin: 0; padding: 0; border: none; }
+			.zeta-rail .theme-toggle, .zeta-rail .lang-toggle { width: auto; }
+		}
+
 		@media (max-width: 720px) {
-			.zeta-nav { flex-wrap: wrap; gap: .6rem; }
-			.zeta-links { gap: 1rem; flex-wrap: wrap; }
-			.zeta-links a { font-size: .7rem; }
+			.zeta-rail { flex-wrap: wrap; gap: .6rem; }
+			.zeta-rail .zeta-links { gap: 1rem; flex-wrap: wrap; }
+			.zeta-rail .zeta-links a { font-size: .7rem; }
 			.hero { padding-top: 4.5rem; }
 			.section-head { grid-template-columns: 1fr; gap: .4rem; }
 			.code { flex-direction: column; align-items: flex-start; }
@@ -307,24 +343,23 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 
 	<Navbar lang={lang} active="products" />
 
-	<header class="zeta-bar">
-		<nav class="zeta-nav">
+	<div class="zeta-body">
+		<main class="container">
+			<slot />
+		</main>
+		<aside class="zeta-rail" aria-label="Zeta 子页面导航">
 			<a class="zeta-brand" href={base + "/"}><span class="zmark">Z</span><span class="zeta-word">ZETA</span></a>
-			<div class="zeta-links">
+			<nav class="zeta-links">
 				<a href={base + "/"} class:list={{ active: active === "home" }}>{copy.navHome}</a>
 				<a href={base + "/features/"} class:list={{ active: active === "features" }}>{copy.navFeatures}</a>
 				<a href={base + "/ecosystem/"} class:list={{ active: active === "ecosystem" }}>{copy.navEcosystem}</a>
-			</div>
+			</nav>
 			<div class="zeta-actions">
 				<button class="theme-toggle" id="themeToggle" type="button">{copy.themeBtn}</button>
 				<a class="lang-toggle" href={langHref}>{zh ? "EN" : "中文"}</a>
 			</div>
-		</nav>
-	</header>
-
-	<main class="container">
-		<slot />
-	</main>
+		</aside>
+	</div>
 
 	<footer>
 		<span class="copy">{copy.footCopy}</span>
@@ -338,6 +373,16 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 		const html = document.documentElement;
 		html.classList.add('js');
 		const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		// 主站导航为 fixed 定位，把实际高度写入 CSS 变量，供右侧工具栏/横条偏移
+		const setNavH = () => {
+			const nav = document.querySelector('.site-nav');
+			if (!nav) return;
+			html.style.setProperty('--zeta-nav-h', nav.getBoundingClientRect().height + 'px');
+		};
+		setNavH();
+		window.addEventListener('resize', setNavH);
+		window.addEventListener('load', setNavH);
 
 		// reveal on scroll
 		const blocks = document.querySelectorAll('.hero, .page-hero, section.block');
