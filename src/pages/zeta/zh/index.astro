@@ -1,6 +1,39 @@
 ---
 import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 ---
+<style>
+	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; }
+	.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
+	.shot-strip:hover .shot-track { animation-play-state: paused; }
+	.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
+	.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
+	.shot:hover { border-color: #2f6f78; transform: translateY(-2px); }
+	.shot img { display: block; width: 100%; height: auto; }
+	.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
+	.lightbox[hidden] { display: none; }
+	.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); }
+	@keyframes zeta-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+	@media (prefers-reduced-motion: reduce) { .shot-track { animation: none; } }
+</style>
+
+<script>
+	const strip = document.querySelector('#webui .shot-strip');
+	const lb = document.getElementById('lightbox');
+	const lbImg = document.getElementById('lightboxImg');
+	if (strip && lb && lbImg) {
+		strip.querySelectorAll('.shot').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const img = btn.querySelector('img');
+				if (!img) return;
+				lbImg.src = img.src;
+				lb.hidden = false;
+			});
+		});
+		lb.addEventListener('click', () => { lb.hidden = true; lbImg.src = ''; });
+		lbImg.addEventListener('click', (e) => e.stopPropagation());
+	}
+</script>
+
 <ZetaLayout
 	lang="zh"
 	title="Zeta — 终端编码代理"
@@ -118,38 +151,6 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		</div>
 	</section>
 
-	<style>
-		.shot-strip { overflow: hidden; width: 100%; }
-		.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
-		.shot-strip:hover .shot-track { animation-play-state: paused; }
-		.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
-		.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
-		.shot:hover { border-color: #2f6f78; transform: translateY(-2px); }
-		.shot img { display: block; width: 100%; height: auto; }
-		.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
-		.lightbox[hidden] { display: none; }
-		.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); }
-		@keyframes zeta-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-		@media (prefers-reduced-motion: reduce) { .shot-track { animation: none; } }
-	</style>
-
-	<script>
-		const strip = document.querySelector('#webui .shot-strip');
-		const lb = document.getElementById('lightbox');
-		const lbImg = document.getElementById('lightboxImg');
-		if (strip && lb && lbImg) {
-			strip.querySelectorAll('.shot').forEach((btn) => {
-				btn.addEventListener('click', () => {
-					const img = btn.querySelector('img');
-					if (!img) return;
-					lbImg.src = img.src;
-					lb.hidden = false;
-				});
-			});
-			lb.addEventListener('click', () => { lb.hidden = true; lbImg.src = ''; });
-			lbImg.addEventListener('click', (e) => e.stopPropagation());
-		}
-	</script>
 
 	<section class="block" id="modes">
 		<div class="section-head">
