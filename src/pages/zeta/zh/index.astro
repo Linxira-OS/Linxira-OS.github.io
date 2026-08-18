@@ -53,6 +53,12 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 					阿里 npmmirror 曾因同步延迟缺 <code>pi-natives@1.0.2</code> 导致安装失败，遇到报错请换官方源或腾讯镜像。
 					桌面版（图形界面）见 <a href="https://github.com/Linxira-OS/linxira-zeta/releases" target="_blank" rel="noopener">GitHub Releases</a>。
 				</p>
+		<p class="install-note" style="margin-top:1rem">或直接从 Release 下载最新二进制——链接固定，始终指向最新版：</p>
+		<div style="display:flex;gap:.6rem;margin-top:.5rem;flex-wrap:wrap">
+			<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest/download/zeta-linux-x64">Linux</a>
+			<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest/download/zeta-darwin-arm64">macOS</a>
+			<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest/download/zeta-windows-x64.exe">Windows</a>
+		</div>
 			</div>
 		</div>
 	</section>
@@ -70,6 +76,8 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<div class="grid-item"><div class="idx">02</div><h3><span class="k">C</span>缓存优先</h3><p>不牺牲协议正确性、工具新鲜度与会话可靠性的前提下，保留提供商提示缓存资格。长会话保持低成本。</p></div>
 			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>自定义自我进化</h3><p>扩展、技能、提示模板与主题都是一等公民。让代理构建你需要的——它可以现场自定义自己。</p></div>
 			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>上游可合并</h3><p>运行时树、包布局、Bun 工作流与内部 <span class="keycap">@zeta/*</span> 包名沿用 OMP 约定，上游更新保持可合并。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">F</span>开箱即用</h3><p>合理默认与引导流程：关键路径无需手动拼装扩展或调参即可工作。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI 一等公民</h3><p>浏览器工作界面与 CLI、桌面共享同一份持久会话，状态随处可续。</p></div>
 		</div>
 	</section>
 
@@ -90,6 +98,62 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<div class="grid-item"><div class="idx">06</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 重活交给 Rust 原语。</p></div>
 		</div>
 	</section>
+	<section class="block" id="webui">
+		<div class="section-head">
+			<h2>Web UI</h2>
+			<div class="sub">Zeta 的浏览器工作界面：会话、项目上下文与实时代理状态——与 CLI、桌面共享同一份持久会话。点击任意截图可放大。</div>
+		</div>
+		<div class="shot-strip">
+			<div class="shot-track">
+				<div class="shot-group">
+					<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="Zeta Web UI 界面截图 1" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="Zeta Web UI 界面截图 2" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="Zeta Web UI 界面截图 3" loading="lazy"></button>
+				</div>
+				<div class="shot-group" aria-hidden="true">
+					<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="" loading="lazy"></button>
+				</div>
+			</div>
+		</div>
+		<div class="lightbox" id="lightbox" hidden>
+			<img id="lightboxImg" src="" alt="放大的 Zeta Web UI 界面截图">
+		</div>
+	</section>
+
+	<style>
+		.shot-strip { overflow: hidden; width: 100%; }
+		.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
+		.shot-strip:hover .shot-track { animation-play-state: paused; }
+		.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
+		.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
+		.shot:hover { border-color: #2f6f78; transform: translateY(-2px); }
+		.shot img { display: block; width: 100%; height: auto; }
+		.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
+		.lightbox[hidden] { display: none; }
+		.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); }
+		@keyframes zeta-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+		@media (prefers-reduced-motion: reduce) { .shot-track { animation: none; } }
+	</style>
+
+	<script>
+		const strip = document.querySelector('#webui .shot-strip');
+		const lb = document.getElementById('lightbox');
+		const lbImg = document.getElementById('lightboxImg');
+		if (strip && lb && lbImg) {
+			strip.querySelectorAll('.shot').forEach((btn) => {
+				btn.addEventListener('click', () => {
+					const img = btn.querySelector('img');
+					if (!img) return;
+					lbImg.src = img.src;
+					lb.hidden = false;
+				});
+			});
+			lb.addEventListener('click', () => { lb.hidden = true; lbImg.src = ''; });
+			lbImg.addEventListener('click', (e) => e.stopPropagation());
+		}
+	</script>
 
 	<section class="block" id="modes">
 		<div class="section-head">
@@ -124,21 +188,4 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<span class="tag">更多…</span>
 		</div>
 	</section>
-	<section class="block" id="webui">
-		<div class="section-head">
-			<h2>Web UI</h2>
-			<div class="sub">Zeta 的浏览器工作界面：会话、项目上下文与实时代理状态——与 CLI、桌面共享同一份持久会话。</div>
-		</div>
-		<div class="shot-strip">
-			<a class="shot" href="/assets/zeta-webui-1.png" target="_blank" rel="noopener"><img src="/assets/zeta-webui-1.png" alt="Zeta Web UI 界面截图 1" loading="lazy"></a>
-			<a class="shot" href="/assets/zeta-webui-2.png" target="_blank" rel="noopener"><img src="/assets/zeta-webui-2.png" alt="Zeta Web UI 界面截图 2" loading="lazy"></a>
-			<a class="shot" href="/assets/zeta-webui-3.png" target="_blank" rel="noopener"><img src="/assets/zeta-webui-3.png" alt="Zeta Web UI 界面截图 3" loading="lazy"></a>
-		</div>
-	</section>
-
-	<style>
-		.shot-strip { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: .75rem; scroll-snap-type: x mandatory; }
-		.shot-strip .shot { flex: 0 0 auto; width: min(340px, 78vw); scroll-snap-align: start; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; text-decoration: none; }
-		.shot-strip .shot img { display: block; width: 100%; height: auto; }
-	</style>
 </ZetaLayout>
