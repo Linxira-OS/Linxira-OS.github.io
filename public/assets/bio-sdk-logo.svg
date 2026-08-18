@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Linxira Bio SDK">
+  <rect width="512" height="512" rx="112" fill="#0A0E14"/>
+  <g fill="#20B8B0">
+    <rect x="144" y="112" width="96" height="320" rx="24"/>
+    <rect x="144" y="240" width="304" height="96" rx="24"/>
+  </g>
+  <rect x="320" y="112" width="96" height="96" rx="24" fill="#F36F5D"/>
+</svg>
