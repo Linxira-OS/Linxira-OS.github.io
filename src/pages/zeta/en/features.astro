@@ -4,7 +4,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="en"
 	title="Features — Zeta"
-	description="Zeta features: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, time-traveling rules, context engineering, extensions."
+	description="Zeta features: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, time-traveling rules, context engineering, chat platform bots, extensions."
 	active="features"
 >
 	<section class="page-hero">
@@ -87,9 +87,25 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		</div>
 	</section>
 
-	<section class="block" id="extensions">
+	<section class="block" id="bots">
 		<div class="section-head">
 			<div class="num">05</div>
+			<div>
+				<h2>Chat platform bots</h2>
+				<div class="sub">Use Zeta right from WeChat, Feishu, and Telegram. One unified bot interface, with more platforms on the way.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">W</span>WeChat bot</h3><p>Hook Zeta into WeChat: a message is a question, results land back in the chat, and sessions stay in sync with the CLI, desktop, and Web UI.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">F</span>Feishu bot</h3><p>Connect Feishu — call the agent from group chats or DMs, with cards and rich text for live progress.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">T</span>Telegram bot</h3><p>Built-in bot support for Telegram: private chats, groups, and inline mode for starting coding tasks anywhere.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>Unified bot interface</h3><p>One adapter layer for every platform: messages, commands, and result streams share a single protocol — a new platform needs just one adapter, and more are on the way.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="extensions">
+		<div class="section-head">
+			<div class="num">06</div>
 			<div>
 				<h2>Primitives, not features</h2>
 				<div class="sub">Features other agents bake in, you can build yourself. Extensions are TypeScript modules with access to tools, commands, keybindings, events, and the full TUI.</div>

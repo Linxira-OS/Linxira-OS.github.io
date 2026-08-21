@@ -99,8 +99,9 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 			max-width: 1360px;
 			margin: 0 auto;
 			padding: 0 5vw;
+			overflow-x: clip;
 		}
-		.zeta-body .container { max-width: none; padding: 0; min-width: 0; }
+		.zeta-body .container { max-width: none; padding: 0; min-width: 0; overflow-x: clip; }
 
 		.zeta-rail {
 			position: fixed; right: 1rem; top: 50%; transform: translateY(-50%); z-index: 10;
@@ -280,6 +281,7 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 			background: var(--panel-solid); border: 1px solid var(--line); border-top: none;
 			padding: 1.1rem 1.4rem; font-family: var(--mono); font-size: .88rem;
 			display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+			contain: inline-size;
 		}
 		.code .cmd { white-space: nowrap; overflow-x: auto; }
 		.code .prompt { color: var(--teal); font-weight: 700; margin-right: .6rem; }
@@ -291,7 +293,7 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 		.copy-btn:hover { color: var(--teal); border-color: var(--teal); }
 		.copy-btn.ok { color: var(--teal); border-color: var(--teal); }
 		.install-note { margin-top: 1.1rem; max-width: 66ch; color: var(--faint); font-size: .8rem; line-height: 1.8; }
-		.install-note code { font-family: var(--mono); font-size: .76rem; color: var(--teal); background: var(--panel); padding: .1rem .35rem; }
+		.install-note code { font-family: var(--mono); font-size: .76rem; color: var(--teal); background: var(--panel); padding: .1rem .35rem; overflow-wrap: anywhere; }
 		.install-note a { color: var(--teal); text-decoration: none; border-bottom: 1px solid var(--line); }
 		.install-note a:hover { border-bottom-color: var(--teal); }
 

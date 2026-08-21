@@ -2,7 +2,7 @@
 import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 ---
 <style>
-	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; }
+	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; contain: inline-size; }
 	.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
 	.shot-strip:hover .shot-track { animation-play-state: paused; }
 	.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
@@ -183,6 +183,20 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
 			<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
 			<span class="tag">更多…</span>
+		</div>
+	</section>
+
+	<section class="block" id="bots">
+		<div class="section-head">
+			<div class="num">05</div>
+			<div>
+				<h2>在聊天平台里驱动 Zeta</h2>
+				<div class="sub">把 Zeta 接入微信、飞书与 Telegram——在熟悉的消息应用里提问、发起任务、接收结果。一套统一的 bot 接口，更多聊天平台陆续加入。</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">微信 WeChat</span><span class="tag hot">飞书 Feishu</span><span class="tag hot">Telegram</span>
+			<span class="tag">统一 Bot 接口</span><span class="tag">更多平台即将加入…</span>
 		</div>
 	</section>
 </ZetaLayout>

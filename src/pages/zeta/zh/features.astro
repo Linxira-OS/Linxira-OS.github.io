@@ -4,7 +4,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="zh"
 	title="特性 — Zeta"
-	description="Zeta 特性：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则、上下文工程、扩展。"
+	description="Zeta 特性：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则、上下文工程、聊天平台机器人、扩展。"
 	active="features"
 >
 	<section class="page-hero">
@@ -87,9 +87,25 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		</div>
 	</section>
 
-	<section class="block" id="extensions">
+	<section class="block" id="bots">
 		<div class="section-head">
 			<div class="num">05</div>
+			<div>
+				<h2>聊天平台机器人</h2>
+				<div class="sub">在微信、飞书与 Telegram 里直接使用 Zeta。统一的 bot 接口，更多平台持续接入。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">W</span>微信机器人</h3><p>把 Zeta 挂进微信：对话即提问，任务结果直接回到聊天窗口，会话状态与 CLI / 桌面 / Web UI 无缝衔接。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">F</span>飞书机器人</h3><p>接入飞书：群聊与单聊都能唤起代理，卡片与富文本实时反馈任务进度。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">T</span>Telegram 机器人</h3><p>Telegram 内置 bot 支持：私聊、群组与内联模式，随时随地发起编码任务。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>统一 Bot 接口</h3><p>一套适配层覆盖所有平台：消息、命令与结果流走同一协议——新增平台只需一个适配器，更多平台即将加入。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="extensions">
+		<div class="section-head">
+			<div class="num">06</div>
 			<div>
 				<h2>原语，而非功能</h2>
 				<div class="sub">别家代理内置的功能，你可以自己搭。扩展是 TypeScript 模块，可访问工具、命令、快捷键、事件与完整 TUI。</div>

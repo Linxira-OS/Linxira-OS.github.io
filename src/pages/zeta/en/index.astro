@@ -2,7 +2,7 @@
 import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 ---
 <style>
-	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; }
+	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; contain: inline-size; }
 	.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
 	.shot-strip:hover .shot-track { animation-play-state: paused; }
 	.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
@@ -183,6 +183,20 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
 			<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
 			<span class="tag">more…</span>
+		</div>
+	</section>
+
+	<section class="block" id="bots">
+		<div class="section-head">
+			<div class="num">05</div>
+			<div>
+				<h2>Drive Zeta from your chat apps</h2>
+				<div class="sub">Hook Zeta into WeChat, Feishu, and Telegram — ask questions, start tasks, and get results from the messaging apps you already use. One unified bot interface, with more chat platforms on the way.</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">WeChat</span><span class="tag hot">Feishu</span><span class="tag hot">Telegram</span>
+			<span class="tag">Unified Bot Interface</span><span class="tag">More platforms coming…</span>
 		</div>
 	</section>
 </ZetaLayout>
