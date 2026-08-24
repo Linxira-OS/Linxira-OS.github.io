@@ -11,7 +11,11 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 	.shot img { display: block; width: 100%; height: auto; }
 	.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
 	.lightbox[hidden] { display: none; }
-	.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); }
+	.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); animation: lbIn .28s cubic-bezier(.22,.61,.36,1); }
+	.lightbox { animation: lbFade .2s ease-out; }
+	@keyframes lbIn { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+	@keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+	@media (prefers-reduced-motion: reduce) { .lightbox, .lightbox img { animation: none; } }
 	@keyframes zeta-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 	@media (prefers-reduced-motion: reduce) { .shot-track { animation: none; } }
 </style>

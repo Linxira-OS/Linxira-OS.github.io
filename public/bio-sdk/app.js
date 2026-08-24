@@ -139,29 +139,53 @@ function mulberry32(a) {
 }
 function renderQc(hostEl) {
   const host = hostEl || document.getElementById('qc-host'); if (!host) return;
-  const data = [[1, 30], [20, 32], [40, 36], [60, 38], [80, 40], [100, 42], [120, 38], [140, 32]];
-  const base = 150;
+  // [pos, q1, med, q3, whisker-min, whisker-max] — FastQC 风格逐位置质量箱线图
+  const data = [
+    [1, 27, 30, 33, 23, 37], [20, 29, 32, 35, 25, 39], [40, 32, 35, 38, 28, 41],
+    [60, 34, 37, 40, 30, 42], [80, 35, 38, 41, 31, 43], [100, 36, 39, 42, 32, 44],
+    [120, 33, 36, 39, 29, 42], [140, 29, 32, 35, 25, 39],
+  ];
+  const yBase = 156, yTop = 24;
+  const qy = q => yBase - (q / 45) * (yBase - yTop);
+  // 质量刻度网格线（Phred 0-45）
+  [0, 15, 30, 45].forEach(q => {
+    host.appendChild(svgEl('line', { x1: 42, y1: qy(q), x2: 242, y2: qy(q), style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+    host.appendChild(svgText(38, qy(q) + 2, String(q), { 'text-anchor': 'end', 'font-size': '6.5' }));
+  });
+  // Q30 警戒线
+  host.appendChild(svgEl('line', { x1: 42, y1: qy(30), x2: 242, y2: qy(30), style: 'stroke:var(--accent-amber)', 'stroke-width': '0.7', 'stroke-dasharray': '4,3', opacity: '0.7' }));
+  host.appendChild(svgText(246, qy(30) + 2, 'Q30', { 'text-anchor': 'start', 'font-size': '6', style: 'fill:var(--accent-amber)' }));
   data.forEach((d, i) => {
-    const cx = 55 + i * 23, x = cx - 8, h = d[1];
-    const y = base - h, med = base - h / 2;
+    const cx = 50 + i * 24, bw = 14;
+    const yQ3 = qy(d[3]), yQ1 = qy(d[1]), h = yQ1 - yQ3, med = qy(d[2]);
     const g = svgEl('g', {});
-    const box = svgEl('rect', { x, y, width: '16', height: h, rx: '2', style: 'fill:var(--brand-teal);opacity:0.28;stroke:var(--brand-teal);stroke-width:1' });
+    // 须线（min–q1 / q3–max）
+    g.appendChild(svgEl('line', { x1: cx, y1: qy(d[5]), x2: cx, y2: yQ3, style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
+    g.appendChild(svgEl('line', { x1: cx, y1: yQ1, x2: cx, y2: qy(d[4]), style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
+    g.appendChild(svgEl('line', { x1: cx - 5, y1: qy(d[5]), x2: cx + 5, y2: qy(d[5]), style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
+    g.appendChild(svgEl('line', { x1: cx - 5, y1: qy(d[4]), x2: cx + 5, y2: qy(d[4]), style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
+    // 箱体（q1–q3）+ 中位线
+    const box = svgEl('rect', { x: cx - bw / 2, y: yQ3, width: bw, height: h, rx: '2', style: 'fill:var(--brand-teal);opacity:0.28;stroke:var(--brand-teal);stroke-width:1' });
     box.appendChild(svgEl('animate', { attributeName: 'height', from: '0', to: h, dur: '0.5s', begin: (0.08 + i * 0.06) + 's', fill: 'freeze' }));
-    box.appendChild(svgEl('animate', { attributeName: 'y', from: base, to: y, dur: '0.5s', begin: (0.08 + i * 0.06) + 's', fill: 'freeze' }));
+    box.appendChild(svgEl('animate', { attributeName: 'y', from: yQ1, to: yQ3, dur: '0.5s', begin: (0.08 + i * 0.06) + 's', fill: 'freeze' }));
     g.appendChild(box);
-    g.appendChild(svgEl('line', { x1: x, y1: med, x2: x + 16, y2: med, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
-    g.appendChild(svgEl('line', { x1: cx, y1: y - 8, x2: cx, y2: base + 8, style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
-    g.appendChild(svgEl('line', { x1: cx - 6, y1: y - 8, x2: cx + 6, y2: y - 8, style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
-    g.appendChild(svgEl('line', { x1: cx - 6, y1: base + 8, x2: cx + 6, y2: base + 8, style: 'stroke:var(--text-dim)', 'stroke-width': '0.8', opacity: '0.7' }));
-    g.appendChild(svgText(cx, 172, String(d[0]), { 'font-size': '7' }));
+    g.appendChild(svgEl('line', { x1: cx - bw / 2, y1: med, x2: cx + bw / 2, y2: med, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
+    g.appendChild(svgText(cx, 168, String(d[0]), { 'font-size': '7' }));
     host.appendChild(g);
   });
   host.appendChild(svgText(140, 12, 'base quality (Phred)', { 'font-size': '7' }));
+  host.appendChild(svgText(142, 182, 'read position (bp)', { 'font-size': '6.5' }));
 }
 function renderKegg(hostEl) {
   const host = hostEl || document.getElementById('kegg-host'); if (!host) return;
   const data = [['IL-17 signaling', 8.9], ['Cytokine-cytokine receptor', 7.2], ['NF-\u03baB signaling', 5.8], ['TNF signaling', 4.1], ['Toll-like receptor', 2.9], ['Apoptosis', 2.2]];
   const x0 = 100;
+  // x 轴网格线与刻度（0-9）
+  [0, 3, 6, 9].forEach(v => {
+    const gx = x0 + v * 16;
+    host.appendChild(svgEl('line', { x1: gx, y1: 18, x2: gx, y2: 186, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5', opacity: '0.7' }));
+    host.appendChild(svgText(gx, 195, String(v), { 'font-size': '6.5' }));
+  });
   host.appendChild(svgEl('line', { x1: x0, y1: 18, x2: x0, y2: 186, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
   host.appendChild(svgText(180, 12, '-log10(padj)', { 'font-size': '7' }));
   data.forEach((d, i) => {
@@ -183,6 +207,16 @@ function renderVolcano(hostEl) {
   host.appendChild(svgEl('line', { x1: 40, y1: 154, x2: 240, y2: 154, style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', 'stroke-dasharray': '3,3', opacity: '0.5' }));
   host.appendChild(svgText(235, 175, 'log2FC', { 'text-anchor': 'end' }));
   host.appendChild(svgText(136, 15, '-log10(padj)', { 'text-anchor': 'start' }));
+  // 坐标轴刻度：x 轴 log2FC -2/0/+2，y 轴 -log10(padj) 2/4/6/8
+  [[70, '-2'], [130, '0'], [190, '+2']].forEach(t => {
+    host.appendChild(svgEl('line', { x1: t[0], y1: 160, x2: t[0], y2: 164, style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', opacity: '0.7' }));
+    host.appendChild(svgText(t[0], 172, t[1], { 'font-size': '6.5' }));
+  });
+  host.appendChild(svgEl('line', { x1: 40, y1: 20, x2: 40, y2: 160, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+  [[148, '2'], [126, '4'], [104, '6'], [82, '8']].forEach(t => {
+    host.appendChild(svgEl('line', { x1: 38, y1: t[0], x2: 42, y2: t[0], style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', opacity: '0.7' }));
+    host.appendChild(svgText(36, t[0] + 2, t[1], { 'text-anchor': 'end', 'font-size': '6.5' }));
+  });
   const rng = mulberry32(20260814);
   for (let i = 0; i < 120; i++) {
     const fc = (rng() * 2 - 1) * 3.1;
@@ -498,8 +532,8 @@ function renderPca(host) {
   host.appendChild(svgEl('rect', { width: '260', height: '200', style: 'fill:var(--chart-bg)' }));
   host.appendChild(svgEl('line', { x1: 40, y1: 160, x2: 240, y2: 160, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
   host.appendChild(svgEl('line', { x1: 130, y1: 20, x2: 130, y2: 180, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
-  host.appendChild(svgText(235, 175, 'PC1', { 'text-anchor': 'end' }));
-  host.appendChild(svgText(135, 15, 'PC2'));
+  host.appendChild(svgText(235, 175, 'PC1 (42.3%)', { 'text-anchor': 'end' }));
+  host.appendChild(svgText(135, 15, 'PC2 (18.7%)'));
   const wt = [[90, 100], [80, 110], [85, 90], [75, 95], [70, 105], [95, 108], [82, 82], [88, 78], [68, 100], [100, 95]];
   const ko = [[170, 70], [180, 60], [175, 80], [185, 75], [190, 65], [165, 72], [178, 88], [188, 82], [172, 92], [195, 70]];
   wt.forEach((p, i) => { const c = svgEl('circle', { cx: p[0], cy: p[1], r: '4', fill: '#20B8B0', opacity: '0.8' }); c.style.animation = 'fadeIn .5s ease-out both'; c.style.animationDelay = (i * 0.1) + 's'; host.appendChild(c); });
@@ -560,6 +594,46 @@ const demoVariants = {
   'comparative.dotplot.v1': [
     { id: 'dot', zh: '点图', en: 'Dotplot', clone: true },
     { id: 'density', zh: '密度视图', en: 'Density', build: 'dotDensity' },
+  ],
+  'expression.pca.v1': [
+    { id: 'scatter', zh: '散点图', en: 'Scatter', clone: true },
+    { id: 'scree', zh: '碎石图', en: 'Scree', build: 'pcaScree' },
+  ],
+  'variant.stats.v1': [
+    { id: 'donut', zh: '环形图', en: 'Donut', clone: true },
+    { id: 'stack', zh: '堆叠条形', en: 'Stacked bar', build: 'pieStack' },
+  ],
+  'fastq.qc.v1': [
+    { id: 'box', zh: '箱线图', en: 'Boxplot', clone: true },
+    { id: 'line', zh: '折线图', en: 'Line', build: 'qcLine' },
+  ],
+  'expression.differential.v1': [
+    { id: 'volcano', zh: '火山图', en: 'Volcano', clone: true },
+    { id: 'ma', zh: 'MA 图', en: 'MA plot', build: 'volcanoMA' },
+  ],
+  'enrichment.kegg.v1': [
+    { id: 'bar', zh: '条形图', en: 'Bar', clone: true },
+    { id: 'lolli', zh: '棒棒糖图', en: 'Lollipop', build: 'keggLollipop' },
+  ],
+  'sequence.kmer.count.v1': [
+    { id: 'bar', zh: '条形图', en: 'Bar', clone: true },
+    { id: 'zipf', zh: '频率排序', en: 'Rank-frequency', build: 'kmerZipf' },
+  ],
+  'enrichment.gsea.v1': [
+    { id: 'line', zh: '运行得分', en: 'Running ES', clone: true },
+    { id: 'barcode', zh: '条码图', en: 'Barcode', build: 'gseaBarcode' },
+  ],
+  'comparative.kaks.v1': [
+    { id: 'scatter', zh: '散点图', en: 'Scatter', clone: true },
+    { id: 'hist', zh: '直方图', en: 'Histogram', build: 'kaksHist' },
+  ],
+  'sequence.motif.logo.v1': [
+    { id: 'logo', zh: 'Logo', en: 'Logo', clone: true },
+    { id: 'pwm', zh: 'PWM 热图', en: 'PWM map', build: 'motifPwm' },
+  ],
+  'rna.secondary-structure.v1': [
+    { id: 'struct', zh: '结构图', en: 'Structure', clone: true },
+    { id: 'arc', zh: '弧图', en: 'Arc plot', build: 'rnaArc' },
   ],
 };
 // ===== 系统发育树（二分树 · 真实简化拓扑） =====
@@ -717,6 +791,295 @@ const variantBuilders = {
       host.appendChild(c);
     }
     host.appendChild(svgText(130, 188, '130k k-mer matches · Homo sapiens vs Mus musculus chr1', { 'font-size': '6.5' }));
+  },
+  // PCA 碎石图（方差解释 + 累计曲线）
+  pcaScree(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const variances = [42.3, 18.7, 9.1, 5.4, 3.8];
+    const base = 160, scale = 120, max = 100;
+    const vy = v => base - v / max * scale;
+    [0, 25, 50, 75, 100].forEach(v => {
+      host.appendChild(svgEl('line', { x1: 40, y1: vy(v), x2: 240, y2: vy(v), style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+      host.appendChild(svgText(36, vy(v) + 2, v + '%', { 'text-anchor': 'end', 'font-size': '6.5' }));
+    });
+    let cum = 0;
+    const cums = variances.map(v => (cum += v));
+    variances.forEach((v, i) => {
+      const h = Math.round(v / max * scale), x = 52 + i * 38, y = base - h;
+      const rect = svgEl('rect', { x, y, width: '16', height: h, rx: '2', style: 'fill:var(--brand-teal);opacity:0.8' });
+      rect.appendChild(svgEl('animate', { attributeName: 'height', from: '0', to: h, dur: '0.6s', begin: (0.08 + i * 0.08) + 's', fill: 'freeze' }));
+      rect.appendChild(svgEl('animate', { attributeName: 'y', from: base, to: y, dur: '0.6s', begin: (0.08 + i * 0.08) + 's', fill: 'freeze' }));
+      host.appendChild(rect);
+      host.appendChild(svgText(x + 8, y - 4, v + '%', { 'font-size': '6' }));
+      host.appendChild(svgText(x + 8, 172, 'PC' + (i + 1), { 'font-size': '6.5' }));
+    });
+    const path = svgEl('path', {
+      d: 'M' + variances.map((v, i) => (60 + i * 38) + ',' + vy(cums[i]).toFixed(1)).join(' L'),
+      pathLength: '1', 'stroke-dasharray': '1', 'stroke-dashoffset': '1',
+      style: 'stroke:var(--accent-red)', 'stroke-width': '1.2', fill: 'none',
+    });
+    path.style.animation = 'drawLine 1.6s ease-out 0.6s forwards';
+    host.appendChild(path);
+    variances.forEach((v, i) => {
+      const c = svgEl('circle', { cx: 60 + i * 38, cy: vy(cums[i]), r: '2.2', style: 'fill:var(--accent-red)' });
+      c.style.animation = 'fadeIn .4s ease-out both';
+      c.style.animationDelay = (0.6 + i * 0.16) + 's';
+      host.appendChild(c);
+    });
+    host.appendChild(svgText(130, 12, 'variance explained (scree)', { 'font-size': '7' }));
+    host.appendChild(svgText(42, 188, '\u25b2 cumulative \u2192 79.3% by PC5', { 'text-anchor': 'start', 'font-size': '6.5', style: 'fill:var(--accent-red)' }));
+  },
+  // 变异类型 100% 堆叠条形
+  pieStack(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const data = [['SNP', 45, '#20B8B0'], ['INS', 20, '#31679E'], ['DEL', 18, '#AE3939'], ['MNP', 10, '#B06818'], ['Other', 7, '#6B4EA0']];
+    const x0 = 20, w = 220, y = 78, h = 26;
+    let acc = 0;
+    data.forEach((d, i) => {
+      const seg = svgEl('rect', { x: x0 + acc / 100 * w, y, width: d[1] / 100 * w, height: h, fill: d[2], opacity: '0.9' });
+      seg.style.animation = 'fadeIn .5s ease-out both';
+      seg.style.animationDelay = (i * 0.15) + 's';
+      host.appendChild(seg);
+      acc += d[1];
+    });
+    acc = 0;
+    data.forEach(d => {
+      const cx = x0 + (acc + d[1] / 2) / 100 * w;
+      acc += d[1];
+      host.appendChild(svgEl('line', { x1: cx, y1: y + h, x2: cx, y2: y + h + 12, style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', opacity: '0.6' }));
+      host.appendChild(svgText(cx, y + h + 22, d[0] + ' ' + d[1] + '%', { 'font-size': '6.5' }));
+    });
+    [0, 25, 50, 75, 100].forEach(p => {
+      const gx = x0 + p / 100 * w;
+      host.appendChild(svgEl('line', { x1: gx, y1: y + h + 30, x2: gx, y2: y + h + 33, style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', opacity: '0.6' }));
+      host.appendChild(svgText(gx, y + h + 41, p + '%', { 'font-size': '6' }));
+    });
+    host.appendChild(svgText(130, 40, 'variant type composition (n = 128,450)', { 'font-size': '7' }));
+  },
+  // 逐位置平均质量折线（含 IQR 带）
+  qcLine(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const yBase = 156, yTop = 24;
+    const qy = q => yBase - (q / 45) * (yBase - yTop);
+    [0, 15, 30, 45].forEach(q => {
+      host.appendChild(svgEl('line', { x1: 42, y1: qy(q), x2: 242, y2: qy(q), style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+      host.appendChild(svgText(38, qy(q) + 2, String(q), { 'text-anchor': 'end', 'font-size': '6.5' }));
+    });
+    host.appendChild(svgEl('line', { x1: 42, y1: qy(30), x2: 242, y2: qy(30), style: 'stroke:var(--accent-amber)', 'stroke-width': '0.7', 'stroke-dasharray': '4,3', opacity: '0.7' }));
+    host.appendChild(svgText(246, qy(30) + 2, 'Q30', { 'text-anchor': 'start', 'font-size': '6', style: 'fill:var(--accent-amber)' }));
+    const pts = [[1, 30], [20, 32], [40, 35], [60, 37], [80, 38], [100, 39], [120, 36], [140, 32]];
+    const px = i => 50 + i * 24;
+    const up = pts.map((p, i) => px(i) + ',' + qy(p[1] + 3).toFixed(1));
+    const dn = pts.map((p, i) => px(i) + ',' + qy(p[1] - 3).toFixed(1)).reverse();
+    host.appendChild(svgEl('path', { d: 'M' + up.join(' L') + ' L' + dn.join(' L') + ' Z', style: 'fill:var(--brand-teal)', opacity: '0.15' }));
+    const path = svgEl('path', {
+      d: 'M' + pts.map((p, i) => px(i) + ',' + qy(p[1]).toFixed(1)).join(' L'),
+      pathLength: '1', 'stroke-dasharray': '1', 'stroke-dashoffset': '1',
+      style: 'stroke:var(--brand-teal)', 'stroke-width': '1.8', fill: 'none',
+    });
+    path.style.animation = 'drawLine 1.8s ease-out 0.2s forwards';
+    host.appendChild(path);
+    pts.forEach((p, i) => {
+      const c = svgEl('circle', { cx: px(i), cy: qy(p[1]), r: '2', style: 'fill:var(--brand-teal)' });
+      c.style.animation = 'fadeIn .3s ease-out both';
+      c.style.animationDelay = (0.2 + i * 0.16) + 's';
+      host.appendChild(c);
+    });
+    pts.forEach((p, i) => host.appendChild(svgText(px(i), 168, String(p[0]), { 'font-size': '7' })));
+    host.appendChild(svgText(140, 12, 'mean base quality (Phred)', { 'font-size': '7' }));
+    host.appendChild(svgText(142, 182, 'read position (bp)', { 'font-size': '6.5' }));
+  },
+  // MA 图（均值 vs log2FC）
+  volcanoMA(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const y0 = 110;
+    const fy = lfc => y0 - lfc * 30;
+    host.appendChild(svgEl('line', { x1: 40, y1: y0, x2: 240, y2: y0, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+    [[-2, '-2'], [-1, '-1'], [0, '0'], [1, '+1'], [2, '+2']].forEach(t => {
+      host.appendChild(svgEl('line', { x1: 38, y1: fy(t[0]), x2: 42, y2: fy(t[0]), style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', opacity: '0.7' }));
+      host.appendChild(svgText(36, fy(t[0]) + 2, t[1], { 'text-anchor': 'end', 'font-size': '6' }));
+    });
+    [[0, '0'], [5, '5'], [10, '10']].forEach(t => host.appendChild(svgText(40 + t[0] * 20, 118, t[1], { 'font-size': '6' })));
+    [1, -1].forEach(v => host.appendChild(svgEl('line', { x1: 40, y1: fy(v), x2: 240, y2: fy(v), style: 'stroke:var(--text-dim)', 'stroke-width': '0.5', 'stroke-dasharray': '3,3', opacity: '0.5' })));
+    const rng = mulberry32(20260815);
+    for (let i = 0; i < 90; i++) {
+      const mean = rng() * 10;
+      const lfc = (rng() - 0.5) * 1.2 + (mean > 4 ? (rng() - 0.5) * 1.6 : 0);
+      const sig = Math.abs(lfc) > 1;
+      const c = svgEl('circle', { cx: 40 + mean * 20, cy: Math.max(26, Math.min(174, fy(lfc))), r: sig ? 2.4 : 1.6, fill: sig ? (lfc > 0 ? '#AE3939' : '#207456') : '#9D9D9D', opacity: sig ? '0.95' : '0.5' });
+      c.style.animation = 'fadeIn 0.5s ease-out both';
+      c.style.animationDelay = (i * 16) + 'ms';
+      host.appendChild(c);
+    }
+    const trend = svgEl('path', { d: 'M40,104 L100,106 L160,108 L240,107', pathLength: '1', 'stroke-dasharray': '1', 'stroke-dashoffset': '1', style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2', fill: 'none', opacity: '0.8' });
+    trend.style.animation = 'drawLine 1.5s ease-out 0.3s forwards';
+    host.appendChild(trend);
+    host.appendChild(svgText(140, 15, 'MA plot · mean expression vs log2FC', { 'font-size': '7' }));
+    host.appendChild(svgText(140, 194, 'mean expression (log10 counts)', { 'font-size': '6.5' }));
+    const legend = [[52, '#AE3939', 'up'], [112, '#207456', 'down'], [176, '#9D9D9D', 'NS']];
+    legend.forEach(l => {
+      host.appendChild(svgEl('rect', { x: l[0] - 14, y: 178, width: '8', height: '8', rx: '1', fill: l[1] }));
+      host.appendChild(svgText(l[0] - 1, 186, l[2], { 'text-anchor': 'start', 'font-size': '7' }));
+    });
+  },
+  // KEGG 棒棒糖图（气泡大小 = -log10(padj)）
+  keggLollipop(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const data = [['IL-17 signaling', 8.9], ['Cytokine-cytokine receptor', 7.2], ['NF-\u03baB signaling', 5.8], ['TNF signaling', 4.1], ['Toll-like receptor', 2.9], ['Apoptosis', 2.2]];
+    const base = 170, max = 10;
+    const ty = v => base - v / max * 140;
+    [0, 5, 10].forEach(v => {
+      host.appendChild(svgEl('line', { x1: 40, y1: ty(v), x2: 240, y2: ty(v), style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+      host.appendChild(svgText(36, ty(v) + 2, String(v), { 'text-anchor': 'end', 'font-size': '6.5' }));
+    });
+    data.forEach((d, i) => {
+      const cx = 55 + i * 30;
+      const stem = svgEl('line', { x1: cx, y1: base, x2: cx, y2: ty(d[1]), style: 'stroke:var(--brand-teal)', 'stroke-width': '1.2', opacity: '0.6' });
+      stem.style.animation = 'fadeIn .4s ease-out both';
+      stem.style.animationDelay = (i * 0.12) + 's';
+      host.appendChild(stem);
+      const head = svgEl('circle', { cx, cy: ty(d[1]), r: (3 + d[1] / max * 4).toFixed(1), style: 'fill:var(--brand-teal)', opacity: '0.9' });
+      head.style.animation = 'fadeIn .4s ease-out both';
+      head.style.animationDelay = (0.15 + i * 0.12) + 's';
+      host.appendChild(head);
+      host.appendChild(svgText(cx, ty(d[1]) - 8, d[1].toFixed(1), { 'font-size': '6', style: 'fill:var(--brand-teal)' }));
+      host.appendChild(svgText(cx, 186, String(i + 1), { 'font-size': '7' }));
+    });
+    host.appendChild(svgText(130, 12, 'KEGG enrichment (lollipop)', { 'font-size': '7' }));
+    host.appendChild(svgText(240, 26, '1 IL-17 · 2 Cytokine · 3 NF-\u03baB', { 'font-size': '6', 'text-anchor': 'end' }));
+    host.appendChild(svgText(240, 36, '4 TNF · 5 TLR · 6 Apoptosis', { 'font-size': '6', 'text-anchor': 'end' }));
+    host.appendChild(svgText(140, 196, '-log10(padj)', { 'font-size': '6.5' }));
+  },
+  // k-mer 频率排序（Zipf log-log）
+  kmerZipf(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const counts = [4120, 3987, 2451, 1890, 1532, 1204, 987, 876];
+    const x0 = 44, x1 = 238, y0 = 158, y1 = 22;
+    const cx = r => x0 + (Math.log10(r) / Math.log10(8)) * (x1 - x0);
+    const cy = c => y0 - (Math.log10(c) - Math.log10(800)) / (Math.log10(4200) - Math.log10(800)) * (y0 - y1);
+    host.appendChild(svgEl('line', { x1: x0, y1: y0, x2: x1, y2: y0, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+    host.appendChild(svgEl('line', { x1: x0, y1: y1, x2: x0, y2: y0, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+    const trend = svgEl('path', { d: 'M' + cx(1).toFixed(1) + ',' + cy(4120).toFixed(1) + ' L' + cx(8).toFixed(1) + ',' + cy(876).toFixed(1), pathLength: '1', 'stroke-dasharray': '1', 'stroke-dashoffset': '1', style: 'stroke:var(--accent-amber)', 'stroke-width': '1', fill: 'none', opacity: '0.7' });
+    trend.style.animation = 'drawLine 1.4s ease-out 0.4s forwards';
+    host.appendChild(trend);
+    counts.forEach((c, i) => {
+      const r = i + 1;
+      const p = svgEl('circle', { cx: cx(r).toFixed(1), cy: cy(c).toFixed(1), r: '3', style: 'fill:var(--brand-teal)', opacity: '0.9' });
+      p.style.animation = 'fadeIn .35s ease-out both';
+      p.style.animationDelay = (i * 0.12) + 's';
+      host.appendChild(p);
+      host.appendChild(svgText(cx(r).toFixed(1), cy(c) - 7, (c / 1000).toFixed(1) + 'k', { 'font-size': '6' }));
+    });
+    [1, 2, 4, 8].forEach(r => host.appendChild(svgText(cx(r).toFixed(1), 170, String(r), { 'font-size': '6.5' })));
+    [1000, 2000, 4000].forEach(c => { const gy = Math.round(cy(c)) + 2; host.appendChild(svgText(40, gy, String(c), { 'text-anchor': 'end', 'font-size': '6.5' })); });
+    host.appendChild(svgText(130, 12, 'k-mer rank-frequency (log-log)', { 'font-size': '7' }));
+    host.appendChild(svgText(140, 186, 'rank (log10)', { 'font-size': '6.5' }));
+    host.appendChild(svgText(14, 95, 'count', { 'font-size': '6.5', transform: 'rotate(-90,14,95)' }));
+  },
+  // GSEA 条码图（leading edge 高亮）
+  gseaBarcode(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const genes = Array.from({ length: 60 }, (_, i) => i);
+    const leadStart = 38;
+    const bx = 20 + (leadStart / 59) * 220;
+    host.appendChild(svgEl('rect', { x: bx, y: 86, width: 240 - bx, height: 28, style: 'fill:var(--accent-red)', opacity: '0.1' }));
+    host.appendChild(svgEl('line', { x1: 20, y1: 100, x2: 240, y2: 100, style: 'stroke:var(--text-dim)', 'stroke-width': '1', opacity: '0.6' }));
+    genes.forEach(g => {
+      const x = 20 + (g / 59) * 220;
+      const lead = g >= leadStart;
+      const t = svgEl('line', { x1: x, y1: 94, x2: x, y2: 106, style: lead ? 'stroke:var(--accent-red)' : 'stroke:var(--text-dim)', 'stroke-width': lead ? '1.6' : '1', opacity: lead ? '0.95' : '0.6' });
+      t.style.animation = 'fadeIn .3s ease-out both';
+      t.style.animationDelay = (g * 12) + 'ms';
+      host.appendChild(t);
+    });
+    host.appendChild(svgText((bx + 240) / 2, 80, 'leading edge (22 genes)', { 'font-size': '6.5', style: 'fill:var(--accent-red)' }));
+    host.appendChild(svgText(130, 30, 'ES 0.68 · NES 1.92 · FDR 0.003', { 'font-size': '7', style: 'fill:var(--brand-teal)', 'font-weight': '700' }));
+    [[20, '0'], [130, '50%'], [240, '100%']].forEach(t => host.appendChild(svgText(t[0], 118, t[1], { 'font-size': '6' })));
+    host.appendChild(svgText(20, 140, 'ranked genes \u2192', { 'text-anchor': 'start', 'font-size': '6.5' }));
+    host.appendChild(svgText(130, 170, 'gene set: HALLMARK_OXIDATIVE_PHOS', { 'font-size': '6.5' }));
+  },
+  // Ka/Ks 分布直方图（按选择压力着色）
+  kaksHist(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const bins = [62, 205, 368, 404, 296, 171, 101, 68, 46, 31, 26, 19, 14, 18, 13];
+    const base = 160, x0 = 40, x1 = 240, bw = (x1 - x0) / 15;
+    const maxC = 404;
+    [0, 100, 200, 300, 400].forEach(v => {
+      const gy = base - v / maxC * 110;
+      host.appendChild(svgEl('line', { x1: x0, y1: gy, x2: x1, y2: gy, style: 'stroke:var(--chart-grid)', 'stroke-width': '0.5' }));
+      host.appendChild(svgText(36, gy + 2, String(v), { 'text-anchor': 'end', 'font-size': '6.5' }));
+    });
+    const x1line = x0 + (1.0 / 1.5) * (x1 - x0);
+    host.appendChild(svgEl('line', { x1: x1line, y1: 30, x2: x1line, y2: base, style: 'stroke:var(--accent-red)', 'stroke-width': '0.8', 'stroke-dasharray': '4,3', opacity: '0.7' }));
+    host.appendChild(svgText(x1line + 3, 36, 'Ka/Ks = 1', { 'text-anchor': 'start', 'font-size': '6.5', style: 'fill:var(--accent-red)' }));
+    bins.forEach((cnt, i) => {
+      if (!cnt) return;
+      const h = Math.round(cnt / maxC * 110), x = x0 + i * bw, y = base - h;
+      const right = (i + 1) * 0.1;
+      const fill = right <= 0.5 ? 'var(--accent-blue)' : (right <= 1.0 ? '#9D9D9D' : 'var(--accent-red)');
+      const rect = svgEl('rect', { x: x + 0.5, y, width: bw - 1, height: h, rx: '1', style: 'fill:' + fill, opacity: '0.85' });
+      rect.style.animation = 'barGrow .5s ease-out both';
+      rect.style.transformBox = 'fill-box';
+      rect.style.transformOrigin = 'center bottom';
+      rect.style.animationDelay = (i * 0.04) + 's';
+      host.appendChild(rect);
+    });
+    [0, 0.5, 1.0, 1.5].forEach(v => host.appendChild(svgText(x0 + v / 1.5 * (x1 - x0), 172, v.toFixed(1), { 'font-size': '6.5' })));
+    host.appendChild(svgText(130, 12, 'Ka/Ks distribution (n = 1,842 orthologs)', { 'font-size': '7' }));
+    host.appendChild(svgText(140, 188, 'Ka/Ks ratio', { 'font-size': '6.5' }));
+    const isZh = currentLang === 'zh';
+    host.appendChild(svgText(240, 26, isZh ? '\u2588 \u7eaf\u5316 \u00b7 \u2588 \u4e2d\u6027 \u00b7 \u2588 \u6b63\u9009\u62e9' : '\u2588 purifying \u00b7 \u2588 neutral \u00b7 \u2588 positive', { 'font-size': '6', 'text-anchor': 'end', style: 'fill:var(--text-dim)' }));
+  },
+  // PWM 热图（位置权重矩阵）
+  motifPwm(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const cols = [
+      { A: 0.55, C: 0.15, G: 0.2, T: 0.1 }, { A: 0.3, C: 0.5, G: 0.1, T: 0.1 },
+      { A: 0.1, C: 0.15, G: 0.65, T: 0.1 }, { A: 0.2, C: 0.2, G: 0.15, T: 0.45 },
+      { A: 0.7, C: 0.1, G: 0.1, T: 0.1 }, { A: 0.15, C: 0.25, G: 0.5, T: 0.1 },
+    ];
+    const colors = { A: '#207456', C: '#31679E', G: '#B06818', T: '#AE3939' };
+    const rows = ['A', 'C', 'G', 'T'];
+    const x0 = 44, y0 = 40, cell = 26;
+    rows.forEach((r, ri) => host.appendChild(svgText(38, y0 + ri * cell + cell / 2 + 2, r, { 'text-anchor': 'end', 'font-size': '7' })));
+    cols.forEach((col, ci) => {
+      rows.forEach((r, ri) => {
+        const v = col[r];
+        const c = svgEl('rect', { x: x0 + ci * cell, y: y0 + ri * cell, width: cell - 2, height: cell - 2, rx: '2', style: 'fill:' + colors[r], opacity: (0.08 + v * 0.85).toFixed(2) });
+        c.style.animation = 'fadeIn .4s ease-out both';
+        c.style.animationDelay = ((ci * 4 + ri) * 20) + 'ms';
+        host.appendChild(c);
+        if (v >= 0.4) host.appendChild(svgText(x0 + ci * cell + cell / 2 - 1, y0 + ri * cell + cell / 2 + 2, v.toFixed(2).slice(1), { 'font-size': '7', style: 'fill:#fff' }));
+      });
+      host.appendChild(svgText(x0 + ci * cell + cell / 2 - 1, y0 + 4 * cell + 10, String(ci + 1), { 'font-size': '6.5' }));
+    });
+    host.appendChild(svgText(130, 22, 'position weight matrix (PWM)', { 'font-size': '7' }));
+    const cons = cols.map(c => Object.keys(c).reduce((a, b) => c[a] > c[b] ? a : b)).join('');
+    host.appendChild(svgText(130, 184, 'consensus ' + cons, { 'font-size': '7', style: 'fill:var(--brand-teal)' }));
+  },
+  // RNA 弧图（碱基配对弧线）
+  rnaArc(host) {
+    host.setAttribute('viewBox', '0 0 260 200');
+    const n = 14, y = 120, x0 = 30, step = 15;
+    const pairs = [[1, 12], [2, 11], [4, 9], [5, 8]];
+    host.appendChild(svgEl('line', { x1: x0, y1: y, x2: x0 + (n - 1) * step, y2: y, style: 'stroke:var(--brand-teal)', 'stroke-width': '1.5' }));
+    for (let i = 0; i < n; i++) host.appendChild(svgEl('circle', { cx: x0 + i * step, cy: y, r: '2.6', fill: '#20B8B0' }));
+    pairs.forEach((p, i) => {
+      const xa = x0 + p[0] * step, xb = x0 + p[1] * step;
+      const r = (xb - xa) / 2, cx = (xa + xb) / 2;
+      const arc = svgEl('path', { d: 'M' + xa + ',' + y + ' A' + r + ',' + (r * 0.85).toFixed(1) + ' 0 0 1 ' + xb + ',' + y, pathLength: '1', 'stroke-dasharray': '1', 'stroke-dashoffset': '1', style: 'stroke:#AE3939', 'stroke-width': '1.2', fill: 'none' });
+      arc.style.animation = 'drawLine .9s ease-out ' + (0.3 + i * 0.2) + 's forwards';
+      host.appendChild(arc);
+    });
+    pairs.forEach(p => {
+      [p[0], p[1]].forEach(pos => host.appendChild(svgEl('circle', { cx: x0 + pos * step, cy: y, r: '3.4', fill: '#AE3939' })));
+    });
+    host.appendChild(svgText(130, 12, 'RNA secondary structure (arc plot)', { 'font-size': '7' }));
+    host.appendChild(svgText(x0, 142, "5'", { 'text-anchor': 'start', 'font-size': '6.5' }));
+    host.appendChild(svgText(x0 + (n - 1) * step, 142, "3'", { 'text-anchor': 'end', 'font-size': '6.5' }));
+    host.appendChild(svgEl('line', { x1: 30, y1: 156, x2: 50, y2: 156, style: 'stroke:#AE3939', 'stroke-width': '1.2' }));
+    host.appendChild(svgText(54, 158.5, 'base pair', { 'text-anchor': 'start', 'font-size': '6' }));
+    host.appendChild(svgText(130, 176, 'MFE: -12.40 kcal/mol · 3 stems · 92 nt', { 'font-size': '6.5' }));
   },
 };
 let demoChartSource = null;

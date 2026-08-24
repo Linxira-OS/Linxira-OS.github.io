@@ -16,7 +16,7 @@ const { zh } = Astro.props;
           <button class="ai-chip" onclick="clearAI()">🗑 {zh ? "清空对话" : "Clear chat"}</button>
         </div>
         <div class="ai-input">
-          <input type="text" placeholder="{zh ? '在此输入…（演示版由上方示例驱动）' : 'Type here… (demo driven by the examples above)'}" readonly>
+          <input type="text" placeholder={zh ? "在此输入…（演示版由上方示例驱动）" : "Type here… (demo driven by the examples above)"} readonly>
           <button onclick="playAI(Math.floor(Math.random()*3))">{zh ? "发送" : "Send"}</button>
         </div>
       </div>
