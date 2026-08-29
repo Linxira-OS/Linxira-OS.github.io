@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zeta Logo 设计探索 · LZ 双字母 — 参考 Linxira 设计语言</title>
+<style>
+  :root {
+    --teal: #20B8B0; --coral: #F36F5D; --ink: #0E1417; --light: #E8F7F6;
+    --bg: #0E1417; --card: #131b2e; --line: rgba(51, 65, 85, 0.5);
+    --text: #E8F7F6; --muted: #94a3b8; --faint: #64748b;
+    --ink-role: #E8F7F6;
+    --font: "Helvetica Neue", Helvetica, "Inter", system-ui, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    --mono: "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, monospace;
+  }
+  [data-theme="light"] {
+    --bg: #E8F7F6; --card: #ffffff; --line: rgba(14, 20, 23, 0.18);
+    --text: #0E1417; --muted: #475569; --faint: #64748b;
+    --ink-role: #0E1417;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; transition: background .2s, color .2s; }
+  .gridlines { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .28;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px; }
+  .wrap { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 3rem 5vw 4rem; }
+  header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--line); padding-bottom: 1.4rem; margin-bottom: 2.2rem; flex-wrap: wrap; }
+  header h1 { font-size: 1.5rem; letter-spacing: .02em; }
+  header p { color: var(--muted); font-size: .85rem; margin-top: .3rem; }
+  .toggle { background: none; border: 1px solid var(--line); color: var(--text); font-family: var(--font); font-size: .75rem; letter-spacing: .12em; padding: .45rem .9rem; cursor: pointer; text-transform: uppercase; }
+  .toggle:hover { border-color: var(--teal); color: var(--teal); }
+  h2 { font-size: 1rem; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin: 2.6rem 0 1rem; }
+  h2 .num { color: var(--coral); margin-right: .6rem; }
+  .panel { border: 1px solid var(--line); background: var(--card); padding: 1.4rem; }
+  .ref-row { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+  .ref-mark { width: 120px; height: 120px; flex-shrink: 0; }
+  .principles { list-style: none; color: var(--muted); font-size: .85rem; display: grid; gap: .45rem; }
+  .principles li::before { content: '▸ '; color: var(--teal); }
+  .swatches { display: flex; gap: .6rem; margin-top: 1.1rem; flex-wrap: wrap; }
+  .sw { display: flex; align-items: center; gap: .5rem; border: 1px solid var(--line); padding: .35rem .7rem; font-size: .7rem; color: var(--muted); font-family: var(--mono); }
+  .sw i { width: 1.1rem; height: 1.1rem; display: inline-block; flex-shrink: 0; }
+  .why { color: var(--muted); font-size: .85rem; }
+  .why b { color: var(--coral); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.4rem; }
+  .card { border: 1px solid var(--line); background: var(--card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .card .ctag { color: var(--coral); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; }
+  .card .cname { font-size: 1.08rem; font-weight: 700; margin-top: .15rem; }
+  .card .mark { width: 100%; max-width: 250px; margin: .4rem auto 0; display: block; }
+  .card .stars { font-size: .74rem; color: var(--faint); letter-spacing: .05em; }
+  .card .stars b { color: var(--teal); font-weight: 700; }
+  .card .note { color: var(--muted); font-size: .83rem; }
+  .card .note b { color: var(--text); font-weight: 600; }
+  .sizes { display: flex; align-items: flex-end; gap: 1.1rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .sizes .sz { display: flex; flex-direction: column; align-items: center; gap: .35rem; color: var(--faint); font-size: .68rem; font-family: var(--mono); }
+  .sizes svg { display: block; }
+  .sz16 { width: 16px; height: 16px; } .sz24 { width: 24px; height: 24px; }
+  .sz32 { width: 32px; height: 32px; } .sz48 { width: 48px; height: 48px; } .sz64 { width: 64px; height: 64px; }
+  footer { margin-top: 3rem; color: var(--faint); font-size: .75rem; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+  .ink { stroke: var(--ink-role); }
+</style>
+</head>
+<body>
+<div class="gridlines" aria-hidden="true"></div>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>Zeta Logo 设计探索 · LZ 双字母</h1>
+      <p>单字母 Z 与 GLM 桌面 CLI 撞标，改为 LZ 组合 · 参考 Linxira 设计语言 · 临时文件（未提交）</p>
+    </div>
+    <button class="toggle" id="themeToggle" type="button">浅色 / 深色</button>
+  </header>
+
+  <h2><span class="num">01</span>参考 · Linxira 设计语言</h2>
+  <div class="panel">
+    <div class="ref-row">
+      <svg class="ref-mark" viewBox="0 0 512 512" role="img" aria-label="Linxira Scale L">
+        <path fill="#20B8B0" d="M112 64H224V336H448V448H112Z"/>
+        <path d="M164 112V392H392" fill="none" class="ink" stroke-width="12" stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M150 160H194M150 216H178M150 272H194M150 328H178M224 378V406M280 378V396M336 378V406" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M392 380V404" stroke="#F36F5D" stroke-width="12"/>
+      </svg>
+      <div style="flex:1;min-width:260px">
+        <ul class="principles">
+          <li>直角方形几何，无圆角 —— "Scale L"（刻度尺 L）</li>
+          <li>深墨轴线 + 浅色刻度：负空间"测量仪器"语言</li>
+          <li>珊瑚色终点指针：全图唯一强调色落点</li>
+          <li>LZ 中的 L 直接沿用家族 L 标记，Z 用同语言补全</li>
+        </ul>
+        <div class="swatches">
+          <span class="sw"><i style="background:#20B8B0"></i>#20B8B0 teal</span>
+          <span class="sw"><i style="background:#F36F5D"></i>#F36F5D coral</span>
+          <span class="sw"><i style="background:#0E1417"></i>#0E1417 ink</span>
+          <span class="sw"><i style="background:#E8F7F6"></i>#E8F7F6 light</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">02</span>为什么是 LZ</h2>
+  <div class="panel">
+    <p class="why">单字母 <b>Z</b> 与 GLM 桌面 CLI / Desktop 撞标；<b>LZ</b> 双字母 = <b>L</b>inxira + <b>Z</b>eta，家族前缀 + 产品字母，L 可直接复用主站 Scale L 的识别度，Z 按同一语言补全。</p>
+  </div>
+
+  <h2><span class="num">03</span>候选版式</h2>
+  <div class="cards">
+
+    <!-- V1 横排 -->
+    <div class="card">
+      <div>
+        <div class="ctag">版式 1 · 横排同构</div>
+        <div class="cname">L | Z 并排 · Scale 对</div>
+      </div>
+      <svg class="mark" viewBox="0 0 640 512" id="m-v1" role="img" aria-label="LZ 横排同构">
+        <path fill="#20B8B0" d="M48 64H160V336H384V448H48Z"/>
+        <path d="M100 112V392H328" fill="none" class="ink" stroke-width="12" stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M86 160H130M86 216H114M86 272H130M86 328H114M160 378V406M216 378V396M272 378V406" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M328 380V404" stroke="#F36F5D" stroke-width="12"/>
+        <path fill="#20B8B0" d="M304 64H592V176H304Z"/>
+        <path fill="#20B8B0" d="M304 336H592V448H304Z"/>
+        <path d="M592 192L304 336" fill="none" class="ink" stroke-width="12" stroke-linecap="square"/>
+        <path d="M546.4 190.2L566 229.6M488.3 219.2L507.9 258.6M430.2 248.3L449.8 287.7M372.1 277.4L391.7 316.8" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M304 336V392" stroke="#F36F5D" stroke-width="12"/>
+      </svg>
+      <div class="stars">家族同构 <b>★★★</b> · 小尺寸 <b>★★</b> · 独特性 <b>★★★</b></div>
+      <p class="note"><b>思路：</b>L 用原版 Scale L，Z 用同语言补全：横杠 + 刻度梁 + 珊瑚落点。两个刻度尺并排，读作 "L Z"。适合导航栏 / 页面头部。<br><b>风险：</b>横向长，favicon 尺寸需裁切或换竖排。</p>
+      <div class="sizes">
+        <span class="sz"><svg class="sz16" viewBox="0 0 640 512"><use href="#m-v1"/></svg>16</span>
+        <span class="sz"><svg class="sz24" viewBox="0 0 640 512"><use href="#m-v1"/></svg>24</span>
+        <span class="sz"><svg class="sz32" viewBox="0 0 640 512"><use href="#m-v1"/></svg>32</span>
+        <span class="sz"><svg class="sz48" viewBox="0 0 640 512"><use href="#m-v1"/></svg>48</span>
+        <span class="sz"><svg class="sz64" viewBox="0 0 640 512"><use href="#m-v1"/></svg>64</span>
+      </div>
+    </div>
+
+    <!-- V2 竖排 -->
+    <div class="card">
+      <div>
+        <div class="ctag">版式 2 · 竖排堆叠</div>
+        <div class="cname">L 上 / Z 下 · Stacked</div>
+      </div>
+      <svg class="mark" viewBox="0 0 512 608" id="m-v2" role="img" aria-label="LZ 竖排堆叠">
+        <path fill="#20B8B0" d="M112 32H208V192H400V288H112Z"/>
+        <path d="M144 64V224H352" fill="none" class="ink" stroke-width="12" stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M130 96H174M130 136H158M130 176H174M208 208V236M256 208V224M304 208V236" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M352 212V236" stroke="#F36F5D" stroke-width="12"/>
+        <path fill="#20B8B0" d="M112 320H400V416H112Z"/>
+        <path fill="#20B8B0" d="M112 480H400V576H112Z"/>
+        <path d="M400 424L112 480" fill="none" class="ink" stroke-width="12" stroke-linecap="square"/>
+        <path d="M356.5 410L364.9 453.2M297.6 421.5L306 464.7M238.7 433L247.1 476.2M179.8 444.4L188.2 487.6" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M112 480V544" stroke="#F36F5D" stroke-width="12"/>
+      </svg>
+      <div class="stars">家族同构 <b>★★★</b> · 小尺寸 <b>★★★</b> · 独特性 <b>★★</b></div>
+      <p class="note"><b>思路：</b>L 上 Z 下，竖长方形构图，favicon / 应用图标友好；两半各自保留刻度与珊瑚指针。<br><b>风险：</b>高度占比大，横向排列场景（导航）不如版式 1。</p>
+      <div class="sizes">
+        <span class="sz"><svg class="sz16" viewBox="0 0 512 608"><use href="#m-v2"/></svg>16</span>
+        <span class="sz"><svg class="sz24" viewBox="0 0 512 608"><use href="#m-v2"/></svg>24</span>
+        <span class="sz"><svg class="sz32" viewBox="0 0 512 608"><use href="#m-v2"/></svg>32</span>
+        <span class="sz"><svg class="sz48" viewBox="0 0 512 608"><use href="#m-v2"/></svg>48</span>
+        <span class="sz"><svg class="sz64" viewBox="0 0 512 608"><use href="#m-v2"/></svg>64</span>
+      </div>
+    </div>
+
+    <!-- V3 合体 -->
+    <div class="card">
+      <div>
+        <div class="ctag">版式 3 · 共底合体</div>
+        <div class="cname">LZ Monogram 单形</div>
+      </div>
+      <svg class="mark" viewBox="0 0 512 512" id="m-v3" role="img" aria-label="LZ 合体 monogram">
+        <path fill="#20B8B0" d="M224 48H400V160H224Z"/>
+        <path fill="#20B8B0" d="M112 48H224V448H112Z"/>
+        <path fill="#20B8B0" d="M112 336H400V448H112Z"/>
+        <polygon fill="#20B8B0" points="400,160 400,272 224,448 224,336"/>
+        <path d="M150 144H194M150 200H178M150 256H194" fill="none" stroke="#E8F7F6" stroke-width="10" stroke-linecap="square"/>
+        <path d="M224 400V448" stroke="#F36F5D" stroke-width="12"/>
+      </svg>
+      <div class="stars">家族同构 <b>★★★</b> · 小尺寸 <b>★★★</b> · 独特性 <b>★★★</b></div>
+      <p class="note"><b>思路：</b>L 竖轴 + Z 顶杠与 45° 楔形 + 共用底杠，一个字读出 "LZ"；竖轴刻度延续 L 语言，珊瑚针落在楔形脚下（Z 的终点）。<br><b>风险：</b>不认识时需一次解读，说明成本略高。</p>
+      <div class="sizes">
+        <span class="sz"><svg class="sz16" viewBox="0 0 512 512"><use href="#m-v3"/></svg>16</span>
+        <span class="sz"><svg class="sz24" viewBox="0 0 512 512"><use href="#m-v3"/></svg>24</span>
+        <span class="sz"><svg class="sz32" viewBox="0 0 512 512"><use href="#m-v3"/></svg>32</span>
+        <span class="sz"><svg class="sz48" viewBox="0 0 512 512"><use href="#m-v3"/></svg>48</span>
+        <span class="sz"><svg class="sz64" viewBox="0 0 512 512"><use href="#m-v3"/></svg>64</span>
+      </div>
+    </div>
+
+    <!-- V4 字标 -->
+    <div class="card">
+      <div>
+        <div class="ctag">版式 4 · 笔画字标</div>
+        <div class="cname">LZ Logotype 字标</div>
+      </div>
+      <svg class="mark" viewBox="0 0 512 512" id="m-v4" role="img" aria-label="LZ 字标">
+        <path d="M96 96V416H240" fill="none" stroke="#20B8B0" stroke-width="48" stroke-linecap="square" stroke-linejoin="miter"/>
+        <path d="M288 96H432L288 416H432" fill="none" stroke="#20B8B0" stroke-width="48" stroke-linecap="square" stroke-linejoin="bevel"/>
+        <rect x="464" y="392" width="48" height="48" fill="#F36F5D"/>
+      </svg>
+      <div class="stars">家族同构 <b>★★</b> · 小尺寸 <b>★★</b> · 独特性 <b>★★</b></div>
+      <p class="note"><b>思路：</b>方形等粗笔画拼 "LZ"，末端珊瑚块光标呼应终端身份（站内打字机 ▍）。最直接、最"产品"的读法，适合与 ZETA 文字组合。<br><b>风险：</b>字母感强、图形感弱，识别靠拼读。</p>
+      <div class="sizes">
+        <span class="sz"><svg class="sz16" viewBox="0 0 512 512"><use href="#m-v4"/></svg>16</span>
+        <span class="sz"><svg class="sz24" viewBox="0 0 512 512"><use href="#m-v4"/></svg>24</span>
+        <span class="sz"><svg class="sz32" viewBox="0 0 512 512"><use href="#m-v4"/></svg>32</span>
+        <span class="sz"><svg class="sz48" viewBox="0 0 512 512"><use href="#m-v4"/></svg>48</span>
+        <span class="sz"><svg class="sz64" viewBox="0 0 512 512"><use href="#m-v4"/></svg>64</span>
+      </div>
+    </div>
+
+    <!-- V5 徽章 -->
+    <div class="card">
+      <div>
+        <div class="ctag">版式 5 · 负空间徽章</div>
+        <div class="cname">LZ Badge 方块</div>
+      </div>
+      <svg class="mark" viewBox="0 0 512 512" id="m-v5" role="img" aria-label="LZ 徽章">
+        <rect x="64" y="64" width="384" height="384" fill="#20B8B0"/>
+        <path d="M128 128V384" fill="none" stroke="#E8F7F6" stroke-width="40" stroke-linecap="square"/>
+        <path d="M128 384H400" fill="none" stroke="#E8F7F6" stroke-width="40" stroke-linecap="square"/>
+        <path d="M168 128H400" fill="none" stroke="#E8F7F6" stroke-width="40" stroke-linecap="square"/>
+        <path d="M400 128L232 364" fill="none" stroke="#E8F7F6" stroke-width="40" stroke-linecap="square" stroke-linejoin="bevel"/>
+        <path d="M232 416V440" stroke="#F36F5D" stroke-width="16"/>
+      </svg>
+      <div class="stars">家族同构 <b>★★</b> · 小尺寸 <b>★★★</b> · 独特性 <b>★★</b></div>
+      <p class="note"><b>思路：</b>teal 方块 + 浅色负空间笔画（对应 linxira-l-mono 的做法），favicon / 应用图标首选，深浅背景都成立。<br><b>风险：</b>"方框 + 字"是通用 favicon 模板，撞脸概率高，靠笔画比例拉开。</p>
+      <div class="sizes">
+        <span class="sz"><svg class="sz16" viewBox="0 0 512 512"><use href="#m-v5"/></svg>16</span>
+        <span class="sz"><svg class="sz24" viewBox="0 0 512 512"><use href="#m-v5"/></svg>24</span>
+        <span class="sz"><svg class="sz32" viewBox="0 0 512 512"><use href="#m-v5"/></svg>32</span>
+        <span class="sz"><svg class="sz48" viewBox="0 0 512 512"><use href="#m-v5"/></svg>48</span>
+        <span class="sz"><svg class="sz64" viewBox="0 0 512 512"><use href="#m-v5"/></svg>64</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>临时设计稿 · 未加入 git 跟踪 · 单色版 / 渐变英雄版待选定后补 · 讨论定稿后落位 public/assets/ 与各布局 favicon</footer>
+</div>
+
+<script>
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    const h = document.documentElement;
+    h.dataset.theme = h.dataset.theme === 'dark' ? 'light' : 'dark';
+  });
+</script>
+</body>
+</html>
