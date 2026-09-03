@@ -41,24 +41,26 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="en"
 	title="Zeta — a coding agent for your terminal"
-	description="Zeta is a coding agent for the terminal: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, time-traveling rules — with a native Rust engine doing the heavy lifting. An OMP-compatible distribution."
+	description="Zeta is a coding agent for the terminal: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, and time-traveling rules out of the box; project tracking, experiment measurement, a command marketplace, and the Web desktop workbench are Zeta's own."
 	active="home"
 >
 	<section class="hero">
 		<div class="hero-inner">
-			<div class="kicker">Coding agent · OMP-compatible distribution</div>
+			<div class="kicker">Coding agent · built by Linxira-OS</div>
 			<h1>There are many agent harnesses.<br>This one is <span class="accent">yours.</span></h1>
 			<p class="lede">
 				<strong>Zeta</strong> is a coding agent for the terminal: <strong>subagents</strong>, <strong>plan mode</strong>,
-				<strong>LSP</strong>, <strong>DAP</strong>, <strong>hindsight memory</strong>, <strong>hashline edits</strong>,
-				<strong>time-traveling rules</strong> — with a native Rust engine doing the heavy lifting. It tracks
-				the <strong>OMP</strong> mainline and ports <strong>Pi</strong>'s advanced capabilities.
+				<strong>LSP/DAP</strong>, <strong>hindsight memory</strong>, <strong>hashline edits</strong>, and
+				<strong>time-traveling rules</strong> out of the box; <strong>project tracking</strong>, <strong>experiment
+				measurement</strong>, a <strong>command marketplace</strong>, and the <strong>Web desktop workbench</strong>
+				are Zeta's own. Built on the <strong>OMP</strong> runtime — while Zeta owns its package namespace,
+				product presentation, and release cadence.
 			</p>
 			<div class="cta-row">
 				<a class="cta primary" href="#install">Get started</a>
 				<a class="cta ghost" href="/zeta/en/features/">Explore features →</a>
 				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.545 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
-				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases" target="_blank" rel="noopener">Releases</a>
+				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">Desktop download</a>
 			</div>
 			<div class="install" id="install">
 				<div class="tabs">
@@ -110,7 +112,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>Self-evolving</h3><p>Extensions, skills, prompt templates, and themes are first-class. Ask the agent to build what you need — it can customize itself on the fly.</p></div>
 			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>Upstream mergeable</h3><p>Runtime tree, package layout, Bun workflow, and internal <span class="keycap">@zeta/*</span> names follow OMP conventions, so upstream updates stay mergeable.</p></div>
 			<div class="grid-item"><div class="idx">05</div><h3><span class="k">F</span>Frictionless setup</h3><p>Sensible defaults and a guided onboarding flow: the critical paths work without hand-assembling extension stacks or tuning config.</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI first-class</h3><p>The browser workspace shares one durable session with the CLI and desktop, so agent state continues wherever you pick up.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI first-class</h3><p>The browser and desktop apps (Windows / macOS / Linux) share one durable session with the CLI: themes, the Tracking panel, and trajectory view are built in, so agent state continues wherever you pick up.</p></div>
 		</div>
 	</section>
 
@@ -118,23 +120,23 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		<div class="section-head">
 			<div class="num">02</div>
 			<div>
-				<h2>OMP mainline, Pi advanced</h2>
-				<div class="sub">The runtime, packaging, and workflows follow OMP; Pi's context engineering and extension primitives are ported in as advanced content.</div>
+				<h2>Zeta's own capabilities</h2>
+				<div class="sub">On top of the OMP runtime, Zeta keeps shipping its own product surface — all of it already in releases.</div>
 			</div>
 		</div>
 		<div class="grid-table">
-			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>Subagents</h3><p>Parallel subagents with their own context and tools, aggregated back into the main session.</p></div>
-			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>Plan mode</h3><p>Plan first, then execute — approve before the agent touches your workspace.</p></div>
-			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP + DAP</h3><p>Language servers and debug adapters built in: definitions, diagnostics, breakpoints, stack frames.</p></div>
-			<div class="grid-item"><div class="idx">04</div><h3><span class="k">H</span>Hindsight memory</h3><p>Lessons from past sessions are recalled and applied automatically in later work.</p></div>
-			<div class="grid-item"><div class="idx">05</div><h3><span class="k">E</span>Hashline edits</h3><p>Content-addressed line edits: refactors and bulk replacements stay traceable.</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">R</span>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting runs on Rust primitives.</p></div>
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">T</span>Project tracking</h3><p>Turn on with <span class="keycap">/tracking</span>: the AI writes milestones and key decisions into <span class="keycap">.zeta/tracking/</span>, kept across sessions and browsable in the desktop and Web UI.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">W</span>Web workbench &amp; desktop</h3><p>43 light/dark themes, trajectory view, and a four-pane right dock; the desktop app shares one durable session with the CLI.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>Experiment measurement</h3><p>Per-project local experiments: metrics, directions, and baseline commits in SQLite, ready to revisit and compare.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">C</span>TypeScript custom commands</h3><p>From <span class="keycap">~/.zeta/commands/</span> and project command dirs; arktype / typebox / zod schemas, full runtime API.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">M</span>Command marketplace</h3><p>Install, share, and reuse slash commands as Bun packages.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">S</span>Local stats dashboard</h3><p><span class="keycap">zeta stats</span>: sessions, usage, and cost at a glance — data never leaves your machine.</p></div>
 		</div>
 	</section>
 	<section class="block" id="webui">
 		<div class="section-head">
 			<h2>Web UI</h2>
-			<div class="sub">The browser workspace for Zeta: sessions, project context, and live agent state — one durable session shared with the CLI and desktop. Click any shot to enlarge.</div>
+			<div class="sub">The browser and desktop workbench for Zeta: 43 themes, trajectory view, the Tracking panel, and the right-side dock — one durable session shared with the CLI. Desktop builds (Windows / macOS / Linux) on Releases. Click any shot to enlarge.</div>
 		</div>
 		<div class="shot-strip">
 			<div class="shot-track">
@@ -201,6 +203,34 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		<div class="tag-row">
 			<span class="tag hot">WeChat</span><span class="tag hot">Feishu</span><span class="tag hot">Telegram</span>
 			<span class="tag">Unified Bot Interface</span><span class="tag">More platforms coming…</span>
+		</div>
+	</section>
+
+	<section class="block" id="linux">
+		<div class="section-head">
+			<h2>Native Linux integration</h2>
+			<div class="sub">Not a wrapped cross-platform tool: heavy lifting on a native engine, terminal and desktop deeply wired.</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>Native engine</h3><p>Text, regex, grep, and diff run on Rust primitives; the Bun runtime executes TypeScript directly — fast startup, low memory.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Terminal is home</h3><p>The full TUI: panels, previews, tool cards, and keybindings; OSC 8 hyperlinks and native PTY / shell process management.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Desktop bridge</h3><p>Open local editors and file managers securely from the Web UI: HMAC gateway tokens, a target allowlist, and workspace containment — the renderer never touches executable paths.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>One command to land</h3><p>Global install via npm / Bun, or <code class="keycap">curl … install.sh | sh</code>; the desktop app ships Linux builds with a global default workspace.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="identity">
+		<div class="section-head">
+			<h2>A first-class citizen of Linxira OS</h2>
+			<div class="sub">Zeta is built by the Linxira OS team — a Linux workstation distribution for scientific computing. On Linxira OS, Zeta is more than a package in a terminal.</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>First-class identity</h3><p>Zeta will hold its own identity in the system (a dedicated UID), running as a first-class system citizen rather than an ordinary process inside a user session.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>System-enforced boundaries</h3><p>Permission boundaries are enforced by the operating system: policy is declared by Zeta, enforced by the system, and changes require human approval — over-reach is denied at the system layer.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Privacy isolation by default</h3><p>Users' private data stays out of reach by default: personal files in home directories and other users' data are invisible to Zeta, and every action leaves an auditable trail.</p></div>
+		</div>
+		<div class="cta-row" style="margin-top: 2rem;">
+			<a class="cta ghost" href="/en/">Explore Linxira OS →</a>
 		</div>
 	</section>
 </ZetaLayout>

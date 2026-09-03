@@ -41,24 +41,24 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="zh"
 	title="Zeta — 终端编码代理"
-	description="Zeta 是运行在终端里的编码代理：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则——由原生 Rust 引擎驱动。OMP 兼容发行版。"
+	description="Zeta 是运行在终端里的编码代理：子代理、计划模式、LSP、DAP、事后记忆、hashline 编辑、时间旅行规则开箱即用；项目追踪、实验度量、命令市场与 Web 桌面工作台是 Zeta 自有能力。"
 	active="home"
 >
 	<section class="hero">
 		<div class="hero-inner">
-			<div class="kicker">终端编码代理 · OMP 兼容发行版</div>
+			<div class="kicker">终端编码代理 · Linxira-OS 出品</div>
 			<h1>代理框架千千万，<br>这一个属于<span class="accent">你。</span></h1>
 			<p class="lede">
 				<strong>Zeta</strong> 是运行在终端里的编码代理：<strong>子代理</strong>、<strong>计划模式</strong>、
-				<strong>LSP</strong>、<strong>DAP</strong>、<strong>事后记忆</strong>、<strong>hashline 编辑</strong>、
-				<strong>时间旅行规则</strong>——由原生 Rust 引擎驱动。主线同步 <strong>OMP</strong> 上游，
-				并移植 <strong>Pi</strong> 的高级能力。
+				<strong>LSP/DAP</strong>、<strong>事后记忆</strong>、<strong>hashline 编辑</strong>、<strong>时间旅行规则</strong>开箱即用；
+				<strong>项目追踪</strong>、<strong>实验度量</strong>、<strong>命令市场</strong>与 <strong>Web 桌面工作台</strong>是 Zeta 的自有能力。
+				基于 <strong>OMP</strong> 运行时构建，包命名空间、产品形态与发布节奏由 Zeta 自己掌握。
 			</p>
 			<div class="cta-row">
 				<a class="cta primary" href="#install">开始使用</a>
 				<a class="cta ghost" href="/zeta/zh/features/">查看特性 →</a>
 				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.545 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
-				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases" target="_blank" rel="noopener">Releases</a>
+				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">下载桌面版</a>
 			</div>
 			<div class="install" id="install">
 				<div class="tabs">
@@ -110,7 +110,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>自定义自我进化</h3><p>扩展、技能、提示模板与主题都是一等公民。让代理构建你需要的——它可以现场自定义自己。</p></div>
 			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>上游可合并</h3><p>运行时树、包布局、Bun 工作流与内部 <span class="keycap">@zeta/*</span> 包名沿用 OMP 约定，上游更新保持可合并。</p></div>
 			<div class="grid-item"><div class="idx">05</div><h3><span class="k">F</span>开箱即用</h3><p>合理默认与引导流程：关键路径无需手动拼装扩展或调参即可工作。</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI 一等公民</h3><p>浏览器工作界面与 CLI、桌面共享同一份持久会话，状态随处可续。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI 一等公民</h3><p>浏览器与桌面版（Windows / macOS / Linux）和 CLI 共享同一份持久会话：主题、追踪面板、轨迹视图全部内置，状态随处可续。</p></div>
 		</div>
 	</section>
 
@@ -118,23 +118,23 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		<div class="section-head">
 			<div class="num">02</div>
 			<div>
-				<h2>主线 OMP，进阶 Pi</h2>
-				<div class="sub">运行时、包布局与工作流沿用 OMP 约定，保持上游可合并；Pi 的上下文工程与扩展原语作为高级内容移植进来。</div>
+				<h2>Zeta 自有能力</h2>
+				<div class="sub">在 OMP 运行时之上，Zeta 持续交付自己的产品能力——以下均已随版本落地。</div>
 			</div>
 		</div>
 		<div class="grid-table">
-			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>子代理 Subagents</h3><p>并行子代理携带独立上下文与工具集，主会话汇总结果。</p></div>
-			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>计划模式 Plan mode</h3><p>先规划再执行，批准后才触碰工作区。</p></div>
-			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP + DAP</h3><p>语言服务与调试适配器内置：跳转、诊断、断点、栈帧。</p></div>
-			<div class="grid-item"><div class="idx">04</div><h3><span class="k">H</span>事后记忆</h3><p>回顾过往会话的成败教训，后续任务自动利用。</p></div>
-			<div class="grid-item"><div class="idx">05</div><h3><span class="k">E</span>Hashline 编辑</h3><p>内容寻址的行级编辑，重构与批量替换可追溯。</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 重活交给 Rust 原语。</p></div>
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">T</span>项目追踪 Tracking</h3><p>用 <span class="keycap">/tracking</span> 开启：AI 在里程碑与关键决策时写入 <span class="keycap">.zeta/tracking/</span>，跨会话保留，桌面版与 Web UI 可视化浏览。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">W</span>Web 工作台与桌面版</h3><p>43 套深浅主题、轨迹视图、右侧工具坞四窗格；桌面版与 CLI 共享同一份持久会话。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>实验度量 Autoresearch</h3><p>按项目本地记录实验：指标、方向与基线 commit，SQLite 存储，随时回溯对比。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">C</span>TypeScript 自定义命令</h3><p><span class="keycap">~/.zeta/commands/</span> 与项目命令目录；arktype / typebox / zod 参数校验，完整运行时 API。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">M</span>命令市场</h3><p>斜杠命令以 Bun 包分发：一键安装、分享与复用社区命令。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">S</span>本地统计面板</h3><p><span class="keycap">zeta stats</span> 本地可观测：会话、用量与成本一目了然，数据不出本机。</p></div>
 		</div>
 	</section>
 	<section class="block" id="webui">
 		<div class="section-head">
 			<h2>Web UI</h2>
-			<div class="sub">Zeta 的浏览器工作界面：会话、项目上下文与实时代理状态——与 CLI、桌面共享同一份持久会话。点击任意截图可放大。</div>
+			<div class="sub">Zeta 的浏览器与桌面工作台：43 套主题、轨迹视图、追踪面板与右侧工具坞——与 CLI 共享同一份持久会话。桌面版（Windows / macOS / Linux）见 Releases。点击任意截图可放大。</div>
 		</div>
 		<div class="shot-strip">
 			<div class="shot-track">
@@ -201,6 +201,34 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		<div class="tag-row">
 			<span class="tag hot">微信 WeChat</span><span class="tag hot">飞书 Feishu</span><span class="tag hot">Telegram</span>
 			<span class="tag">统一 Bot 接口</span><span class="tag">更多平台即将加入…</span>
+		</div>
+	</section>
+
+	<section class="block" id="linux">
+		<div class="section-head">
+			<h2>Linux 原生集成</h2>
+			<div class="sub">不是套壳的跨端工具：重活跑在原生引擎上，终端与桌面深度打通。</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>原生引擎</h3><p>文本、正则、grep 与 diff 的重活交给 Rust 原语；Bun 运行时直跑 TypeScript，启动快、内存省。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>终端即主场</h3><p>完整 TUI 体验：面板、预览、工具卡片与快捷键；OSC 8 超链接与 PTY / shell 原生进程管理。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>桌面桥接</h3><p>从 Web UI 安全唤起本地编辑器与文件管理器：HMAC 网关令牌、目标白名单与工作区包含检查，渲染层接触不到可执行路径。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>一条命令落地</h3><p>npm / Bun 全局安装，或 <code class="keycap">curl … install.sh | sh</code>；桌面版提供 Linux 构建，内置全局默认工作空间。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="identity">
+		<div class="section-head">
+			<h2>Linxira OS 中的一等公民</h2>
+			<div class="sub">Zeta 由 Linxira OS 团队打造——一个面向科研工作站的 Linux 发行版。在 Linxira OS 上，Zeta 不只是终端里的一个包。</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>一等公民身份</h3><p>Zeta 将在系统中获得自己的身份（独立 UID），作为系统级一等公民运行，而不是寄生在某个用户会话里的普通进程。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>系统级权限约束</h3><p>权限边界由操作系统强制执行：策略由 Zeta 声明、系统执行、变更需人工批准——越权操作在系统层直接被拒绝。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>隐私默认隔离</h3><p>默认无法访问用户的个人隐私信息：家目录中的私人文件与其他用户的数据对 Zeta 不可见，所有操作留痕、可审计。</p></div>
+		</div>
+		<div class="cta-row" style="margin-top: 2rem;">
+			<a class="cta ghost" href="/zh/">了解 Linxira OS →</a>
 		</div>
 	</section>
 </ZetaLayout>

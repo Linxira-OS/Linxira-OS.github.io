@@ -4,18 +4,38 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="zh"
 	title="生态 — Zeta"
-	description="Zeta 参考四个项目：OMP 主线、Pi 高级内容、OMP Web、Pi Web。致谢与来源角色。"
+	description="Zeta 的自有能力与上游来源：项目追踪、Web 工作台、实验度量、命令市场、插件平台；上游角色与致谢——OMP 主线、Pi、OMP Web、Pi Web。"
 	active="ecosystem"
 >
 	<section class="page-hero">
 		<div class="kicker">生态</div>
-		<h1>站在经过验证的来源之上。</h1>
-		<p class="lede">Zeta 追踪四个参考项目。<strong>OMP</strong> 是产品主线；<strong>Pi</strong> 提供现代代理行为，作为语义移植来源。OMP Web 是直接的 Web 快照上游，Pi Web 贡献安全与可靠性模式。</p>
+		<h1>先看 Zeta 自己带来了什么。</h1>
+		<p class="lede">Zeta 在 OMP 运行时之上交付自己的产品能力，同时公开标注每一个上游来源的角色。本页先列 Zeta 自有能力，再说明四个来源项目的分工与致谢。</p>
+	</section>
+
+	<section class="block" id="own">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Zeta 自有能力</h2>
+				<div class="sub">在共享的运行时之上，以下能力由 Zeta 自主开发与维护。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>项目追踪 /tracking</h3><p>里程碑与关键决策写入 <code class="keycap">.zeta/tracking/</code>，跨会话保留，compaction 摘要持久化；默认关闭，显式开启。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Web 工作台与桌面版</h3><p>43 套深浅主题、轨迹视图、右侧工具坞、桌面信任打开桥；与 CLI 共享同一份持久会话。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>实验度量 Autoresearch</h3><p>按项目的本地实验追踪：指标、方向与基线 commit，SQLite 存储。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>TypeScript 自定义命令与命令市场</h3><p>arktype / typebox / zod 参数校验；命令以 Bun 包安装、分享与复用。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>IM 渠道与多工作区</h3><p>微信 / 飞书 / Telegram 机器人，工作区别名与中转委派，会话与 CLI / 桌面同步。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>插件平台</h3><p><code class="keycap">plugins/official</code> 与 <code class="keycap">plugins/community</code> 目录结构，插件管理器上线。</p></div>
+			<div class="grid-item"><div class="idx">07</div><h3>远程访问安全</h3><p>网关默认仅 loopback；<code class="keycap">remote.token</code> 鉴权，CSRF 与点击劫持防护。</p></div>
+			<div class="grid-item"><div class="idx">08</div><h3>本地统计面板</h3><p><code class="keycap">zeta stats</code> 本地可观测性：会话、用量与成本。</p></div>
+		</div>
 	</section>
 
 	<section class="block" id="sources">
 		<div class="section-head">
-			<div class="num">01</div>
+			<div class="num">02</div>
 			<div>
 				<h2>参考项目</h2>
 				<div class="sub">Zeta 构建其上的四个来源。</div>
@@ -55,7 +75,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="research">
 		<div class="section-head">
-			<div class="num">02</div>
+			<div class="num">03</div>
 			<div>
 				<h2>研究参考</h2>
 				<div class="sub">仅研究语义，不作为运行时合并。</div>
@@ -70,7 +90,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="credits">
 		<div class="section-head">
-			<div class="num">03</div>
+			<div class="num">04</div>
 			<div>
 				<h2>致谢</h2>
 				<div class="sub">没有这些项目与维护者，就没有 Zeta。</div>
@@ -86,7 +106,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="distro">
 		<div class="section-head">
-			<div class="num">04</div>
+			<div class="num">05</div>
 			<div>
 				<h2>发行版承诺</h2>
 				<div class="sub">Zeta 是 OMP 的下游发行版：运行时树、包布局、Bun 工作流与内部 <span class="keycap">@zeta/*</span> 包名沿用 OMP 约定，上游更新保持可合并。</div>

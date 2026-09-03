@@ -281,10 +281,6 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 		/* 标签 hover 弹性 */
 		.tag { transition: transform .18s ease, border-color .18s ease, color .18s ease; }
 		.tag:hover { transform: translateY(-2px); border-color: var(--teal); color: var(--teal); }
-		/* hero 内容鼠标视差 */
-		.hero-inner, .page-hero > * { will-change: transform; }
-		.hero .hero-inner { transition: transform .45s cubic-bezier(.22,.61,.36,1); }
-
 		html.js .hero, html.js .page-hero, html.js section.block {
 			opacity: 0; transform: translateY(20px);
 			transition: opacity .7s ease, transform .7s ease;
@@ -392,10 +388,26 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 			.zeta-rail { flex-wrap: wrap; gap: .6rem; }
 			.zeta-rail .zeta-links { gap: 1rem; flex-wrap: wrap; }
 			.zeta-rail .zeta-links a { font-size: .7rem; }
-			.hero { padding-top: 4.5rem; }
-			.section-head { grid-template-columns: 1fr; gap: .4rem; }
+			.hero { padding: 4rem 0 2.75rem; }
+			.kicker { margin-bottom: 1.2rem; }
+			.hero h1 { margin-bottom: 1.2rem; }
+			.hero .lede { margin-bottom: 1.8rem; }
+			section.block { padding: 3.25rem 0; }
+			.section-head { grid-template-columns: 1fr; gap: .4rem; margin-bottom: 2rem; }
+			.grid-item, .mode, .source { padding: 1.2rem 1.1rem; }
 			.code { flex-direction: column; align-items: flex-start; }
 			.tab { padding: .5rem .8rem; font-size: .68rem; }
+			.tabs { overflow-x: auto; scrollbar-width: none; }
+			.cta-row { gap: .7rem; }
+			.cta { flex: 1 1 calc(50% - .35rem); text-align: center; padding: .9rem 1rem; }
+			.hero::before, .hero::after { animation: none; }
+			footer { flex-direction: column; align-items: flex-start; gap: .6rem; padding: 2.2rem 5vw; }
+		}
+		@media (max-width: 480px) {
+			.hero h1 { font-size: clamp(2rem, 10.5vw, 2.6rem); }
+			.page-hero h1 { font-size: clamp(1.9rem, 9vw, 2.4rem); }
+			.install-note { font-size: .78rem; }
+			.shot { width: min(300px, 82vw); }
 		}
 	</style>
 </head>
@@ -464,18 +476,6 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 					el.style.setProperty('--my', ((ev.clientY - r.top) / r.height * 100).toFixed(1) + '%');
 				});
 			});
-			// hero 内容鼠标视差（微幅反向位移）
-			const heroZone = document.querySelector('.hero, .page-hero');
-			const heroInner = heroZone && heroZone.querySelector('.hero-inner');
-			if (heroZone && heroInner) {
-				heroZone.addEventListener('mousemove', ev => {
-					const r = heroZone.getBoundingClientRect();
-					const nx = (ev.clientX - r.left) / r.width - 0.5;
-					const ny = (ev.clientY - r.top) / r.height - 0.5;
-					heroInner.style.transform = 'translate(' + (nx * -10).toFixed(1) + 'px,' + (ny * -7).toFixed(1) + 'px)';
-				});
-				heroZone.addEventListener('mouseleave', () => { heroInner.style.transform = ''; });
-			}
 		}
 
 		// reveal on scroll

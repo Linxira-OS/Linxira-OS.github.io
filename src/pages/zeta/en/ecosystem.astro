@@ -4,18 +4,38 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 <ZetaLayout
 	lang="en"
 	title="Ecosystem — Zeta"
-	description="Zeta references four projects: OMP mainline, Pi advanced content, OMP Web, and Pi Web. Acknowledgments and source roles."
+	description="Zeta's own capabilities and upstream sources: project tracking, the Web workbench, experiment measurement, command marketplace, plugin platform; upstream roles and acknowledgments — OMP mainline, Pi, OMP Web, Pi Web."
 	active="ecosystem"
 >
 	<section class="page-hero">
 		<div class="kicker">Ecosystem</div>
-		<h1>Built on proven sources.</h1>
-		<p class="lede">Zeta tracks four reference projects. OMP is the product mainline; Pi provides advanced agent behavior as a semantic port source. OMP Web is the direct web snapshot upstream, with Pi Web contributing security and reliability patterns.</p>
+		<h1>What Zeta brings itself.</h1>
+		<p class="lede">Zeta ships its own product surface on top of the OMP runtime, while keeping every upstream role publicly labeled. This page lists Zeta's own capabilities first, then the four source projects, their roles, and acknowledgments.</p>
+	</section>
+
+	<section class="block" id="own">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Zeta's own capabilities</h2>
+				<div class="sub">On top of the shared runtime, these are developed and maintained by Zeta itself.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>Project tracking /tracking</h3><p>Milestones and key decisions written to <code class="keycap">.zeta/tracking/</code>, kept across sessions with persisted compaction summaries; off by default, explicit opt-in.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Web workbench &amp; desktop</h3><p>43 light/dark themes, trajectory view, the right-side dock, and the trusted desktop open bridge; one durable session shared with the CLI.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Experiment measurement</h3><p>Per-project local experiment tracking: metrics, directions, and baseline commits in SQLite.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>TypeScript commands &amp; marketplace</h3><p>arktype / typebox / zod argument schemas; commands installed, shared, and reused as Bun packages.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>IM channels &amp; multi-workspace</h3><p>WeChat / Feishu / Telegram bots, workspace aliases, and relay delegation — sessions stay in sync with the CLI and desktop.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>Plugin platform</h3><p><code class="keycap">plugins/official</code> and <code class="keycap">plugins/community</code> directory structure, with the plugins manager shipped.</p></div>
+			<div class="grid-item"><div class="idx">07</div><h3>Remote access security</h3><p>Gateway binds loopback only by default; <code class="keycap">remote.token</code> auth with CSRF and clickjacking protection.</p></div>
+			<div class="grid-item"><div class="idx">08</div><h3>Local stats dashboard</h3><p><code class="keycap">zeta stats</code> local observability: sessions, usage, and cost.</p></div>
+		</div>
 	</section>
 
 	<section class="block" id="sources">
 		<div class="section-head">
-			<div class="num">01</div>
+			<div class="num">02</div>
 			<div>
 				<h2>Reference projects</h2>
 				<div class="sub">The four sources Zeta is built on.</div>
@@ -55,7 +75,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="research">
 		<div class="section-head">
-			<div class="num">02</div>
+			<div class="num">03</div>
 			<div>
 				<h2>Research references</h2>
 				<div class="sub">Studied for semantics; not merged as runtimes.</div>
@@ -70,7 +90,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="credits">
 		<div class="section-head">
-			<div class="num">03</div>
+			<div class="num">04</div>
 			<div>
 				<h2>Acknowledgments</h2>
 				<div class="sub">Zeta would not exist without these projects and their maintainers.</div>
@@ -86,7 +106,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="distro">
 		<div class="section-head">
-			<div class="num">04</div>
+			<div class="num">05</div>
 			<div>
 				<h2>Distribution promise</h2>
 				<div class="sub">Zeta is an OMP downstream distribution: runtime tree, package layout, Bun workflow, and internal <span class="keycap">@zeta/*</span> names follow OMP so upstream updates remain mergeable.</div>

@@ -10,7 +10,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 	<section class="page-hero">
 		<div class="kicker">特性</div>
 		<h1>该有的都有，<br>不该有的不塞。</h1>
-		<p class="lede">核心能力从 OMP 主线内置；进阶内容从 Pi 语义移植。扩展覆盖其余——能自己搭的就自己搭，不想搭的就装现成的。</p>
+		<p class="lede">核心能力开箱即用；项目追踪与 Web 桌面工作台是 Zeta 的招牌自有能力。扩展覆盖其余——能自己搭的就自己搭，不想搭的就装现成的。</p>
 	</section>
 
 	<section class="block" id="core">
@@ -22,15 +22,15 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			</div>
 		</div>
 		<div class="grid-table">
-			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>子代理</h3><p>把任务拆给并行的子代理，各自携带独立上下文与工具集，主会话汇总结果。</p></div>
-			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>计划模式</h3><p>先规划、再执行：代理先产出计划供你审阅，批准后才触碰工作区。</p></div>
-			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP 语言服务</h3><p>内置 LSP 客户端：跳转定义、查找引用、诊断与补全，编辑时同步感知代码语义。</p></div>
-			<div class="grid-item"><div class="idx">04</div><h3><span class="k">D</span>DAP 调试适配器</h3><p>对接调试适配协议：设置断点、读取栈帧、检查变量并解释失败原因。</p></div>
-			<div class="grid-item"><div class="idx">05</div><h3><span class="k">H</span>事后记忆</h3><p>回顾过往会话的成败与教训，在后续任务中自动利用积累的经验。</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">E</span>Hashline 编辑</h3><p>行级精确、内容寻址的编辑语义：重构与批量替换保持可追溯。</p></div>
-			<div class="grid-item"><div class="idx">07</div><h3><span class="k">T</span>时间旅行规则</h3><p>按时间线生效的项目规则：旧提交的约定不会错误地套用在新代码上。</p></div>
-			<div class="grid-item"><div class="idx">08</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 重活交给 Rust 原语——大文件、大仓库不拖后腿。</p></div>
-			<div class="grid-item"><div class="idx">09</div><h3><span class="k">T</span>项目追踪文档</h3><p>独立于记忆机制的长期追踪系统：<code class="keycap">/tracking</code> 命令激活，AI 在里程碑与关键决策时写入 <code class="keycap">.zeta/tracking/</code>，跨会话保留，桌面版追踪面板可视化。</p></div>
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">T</span>项目追踪 Tracking</h3><p>独立于记忆的长期追踪系统：<code class="keycap">/tracking</code> 开启（默认关闭），AI 在里程碑与关键决策时写入 <code class="keycap">.zeta/tracking/</code>，跨会话保留、compaction 摘要持久化，桌面版与 Web UI 追踪面板可视化。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">S</span>子代理</h3><p>把任务拆给并行的子代理，各自携带独立上下文与工具集，主会话汇总结果。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">P</span>计划模式</h3><p>先规划、再执行：代理先产出计划供你审阅，批准后才触碰工作区。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">L</span>LSP 语言服务</h3><p>内置 LSP 客户端：跳转定义、查找引用、诊断与补全，编辑时同步感知代码语义。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">D</span>DAP 调试适配器</h3><p>对接调试适配协议：设置断点、读取栈帧、检查变量并解释失败原因。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">H</span>事后记忆</h3><p>回顾过往会话的成败与教训，在后续任务中自动利用积累的经验。</p></div>
+			<div class="grid-item"><div class="idx">07</div><h3><span class="k">E</span>Hashline 编辑</h3><p>行级精确、内容寻址的编辑语义：重构与批量替换保持可追溯。</p></div>
+			<div class="grid-item"><div class="idx">08</div><h3><span class="k">T</span>时间旅行规则</h3><p>按时间线生效的项目规则：旧提交的约定不会错误地套用在新代码上。</p></div>
+			<div class="grid-item"><div class="idx">09</div><h3><span class="k">R</span>原生 Rust 引擎</h3><p>文本、正则、grep 与 diff 重活交给 Rust 原语——大文件、大仓库不拖后腿。</p></div>
 			<div class="grid-item"><div class="idx">10</div><h3><span class="k">Z</span>中英界面切换</h3><p><code class="keycap">/language zh</code> 一键切换 CLI 与命令描述语言，设置持久化。</p></div>
 			<div class="grid-item"><div class="idx">11</div><h3><span class="k">W</span>桌面默认工作空间</h3><p>桌面版内置全局默认工作区（<code class="keycap">~/.zeta/workspace</code>），开箱即用，无需先选目录。</p></div>
 			<div class="grid-item"><div class="idx">12</div><h3><span class="k">C</span>清晰配置路径</h3><p>项目级 <code class="keycap">.zeta/</code> 与用户级 <code class="keycap">~/.zeta/</code> 分层存放（Linux/Windows 位置一致，均为家目录下），配置、记忆、追踪、日志各归其位。</p></div>
@@ -71,9 +71,27 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		</div>
 	</section>
 
-	<section class="block" id="modes">
+	<section class="block" id="webui">
 		<div class="section-head">
 			<div class="num">04</div>
+			<div>
+				<h2>Web 工作台与桌面版</h2>
+				<div class="sub">同一份持久会话，三个入口：终端、浏览器、桌面应用。</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>一处会话，随处继续</h3><p>桌面版、浏览器与 CLI 读写同一份持久会话——终端里开始的任务，回到桌面接着跑。</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>追踪面板</h3><p>项目追踪文档在界面内可视化浏览：里程碑、决策与进展一目了然，compaction 摘要持久保存。</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>轨迹视图</h3><p>逐步查看思考与工具调用，附耗时与 token 计数，原始记录可展开检查。</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>右侧工具坞</h3><p>会话 / 文件 / 追踪 / 插件四窗格常驻导轨，消息附「涉及文件」下拉。</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>43 套主题</h3><p>完整浅 / 深预设（背景、面板、语法、图表 8 色板全量变量），预水合引导首屏不闪白。</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>安全远程访问</h3><p><code class="keycap">zeta serve</code> 默认仅 loopback；远程访问须配置 <code class="keycap">remote.token</code>，附 CSRF 与点击劫持防护。</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">05</div>
 			<div>
 				<h2>四种运行模式</h2>
 				<div class="sub">同一个代理，多种接口。</div>
@@ -89,7 +107,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="bots">
 		<div class="section-head">
-			<div class="num">05</div>
+			<div class="num">06</div>
 			<div>
 				<h2>聊天平台机器人</h2>
 				<div class="sub">在微信、飞书与 Telegram 里直接使用 Zeta。统一的 bot 接口，更多平台持续接入。</div>
@@ -105,7 +123,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="extensions">
 		<div class="section-head">
-			<div class="num">06</div>
+			<div class="num">07</div>
 			<div>
 				<h2>原语，而非功能</h2>
 				<div class="sub">别家代理内置的功能，你可以自己搭。扩展是 TypeScript 模块，可访问工具、命令、快捷键、事件与完整 TUI。</div>

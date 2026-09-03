@@ -10,7 +10,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 	<section class="page-hero">
 		<div class="kicker">Features</div>
 		<h1>Everything you need.<br>Nothing you don't.</h1>
-		<p class="lede">Core capabilities are built in from the OMP mainline; advanced content is ported from Pi's semantic source. Extensions cover the rest — build what you want, install what you don't want to build.</p>
+		<p class="lede">Core capabilities are built in; project tracking and the Web desktop workbench are Zeta's signature capabilities. Extensions cover the rest — build what you want, install what you don't want to build.</p>
 	</section>
 
 	<section class="block" id="core">
@@ -22,15 +22,15 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 			</div>
 		</div>
 		<div class="grid-table">
-			<div class="grid-item"><div class="idx">01</div><h3><span class="k">S</span>Subagents</h3><p>Split work across parallel subagents, each with its own context and toolset. Results aggregate back into the main session.</p></div>
-			<div class="grid-item"><div class="idx">02</div><h3><span class="k">P</span>Plan mode</h3><p>Plan before you act: the agent produces a plan for your review, then touches the workspace only after approval.</p></div>
-			<div class="grid-item"><div class="idx">03</div><h3><span class="k">L</span>LSP language services</h3><p>Built-in LSP client: go-to-definition, find references, diagnostics, and completions — code semantics at edit time.</p></div>
-			<div class="grid-item"><div class="idx">04</div><h3><span class="k">D</span>DAP debug adapter</h3><p>Speaks the Debug Adapter Protocol: set breakpoints, read stack frames, inspect variables, and explain failures.</p></div>
-			<div class="grid-item"><div class="idx">05</div><h3><span class="k">H</span>Hindsight memory</h3><p>Lessons and outcomes from past sessions are revisited and applied automatically in later tasks.</p></div>
-			<div class="grid-item"><div class="idx">06</div><h3><span class="k">E</span>Hashline edits</h3><p>Line-precise, content-addressed editing semantics: refactors and bulk replacements stay traceable.</p></div>
-			<div class="grid-item"><div class="idx">07</div><h3><span class="k">T</span>Time-traveling rules</h3><p>Project rules that apply per time slice: old commit conventions don't leak onto new code.</p></div>
-			<div class="grid-item"><div class="idx">08</div><h3><span class="k">R</span>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting on Rust primitives — large files and big repos stay fast.</p></div>
-			<div class="grid-item"><div class="idx">09</div><h3><span class="k">T</span>Project tracking docs</h3><p>A long-term tracking system independent of memory: activate with <code class="keycap">/tracking</code>, the AI writes milestones and key decisions into <code class="keycap">.zeta/tracking/</code>, survives across sessions, visualized in the desktop Tracking panel.</p></div>
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">T</span>Project tracking</h3><p>A long-term tracking system independent of memory: enable with <code class="keycap">/tracking</code> (off by default), the AI writes milestones and key decisions into <code class="keycap">.zeta/tracking/</code>, kept across sessions with persisted compaction summaries, visualized in the desktop and Web UI Tracking panels.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">S</span>Subagents</h3><p>Split work across parallel subagents, each with its own context and toolset. Results aggregate back into the main session.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">P</span>Plan mode</h3><p>Plan before you act: the agent produces a plan for your review, then touches the workspace only after approval.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">L</span>LSP language services</h3><p>Built-in LSP client: go-to-definition, find references, diagnostics, and completions — code semantics at edit time.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">D</span>DAP debug adapter</h3><p>Speaks the Debug Adapter Protocol: set breakpoints, read stack frames, inspect variables, and explain failures.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">H</span>Hindsight memory</h3><p>Lessons and outcomes from past sessions are revisited and applied automatically in later tasks.</p></div>
+			<div class="grid-item"><div class="idx">07</div><h3><span class="k">E</span>Hashline edits</h3><p>Line-precise, content-addressed editing semantics: refactors and bulk replacements stay traceable.</p></div>
+			<div class="grid-item"><div class="idx">08</div><h3><span class="k">T</span>Time-traveling rules</h3><p>Project rules that apply per time slice: old commit conventions don't leak onto new code.</p></div>
+			<div class="grid-item"><div class="idx">09</div><h3><span class="k">R</span>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting on Rust primitives — large files and big repos stay fast.</p></div>
 			<div class="grid-item"><div class="idx">10</div><h3><span class="k">Z</span>ZH/EN UI switch</h3><p><code class="keycap">/language zh</code> toggles the CLI and command-description language; the setting persists.</p></div>
 			<div class="grid-item"><div class="idx">11</div><h3><span class="k">W</span>Desktop default workspace</h3><p>The desktop app ships a global default workspace (<code class="keycap">~/.zeta/workspace</code>) — ready to use without picking a directory first.</p></div>
 			<div class="grid-item"><div class="idx">12</div><h3><span class="k">C</span>Clear config paths</h3><p>Project-level <code class="keycap">.zeta/</code> and user-level <code class="keycap">~/.zeta/</code> (same location on Linux and Windows — under the home directory): config, memory, tracking, and logs each in their place.</p></div>
@@ -71,9 +71,27 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 		</div>
 	</section>
 
-	<section class="block" id="modes">
+	<section class="block" id="webui">
 		<div class="section-head">
 			<div class="num">04</div>
+			<div>
+				<h2>Web workbench &amp; desktop</h2>
+				<div class="sub">One durable session, three entry points: terminal, browser, desktop app.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>One session, everywhere</h3><p>Desktop, browser, and CLI read and write the same durable session — start in the terminal, continue on the desktop.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Tracking panel</h3><p>Browse project tracking docs right in the UI: milestones, decisions, and progress at a glance, with persisted compaction summaries.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Trajectory view</h3><p>Step through thinking and tool calls with duration and token counts; raw entries expand for inspection.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>Right-side dock</h3><p>Sessions / files / tracking / plugins as always-on panes; messages carry an "involved files" dropdown.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3>43 themes</h3><p>Full light/dark presets (background, panels, syntax, charts — 8 palette variable groups); pre-hydration boot keeps the first paint correct.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3>Secure remote access</h3><p><code class="keycap">zeta serve</code> binds loopback only by default; remote access requires <code class="keycap">remote.token</code>, with CSRF and clickjacking protection.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">05</div>
 			<div>
 				<h2>Four modes</h2>
 				<div class="sub">One agent, many interfaces.</div>
@@ -89,7 +107,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="bots">
 		<div class="section-head">
-			<div class="num">05</div>
+			<div class="num">06</div>
 			<div>
 				<h2>Chat platform bots</h2>
 				<div class="sub">Use Zeta right from WeChat, Feishu, and Telegram. One unified bot interface, with more platforms on the way.</div>
@@ -105,7 +123,7 @@ import ZetaLayout from "../../../layouts/ZetaLayout.astro";
 
 	<section class="block" id="extensions">
 		<div class="section-head">
-			<div class="num">06</div>
+			<div class="num">07</div>
 			<div>
 				<h2>Primitives, not features</h2>
 				<div class="sub">Features other agents bake in, you can build yourself. Extensions are TypeScript modules with access to tools, commands, keybindings, events, and the full TUI.</div>
