@@ -1,0 +1,186 @@
+---
+import PageLayout from "../../../../components/PageLayout.astro";
+---
+<PageLayout lang="en" active="blog" title="When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK — Blog">
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">2026-09-14 · Technical · <a href="/bio-sdk/">Linxira Bio SDK product page →</a></div>
+    <h1>When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK</h1>
+
+    <p class="note">Linxira Bio SDK benchmark report · Author: Linxira-OS project maintainer · License: AGPL-3.0-or-later (code) / CC-BY-4.0 (this article) · Repository: <a href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" rel="noopener">github.com/Linxira-OS/linxira-bio-sdk</a></p>
+
+    <h2>Abstract</h2>
+    <p>We ran two kinds of measurements on Linxira Bio SDK, a local-first bioinformatics execution toolkit: (1) <strong>three-backend consistency</strong> — whether independent Rust / Python / R implementations of the same algorithm produce identical results on identical input; and (2) <strong>exact reproduction of a reference pipeline</strong> — whether the SDK, orchestrating upstream salmon 2.7.0 on real public RNA-seq data, reproduces an existing quantification pipeline transcript by transcript.</p>
+    <p>Results: the three backends agree field by field within a 1e-6 tolerance (bit-identical on several items); on 10 normally covered paired-end samples, <strong>TPM Pearson r = 1.000000 (σ = 0), and NumReads per transcript is identical to the reference pipeline (relative difference = 0)</strong>, with every metric passing a 3σ check (zero outliers). This report discloses all data sources (public SRA accessions), the hardware and software environment, the methodology, and the reproduction commands.</p>
+
+    <h2>1. Background</h2>
+    <p>The core design of Linxira Bio SDK is "a deterministic Rust engine + controlled invocation of native tools + three-way cross-validation". For statistical analyses the engine is implemented in Rust, and the benchmark pack ships independent Python and R implementations of the same algorithm. For ecosystem-level tools (salmon, fasterq-dump, kraken2, and so on), the engine performs controlled, shell-free orchestration and reduces their output to verifiable structured results.</p>
+    <p>This round answers two questions:</p>
+    <ol>
+      <li>Can the three implementations corroborate each other? (trustworthiness)</li>
+      <li>On real data, with exactly the same parameters as an existing pipeline, can the SDK reproduce its output? (correctness)</li>
+    </ol>
+
+    <h2>2. Data Sources (all public)</h2>
+    <table>
+      <thead><tr><th>Data</th><th>Accessions</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Buckwheat (Fagopyrum) transcriptome samples ×10 (batch validation)</td><td>SRR15243898, SRR1552100, SRR1552203, SRR1552215, SRR1552217, SRR1552218, SRR17715775, SRR17715776, SRR17715777, SRR17715778</td><td>NCBI SRA (PRJNA253089, PRJNA749630, etc.; the full 172-run list is in the project census)</td></tr>
+        <tr><td>Deep-library paired sample (deployment validation)</td><td>SRR26171873</td><td>NCBI SRA</td></tr>
+        <tr><td>Edge-case sample (truncated FASTQ guard)</td><td>SRR22699515</td><td>NCBI SRA (truncated copy; the authoritative original was verified separately)</td></tr>
+        <tr><td>Zero-mapping small-RNA samples ×14 (edge cases)</td><td>SRR28573920-25, SRR8205656-63</td><td>NCBI SRA</td></tr>
+        <tr><td>Reference index</td><td>—</td><td>Pinku1 CDS salmon index (33,955 transcripts)</td></tr>
+        <tr><td>Reference quantification</td><td>same 10+14 runs</td><td>quant.sf output of the existing pipeline (read-only control)</td></tr>
+      </tbody>
+    </table>
+    <p>Raw reads and the reference index stay on the lab workstation and are not committed; this report and the repository carry only metrics, methodology, and provenance.</p>
+
+    <h2>3. Environment Disclosure (complete)</h2>
+    <h3>3.1 Batch-validation workstation (Linux)</h3>
+    <table>
+      <thead><tr><th>Item</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>OS</td><td>CachyOS (Arch-based), kernel 7.2.3-1-cachyos</td></tr>
+        <tr><td>CPU</td><td>Intel Xeon E5-2676 v3 @ 2.40GHz (24 threads; runs pinned to cores 8–15, nice 10)</td></tr>
+        <tr><td>Memory</td><td>32 GiB DDR3-1600 MT/s (2×16 GiB DIMM)</td></tr>
+        <tr><td>GPU</td><td>AMD Radeon RX 580 2048SP (Polaris 20, amdgpu driver) — <strong>unused</strong>; all workloads are CPU-only</td></tr>
+        <tr><td>Storage</td><td>System/logs: Kingston SA400S37 120GB <strong>SSD</strong>; benchmark I/O volume: WD WD5000AZLX 500GB 7200rpm <strong>HDD</strong>; reference volume: Seagate ST3000DM001 3TB <strong>HDD</strong></td></tr>
+        <tr><td>SDK</td><td>linxira-bio v1.0.3 (release build, Rust)</td></tr>
+        <tr><td>salmon</td><td>2.7.0 (official bioconda ELF binary, micromamba user prefix)</td></tr>
+        <tr><td>fasterq-dump</td><td>3.4.1</td></tr>
+        <tr><td>Python / R</td><td>3.14 / 4.6.1 (verification helpers only)</td></tr>
+        <tr><td>Containers</td><td>none</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.2 Three-backend baseline environment (Windows + WSL2)</h3>
+    <table>
+      <thead><tr><th>Item</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Host</td><td>Windows 11 build 26200.9168; 14-inch laptop (Intel Core Ultra 5 225H, 14 logical cores; 32 GiB LPDDR5X-8533)</td></tr>
+        <tr><td>GPU</td><td>Intel Arc 130T integrated graphics (driver 32.0.101.8991) — unused</td></tr>
+        <tr><td>Storage</td><td>NVMe SSD: Samsung PM991a 512GB (system) + YMTC PC411 1TB (WSL2 filesystem lives on NVMe)</td></tr>
+        <tr><td>WSL2</td><td>Arch Linux guest, kernel 6.18.33.2-microsoft-standard-WSL2, 7940 MB visible to the guest</td></tr>
+        <tr><td>Software stack</td><td>Rust engine 1.0.1; Python 3.14.6 (Biopython 1.88); R 4.6.1 (Biostrings 2.80.2, jsonlite, digest)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3.3 Software references</h3>
+    <ul>
+      <li>Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. <strong>Salmon provides fast and bias-aware quantification of transcript expression.</strong> Nature Methods 14, 417–419 (2017).</li>
+      <li>Leinonen R, Sugawara H, Shumway M; INSDC. <strong>The Sequence Read Archive.</strong> Nucleic Acids Research 39, D19–D21 (2011). (SRA Toolkit / fasterq-dump)</li>
+      <li>Cock PJA et al. <strong>Biopython.</strong> Bioinformatics 25, 1422–1423 (2009).</li>
+      <li>Page AJ et al. <strong>Biostrings.</strong> Bioconductor (used by the R reference implementation).</li>
+      <li>Key Rust crates: flate2 (zlib-ng backend planned), csv, serde, rayon (roadmap in the repository's <code>docs/RUST_NATIVE_ROADMAP.md</code>).</li>
+    </ul>
+
+    <h2>4. Methods</h2>
+    <h3>4.1 Three-backend consistency (bench-20260913-001)</h3>
+    <p>Independent implementations of the same algorithm in three languages (Rust engine / Python pack / R pack), identical input, one warm-up per backend, then 5 timed runs: median wall time and peak RSS (<code>/usr/bin/time -v</code>). Consistency criterion: structured field-level diff with a numeric relative tolerance of 1e-6.</p>
+
+    <h3>4.2 Exact reproduction of the reference pipeline (bench-20260914 series)</h3>
+    <p>The complete flow for each sample (entirely through the public CLI, no internal shortcuts):</p>
+<pre><code># 1) SRA → FASTQ (decompression segment timed)
+fasterq-dump -e 8 --force -O &lt;tmp&gt;/&lt;run&gt;-fq &lt;run&gt;.sra
+# 2) SDK orchestrates salmon quantification (quantification segment timed;
+#    parameters identical to the reference pipeline)
+export LINXIRA_BIO_SALMON=/path/to/salmon
+linxira-bio expression quantify &lt;run&gt;_1.fastq &lt;run&gt;_2.fastq \
+  --index &lt;salmon_idx&gt; --threads 8 --seq-bias --gc-bias \
+  --output &lt;results&gt;/&lt;run&gt;/quant.sf --json</code></pre>
+    <p><strong>3σ acceptance rule</strong>: for each passing batch, compute mean/σ/3σ interval and outlier count per metric; a batch PASSES only with zero 3σ outliers and a worst-case TPM r ≥ 0.995.</p>
+
+    <h2>5. Results</h2>
+    <h3>5.1 Three-backend consistency (repository fixtures, bench-20260913-001)</h3>
+    <table>
+      <thead><tr><th>Capability</th><th>rust</th><th>python</th><th>r</th><th>Speed-up (vs python)</th><th>Memory saved</th></tr></thead>
+      <tbody>
+        <tr><td>sequence.stats.v1</td><td>40 ms</td><td>330 ms</td><td>2110 ms</td><td>8.25×</td><td>86.5%</td></tr>
+        <tr><td>expression.pca.v1</td><td>40 ms</td><td>300 ms</td><td>460 ms</td><td>7.50×</td><td>85.1%</td></tr>
+        <tr><td>set.venn.v1</td><td>40 ms</td><td>310 ms</td><td>400 ms</td><td>7.75×</td><td>85.7%</td></tr>
+        <tr><td>structure.pdb.summary.v1</td><td>40 ms</td><td>320 ms</td><td>410 ms</td><td>8.00×</td><td>86.3%</td></tr>
+      </tbody>
+    </table>
+    <p>All four capabilities are Consistent across the three backends (against the Rust golden: PDB bit-identical at 0.0; PCA/Venn maximum relative error 2.26e-11). On small inputs the wall clock is dominated by interpreter start-up — which is exactly what this baseline characterizes; real-data throughput is covered in the next section.</p>
+
+    <h3>5.2 Bit-level reproduction of the reference pipeline (10-sample batch, bench-20260914-003/004)</h3>
+    <p>Transcript-by-transcript comparison against the existing pipeline's quant.sf (parameters fully aligned: <code>-l A -p 8 --validateMappings --seqBias --gcBias</code>, same salmon 2.7.0, same index):</p>
+    <table>
+      <thead><tr><th>Metric</th><th>n</th><th>mean</th><th>σ</th><th>3σ interval</th><th>3σ outliers</th></tr></thead>
+      <tbody>
+        <tr><td>TPM Pearson r</td><td>10</td><td>1.000000</td><td>0.000000</td><td>[1.0, 1.0]</td><td>0</td></tr>
+        <tr><td>NumReads relative difference</td><td>10</td><td>0.000e+00</td><td>0.000e+00</td><td>[0, 0]</td><td>0</td></tr>
+        <tr><td>Quantification wall time (s)</td><td>10</td><td>602.9</td><td>94.4</td><td>[319.8, 886.0]</td><td>0</td></tr>
+        <tr><td>Decompression wall time (s)</td><td>10</td><td>250.8</td><td>27.4</td><td>[168.7, 332.9]</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Batch-level 3σ acceptance: PASS</strong> (10/10 passed; zero outliers; worst r = 1.000000).</p>
+    <p>Per-run detail (decompression/quantification seconds; CPU utilization = (user+sys)/wall):</p>
+    <table>
+      <thead><tr><th>run</th><th>decompress s</th><th>quantify s</th><th>CPU utilization</th></tr></thead>
+      <tbody>
+        <tr><td>SRR15243898</td><td>250</td><td>677</td><td>(first run, CPU column not yet enabled)</td></tr>
+        <tr><td>SRR1552100</td><td>302</td><td>684</td><td>79.4%</td></tr>
+        <tr><td>SRR1552203</td><td>255</td><td>645</td><td>81.9%</td></tr>
+        <tr><td>SRR1552215</td><td>267</td><td>614</td><td>89.2%</td></tr>
+        <tr><td>SRR1552217</td><td>228</td><td>534</td><td>102.6%</td></tr>
+        <tr><td>SRR1552218</td><td>234</td><td>661</td><td>82.0%</td></tr>
+        <tr><td>SRR17715775</td><td>204</td><td>613</td><td>96.1%</td></tr>
+        <tr><td>SRR17715776</td><td>275</td><td>526</td><td>115.8%</td></tr>
+        <tr><td>SRR17715777</td><td>236</td><td>685</td><td>88.4%</td></tr>
+        <tr><td>SRR17715778</td><td>257</td><td>390</td><td>155.9%</td></tr>
+      </tbody>
+    </table>
+    <p><em>The first same-parameter control (SRR1460477, 16.7M mapped reads) likewise gave r = 1.000000 with identical NumReads per transcript.</em></p>
+
+    <h3>5.3 Deployment validation and data guards</h3>
+    <ul>
+      <li>A deep-library paired-end sample (SRA 3.68 GB → 2×9.07 GB FASTQ) ran end to end; the output quant.sf matches the reference format item by item (row count / IDs / header).</li>
+      <li><strong>Truncation guard</strong>: a truncated FASTQ whose line count is not a multiple of 4 is rejected with a structured error (zero silent output). This is not a theoretical concern — an interrupted transfer produced exactly such a file, and it had caused the existing pipeline to fail repeatedly on the same run.</li>
+      <li><strong>Automatic exposure of non-mRNA libraries</strong>: two independent implementations measured 0–0.0019% mapping rates on 14 samples, confirming small-RNA libraries (which belong on a miRNA track); they are annotated <code>excluded: non-mRNA library</code>. Two independent implementations producing the same "near-zero mapping" signal on the same data is a direct demonstration of the value of cross-validation.</li>
+    </ul>
+
+    <h3>5.4 Honest boundaries (what we do not claim)</h3>
+    <ol>
+      <li><strong>We do not claim to "beat salmon/fasterq-dump themselves"</strong> — the SDK orchestrates the very same engines; under identical parameters we aim for bit-level reproduction (achieved), not overtaking.</li>
+      <li>The wall-clock times in this batch are <strong>bounded by mechanical-disk throughput</strong> (the benchmark I/O volume is a 500GB 7200rpm HDD); they characterize the deployment environment and are not an engine speed claim.</li>
+      <li>Zero-mapping samples are retained as edge cases; TPM comparisons on them are noise against noise, any implementation would "fail", and they are not used for scoring.</li>
+      <li>Numbers across machines, cache states (warm/cold), or code versions (each report embeds its git sha) are never mixed.</li>
+    </ol>
+
+    <h2>6. Reproduction</h2>
+    <p>The SDK and all benchmark tooling are open source:</p>
+<pre><code># Three-backend baseline (any supported platform)
+linxira-bio benchmark run sequence.stats.v1 \
+  fasta=tests/fixtures/sequences/tiny.fa \
+  --backends rust,python,r --repeat 5 --dataset-class sequence
+
+# Real sample: SRA → quant.sf (public CLI; both timings are in the --json envelope)
+export LINXIRA_BIO_SALMON=/path/to/salmon
+fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
+linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
+  tmp/run-fq/SRR1460477_2.fastq --index &lt;salmon_idx&gt; --threads 8 \
+  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
+
+# Batch comparison and 3σ summary (scripts/tier23-bench.sh + tier23-summarize.py)</code></pre>
+    <p>The raw reports (per-run JSON envelopes, per-line CPU accounting, 3σ statistics objects) are in the repository under <code>benchmark-results/2026-09-13|14/</code>.</p>
+
+    <h2>7. Closing</h2>
+    <p>The first question a "local-first" bioinformatics toolkit must answer is not "how fast" but "<strong>is the result correct, and can others trust it</strong>". This round answers: three languages corroborate the same algorithm; the existing pipeline is reproduced bit for bit under identical parameters; data anomalies are rejected loudly instead of quietly producing numbers. The speed figures (7.5–8.25× versus interpreters) came along for free — verifiability is the product.</p>
+
+    <p class="note">Linxira-OS · AGPL-3.0-or-later (code) · this article CC-BY-4.0 · <a href="/bio-sdk/">Go to the Linxira Bio SDK product page →</a></p>
+<style>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    .meta a { color: #20B8B0; text-decoration: none; }
+    .note { color: #94a3b8; font-size: 0.85rem; border-left: 3px solid rgba(32,184,176,0.5); padding-left: 0.8rem; }
+    .note a { color: #20B8B0; }
+    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    strong { color: #e2e8f0; }
+    li { margin-bottom: 0.3rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: #cbd5e1; padding: 0; }
+  </style>
+</PageLayout>
