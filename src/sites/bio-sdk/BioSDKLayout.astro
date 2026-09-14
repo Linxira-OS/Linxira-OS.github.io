@@ -11,18 +11,18 @@
  *   - 客户端 JS：public/bio-sdk/app.js（独立文件，非内联）
  * 语言由 URL 决定：/bio-sdk/zh/ 与 /bio-sdk/en/
  */
-import Navbar from "../components/Navbar.astro";
-import BioSDKStyles from "../components/bio-sdk/BioSDKStyles.astro";
-import BioSDKSidebar from "../components/bio-sdk/BioSDKSidebar.astro";
-import BioSDKHome from "../components/bio-sdk/HomePage.astro";
-import BioSDKDemo from "../components/bio-sdk/DemoPage.astro";
-import BioSDKWorkbench from "../components/bio-sdk/WorkbenchPage.astro";
-import BioSDKAI from "../components/bio-sdk/AIPage.astro";
-import BioSDKStructure from "../components/bio-sdk/StructurePage.astro";
-import BioSDKEnv from "../components/bio-sdk/EnvironmentPage.astro";
-import BioSDKDocs from "../components/bio-sdk/DocsPage.astro";
-import BioSDKLicenses from "../components/bio-sdk/LicensesPage.astro";
-import BioSDKModals from "../components/bio-sdk/Modals.astro";
+import Navbar from "../../components/Navbar.astro";
+import BioSDKStyles from "./components/BioSDKStyles.astro";
+import BioSDKSidebar from "./components/BioSDKSidebar.astro";
+import BioSDKHome from "./components/HomePage.astro";
+import BioSDKDemo from "./components/DemoPage.astro";
+import BioSDKWorkbench from "./components/WorkbenchPage.astro";
+import BioSDKAI from "./components/AIPage.astro";
+import BioSDKStructure from "./components/StructurePage.astro";
+import BioSDKEnv from "./components/EnvironmentPage.astro";
+import BioSDKDocs from "./components/DocsPage.astro";
+import BioSDKLicenses from "./components/LicensesPage.astro";
+import BioSDKModals from "./components/Modals.astro";
 
 interface Props {
 	lang: "zh" | "en";
