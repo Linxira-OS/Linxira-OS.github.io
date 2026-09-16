@@ -44,6 +44,10 @@ const { zh } = Astro.props;
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>{zh ? "文档" : "Docs"}</span>
     </div>
+    <a class="nav-item" href={zh ? "/zh/blog/bio-sdk-reproducibility-benchmark/" : "/en/blog/bio-sdk-reproducibility-benchmark/"}>
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span>{zh ? "基准报告" : "Benchmark"}</span>
+    </a>
     <div style="margin-top:auto;padding-top:1rem">
       <div class="nav-item" data-page="licenses">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>

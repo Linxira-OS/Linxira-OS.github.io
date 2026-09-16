@@ -54,19 +54,17 @@ public/                      静态资源（`public/bio-sdk/`、`public/packages
 
 ---
 
-## 4. 新增博客文章（固定三步，缺一不可）
+## 4. 新增博客文章（Markdown 直投，两份文件即可）
 
-1. **注册**：在 `src/data/blog.ts` 的 `blogPosts` 数组**顶部**追加一条（顺序即展示顺序，最新在前）：`slug / date / tag（announcement|technical）/ zh{title,desc} / en{title,desc}`。
-2. **中文页**：新建 `src/pages/zh/blog/<slug>/index.astro`。
-3. **英文页**：新建 `src/pages/en/blog/<slug>/index.astro`。**注册表是中英共用的**——只写一种语言会让另一语言的列表页出现死链。
+1. **中文稿**：新建 `src/content/blog/<slug>.zh.md`——frontmatter 含 `title / date / tag（announcement|technical）/ lang: zh / desc`，正文即 Markdown（标题从 `##` 起排，H1 与顶部说明 blockquote 可保留，渲染样式由模板统一提供）。
+2. **英文稿**：新建 `src/content/blog/<slug>.en.md`，同 frontmatter 结构、`lang: en`、正文为英文。**两种语言缺一不可**，缺的语言会出现列表死链。
+3. 完成。路由由 `src/pages/{zh,en}/blog/[slug].astro` 自动生成（`/zh/blog/<slug>/`、`/en/blog/<slug>/`），列表与首页「最新动态」由 `src/data/allPosts.ts` 自动合并，无需注册。
 
-文章页模板（照抄现有文章，例如 `btrfs-snapshots-rollback`）：
-- 顶部 `import PageLayout`；`<PageLayout lang="zh|en" active="blog" title="…">`
-- 依次：`<a class="back">` 返回博客 → `<div class="meta">日期 · 标签</div>` → `<h1>` → 语义 HTML 正文（h2/h3/p/ul/ol/table/pre）→ 页内 `<style>`（沿用现有文章的样式块）
-- 代码块内的 `<` `>` 必须写成 `&lt;` `&gt;`；正文避免出现裸 `{` `}`（Astro 会当表达式解析）
-- 涉及产品的文章在 meta 行与结尾加产品页链接：`<a href="/bio-sdk/">…</a>`（用标准入口路径，见第 5 节）
-
-首页「最新动态」自动读取注册表，无需另改。
+规范：
+- 文件名必须以 `.zh.md` / `.en.md` 结尾（语言即文件名后缀）。
+- 涉及产品的文章在正文开头 blockquote 中加产品页链接：`[Linxira Bio SDK](/bio-sdk/)`（标准入口路径，见第 5 节）。
+- 旧手写文章（`src/pages/{zh,en}/blog/<slug>/index.astro` + `data/blog.ts` 注册）为遗留机制，仅维护不再新增；新文章若与旧文同 slug 会路由冲突。
+- `data/blog.ts` 仅作旧文注册表，不要再往里加新条目。
 
 ---
 
@@ -121,7 +119,7 @@ npx astro build    # 生产构建，产物在 dist/
 - 不只写一种语言；不跳过 `astro build`
 - 不复制 `<nav>`；不手写语言切换
 - 不提交构建产物与大体积二进制
-- 不新增走 `src/content/` 集合的文章（历史遗留通道，避免两套真相源）
+- 不为新文章往 `data/blog.ts` 注册表加条目（它只存 2026-09 前的手写旧文）
 
 ---
 
@@ -129,7 +127,7 @@ npx astro build    # 生产构建，产物在 dist/
 
 - **One repo, one site, one domain.** All Linxira web presence lives here; products are **path-based sub-sites** (`/bio-sdk/`, `/zeta/`) under `src/sites/<product>/`. Never create separate Pages sites or subdomains; never put website files in product repos (they must stay clean for forks/clones).
 - **Every article goes to the blog here**, regardless of product. Sub-sites are product landing pages only and link back to blog posts for long-form content.
-- **Adding a post = 3 steps**: prepend an entry to `src/data/blog.ts`, create `src/pages/zh/blog/<slug>/index.astro`, create `src/pages/en/blog/<slug>/index.astro`. The registry is shared by both languages — a missing language page becomes a dead link.
+- **Adding a post = 2 markdown files**: `src/content/blog/<slug>.zh.md` and `<slug>.en.md` with frontmatter (`title / date / tag / lang / desc`). Routes, lists and the homepage "latest" feed pick them up automatically. The old `data/blog.ts` registry is legacy-only.
 - **Both zh and en are mandatory** for every page and post.
 - Product entry links use the canonical path `/<product>/` (language redirect handled by `src/pages/<product>/index.astro`).
 - Navigation has a single source: `src/components/Navbar.astro` (`navItems`, `products` arrays). Never copy `<nav>` into pages.

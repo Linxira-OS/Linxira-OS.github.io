@@ -1,0 +1,42 @@
+---
+import PageLayout from "../../../components/PageLayout.astro";
+
+export function getStaticPaths() {
+  const modules = import.meta.glob("../../../posts/*.en.md", { eager: true });
+  return Object.entries(modules)
+    .filter(([path]) => path.endsWith(".en.md"))
+    .map(([path, mod]) => ({
+      params: { slug: path.split("/").pop()!.replace(/\.en\.md$/, "") },
+      props: { mod: mod as any },
+    }));
+}
+const { mod } = Astro.props;
+const { Content } = mod;
+const dateStr = new Date(mod.frontmatter.date).toISOString().slice(0, 10);
+---
+<PageLayout lang="en" active="blog" title={`${mod.frontmatter.title} — Blog`}>
+    <a href="/en/blog/" class="back">← Back to Blog</a>
+    <div class="meta">{dateStr} · {mod.frontmatter.tag === 'announcement' ? 'Announcement' : 'Technical'} · <a href="/bio-sdk/">Product page →</a></div>
+    <article class="post-body">
+      <Content />
+    </article>
+<style is:global>
+    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
+    .meta a { color: #20B8B0; text-decoration: none; }
+    .post-body h1 { font-size: 1.7rem; color: #e2e8f0; margin-bottom: 1.2rem; }
+    .post-body h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
+    .post-body h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
+    .post-body strong { color: #e2e8f0; }
+    .post-body a { color: #20B8B0; }
+    .post-body li { margin-bottom: 0.3rem; }
+    .post-body blockquote { border-left: 3px solid rgba(32,184,176,0.5); margin: 1rem 0; padding: 0.3rem 0 0.3rem 0.9rem; color: #94a3b8; font-size: 0.9rem; }
+    .post-body blockquote p { margin: 0.2rem 0; }
+    .post-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .post-body th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
+    .post-body td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.85rem; }
+    .post-body pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    .post-body pre code { background: none; color: #cbd5e1; padding: 0; }
+    .post-body hr { border: none; border-top: 1px solid rgba(51,65,85,0.3); margin: 2rem 0; }
+    .post-body em { color: #94a3b8; }
+  </style>
+</PageLayout>

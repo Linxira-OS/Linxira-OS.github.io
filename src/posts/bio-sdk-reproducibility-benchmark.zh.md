@@ -1,0 +1,305 @@
+---
+title: "当 Rust 遇上转录组定量：一个本地优先生信 SDK 的可复现性实测报告"
+date: 2026-09-14
+tag: technical
+lang: zh
+desc: "Linxira Bio SDK 基准报告：Rust/Python/R 三后端一致性、10 样本对既有 salmon 管线逐位复现（TPM r = 1.000000，NumReads 相对差 0）、26 样本深库补算批次在计划内重启后自动续跑零人工干预，全部数据来源与环境公开。"
+---
+
+# 当 Rust 遇上转录组定量：一个本地优先生信 SDK 的可复现性实测报告
+
+> **Linxira Bio SDK 基准报告 · 2026-09-14**（2026-09-15 增补 §5.4：26 样本深库补算批次）
+> 作者：Linxira-OS 项目维护者 · 许可证：AGPL-3.0-or-later（代码）/ CC-BY-4.0（本文）
+> 仓库：<https://github.com/Linxira-OS/linxira-bio-sdk>
+>
+> 产品页：[Linxira Bio SDK](/bio-sdk/)
+
+## 摘要
+
+我们对本地优先（local-first）的生信执行工具包 Linxira Bio SDK 做了两类实测：
+(1) **三后端一致性**——同一算法的 Rust / Python / R 三套独立实现，在相同输入上
+是否给出相同结果；(2) **参考管线精确复现**——SDK 编排上游 salmon 2.7.0，在
+真实公共 RNA-seq 数据上，能否逐转录本复现已有定量管线的输出。结论：三后端在
+1e-6 容差内逐字段一致（多项逐位一致）；在 10 个正常覆盖的配对样本上，
+**TPM Pearson r = 1.000000（σ = 0）、每条转录本的 NumReads 与参考管线完全
+相同（相对差 = 0）**，且全部指标通过 3σ 检验（零离群）。在此基础上，我们用
+同一条已验证管线为既有管线尚未计算的 26 个样本完成补算（约 5.2 亿 reads，
+全部输出完整 33,955 转录本 ID 集），批次历经一次真实的计划内重启并在开机
+20 秒后自动续跑、零人工干预跑完。本报告公开全部数据来源（公共 SRA 检索号）、
+软硬件环境、方法学与复现命令。
+
+## 1. 背景
+
+Linxira Bio SDK 的核心设计是"Rust 确定性引擎 + 受控外调原生工具 + 三端
+交叉验证"：对统计类分析，引擎用 Rust 实现，并在 benchmark pack 中提供同一
+算法的 Python 与 R 独立实现；对生态级工具（salmon、fasterq-dump、kraken2
+等），引擎做受控、无 shell 的编排，并把输出归约为可校验的结构化结果。
+
+本次实测回答两个问题：
+
+1. 三套实现的结果能否互证？（可信度）
+2. 在真实数据、与既有管线完全相同的参数下，SDK 能否复现其输出？（正确性）
+
+## 2. 数据来源（全部公开）
+
+| 数据 | 检索号 | 来源 |
+|---|---|---|
+| 荞麦（Fagopyrum）转录组样本 ×10（批量化验证） | SRR15243898、SRR1552100、SRR1552203、SRR1552215、SRR1552217、SRR1552218、SRR17715775、SRR17715776、SRR17715777、SRR17715778 | NCBI SRA（PRJNA253089、PRJNA749630 等，完整 172-run 清单见项目 census） |
+| 深库配对样本（部署验证） | SRR26171873 | NCBI SRA |
+| 深库/常规补算样本 ×26（同项目 172-run 研究的未算子集；完整检索号见 §5.4 明细表） | SRR19049440/41/43-45、SRR22699505–516、SRR24322339/40/42-45/47/52/53 | NCBI SRA（经 NAS 权威副本拉取） |
+| 边界样本（截断 FASTQ 守卫验证） | SRR22699515 | NCBI SRA（截断副本；权威原件另行核验） |
+| 零映射小 RNA 样本 ×14（边界用例） | SRR28573920-25、SRR8205656-63 | NCBI SRA |
+| 参考索引 | — | Pinku1 CDS salmon 索引（33,955 转录本） |
+| 参考定量 | 同上 10+14 个 run | 既有定量管线的 quant.sf 输出（只读对照） |
+
+原始 reads 与参考索引保留在实验工作站、不入仓库；本报告及仓库仅承载指标、
+方法学与来源记录。
+
+## 3. 环境披露（完整）
+
+### 3.1 批量化验证工作站（Linux）
+
+| 项 | 值 |
+|---|---|
+| 操作系统 | CachyOS（Arch 系），内核 7.2.3-1-cachyos |
+| CPU | Intel Xeon E5-2676 v3 @ 2.40GHz（24 线程；运行钉定 8–15 核，nice 10） |
+| 内存 | 32 GiB DDR3-1600 MT/s（2×16 GiB DIMM） |
+| GPU | AMD Radeon RX 580 2048SP（Polaris 20，amdgpu 驱动）——**未使用**，全部负载为 CPU |
+| 存储 | 系统/日志：金士顿 SA400S37 120GB **SSD**；基准 I/O 数据卷：西数 WD5000AZLX 500GB 7200rpm **HDD**；参考数据卷：希捷 ST3000DM001 3TB **HDD** |
+| SDK | linxira-bio v1.0.3（release 构建，Rust） |
+| salmon | 2.7.0（bioconda 官方 ELF 二进制，micromamba 用户前缀安装） |
+| fasterq-dump | 3.4.1 |
+| Python / R | 3.14 / 4.6.1（仅校验辅助） |
+| 容器 | 无 |
+
+### 3.2 三端基线环境（Windows + WSL2）
+
+| 项 | 值 |
+|---|---|
+| 宿主 | Windows 11 build 26200.9168；14 英寸笔记本（Intel Core Ultra 5 225H，14 逻辑核；32 GiB LPDDR5X-8533） |
+| GPU | Intel Arc 130T 集成显卡（驱动 32.0.101.8991）——未使用 |
+| 存储 | NVMe SSD：三星 PM991a 512GB（系统）+ YMTC PC411 1TB（WSL2 文件系统位于 NVMe） |
+| WSL2 | Arch Linux guest，内核 6.18.33.2-microsoft-standard-WSL2，guest 可见内存 7940 MB |
+| 软件栈 | Rust 引擎 1.0.1；Python 3.14.6（Biopython 1.88）；R 4.6.1（Biostrings 2.80.2、jsonlite、digest） |
+
+### 3.3 软件引用
+
+- Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. **Salmon provides fast
+  and bias-aware quantification of transcript expression.** Nature Methods
+  14, 417–419 (2017).
+- Leinonen R, Sugawara H, Shumway M; INSDC. **The Sequence Read Archive.**
+  Nucleic Acids Research 39, D19–D21 (2011).（SRA Toolkit / fasterq-dump）
+- Cock PJA et al. **Biopython.** Bioinformatics 25, 1422–1423 (2009).
+- Page AJ et al. **Biostrings.** Bioconductor（R 参考实现使用）。
+- Rust 侧关键 crate：flate2（含 zlib-ng 后端规划）、csv、serde、rayon（路线
+  图见仓库 `docs/RUST_NATIVE_ROADMAP.md`）。
+
+## 4. 方法
+
+### 4.1 三后端一致性（bench-20260913-001）
+
+同一算法三种语言独立实现（Rust 引擎 / Python pack / R pack），相同输入、
+每后端预热 1 次后计时 5 次：中位 wall time 与峰值 RSS（`/usr/bin/time -v`）。
+一致性判据：结构化字段级 diff，数值相对容差 1e-6。
+
+### 4.2 参考管线精确复现（bench-20260914 系列）
+
+每个样本的完整流程（全部经公开 CLI，无内部捷径）：
+
+```bash
+# 1) SRA → FASTQ（解压段计时）
+fasterq-dump -e 8 --force -O <tmp>/<run>-fq <run>.sra
+# 2) SDK 编排 salmon 量化（量化段计时；参数与参考管线完全一致）
+export LINXIRA_BIO_SALMON=/path/to/salmon
+linxira-bio expression quantify <run>_1.fastq <run>_2.fastq \
+  --index <salmon_idx> --threads 8 --seq-bias --gc-bias \
+  --output <results>/<run>/quant.sf --json
+```
+
+**3σ 验收原则**：对通过批次逐指标计算 mean/σ/3σ 区间与离群计数；批次级
+PASS 要求零 3σ 离群且最差 TPM r ≥ 0.995。
+
+## 5. 结果
+
+### 5.1 三后端一致性（仓库 fixture，bench-20260913-001）
+
+| 能力 | rust | python | r | 加速比（对 python） | 内存节省 |
+|---|---|---|---|---|---|
+| sequence.stats.v1 | 40 ms | 330 ms | 2110 ms | 8.25× | 86.5% |
+| expression.pca.v1 | 40 ms | 300 ms | 460 ms | 7.50× | 85.1% |
+| set.venn.v1 | 40 ms | 310 ms | 400 ms | 7.75× | 85.7% |
+| structure.pdb.summary.v1 | 40 ms | 320 ms | 410 ms | 8.00× | 86.3% |
+
+四项能力三端全部 Consistent（对 Rust golden：PDB 逐位一致 0.0，PCA/Venn
+最大相对误差 2.26e-11）。小样本上墙钟由解释器启动主导——这正是该基线刻画
+的对象；真实数据吞吐另见下节。
+
+### 5.2 参考管线逐位复现（10 样本批量，bench-20260914-003/004）
+
+与既有管线 quant.sf 的逐转录本对照（参数完全对齐：`-l A -p 8
+--validateMappings --seqBias --gcBias`，同版本 salmon 2.7.0，同索引）：
+
+| 指标 | n | mean | σ | 3σ 区间 | 3σ 离群 |
+|---|---|---|---|---|---|
+| TPM Pearson r | 10 | 1.000000 | 0.000000 | [1.0, 1.0] | 0 |
+| NumReads 相对差 | 10 | 0.000e+00 | 0.000e+00 | [0, 0] | 0 |
+| 量化段墙钟（s） | 10 | 602.9 | 94.4 | [319.8, 886.0] | 0 |
+| 解压段墙钟（s） | 10 | 250.8 | 27.4 | [168.7, 332.9] | 0 |
+
+**批次级 3σ 验收：PASS**（10/10 通过；零离群；最差 r = 1.000000）。
+
+逐 run 明细（解压/量化秒、CPU 利用率 = (user+sys)/wall）：
+
+| run | 解压 s | 量化 s | CPU 利用率 |
+|---|---|---|---|
+| SRR15243898 | 250 | 677 | （首跑，未启用 CPU 列） |
+| SRR1552100 | 302 | 684 | 79.4% |
+| SRR1552203 | 255 | 645 | 81.9% |
+| SRR1552215 | 267 | 614 | 89.2% |
+| SRR1552217 | 228 | 534 | 102.6% |
+| SRR1552218 | 234 | 661 | 82.0% |
+| SRR17715775 | 204 | 613 | 96.1% |
+| SRR17715776 | 275 | 526 | 115.8% |
+| SRR17715777 | 236 | 685 | 88.4% |
+| SRR17715778 | 257 | 390 | 155.9% |
+
+*首例同参数对照（SRR1460477，16.7M 映射 reads）同为 r = 1.000000、
+NumReads 逐条相同。*
+
+### 5.3 部署验证与数据守卫
+
+- 深库双端样本（SRA 3.68 GB → 2×9.07 GB FASTQ）全流程贯通，输出 quant.sf
+  与参考格式逐项一致（行数/ID/表头）。
+- **截断守卫**：行数非 4 倍数的截断 FASTQ 被结构化错误拒算（零静默产出）。
+  这在实际项目中并非理论问题——一次中断的传输恰好产生此类文件，而它曾导致
+  既有管线对同一 run 反复失败。
+- **非 mRNA 文库自动暴露**：14 个样本两套实现独立测得 0–0.0019% 映射率，
+  确认属小 RNA 类文库（应走 miRNA 专线），已标注 `excluded: non-mRNA
+  library`。两类独立实现对同一数据给出同样的"近零映射"信号，本身就是交叉
+  验证价值的直接体现。
+
+### 5.4 深库补算批次（26 样本、约 5.2 亿 reads、一次真实重启）
+
+2026-09-14 至 09-15，我们用与 §5.2 完全相同的管线与参数（同版本 salmon
+2.7.0、同索引、`-l A -p 8 --validateMappings --seqBias --gcBias`、8 线程钉定
+8–15 核），对同项目研究中既有管线**尚未计算的 26 个配对样本**完成补算。这批
+样本没有既有输出可比——它们正是等待计算的部分——因此验收标准为三条：
+①输出行数与转录本 ID 集完整（33,955/33,955）；②管线本身已在 §5.2 于可对照
+样本上取得 r = 1.000000 的逐位复现；③全程结构化日志留痕（逐 run 的
+quantify.json / 日志 / CPU 计量）。
+
+**批次级结果**：26/26 通过，每个 quant.sf 恰好 33,955 行；合计解压 8,891 s、
+量化 6,551 s（≈4.3 小时纯计算，不含 NAS 拉取）；量化段 CPU 利用率中位
+681%（8 线程近满载）。逐 run 明细（reads 为 NumReads 合计，util 为
+(user+sys)/wall）：
+
+| run | reads (M) | 表达转录本 | 解压 s | 量化 s | util |
+|---|---|---|---|---|---|
+| SRR19049440 | 18.11 | 23,779 | 1,023 | 154 | 432.5% |
+| SRR19049441 | 16.87 | 23,722 | 1,111 | 806 | 95.8% |
+| SRR19049443 | 17.60 | 23,713 | 1,062 | 1,063 | 69.4% |
+| SRR19049444 | 18.49 | 22,954 | 1,026 | 935 | 68.3% |
+| SRR19049445 | 17.77 | 23,461 | 133 | 72 | 659.2% |
+| SRR22699505 | 22.23 | 24,820 | 193 | 83 | 681.3% |
+| SRR22699506 | 24.31 | 24,715 | 219 | 94 | 679.7% |
+| SRR22699507 | 21.78 | 24,563 | 188 | 84 | 684.8% |
+| SRR22699508 | 26.53 | 24,535 | 226 | 98 | 677.8% |
+| SRR22699509 | 22.46 | 26,730 | 198 | 97 | 694.3% |
+| SRR22699510 | 20.50 | 26,558 | 192 | 88 | 690.5% |
+| SRR22699511 | 23.30 | 26,338 | 219 | 97 | 691.2% |
+| SRR22699512 | 21.03 | 26,380 | 197 | 90 | 693.2% |
+| SRR22699513 | 21.53 | 23,946 | 185 | 80 | 687.4% |
+| SRR22699514 | 21.90 | 24,385 | 199 | 81 | 685.8% |
+| SRR22699515 | 20.49 | 26,385 | 185 | 82 | 691.0% |
+| SRR22699516 | 17.97 | 25,887 | 164 | 71 | 690.6% |
+| SRR24322339 | 12.22 | 20,693 | 299 | 435 | 213.1% |
+| SRR24322340 | 22.04 | 22,907 | 265 | 345 | 240.6% |
+| SRR24322342 | 10.83 | 19,834 | 285 | 373 | 232.3% |
+| SRR24322343 | 29.45 | 24,392 | 280 | 376 | 223.7% |
+| SRR24322344 | 28.70 | 23,877 | 277 | 378 | 224.4% |
+| SRR24322345 | 27.80 | 24,160 | 269 | 354 | 226.9% |
+| SRR24322347† | 0.02 | 4,257 | 162 | 64 | 690.9% |
+| SRR24322352 | 17.80 | 24,891 | 165 | 76 | 693.8% |
+| SRR24322353 | 17.81 | 24,314 | 169 | 75 | 684.9% |
+
+*† 近空文库边界样本，见下文观察 2。*
+
+**观察 1：CPU·秒比墙钟稳定——这正是逐 run 记录 CPU 计量的原因。** 同一组
+深库样本（SRR1904944x，reads 16.9–18.5 M）在三种负载状态下完成计算：与主线
+分析负载并发时（util 68–96%），量化墙钟 806–1,063 s；重启后近独占钉定核时
+（util 659–694%），同类样本墙钟仅 72–154 s；中间态（SRR243 组，util 约
+213–241%）介于两者之间。但折算 CPU 时间（user+sys）后，同规模样本收敛在
+约 475–772 CPU·s，而墙钟散布达 15 倍（72–1,063 s）。结论与 §5.5 的诚实边界
+一致：**在这套机械硬盘 + 共享工作站的部署环境里，墙钟描述的是 I/O 与并发
+环境，CPU·秒刻画的才是计算本身**。任何跨负载状态的墙钟对比都应先看 util 列。
+
+**观察 2：空库边界再次被自动暴露。** SRR24322347 仅 16,927 条 reads、
+4,257 个表达转录本（索引的 12.5%）——一个近乎空转的文库。与 §5.3 的非
+mRNA 案例一样，它没有被静默混入任何均值，而是作为独立行留在台账中供下游
+研究者自行判断；其 64 s 的量化耗时与 reads 规模成比例，处理本身正常。
+
+**真实重启下的自动续跑。** 批次按计划跨越了主机的每日 06:50 计划重启：
+06:50:30 重启，06:50:50（开机 20 秒后）用户级 systemd oneshot 单元自动触发
+续跑——已完成样本按产物存在性跳过（4 个），残余 22 个按序继续，09:24:18
+批次完成，全程零人工干预。续跑入口在启动前清理两类中断残渣：tmp 中的半解压
+FASTQ，以及"存在 quant.sf 但 CSV 无终局行"的部分写出（防止残缺产物被误判为
+已完成而跳过）。每个样本目录附 README（new_computation 标注：来源检索号、
+quantifier 与参数、校验记录）；批次台账（含逐 run CPU 型号 / 钉定核 / 线程 /
+利用率）见 bench/tier26-benchmark.csv。
+
+### 5.5 诚实边界（我们不宣称什么）
+
+1. **不宣称"打败 salmon/fasterq-dump 本体"**——SDK 编排的就是同一引擎；
+   同参数下我们追求的是逐位复现（已达成），不是超车。
+2. 本组墙钟时间受**机械硬盘吞吐约束**（基准 I/O 卷为 500GB 7200rpm HDD），
+   表征部署环境，不构成引擎加速声明。
+3. 零映射样本保留为边界用例；其上的 TPM 比较是噪声对噪声，任何实现都会
+   "失败"，不作为评分依据。
+4. 跨机器、跨缓存状态（warm/cold）、跨代码版本（每份报告内嵌 git sha）的
+   数字永不混排。
+5. §5.4 的补算样本没有既有输出可比（这正是补算的原因）；其正确性依据是
+   管线在可对照样本上的逐位复现与完整 ID 集校验，而非逐 run 相关系数。
+   该批次的墙钟同样受并发负载与机械硬盘 I/O 影响，仅供部署规划参考。
+
+## 6. 复现
+
+SDK 与全部基准工具开源：
+
+```bash
+# 三端基线（任一支持平台）
+linxira-bio benchmark run sequence.stats.v1 \
+  fasta=tests/fixtures/sequences/tiny.fa \
+  --backends rust,python,r --repeat 5 --dataset-class sequence
+
+# 真实样本：SRA → quant.sf（公开 CLI，两段计时见 --json 信封）
+export LINXIRA_BIO_SALMON=/path/to/salmon
+fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
+linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
+  tmp/run-fq/SRR1460477_2.fastq --index <salmon_idx> --threads 8 \
+  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
+
+# 批量对照与 3σ 汇总（scripts/tier23-bench.sh + tier23-summarize.py）
+
+# 批量补算：断点续跑（已完成样本按产物自动跳过）、逐 run CPU 计量入 CSV 台账
+scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
+  --sra-dir <inbox> --reference-dir <ref_quant> --output-dir <results> \
+  --tmp-dir <tmp> --csv <ledger.csv> --pin "taskset -c 8-15 nice -n 10" \
+  --cores 8 --threads 8 --pull-source <nas>:<tier23> --scp-identity <key> \
+  --fasterq <fasterq-dump> --runs <RUN...>
+```
+
+原始报告（每 run 的 JSON 信封、逐条 CPU 计量、3σ 统计对象）见仓库
+`benchmark-results/2026-09-13|14/`。
+
+## 7. 结语
+
+"本地优先"的生信工具包要回答的第一个问题不是"多快"，而是"**你算的对不对、
+别人能不能信**"。这一轮实测给出的答案是：同算法三语言互证一致；同参数对
+既有管线逐位复现；数据异常会被大声拒绝而不是悄悄出数；4.3 小时的补算批次
+在计划内重启后 20 秒自动接续、零人工干预跑完。速度数字（解释器对比
+7.5–8.25×）是我们顺带拿到的东西，而可验证性才是产品本身。
+
+---
+
+*Linxira-OS · AGPL-3.0-or-later（代码）· 本文 CC-BY-4.0 ·
+<https://github.com/Linxira-OS/linxira-bio-sdk>*

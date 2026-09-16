@@ -1,6 +1,7 @@
 ---
 import Navbar from "../../components/Navbar.astro";
-import { blogPosts } from "../../data/blog";
+import { getAllPosts } from "../../data/allPosts";
+const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">

@@ -21,11 +21,13 @@
 
 ## 新增博客文章（最常见的贡献）
 
-1. 在 `src/data/blog.ts` 顶部追加一条（`slug`、`date`、`tag`、`zh {title, desc}`、`en {title, desc}`）。
-2. 新建 `src/pages/zh/blog/<slug>/index.astro`。
-3. 新建 `src/pages/en/blog/<slug>/index.astro`。
-4. 照抄现有文章的结构与 `<style>` 块；代码块内的 `<`/`>` 写成 `&lt;`/`&gt;`；正文避免裸 `{ }`。
-5. `npx astro build`，确认 `dist/zh/blog/<slug>/index.html` 与 `dist/en/blog/<slug>/index.html` 都已生成。
+只需 Markdown，不用写 HTML 页面：
+
+1. 新建 `src/content/blog/<slug>.zh.md`，frontmatter 含 `title / date / tag（announcement|technical）/ lang: zh / desc`，正文中文。
+2. 新建 `src/content/blog/<slug>.en.md`，同样 frontmatter、`lang: en`、正文英文。
+3. `npx astro build`，确认 `dist/zh/blog/<slug>/index.html` 与 `dist/en/blog/<slug>/index.html` 都已生成。
+
+路由（`/zh/blog/<slug>/`、`/en/blog/<slug>/`）、博客列表与首页「最新动态」全部自动生成。中英缺一不可——缺的语言会在另一个语言的列表里出现死链。
 
 ## 修改产品子站
 

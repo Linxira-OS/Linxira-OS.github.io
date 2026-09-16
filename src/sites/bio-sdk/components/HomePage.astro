@@ -5,7 +5,7 @@ const { zh, lang } = Astro.props;
     <div class="page active" id="page-home">
       <div class="hero animate-in">
         <h1>Linxira Bio SDK</h1>
-        <p class="hero-subtitle">{zh ? "本地优先、开箱即用的生物信息学分析平台。支持 50+ 种分析能力，覆盖序列、结构、表达、变异、比较基因组等全流程。" : "A local-first, ready-to-use bioinformatics analysis platform. 50+ capabilities covering sequences, structures, expression, variants, and comparative genomics."}</p>
+        <p class="hero-subtitle">{zh ? "本地优先的生物信息学分析引擎：数据不出你的机器。Rust 确定性内核 + Python/R 三端交叉验证，50+ 种分析能力开箱即用——结果可复现、可审计、可 3σ 验收。" : "A local-first bioinformatics engine: your data never leaves your machine. A deterministic Rust core with three-way Python/R cross-validation and 50+ ready-to-use capabilities — reproducible, auditable, 3σ-verified."}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -19,6 +19,36 @@ const { zh, lang } = Astro.props;
             <span>{zh ? "查看示例结果 →" : "View Demo Results →"}</span>
           </button>
         </div>
+
+        <div class="trust-grid">
+          <div class="trust-card">
+            <div class="trust-icon">🔒</div>
+            <div class="trust-name">{zh ? "本地优先" : "Local-first"}</div>
+            <div class="trust-desc">{zh ? "数据不出你的机器，无上传、无云端依赖" : "Your data never leaves your machine — no uploads, no cloud"}</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">🧬</div>
+            <div class="trust-name">{zh ? "三端交叉验证" : "Three-way cross-validation"}</div>
+            <div class="trust-desc">{zh ? "Rust / Python / R 独立实现互证，1e-6 容差内一致" : "Rust / Python / R implementations corroborate within 1e-6"}</div>
+          </div>
+          <div class="trust-card">
+            <div class="trust-icon">📐</div>
+            <div class="trust-name">{zh ? "逐位复现" : "Bit-level reproduction"}</div>
+            <div class="trust-desc">{zh ? "对既有管线 TPM r = 1.000000，异常数据大声拒绝" : "TPM r = 1.000000 vs the reference pipeline; bad data is rejected loudly"}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benchmark highlight strip -->
+      <div class="bench-strip animate-in">
+        <div class="bench-title">{zh ? "可复现性基准报告" : "Reproducibility benchmark"}</div>
+        <div class="bench-stats">
+          <div class="bench-stat"><span class="bench-num">7.5–8.25×</span><span class="bench-cap">{zh ? "对 Python 实现" : "vs Python"}</span></div>
+          <div class="bench-stat"><span class="bench-num">r = 1.000000</span><span class="bench-cap">{zh ? "对既有管线 TPM" : "TPM vs reference pipeline"}</span></div>
+          <div class="bench-stat"><span class="bench-num">36/36</span><span class="bench-cap">{zh ? "批量样本零离群" : "batch samples, zero outliers"}</span></div>
+          <div class="bench-stat"><span class="bench-num">0</span><span class="bench-cap">{zh ? "静默产出（守卫拒绝）" : "silent outputs (guards reject)"}</span></div>
+        </div>
+        <a class="bench-link" href={zh ? "/zh/blog/bio-sdk-reproducibility-benchmark/" : "/en/blog/bio-sdk-reproducibility-benchmark/"}>{zh ? "阅读完整基准报告 →" : "Read the full benchmark report →"}</a>
       </div>
 
       <!-- Quick Start Steps -->
@@ -516,3 +546,19 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
         </a>
       </div>
     </div>
+<style>
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
+    .trust-card { background: rgba(30,41,59,0.6); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 0.9rem 1rem; }
+    .trust-icon { font-size: 1.1rem; margin-bottom: 0.4rem; }
+    .trust-name { font-weight: 600; color: var(--text); font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .trust-desc { color: var(--text-dim); font-size: 0.75rem; line-height: 1.45; }
+    .bench-strip { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; background: linear-gradient(135deg, rgba(32,184,176,0.12), rgba(139,92,246,0.10)); border: 1px solid rgba(32,184,176,0.35); border-radius: 14px; padding: 1rem 1.25rem; margin: 1.25rem 0 1.5rem; }
+    .bench-title { font-weight: 700; color: var(--text); font-size: 0.9rem; }
+    .bench-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; flex: 1; }
+    .bench-stat { display: flex; flex-direction: column; }
+    .bench-num { font-weight: 700; color: var(--brand-teal); font-size: 1rem; }
+    .bench-cap { color: var(--text-dim); font-size: 0.7rem; }
+    .bench-link { color: #20B8B0; font-size: 0.8125rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .bench-link:hover { text-decoration: underline; }
+    @media (max-width: 720px) { .trust-grid { grid-template-columns: 1fr; } }
+  </style>

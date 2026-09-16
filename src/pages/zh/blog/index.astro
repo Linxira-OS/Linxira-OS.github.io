@@ -1,6 +1,7 @@
 ---
 import PageLayout from "../../../components/PageLayout.astro";
-import { blogPosts } from "../../../data/blog";
+import { getAllPosts } from "../../../data/allPosts";
+const blogPosts = await getAllPosts();
 ---
 <PageLayout lang="zh" active="blog" title="博客 — Linxira OS">
     <h1>博客</h1>

@@ -21,11 +21,13 @@ This repository is the **single website for the whole Linxira organization**: th
 
 ## Adding a blog post (the most common contribution)
 
-1. Prepend an entry to `src/data/blog.ts` (`slug`, `date`, `tag`, `zh {title, desc}`, `en {title, desc}`).
-2. Create `src/pages/zh/blog/<slug>/index.astro`.
-3. Create `src/pages/en/blog/<slug>/index.astro`.
-4. Copy the structure and `<style>` block of an existing post; escape `<`/`>` inside code blocks as `&lt;`/`&gt;`; avoid bare `{ }` in prose.
-5. `npx astro build`, then check both `dist/zh/blog/<slug>/index.html` and `dist/en/blog/<slug>/index.html` exist.
+Markdown only — no HTML pages needed:
+
+1. Create `src/content/blog/<slug>.zh.md` with frontmatter `title / date / tag (announcement|technical) / lang: zh / desc`, body in Chinese.
+2. Create `src/content/blog/<slug>.en.md` with the same frontmatter shape, `lang: en`, body in English.
+3. `npx astro build`, then check `dist/zh/blog/<slug>/index.html` and `dist/en/blog/<slug>/index.html` exist.
+
+Routes (`/zh/blog/<slug>/`, `/en/blog/<slug>/`), the blog list and the homepage "latest" feed are generated automatically. Both languages are mandatory — a missing one becomes a dead link in the other language's list.
 
 ## Working on a product sub-site
 

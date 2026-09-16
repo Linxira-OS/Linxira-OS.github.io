@@ -1,7 +1,7 @@
-// 博客文章唯一数据源。
-// 首页「最新动态」与博客列表页共同消费这份数据；
-// 新增文章只需在此追加一条记录（slug 对应 src/pages/{zh,en}/blog/<slug>/）。
-// 顺序即展示顺序：最新的在前，旧文沉底。
+// 旧文注册表（2026-09 之前的手写文章）。
+// 新文章不再登记于此：直接在 src/content/blog/ 放 <slug>.zh.md 与 <slug>.en.md，
+// 由 content collection 渲染；列表由 src/data/allPosts.ts 合并输出（最新在前）。
+// 首页「最新动态」与博客列表页共同消费 allPosts()。
 
 export type BlogTag = "announcement" | "technical";
 
@@ -14,19 +14,6 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
-  {
-    slug: "bio-sdk-reproducibility-benchmark",
-    date: "2026-09-14",
-    tag: "technical",
-    zh: {
-      title: "当 Rust 遇上转录组定量：一个本地优先生信 SDK 的可复现性实测报告",
-      desc: "Linxira Bio SDK 基准报告：Rust/Python/R 三后端一致性、10 样本对既有 salmon 管线逐位复现（TPM r = 1.000000，NumReads 相对差 0），全部数据来源与环境公开。",
-    },
-    en: {
-      title: "When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK",
-      desc: "Linxira Bio SDK benchmark: Rust/Python/R three-backend consistency and bit-level reproduction of an existing salmon pipeline on 10 samples (TPM r = 1.000000, NumReads diff 0), with all data sources and environments disclosed.",
-    },
-  },
   {
     slug: "direct-arch-transition",
     date: "2026-08-15",
