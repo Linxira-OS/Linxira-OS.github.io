@@ -186,7 +186,9 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 		.cta.ghost:hover { border-color: var(--teal); color: var(--teal); }
 
 		section.block { padding: 5.5rem 0; border-bottom: 1px solid var(--line); }
-		.section-head { display: grid; grid-template-columns: 5rem 1fr; gap: 1.5rem; margin-bottom: 3.2rem; align-items: baseline; }
+		.section-head { display: grid; grid-template-columns: 5rem 1fr; column-gap: 1.5rem; row-gap: 0; margin-bottom: 3.2rem; align-items: baseline; }
+		/* 裸写法（<h2> + .sub 直接作子元素，无 .num）也必须落在内容列，防止大标题挤进 5rem 编号列逐字竖排 */
+		.section-head > :not(.num) { grid-column: 2; }
 		.section-head .num { color: var(--coral); font-weight: 800; font-size: .95rem; letter-spacing: .1em; }
 		.section-head h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); font-weight: 700; letter-spacing: -.02em; }
 		.section-head .sub { color: var(--faint); font-size: .92rem; margin-top: .4rem; max-width: 60ch; }
