@@ -13,6 +13,7 @@ desc: "Linxira Bio SDK benchmark: Rust/Python/R three-backend consistency, bit-l
 > Repository: <https://github.com/Linxira-OS/linxira-bio-sdk>
 >
 > Product page: [Linxira Bio SDK](/bio-sdk/)
+> **Self-assessment**: this is an author-reported reproduction report, not independently verified by a third party. Self-assessed against the REFORMS checklist (a 32-item reporting standard for ML-based science, Science Advances 2024): **23 items met, 9 not applicable by study design (no ML modeling task here, so items on model selection, loss functions, data leakage, and statistical tests are naturally waived), 0 unmet**. Third-party replication is planned as follow-up work.
 
 ## Abstract
 
