@@ -13,6 +13,7 @@ desc: "Linxira Bio SDK 基准报告：Rust/Python/R 三后端一致性、10 样�
 > 仓库：<https://github.com/Linxira-OS/linxira-bio-sdk>
 >
 > 产品页：[Linxira Bio SDK](/bio-sdk/)
+> **自述声明**：当前为作者自述复现报告，未经第三方独立验证。按 REFORMS 清单（ML 研究可复现性报告标准，32 项，Science Advances 2024）自评：**23 项达标、9 项因研究性质不适用（本研究不含 ML 建模任务，涉及模型选型/损失函数/数据泄漏/统计检验的条目自然豁免）、0 项未达标**。第三方交叉复现为后续计划。
 
 ## 摘要
 
