@@ -302,7 +302,7 @@ The first question a "local-first" bioinformatics toolkit must answer is not "ho
 
 ## Appendix: the developer's note (2026-09-18)
 
-To be honest: this batch of numbers reads somewhat "abstract". r = 1.000000, SHA256-identical files — they do not say "our tool is more accurate" or "faster". They state something plainer: the same deterministic ruler, given aligned parameters and identical input, must yield the same string of bytes on two independent runs — we achieved that, and we can see it immediately whenever the ruler is handled wrong (control group r = 0.981). The factual data is what it is, and we publish it exactly as measured. If readers take one thing away from this report, we would like it to be: **the orchestration layer can be strictly verified, anomalies are rejected loudly, and every boundary is written down** — not any single pretty number among them.
+Honestly, even I find this batch of numbers abstract. r = 1.000000, identical SHA256s — it may not land with anyone at first hearing. But the point is plain: same tool, same parameters, same data — run it again and you should get the exact same result. We did; and the moment one parameter is wrong, it shows immediately (the control group dropped to r = 0.981). The data is what it is, and we publish it as measured. More than hoping people remember any particular number, what I want to make plain is this: results here can be strictly verified, errors are reported loudly instead of quietly producing numbers, and every boundary is laid out in the open.
 
 ## Version & Declarations
 
