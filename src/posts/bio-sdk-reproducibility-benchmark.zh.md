@@ -8,7 +8,7 @@ desc: "Linxira Bio SDK 基准报告：Rust/Python/R 三后端一致性、10 样�
 
 # 当 Rust 遇上转录组定量：一个本地优先生信 SDK 的可复现性实测报告
 
-> **Linxira Bio SDK 基准报告 · 2026-09-14**（2026-09-15 增补 §5.4：26 样本深库补算批次）
+> **Linxira Bio SDK 基准报告 · 2026-09-14**（2026-09-15 增补 §5.4：26 样本深库补算批次；2026-09-18 增补 §5.6：r=1.000000 的推导与对照实验）
 > 作者：Linxira-OS 项目维护者 · 许可证：AGPL-3.0-or-later（代码）/ CC-BY-4.0（本文）
 > 仓库：<https://github.com/Linxira-OS/linxira-bio-sdk>
 >
@@ -261,6 +261,42 @@ quantifier 与参数、校验记录）；批次台账（含逐 run CPU 型号 / 
 5. §5.4 的补算样本没有既有输出可比（这正是补算的原因）；其正确性依据是
    管线在可对照样本上的逐位复现与完整 ID 集校验，而非逐 run 相关系数。
    该批次的墙钟同样受并发负载与机械硬盘 I/O 影响，仅供部署规划参考。
+
+### 5.6 r=1.000000 是怎么来的（推导与对照实验）
+
+> 本节为 2026-09-18 现场重算后的补充说明：原报告数据经复算全部成立，
+> 数值未作任何更改；此处只补充推导过程与对照实验。
+
+**一、这个数怎么算出来的。** 对同一 run（如 SRR1460477，16.7M mapped
+reads），由 SDK 编排 salmon 2.7.0（bioconda 官方构建）与参考管线各自产出
+quant.sf：同版本二进制、同 Pinku1 索引、同参数
+（`-l A -p 8 --validateMappings --seqBias --gcBias`）、同输入 FASTQ。
+salmon 在上述条件完全一致时是确定性的：逐转录本 TPM 与 NumReads 逐条相等，
+对全部 33,955 个转录本对做 Pearson 相关，r = 1.000000（σ=0）。它度量的是
+**编排层等价性**，不是新的生物学结论。
+
+**二、对照实验：为什么 1.000000 不是理所当然。** 2026-09-18 现场重算的
+对照组——同一 run 去掉 `--seqBias --gcBias` 两个参数：
+
+- TPM Pearson r = **0.980896**（非 1）
+- max |ΔTPM| = 1.27e+04
+- NumReads 逐条相同仅 25,422 / 33,955（75%）
+
+参数错一个，r 立刻从 1.000000 掉到 0.981。带齐参数重跑则严格回到
+r = 1.000000000、max |ΔTPM| = 0、NumReads 33,955/33,955 逐条相同
+（今日实测）。这说明报告的 1.000000 是参数严格对齐下**挣来的**，对照实验
+也证明了该比较方式的灵敏度。
+
+**三、复现命令。**
+
+```bash
+scp -r <NAS>:/mnt/disk1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
+gzip SRR1460477_1.fastq SRR1460477_2.fastq
+linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
+  --index <pinku1_cds_idx> --threads 8 --seq-bias --gc-bias --output quant.sf
+```
+
+（对比对象：参考管线同 run 的 quant.sf；salmon 需 ≥2.7.0，旧版拒绝 v2 索引。）
 
 ## 6. 复现
 

@@ -8,7 +8,7 @@ desc: "Linxira Bio SDK benchmark: Rust/Python/R three-backend consistency, bit-l
 
 # When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK
 
-> **Linxira Bio SDK benchmark report · 2026-09-14** (§5.4 added 2026-09-15: a 26-sample deep-library backfill batch)
+> **Linxira Bio SDK benchmark report · 2026-09-14** (§5.4 added 2026-09-15: a 26-sample deep-library backfill batch; §5.6 added 2026-09-18: where r = 1.000000 comes from — derivation and a control experiment)
 > Author: Linxira-OS project maintainer · License: AGPL-3.0-or-later (code) / CC-BY-4.0 (this article)
 > Repository: <https://github.com/Linxira-OS/linxira-bio-sdk>
 >
@@ -201,6 +201,31 @@ From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.
 3. Zero-mapping samples are retained as edge cases; TPM comparisons on them are noise against noise, any implementation would "fail", and they are not used for scoring.
 4. Numbers across machines, cache states (warm/cold), or code versions (each report embeds its git sha) are never mixed.
 5. The backfilled samples in §5.4 have no existing output to compare against (which is why they needed backfilling); their correctness rests on the pipeline's bit-level reproduction on comparable samples and on complete ID-set verification, not per-run correlation coefficients. The batch's wall times are likewise affected by concurrent load and mechanical-disk I/O and are for deployment planning only.
+
+### 5.6 Where r = 1.000000 comes from (derivation and a control experiment)
+
+> This section is a supplementary note added after an on-site recomputation on 2026-09-18: every figure in the original report was confirmed on recalculation, with no values changed; this section only documents the derivation and a control experiment.
+
+**1. How this number is computed.** For a given run (e.g. SRR1460477, 16.7M mapped reads), the SDK-orchestrated salmon 2.7.0 (official bioconda build) and the reference pipeline each produce a quant.sf: same binary version, same Pinku1 index, same parameters (`-l A -p 8 --validateMappings --seqBias --gcBias`), same input FASTQ. Under exactly these conditions salmon is deterministic: per-transcript TPM and NumReads match line by line, and a Pearson correlation over all 33,955 transcript pairs gives r = 1.000000 (σ=0). What it measures is **orchestration-layer equivalence**, not a new biological result.
+
+**2. The control experiment: why 1.000000 is not automatic.** The control group recomputed on 2026-09-18 — same run with the two parameters `--seqBias --gcBias` removed:
+
+- TPM Pearson r = **0.980896** (not 1)
+- max |ΔTPM| = 1.27e+04
+- NumReads identical per transcript for only 25,422 / 33,955 (75%)
+
+One wrong parameter and r instantly drops from 1.000000 to 0.981. Re-running with the full parameter set returns exactly to r = 1.000000000, max |ΔTPM| = 0, NumReads identical 33,955/33,955 (measured today). This shows the reported 1.000000 is **earned** through strict parameter alignment, and the control also demonstrates the sensitivity of this comparison method.
+
+**3. Reproduction commands.**
+
+```bash
+scp -r <NAS>:/mnt/disk1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
+gzip SRR1460477_1.fastq SRR1460477_2.fastq
+linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
+  --index <pinku1_cds_idx> --threads 8 --seq-bias --gc-bias --output quant.sf
+```
+
+(The comparison target is the reference pipeline's quant.sf for the same run; salmon must be ≥ 2.7.0 — older versions reject v2 indexes.)
 
 ## 6. Reproduction
 
