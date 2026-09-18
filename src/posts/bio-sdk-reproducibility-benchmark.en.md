@@ -8,7 +8,7 @@ desc: "Linxira Bio SDK benchmark: Rust/Python/R three-backend consistency, bit-l
 
 # When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK
 
-> **Linxira Bio SDK benchmark report · 2026-09-14** (§5.4 added 2026-09-15: a 26-sample deep-library backfill batch; §5.6 added 2026-09-18: where r = 1.000000 comes from — derivation and a control experiment)
+> **Linxira Bio SDK benchmark report · 2026-09-14** (§5.4 added 2026-09-15: a 26-sample deep-library backfill batch; §5.6 added 2026-09-18: where r = 1.000000 comes from — derivation and a control experiment; §5.7 appended 2026-09-18: byte-level evidence, determinism boundaries, follow-up validation data)
 > Author: Linxira-OS project maintainer · License: AGPL-3.0-or-later (code) / CC-BY-4.0 (this article)
 > Repository: <https://github.com/Linxira-OS/linxira-bio-sdk>
 >
@@ -227,6 +227,19 @@ linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
 
 (The comparison target is the reference pipeline's quant.sf for the same run; salmon must be ≥ 2.7.0 — older versions reject v2 indexes.)
 
+### 5.7 Addendum (2026-09-18): byte-level evidence, determinism boundaries, follow-up validation data
+
+**1. Byte-level evidence for r = 1.** On-site re-verification of SRR1460477 on 2026-09-18: the SDK-orchestrated output and the reference pipeline's retained quant.sf are SHA256-identical (both `9b6a4cca0461e8d4117c88dc996f23f83a1730e6352936f82714377e691536af`, 1,503,599 bytes, bit for bit). r = 1.000000 is no statistical coincidence — the two files are the same string of bytes, produced independently by different orchestration paths on different dates.
+
+**2. Determinism boundaries: when r = 1 holds, and when it necessarily cannot.** r = 1.000000 holds only for "the same deterministic tool + same parameters + same input, re-run"; in that setting r < 1 would itself be an anomaly signal. Any comparison across implementations, parameters, or version factors necessarily gives r < 1 — this report's control group (dropping `--seqBias --gcBias`) measured r = 0.980896 with NumReads identical for only 75% of transcripts. Readers should not read this report's r = 1 as an accuracy claim; it asserts orchestration-layer equivalence only.
+
+**3. Follow-up validation (2026-09-17/18, same idle host).**
+
+1. **Full three-backend sweep**: all 6 capabilities covered by the python/r benchmark packs (sequence.stats / fastq.qc / enrichment.OR / expression.pca / set.venn / structure.pdb.summary) × rust,python,r × 3 repeats = **54/54 passed**; fixture-level median latency rust 2 ms / python 271–284 ms / r 468–2,623 ms. The remaining capabilities are rust-native by design.
+2. **Real-data anchors**: fastq.qc on a 1.2GB FASTQ — rust 21.9 s vs python 316.6 s (**14.5×**); PCA of the 33,955×172 expression matrix — rust and an independent numpy SVD agree on the top five principal-component ratios to four decimal places (PC1 22.36%).
+3. **A content-integrity lesson**: download acceptance based on byte size alone lets "size-correct, content-corrupt" files through (12 of the 18 files in this batch were gzip-corrupted, caused by interrupted splicing from multiple concurrent downloader instances). A post-download `gzip -t` content-acceptance gate has been added; the 12 affected files were deleted and re-downloaded. The lesson that multi-instance download concurrency and content acceptance do not mix has been recorded in the ops log.
+4. **A known, ticketed interface defect**: when calling WGCNA directly via the CLI, the rust glue layer pre-creates the output directory, which is mutually exclusive with the R driver's "output directory must not exist" check, so this path always fails (CI has no R, hence it went unexposed); the current workaround is to call the R driver directly, with the fix scheduled on the development track.
+
 ## 6. Reproduction
 
 The SDK and all benchmark tooling are open source:
@@ -260,6 +273,10 @@ The raw reports (per-run JSON envelopes, per-line CPU accounting, 3σ statistics
 ## 7. Closing
 
 The first question a "local-first" bioinformatics toolkit must answer is not "how fast" but "**is the result correct, and can others trust it**". This round answers: three languages corroborate the same algorithm; the existing pipeline is reproduced bit for bit under identical parameters; data anomalies are rejected loudly instead of quietly producing numbers; and a 4.3-hour backfill batch auto-resumed 20 seconds after a scheduled reboot and ran to completion with zero manual intervention. The speed figures (7.5–8.25× versus interpreters) came along for free — verifiability is the product.
+
+## Appendix: the developer's note (2026-09-18)
+
+To be honest: this batch of numbers reads somewhat "abstract". r = 1.000000, SHA256-identical files — they do not say "our tool is more accurate" or "faster". They state something plainer: the same deterministic ruler, given aligned parameters and identical input, must yield the same string of bytes on two independent runs — we achieved that, and we can see it immediately whenever the ruler is handled wrong (control group r = 0.981). The factual data is what it is, and we publish it exactly as measured. If readers take one thing away from this report, we would like it to be: **the orchestration layer can be strictly verified, anomalies are rejected loudly, and every boundary is written down** — not any single pretty number among them.
 
 ---
 
