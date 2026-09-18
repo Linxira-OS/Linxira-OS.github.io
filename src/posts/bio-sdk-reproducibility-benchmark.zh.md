@@ -8,26 +8,22 @@ desc: "Linxira Bio SDK 基准报告：Rust/Python/R 三后端一致性、10 样�
 
 # 当 Rust 遇上转录组定量：一个本地优先生信 SDK 的可复现性实测报告
 
-> **Linxira Bio SDK 基准报告 · 2026-09-14**（2026-09-15 增补 §5.4：26 样本深库补算批次；2026-09-18 增补 §5.6：r=1.000000 的推导与对照实验；2026-09-18 追加 §5.7：字节级证据、确定性边界、后续验证数据）
-> 作者：Linxira-OS 项目维护者 · 许可证：AGPL-3.0-or-later（代码）/ CC-BY-4.0（本文）
-> 仓库：<https://github.com/Linxira-OS/linxira-bio-sdk>
->
-> 产品页：[Linxira Bio SDK](/bio-sdk/)
-> **自述声明**：当前为作者自述复现报告，未经第三方独立验证。按 REFORMS 清单（ML 研究可复现性报告标准，32 项，Science Advances 2024）自评：**23 项达标、9 项因研究性质不适用（本研究不含 ML 建模任务，涉及模型选型/损失函数/数据泄漏/统计检验的条目自然豁免）、0 项未达标**。第三方交叉复现为后续计划。
+> Linxira Bio SDK 基准报告 · 2026-09-14。面向科研工作站的本地优先生信工具包实测：环境、数据与复现命令全部公开。版本变动与声明见文末「版本与声明」。
 
-## 摘要
+## TL;DR
 
-我们对本地优先（local-first）的生信执行工具包 Linxira Bio SDK 做了两类实测：
-(1) **三后端一致性**——同一算法的 Rust / Python / R 三套独立实现，在相同输入上
-是否给出相同结果；(2) **参考管线精确复现**——SDK 编排上游 salmon 2.7.0，在
-真实公共 RNA-seq 数据上，能否逐转录本复现已有定量管线的输出。结论：三后端在
-1e-6 容差内逐字段一致（多项逐位一致）；在 10 个正常覆盖的配对样本上，
-**TPM Pearson r = 1.000000（σ = 0）、每条转录本的 NumReads 与参考管线完全
-相同（相对差 = 0）**，且全部指标通过 3σ 检验（零离群）。在此基础上，我们用
-同一条已验证管线为既有管线尚未计算的 26 个样本完成补算（约 5.2 亿 reads，
-全部输出完整 33,955 转录本 ID 集），批次历经一次真实的计划内重启并在开机
-20 秒后自动续跑、零人工干预跑完。本报告公开全部数据来源（公共 SRA 检索号）、
-软硬件环境、方法学与复现命令。
+- **三后端一致**：同一算法的 Rust / Python / R 三套独立实现在 1e-6 容差内逐字段一致（多项逐位一致）；fixture 级中位延迟 rust 2 ms、python 271–284 ms、r 468–2,623 ms（§5.1、§6.3）。
+- **逐位复现既有管线**：10 个正常覆盖样本上 TPM Pearson r = 1.000000（σ = 0）、NumReads 相对差 0，零 3σ 离群（§5.2）；字节级 SHA256 同一性证据见 §6.2。
+- **r=1 是"挣来的"**：去掉 `--seqBias --gcBias` 的对照组实测 r = 0.980896——参数严格对齐才成立，推导与对照见 §6.1，确定性边界见 §5.5。
+- **26 样本补算批次**（约 5.2 亿 reads）历经一次真实计划内重启，开机 20 秒自动续跑、零人工干预，26/26 输出完整 33,955 转录本 ID 集（§5.4）。
+
+## 更新日志
+
+- **2026-09-14** 初版发布。
+- **2026-09-15** 增补深库补算批次结果（§5.4）。
+- **2026-09-18** 增补 r=1 推导与对照实验、字节级证据、确定性边界、后续独立验证与工程记录；同日全文结构重组：结果章收敛为 §5.1–5.5，推导与独立验证独立为 §6，复现命令唯一化收拢于 §7，工程/运维记录移入附录 §8。
+- **2026-09-18（追加）** 增补 §7.4：核验数据与过程文件归档说明（`benchmark-results/`）。
+- **维护规则**：今后新增内容一律落到其逻辑归属章节，并在本日志加一行日期摘要；不再整节原地追加。
 
 ## 1. 背景
 
@@ -105,17 +101,9 @@ Linxira Bio SDK 的核心设计是"Rust 确定性引擎 + 受控外调原生工�
 
 ### 4.2 参考管线精确复现（bench-20260914 系列）
 
-每个样本的完整流程（全部经公开 CLI，无内部捷径）：
-
-```bash
-# 1) SRA → FASTQ（解压段计时）
-fasterq-dump -e 8 --force -O <tmp>/<run>-fq <run>.sra
-# 2) SDK 编排 salmon 量化（量化段计时；参数与参考管线完全一致）
-export LINXIRA_BIO_SALMON=/path/to/salmon
-linxira-bio expression quantify <run>_1.fastq <run>_2.fastq \
-  --index <salmon_idx> --threads 8 --seq-bias --gc-bias \
-  --output <results>/<run>/quant.sf --json
-```
+每个样本的完整流程（全部经公开 CLI，无内部捷径）：SRA → FASTQ 解压 →
+SDK 编排 salmon 量化，解压段与量化段分别计时，参数与参考管线完全一致。
+**完整命令统一收在 §7.2**，此处不再重复。
 
 **3σ 验收原则**：对通过批次逐指标计算 mean/σ/3σ 区间与离群计数；批次级
 PASS 要求零 3σ 离群且最差 TPM r ≥ 0.995。
@@ -133,7 +121,7 @@ PASS 要求零 3σ 离群且最差 TPM r ≥ 0.995。
 
 四项能力三端全部 Consistent（对 Rust golden：PDB 逐位一致 0.0，PCA/Venn
 最大相对误差 2.26e-11）。小样本上墙钟由解释器启动主导——这正是该基线刻画
-的对象；真实数据吞吐另见下节。
+的对象；真实数据吞吐见 §6.3。
 
 ### 5.2 参考管线逐位复现（10 样本批量，bench-20260914-003/004）
 
@@ -149,11 +137,11 @@ PASS 要求零 3σ 离群且最差 TPM r ≥ 0.995。
 
 **批次级 3σ 验收：PASS**（10/10 通过；零离群；最差 r = 1.000000）。
 
-逐 run 明细（解压/量化秒、CPU 利用率 = (user+sys)/wall）：
+逐 run 明细（解压/量化秒、CPU 利用率 = (user+sys)/wall；首跑
+SRR15243898 未启用 CPU 计量，其 250 s / 677 s 墙钟仍计入上表统计）：
 
 | run | 解压 s | 量化 s | CPU 利用率 |
 |---|---|---|---|
-| SRR15243898 | 250 | 677 | （首跑，未启用 CPU 列） |
 | SRR1552100 | 302 | 684 | 79.4% |
 | SRR1552203 | 255 | 645 | 81.9% |
 | SRR1552215 | 267 | 614 | 89.2% |
@@ -165,7 +153,7 @@ PASS 要求零 3σ 离群且最差 TPM r ≥ 0.995。
 | SRR17715778 | 257 | 390 | 155.9% |
 
 *首例同参数对照（SRR1460477，16.7M 映射 reads）同为 r = 1.000000、
-NumReads 逐条相同。*
+NumReads 逐条相同；该 run 也是 §6 推导与字节级证据的工作样例。*
 
 ### 5.3 部署验证与数据守卫
 
@@ -192,7 +180,7 @@ quantify.json / 日志 / CPU 计量）。
 **批次级结果**：26/26 通过，每个 quant.sf 恰好 33,955 行；合计解压 8,891 s、
 量化 6,551 s（≈4.3 小时纯计算，不含 NAS 拉取）；量化段 CPU 利用率中位
 681%（8 线程近满载）。逐 run 明细（reads 为 NumReads 合计，util 为
-(user+sys)/wall）：
+(user+sys)/wall；边界样本 SRR24322347 移入下方异常明细，不参与同构行）：
 
 | run | reads (M) | 表达转录本 | 解压 s | 量化 s | util |
 |---|---|---|---|---|---|
@@ -219,11 +207,14 @@ quantify.json / 日志 / CPU 计量）。
 | SRR24322343 | 29.45 | 24,392 | 280 | 376 | 223.7% |
 | SRR24322344 | 28.70 | 23,877 | 277 | 378 | 224.4% |
 | SRR24322345 | 27.80 | 24,160 | 269 | 354 | 226.9% |
-| SRR24322347† | 0.02 | 4,257 | 162 | 64 | 690.9% |
 | SRR24322352 | 17.80 | 24,891 | 165 | 76 | 693.8% |
 | SRR24322353 | 17.81 | 24,314 | 169 | 75 | 684.9% |
 
-*† 近空文库边界样本，见下文观察 2。*
+**异常明细**：
+
+| run | reads (M) | 表达转录本 | 解压 s | 量化 s | util | 说明 |
+|---|---|---|---|---|---|---|
+| SRR24322347 | 0.02 | 4,257 | 162 | 64 | 690.9% | 近空文库边界样本（索引的 12.5%），见观察 2 |
 
 **观察 1：CPU·秒比墙钟稳定——这正是逐 run 记录 CPU 计量的原因。** 同一组
 深库样本（SRR1904944x，reads 16.9–18.5 M）在三种负载状态下完成计算：与主线
@@ -236,8 +227,8 @@ quantify.json / 日志 / CPU 计量）。
 
 **观察 2：空库边界再次被自动暴露。** SRR24322347 仅 16,927 条 reads、
 4,257 个表达转录本（索引的 12.5%）——一个近乎空转的文库。与 §5.3 的非
-mRNA 案例一样，它没有被静默混入任何均值，而是作为独立行留在台账中供下游
-研究者自行判断；其 64 s 的量化耗时与 reads 规模成比例，处理本身正常。
+mRNA 案例一样，它没有被静默混入任何均值，而是作为独立行留在异常明细中供
+下游研究者自行判断；其 64 s 的量化耗时与 reads 规模成比例，处理本身正常。
 
 **真实重启下的自动续跑。** 批次按计划跨越了主机的每日 06:50 计划重启：
 06:50:30 重启，06:50:50（开机 20 秒后）用户级 systemd oneshot 单元自动触发
@@ -248,7 +239,7 @@ FASTQ，以及"存在 quant.sf 但 CSV 无终局行"的部分写出（防止残�
 quantifier 与参数、校验记录）；批次台账（含逐 run CPU 型号 / 钉定核 / 线程 /
 利用率）见 bench/tier26-benchmark.csv。
 
-### 5.5 诚实边界（我们不宣称什么）
+### 5.5 诚实边界（全篇唯一，我们不宣称什么）
 
 1. **不宣称"打败 salmon/fasterq-dump 本体"**——SDK 编排的就是同一引擎；
    同参数下我们追求的是逐位复现（已达成），不是超车。
@@ -261,33 +252,78 @@ quantifier 与参数、校验记录）；批次台账（含逐 run CPU 型号 / 
 5. §5.4 的补算样本没有既有输出可比（这正是补算的原因）；其正确性依据是
    管线在可对照样本上的逐位复现与完整 ID 集校验，而非逐 run 相关系数。
    该批次的墙钟同样受并发负载与机械硬盘 I/O 影响，仅供部署规划参考。
+6. **确定性边界**：r=1.000000 仅对"同一确定性工具 + 同参数 + 同输入的重跑"
+   成立；此时若 r<1 反而是异常信号。任何跨实现、跨参数、跨版本因子的比较
+   r 必然小于 1（实测对照见 §6.1）。因此本报告的 r=1 只声明**编排层
+   等价性**，不是准确度声明，也不是新的生物学结论。
 
-### 5.6 r=1.000000 是怎么来的（推导与对照实验）
+## 6. 推导与独立验证
 
-> 本节为 2026-09-18 现场重算后的补充说明：原报告数据经复算全部成立，
-> 数值未作任何更改；此处只补充推导过程与对照实验。
+### 6.1 r=1.000000 的推导与对照实验
 
-**一、这个数怎么算出来的。** 对同一 run（如 SRR1460477，16.7M mapped
-reads），由 SDK 编排 salmon 2.7.0（bioconda 官方构建）与参考管线各自产出
-quant.sf：同版本二进制、同 Pinku1 索引、同参数
-（`-l A -p 8 --validateMappings --seqBias --gcBias`）、同输入 FASTQ。
-salmon 在上述条件完全一致时是确定性的：逐转录本 TPM 与 NumReads 逐条相等，
-对全部 33,955 个转录本对做 Pearson 相关，r = 1.000000（σ=0）。它度量的是
-**编排层等价性**，不是新的生物学结论。
+**推导。** 对同一 run（如 SRR1460477，16.7M mapped reads），由 SDK 编排
+salmon 2.7.0（bioconda 官方构建）与参考管线各自产出 quant.sf：同版本二进制、
+同 Pinku1 索引、同参数（`-l A -p 8 --validateMappings --seqBias --gcBias`）、
+同输入 FASTQ。salmon 在上述条件完全一致时是确定性的：逐转录本 TPM 与
+NumReads 逐条相等，对全部 33,955 个转录本对做 Pearson 相关，
+r = 1.000000（σ=0）。
 
-**二、对照实验：为什么 1.000000 不是理所当然。** 2026-09-18 现场重算的
-对照组——同一 run 去掉 `--seqBias --gcBias` 两个参数：
+**对照实验（2026-09-18 现场重算）。** 同一 run 去掉 `--seqBias --gcBias`
+两个参数：
 
 - TPM Pearson r = **0.980896**（非 1）
 - max |ΔTPM| = 1.27e+04
 - NumReads 逐条相同仅 25,422 / 33,955（75%）
 
 参数错一个，r 立刻从 1.000000 掉到 0.981。带齐参数重跑则严格回到
-r = 1.000000000、max |ΔTPM| = 0、NumReads 33,955/33,955 逐条相同
-（今日实测）。这说明报告的 1.000000 是参数严格对齐下**挣来的**，对照实验
-也证明了该比较方式的灵敏度。
+r = 1.000000000、max |ΔTPM| = 0、NumReads 33,955/33,955 逐条相同（同日
+实测）。这说明报告的 1.000000 是参数严格对齐下**挣来的**，对照实验也证明
+了该比较方式的灵敏度。边界解读统一见 §5.5 第 6 条；复现命令见 §7.2。
 
-**三、复现命令。**
+### 6.2 字节级证据（SHA256 同一性）
+
+2026-09-18 对 SRR1460477 的现场复验：SDK 编排产物与参考管线留存的
+quant.sf 经 SHA256 比对完全一致（同为
+`9b6a4cca0461e8d4117c88dc996f23f83a1730e6352936f82714377e691536af`，
+1,503,599 字节逐位相同）。r=1.000000 并非统计巧合——两个文件本就是同一串
+字节，由不同编排路径在不同日期独立产出。
+
+### 6.3 后续独立验证（2026-09-17/18，同台空闲主机）
+
+1. **全量三端 sweep**：python/r 基准包覆盖的全部 6 个能力
+   （sequence.stats / fastq.qc / enrichment.OR / expression.pca /
+   set.venn / structure.pdb.summary）× rust,python,r × 3 重复 =
+   **54/54 通过**；fixture 级中位延迟 rust 2 ms / python 271–284 ms /
+   r 468–2,623 ms。其余能力为 rust 原生专属设计。
+2. **真实数据锚点**：1.2GB FASTQ 的 fastq.qc——rust 21.9 s vs python
+   316.6 s（**14.5×**）；33,955×172 表达矩阵 PCA——rust 与独立 numpy SVD
+   前五位主成分比例四位小数一致（PC1 22.36%）。
+
+## 7. 复现
+
+SDK 与全部基准工具开源；全篇命令唯一化收拢于此。
+
+### 7.1 三端基线（任一支持平台）
+
+```bash
+linxira-bio benchmark run sequence.stats.v1 \
+  fasta=tests/fixtures/sequences/tiny.fa \
+  --backends rust,python,r --repeat 5 --dataset-class sequence
+```
+
+### 7.2 真实样本对照（SRA → quant.sf）
+
+通用流程（公开 CLI，解压段与量化段两段计时见 `--json` 信封）：
+
+```bash
+export LINXIRA_BIO_SALMON=/path/to/salmon
+fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
+linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
+  tmp/run-fq/SRR1460477_2.fastq --index <salmon_idx> --threads 8 \
+  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
+```
+
+从 NAS 权威副本出发的具体样例（§6.1 对照实验的同款输入）：
 
 ```bash
 scp -r <NAS>:/mnt/disk1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
@@ -298,59 +334,11 @@ linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
 
 （对比对象：参考管线同 run 的 quant.sf；salmon 需 ≥2.7.0，旧版拒绝 v2 索引。）
 
-### 5.7 追加补充（2026-09-18）：字节级证据、确定性边界、后续验证数据
-
-**一、r=1 的字节级证据。** 2026-09-18 对 SRR1460477 的现场复验：SDK 编排
-产物与参考管线留存的 quant.sf 经 SHA256 比对完全一致（同为
-`9b6a4cca0461e8d4117c88dc996f23f83a1730e6352936f82714377e691536af`，
-1,503,599 字节逐位相同）。r=1.000000 并非统计巧合——两个文件本就是同一串
-字节，由不同编排路径在不同日期独立产出。
-
-**二、确定性边界：r=1 何时成立、何时必然不成立。** r=1.000000 仅对
-"同一确定性工具 + 同参数 + 同输入的重跑"成立；此时若 r<1 反而是异常信号。
-任何跨实现、跨参数、跨版本因子的比较 r 必然小于 1——本文对照组
-（去 `--seqBias --gcBias`）实测 r=0.980896、NumReads 逐条相同仅 75%。
-读者不应将本报告的 r=1 解读为准确度声明，它只声明编排层等价性。
-
-**三、后续补充验证（2026-09-17/18，同台空闲主机）。**
-
-1. **全量三端 sweep**：python/r 基准包覆盖的全部 6 个能力
-   （sequence.stats / fastq.qc / enrichment.OR / expression.pca /
-   set.venn / structure.pdb.summary）× rust,python,r × 3 重复 =
-   **54/54 通过**；fixture 级中位延迟 rust 2 ms / python 271–284 ms /
-   r 468–2,623 ms。其余能力为 rust 原生专属设计。
-2. **真实数据锚点**：1.2GB FASTQ 的 fastq.qc——rust 21.9 s vs python
-   316.6 s（**14.5×**）；33,955×172 表达矩阵 PCA——rust 与独立 numpy SVD
-   前五位主成分比例四位小数一致（PC1 22.36%）。
-3. **内容完整性教训**：仅校验字节数的下载验收会让"大小正确、内容错拼"的
-   文件蒙混过关（本批 18 文件实测 12 个 gzip 损坏，系下载器多实例中断续拼
-   所致）。已加入推送后 `gzip -t` 内容验收门；相关 12 文件已删除重下。
-   下载器多实例并发与内容验收不可兼得的教训已写入运维记录。
-4. **已发现并挂账的接口缺陷**：CLI 直调 WGCNA 时 rust 胶水层预创建输出
-   目录，与 R 驱动"输出目录必须不存在"的校验互斥，导致该路径必然失败
-   （CI 无 R 故未暴露）；当前以直接调用 R 驱动的方式绕行，修复将在开发
-   轨道完成。
-
-## 6. 复现
-
-SDK 与全部基准工具开源：
+### 7.3 批量对照与补算
 
 ```bash
-# 三端基线（任一支持平台）
-linxira-bio benchmark run sequence.stats.v1 \
-  fasta=tests/fixtures/sequences/tiny.fa \
-  --backends rust,python,r --repeat 5 --dataset-class sequence
-
-# 真实样本：SRA → quant.sf（公开 CLI，两段计时见 --json 信封）
-export LINXIRA_BIO_SALMON=/path/to/salmon
-fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
-linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
-  tmp/run-fq/SRR1460477_2.fastq --index <salmon_idx> --threads 8 \
-  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
-
-# 批量对照与 3σ 汇总（scripts/tier23-bench.sh + tier23-summarize.py）
-
-# 批量补算：断点续跑（已完成样本按产物自动跳过）、逐 run CPU 计量入 CSV 台账
+# 批量对照与 3σ 汇总；批量补算支持断点续跑（已完成样本按产物自动跳过）、
+# 逐 run CPU 计量入 CSV 台账
 scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
   --sra-dir <inbox> --reference-dir <ref_quant> --output-dir <results> \
   --tmp-dir <tmp> --csv <ledger.csv> --pin "taskset -c 8-15 nice -n 10" \
@@ -358,10 +346,49 @@ scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
   --fasterq <fasterq-dump> --runs <RUN...>
 ```
 
-原始报告（每 run 的 JSON 信封、逐条 CPU 计量、3σ 统计对象）见仓库
-`benchmark-results/2026-09-13|14/`。
+原始报告（每 run 的 JSON 信封、逐条 CPU 计量、3σ 统计对象）一并归档，
+见下方 §7.4。
 
-## 7. 结语
+### 7.4 核验数据与过程文件归档（本仓库）
+
+本文全部核验数据、报告原始件与哈希清单归档于 SDK 仓库 `benchmark-results/`
+目录，与线上文章同期发布：
+
+1. **r=1.000000 现场复验（2026-09-18，SRR1460477）**
+   - 说明与结果表：`benchmark-results/2026-09-18/r-verification/README.md`
+   - 哈希清单（SDK 产物与参考管线 quant.sf 字节级同源）：
+     `benchmark-results/2026-09-18/r-verification/SHA256SUMS.txt`
+   - SDK 产物 quant.sf / 对照组（无 bias 参数）quant.sf / 复现脚本 /
+     复验原始输出：同目录四个文件
+2. **首批 10 样本逐位复现与 0.980896 参数失配对照的完整记录
+   （2026-09-14，含逐 run JSON 信封、逐条 CPU 计量、3σ 统计对象）**：
+   `benchmark-results/2026-09-14/summary.md`
+3. **全量三端 sweep（6 能力 × rust/python/r × 3 重复，54/54 通过）**：
+   `benchmark-results/2026-09-17/full-three-way/summary.csv`、
+   `benchmark-results/2026-09-17/full-three-way/runs_raw.csv`
+4. **全部基准记录索引**：`benchmark-results/RECORDS.md`
+
+仓库路径（分支 `dev/more-tools-and-cloud`，合并 main 后路径不变）：
+<https://github.com/Linxira-OS/linxira-bio-sdk/tree/dev/more-tools-and-cloud/benchmark-results>
+
+## 8. 附录：工程记录（2026-09-17/18）
+
+以下为部署与运维侧记录，不属于结果章。
+
+### 8.1 内容完整性教训：字节数验收不够
+
+仅校验字节数的下载验收会让"大小正确、内容错拼"的文件蒙混过关（本批 18
+文件实测 12 个 gzip 损坏，系下载器多实例中断续拼所致）。已加入推送后
+`gzip -t` 内容验收门；相关 12 文件已删除重下。下载器多实例并发与内容验收
+不可兼得的教训已写入运维记录。
+
+### 8.2 已挂账的接口缺陷：CLI 直调 WGCNA
+
+CLI 直调 WGCNA 时 rust 胶水层预创建输出目录，与 R 驱动"输出目录必须不
+存在"的校验互斥，导致该路径必然失败（CI 无 R 故未暴露）；当前以直接调用
+R 驱动的方式绕行，修复将在开发轨道完成。
+
+## 9. 结语
 
 "本地优先"的生信工具包要回答的第一个问题不是"多快"，而是"**你算的对不对、
 别人能不能信**"。这一轮实测给出的答案是：同算法三语言互证一致；同参数对
@@ -378,6 +405,22 @@ scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
 发布。如果读者要从这份报告里带走一点什么，我们希望是：**编排层可以被严格
 验证、异常会被大声拒绝、所有边界都被写明**——而不是其中任何一个漂亮的
 数字。
+
+## 版本与声明
+
+- **版本**：初版 2026-09-14；2026-09-15 增补深库补算批次（§5.4）；
+  2026-09-18 增补推导与对照实验、字节级证据、确定性边界、后续独立验证与
+  工程记录，并完成全文结构重组（§6 独立成章、命令唯一化收拢 §7、工程记录
+  移入 §8）。逐条变动见文首「更新日志」。
+- **自述声明**：当前为作者自述复现报告，未经第三方独立验证。按 REFORMS
+  清单（ML 研究可复现性报告标准，32 项，Science Advances 2024）自评：
+  **23 项达标、9 项因研究性质不适用（本研究不含 ML 建模任务，涉及模型
+  选型/损失函数/数据泄漏/统计检验的条目自然豁免）、0 项未达标**。第三方
+  交叉复现为后续计划。
+- **许可**：代码 AGPL-3.0-or-later；本文 CC-BY-4.0。
+- **作者与出处**：Linxira-OS 项目维护者 · 仓库：
+  <https://github.com/Linxira-OS/linxira-bio-sdk> ·
+  产品页：[Linxira Bio SDK](/bio-sdk/)
 
 ---
 

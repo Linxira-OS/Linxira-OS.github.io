@@ -8,18 +8,22 @@ desc: "Linxira Bio SDK benchmark: Rust/Python/R three-backend consistency, bit-l
 
 # When Rust Meets Transcript Quantification: A Reproducibility Benchmark of a Local-First Bioinformatics SDK
 
-> **Linxira Bio SDK benchmark report · 2026-09-14** (§5.4 added 2026-09-15: a 26-sample deep-library backfill batch; §5.6 added 2026-09-18: where r = 1.000000 comes from — derivation and a control experiment; §5.7 appended 2026-09-18: byte-level evidence, determinism boundaries, follow-up validation data)
-> Author: Linxira-OS project maintainer · License: AGPL-3.0-or-later (code) / CC-BY-4.0 (this article)
-> Repository: <https://github.com/Linxira-OS/linxira-bio-sdk>
->
-> Product page: [Linxira Bio SDK](/bio-sdk/)
-> **Self-assessment**: this is an author-reported reproduction report, not independently verified by a third party. Self-assessed against the REFORMS checklist (a 32-item reporting standard for ML-based science, Science Advances 2024): **23 items met, 9 not applicable by study design (no ML modeling task here, so items on model selection, loss functions, data leakage, and statistical tests are naturally waived), 0 unmet**. Third-party replication is planned as follow-up work.
+> Linxira Bio SDK benchmark report · 2026-09-14. A local-first bioinformatics toolkit measured on real data for scientific workstations: environment, data, and reproduction commands fully disclosed. Version history and declarations at the end ("Version & Declarations").
 
-## Abstract
+## TL;DR
 
-We ran two kinds of measurements on Linxira Bio SDK, a local-first bioinformatics execution toolkit: (1) **three-backend consistency** — whether independent Rust / Python / R implementations of the same algorithm produce identical results on identical input; and (2) **exact reproduction of a reference pipeline** — whether the SDK, orchestrating upstream salmon 2.7.0 on real public RNA-seq data, reproduces an existing quantification pipeline transcript by transcript.
+- **Three backends agree**: independent Rust / Python / R implementations of the same algorithm agree field by field within a 1e-6 tolerance (bit-identical on several items); fixture-level median latency rust 2 ms, python 271–284 ms, r 468–2,623 ms (§5.1, §6.3).
+- **Bit-level reproduction of the existing pipeline**: on 10 normally covered samples, TPM Pearson r = 1.000000 (σ = 0), NumReads relative difference 0, zero 3σ outliers (§5.2); byte-level SHA256 identity evidence in §6.2.
+- **r = 1 is earned**: the control group without `--seqBias --gcBias` measured r = 0.980896 — it holds only under strict parameter alignment; derivation and control in §6.1, determinism boundary in §5.5.
+- **A 26-sample backfill batch** (~520M reads) crossed a real scheduled reboot, auto-resumed 20 seconds after boot with zero manual intervention, and delivered the complete 33,955-transcript ID set 26/26 (§5.4).
 
-Results: the three backends agree field by field within a 1e-6 tolerance (bit-identical on several items); on 10 normally covered paired-end samples, **TPM Pearson r = 1.000000 (σ = 0), and NumReads per transcript is identical to the reference pipeline (relative difference = 0)**, with every metric passing a 3σ check (zero outliers). On top of that, we used the same validated pipeline to backfill 26 samples the existing pipeline had not yet computed (~520 million reads, every output carrying the complete 33,955-transcript ID set); the batch crossed a real scheduled reboot and auto-resumed 20 seconds after boot, finishing with zero manual intervention. This report discloses all data sources (public SRA accessions), the hardware and software environment, the methodology, and the reproduction commands.
+## Changelog
+
+- **2026-09-14** Initial release.
+- **2026-09-15** Added the deep-library backfill batch results (§5.4).
+- **2026-09-18** Added the r=1 derivation and control experiment, byte-level evidence, determinism boundary, follow-up validation, and engineering records; same day the article was restructured: results consolidated into §5.1–5.5, derivation & independent verification split out as §6, all commands consolidated into §7, engineering/ops records moved to appendix §8.
+- **2026-09-18 (addendum)** Added §7.4: archived verification data and process files (`benchmark-results/`).
+- **Maintenance rule**: new content always goes to its logical chapter plus a dated line in this changelog; no more whole-section in-place appends.
 
 ## 1. Background
 
@@ -87,18 +91,7 @@ Independent implementations of the same algorithm in three languages (Rust engin
 
 ### 4.2 Exact reproduction of the reference pipeline (bench-20260914 series)
 
-The complete flow for each sample (entirely through the public CLI, no internal shortcuts):
-
-```bash
-# 1) SRA → FASTQ (decompression segment timed)
-fasterq-dump -e 8 --force -O <tmp>/<run>-fq <run>.sra
-# 2) SDK orchestrates salmon quantification (quantification segment timed;
-#    parameters identical to the reference pipeline)
-export LINXIRA_BIO_SALMON=/path/to/salmon
-linxira-bio expression quantify <run>_1.fastq <run>_2.fastq \
-  --index <salmon_idx> --threads 8 --seq-bias --gc-bias \
-  --output <results>/<run>/quant.sf --json
-```
+The complete flow for each sample (entirely through the public CLI, no internal shortcuts): SRA → FASTQ decompression → SDK-orchestrated salmon quantification, with the decompression and quantification segments timed separately and parameters identical to the reference pipeline. **All commands are consolidated in §7.2** and not repeated here.
 
 **3σ acceptance rule**: for each passing batch, compute mean/σ/3σ interval and outlier count per metric; a batch PASSES only with zero 3σ outliers and a worst-case TPM r ≥ 0.995.
 
@@ -113,7 +106,7 @@ linxira-bio expression quantify <run>_1.fastq <run>_2.fastq \
 | set.venn.v1 | 40 ms | 310 ms | 400 ms | 7.75× | 85.7% |
 | structure.pdb.summary.v1 | 40 ms | 320 ms | 410 ms | 8.00× | 86.3% |
 
-All four capabilities are Consistent across the three backends (against the Rust golden: PDB bit-identical at 0.0; PCA/Venn maximum relative error 2.26e-11). On small inputs the wall clock is dominated by interpreter start-up — which is exactly what this baseline characterizes; real-data throughput is covered in the next section.
+All four capabilities are Consistent across the three backends (against the Rust golden: PDB bit-identical at 0.0; PCA/Venn maximum relative error 2.26e-11). On small inputs the wall clock is dominated by interpreter start-up — which is exactly what this baseline characterizes; real-data throughput is in §6.3.
 
 ### 5.2 Bit-level reproduction of the reference pipeline (10-sample batch, bench-20260914-003/004)
 
@@ -128,11 +121,10 @@ Transcript-by-transcript comparison against the existing pipeline's quant.sf (pa
 
 **Batch-level 3σ acceptance: PASS** (10/10 passed; zero outliers; worst r = 1.000000).
 
-Per-run detail (decompression/quantification seconds; CPU utilization = (user+sys)/wall):
+Per-run detail (decompression/quantification seconds; CPU utilization = (user+sys)/wall; the first run SRR15243898 has no CPU accounting, but its 250 s / 677 s wall times are included in the statistics above):
 
 | run | decompress s | quantify s | CPU utilization |
 |---|---|---|---|
-| SRR15243898 | 250 | 677 | (first run, CPU column not yet enabled) |
 | SRR1552100 | 302 | 684 | 79.4% |
 | SRR1552203 | 255 | 645 | 81.9% |
 | SRR1552215 | 267 | 614 | 89.2% |
@@ -143,7 +135,7 @@ Per-run detail (decompression/quantification seconds; CPU utilization = (user+sy
 | SRR17715777 | 236 | 685 | 88.4% |
 | SRR17715778 | 257 | 390 | 155.9% |
 
-*The first same-parameter control (SRR1460477, 16.7M mapped reads) likewise gave r = 1.000000 with identical NumReads per transcript.*
+*The first same-parameter control (SRR1460477, 16.7M mapped reads) likewise gave r = 1.000000 with identical NumReads per transcript; that run is also the worked example of §6's derivation and byte-level evidence.*
 
 ### 5.3 Deployment validation and data guards
 
@@ -155,7 +147,7 @@ Per-run detail (decompression/quantification seconds; CPU utilization = (user+sy
 
 From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.2 (same salmon 2.7.0, same index, `-l A -p 8 --validateMappings --seqBias --gcBias`, 8 threads pinned to cores 8–15), we backfilled **26 paired-end samples** from the same 172-run study that the existing pipeline **had not yet computed**. These samples have no existing output to compare against — they are precisely the part waiting to be computed — so the acceptance criteria were threefold: ① complete output row count and transcript ID set (33,955/33,955); ② the pipeline itself had already achieved bit-level reproduction with r = 1.000000 on comparable samples in §5.2; ③ structured logging throughout (per-run quantify.json / logs / CPU accounting).
 
-**Batch results**: 26/26 passed, every quant.sf exactly 33,955 rows; total decompression 8,891 s and quantification 6,551 s (≈4.3 hours of pure compute, excluding NAS pulls); median quantification CPU utilization 681% (8 threads nearly saturated). Per-run detail (reads = NumReads total, util = (user+sys)/wall):
+**Batch results**: 26/26 passed, every quant.sf exactly 33,955 rows; total decompression 8,891 s and quantification 6,551 s (≈4.3 hours of pure compute, excluding NAS pulls); median quantification CPU utilization 681% (8 threads nearly saturated). Per-run detail (reads = NumReads total, util = (user+sys)/wall; the edge-case sample SRR24322347 is moved to the anomaly detail below and excluded from the homogeneous rows):
 
 | run | reads (M) | expressed transcripts | decompress s | quantify s | util |
 |---|---|---|---|---|---|
@@ -182,41 +174,78 @@ From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.
 | SRR24322343 | 29.45 | 24,392 | 280 | 376 | 223.7% |
 | SRR24322344 | 28.70 | 23,877 | 277 | 378 | 224.4% |
 | SRR24322345 | 27.80 | 24,160 | 269 | 354 | 226.9% |
-| SRR24322347† | 0.02 | 4,257 | 162 | 64 | 690.9% |
 | SRR24322352 | 17.80 | 24,891 | 165 | 76 | 693.8% |
 | SRR24322353 | 17.81 | 24,314 | 169 | 75 | 684.9% |
 
-*† near-empty library edge case, see observation 2 below.*
+**Anomaly detail**:
+
+| run | reads (M) | expressed transcripts | decompress s | quantify s | util | note |
+|---|---|---|---|---|---|---|
+| SRR24322347 | 0.02 | 4,257 | 162 | 64 | 690.9% | near-empty library edge case (12.5% of the index), see observation 2 |
 
 **Observation 1: CPU-seconds are far more stable than wall time — which is exactly why CPU accounting is recorded per run.** The same group of deep-library samples (SRR1904944x, 16.9–18.5 M reads) completed under three load conditions: concurrent with the main analysis workload (util 68–96%), quantification wall time was 806–1,063 s; after the reboot, with near-exclusive use of the pinned cores (util 659–694%), comparable samples took only 72–154 s; an intermediate state (SRR243 group, util ~213–241%) fell in between. But converted to CPU time (user+sys), samples of this size converge to roughly 475–772 CPU·s, while wall time spreads over 15× (72–1,063 s). The conclusion matches the honest boundaries in §5.5: **in this mechanical-disk + shared-workstation deployment environment, wall time describes I/O and concurrency, while CPU-seconds describe the computation itself**. Any wall-time comparison across load states should start from the util column.
 
-**Observation 2: the empty-library edge case was exposed automatically again.** SRR24322347 has only 16,927 reads and 4,257 expressed transcripts (12.5% of the index) — a nearly idle library. Like the non-mRNA case in §5.3, it was not silently folded into any mean; it remains a separate line in the ledger for downstream researchers to judge, and its 64 s quantification time is proportional to its read count — the processing itself was normal.
+**Observation 2: the empty-library edge case was exposed automatically again.** SRR24322347 has only 16,927 reads and 4,257 expressed transcripts (12.5% of the index) — a nearly idle library. Like the non-mRNA case in §5.3, it was not silently folded into any mean; it remains a separate line in the anomaly detail for downstream researchers to judge, and its 64 s quantification time is proportional to its read count — the processing itself was normal.
 
 **Automatic resumption across a real reboot.** The batch deliberately crossed the host's daily 06:50 scheduled reboot: the machine rebooted at 06:50:30, and at 06:50:50 (20 seconds after boot) a user-level systemd oneshot unit automatically triggered the resume — completed samples were skipped by output existence (4), the remaining 22 continued in order, and the batch finished at 09:24:18 with zero manual intervention. Before starting, the resume entry cleans two kinds of interruption debris: half-decompressed FASTQ files in tmp, and partial writes where "quant.sf exists but the CSV has no final row" (preventing incomplete artifacts from being mistaken for completed ones). Each sample directory includes a README (new_computation annotation: source accession, quantifier and parameters, verification records); the batch ledger (per-run CPU model / pinned cores / threads / utilization) is in bench/tier26-benchmark.csv.
 
-### 5.5 Honest boundaries (what we do not claim)
+### 5.5 Honest boundaries (the single authoritative list — what we do not claim)
 
 1. **We do not claim to "beat salmon/fasterq-dump themselves"** — the SDK orchestrates the very same engines; under identical parameters we aim for bit-level reproduction (achieved), not overtaking.
 2. The wall-clock times in this batch are **bounded by mechanical-disk throughput** (the benchmark I/O volume is a 500GB 7200rpm HDD); they characterize the deployment environment and are not an engine speed claim.
 3. Zero-mapping samples are retained as edge cases; TPM comparisons on them are noise against noise, any implementation would "fail", and they are not used for scoring.
 4. Numbers across machines, cache states (warm/cold), or code versions (each report embeds its git sha) are never mixed.
 5. The backfilled samples in §5.4 have no existing output to compare against (which is why they needed backfilling); their correctness rests on the pipeline's bit-level reproduction on comparable samples and on complete ID-set verification, not per-run correlation coefficients. The batch's wall times are likewise affected by concurrent load and mechanical-disk I/O and are for deployment planning only.
+6. **Determinism boundary**: r = 1.000000 holds only for "the same deterministic tool + same parameters + same input, re-run"; in that setting r < 1 would itself be an anomaly signal. Any comparison across implementations, parameters, or version factors necessarily gives r < 1 (measured control in §6.1). This report's r = 1 therefore asserts **orchestration-layer equivalence** only — not an accuracy claim, and not a new biological result.
 
-### 5.6 Where r = 1.000000 comes from (derivation and a control experiment)
+## 6. Derivation and Independent Verification
 
-> This section is a supplementary note added after an on-site recomputation on 2026-09-18: every figure in the original report was confirmed on recalculation, with no values changed; this section only documents the derivation and a control experiment.
+### 6.1 Derivation of r = 1.000000 and the control experiment
 
-**1. How this number is computed.** For a given run (e.g. SRR1460477, 16.7M mapped reads), the SDK-orchestrated salmon 2.7.0 (official bioconda build) and the reference pipeline each produce a quant.sf: same binary version, same Pinku1 index, same parameters (`-l A -p 8 --validateMappings --seqBias --gcBias`), same input FASTQ. Under exactly these conditions salmon is deterministic: per-transcript TPM and NumReads match line by line, and a Pearson correlation over all 33,955 transcript pairs gives r = 1.000000 (σ=0). What it measures is **orchestration-layer equivalence**, not a new biological result.
+**Derivation.** For a given run (e.g. SRR1460477, 16.7M mapped reads), the SDK-orchestrated salmon 2.7.0 (official bioconda build) and the reference pipeline each produce a quant.sf: same binary version, same Pinku1 index, same parameters (`-l A -p 8 --validateMappings --seqBias --gcBias`), same input FASTQ. Under exactly these conditions salmon is deterministic: per-transcript TPM and NumReads match line by line, and a Pearson correlation over all 33,955 transcript pairs gives r = 1.000000 (σ=0).
 
-**2. The control experiment: why 1.000000 is not automatic.** The control group recomputed on 2026-09-18 — same run with the two parameters `--seqBias --gcBias` removed:
+**Control experiment (recomputed on site, 2026-09-18).** The same run with the two parameters `--seqBias --gcBias` removed:
 
 - TPM Pearson r = **0.980896** (not 1)
 - max |ΔTPM| = 1.27e+04
 - NumReads identical per transcript for only 25,422 / 33,955 (75%)
 
-One wrong parameter and r instantly drops from 1.000000 to 0.981. Re-running with the full parameter set returns exactly to r = 1.000000000, max |ΔTPM| = 0, NumReads identical 33,955/33,955 (measured today). This shows the reported 1.000000 is **earned** through strict parameter alignment, and the control also demonstrates the sensitivity of this comparison method.
+One wrong parameter and r instantly drops from 1.000000 to 0.981. Re-running with the full parameter set returns exactly to r = 1.000000000, max |ΔTPM| = 0, NumReads identical 33,955/33,955 (measured the same day). This shows the reported 1.000000 is **earned** through strict parameter alignment, and the control also demonstrates the sensitivity of this comparison method. The boundary interpretation lives in §5.5 item 6; reproduction commands in §7.2.
 
-**3. Reproduction commands.**
+### 6.2 Byte-level evidence (SHA256 identity)
+
+On-site re-verification of SRR1460477 on 2026-09-18: the SDK-orchestrated output and the reference pipeline's retained quant.sf are SHA256-identical (both `9b6a4cca0461e8d4117c88dc996f23f83a1730e6352936f82714377e691536af`, 1,503,599 bytes, bit for bit). r = 1.000000 is no statistical coincidence — the two files are the same string of bytes, produced independently by different orchestration paths on different dates.
+
+### 6.3 Follow-up independent validation (2026-09-17/18, same idle host)
+
+1. **Full three-backend sweep**: all 6 capabilities covered by the python/r benchmark packs (sequence.stats / fastq.qc / enrichment.OR / expression.pca / set.venn / structure.pdb.summary) × rust,python,r × 3 repeats = **54/54 passed**; fixture-level median latency rust 2 ms / python 271–284 ms / r 468–2,623 ms. The remaining capabilities are rust-native by design.
+2. **Real-data anchors**: fastq.qc on a 1.2GB FASTQ — rust 21.9 s vs python 316.6 s (**14.5×**); PCA of the 33,955×172 expression matrix — rust and an independent numpy SVD agree on the top five principal-component ratios to four decimal places (PC1 22.36%).
+
+## 7. Reproduction
+
+The SDK and all benchmark tooling are open source; all commands are consolidated here.
+
+### 7.1 Three-backend baseline (any supported platform)
+
+```bash
+linxira-bio benchmark run sequence.stats.v1 \
+  fasta=tests/fixtures/sequences/tiny.fa \
+  --backends rust,python,r --repeat 5 --dataset-class sequence
+```
+
+### 7.2 Real-sample comparison (SRA → quant.sf)
+
+Generic flow (public CLI; decompression and quantification timings in the `--json` envelope):
+
+```bash
+export LINXIRA_BIO_SALMON=/path/to/salmon
+fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
+linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
+  tmp/run-fq/SRR1460477_2.fastq --index <salmon_idx> --threads 8 \
+  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
+```
+
+Concrete example starting from the NAS authoritative copy (the same input as §6.1's control experiment):
 
 ```bash
 scp -r <NAS>:/mnt/disk1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
@@ -227,40 +256,11 @@ linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
 
 (The comparison target is the reference pipeline's quant.sf for the same run; salmon must be ≥ 2.7.0 — older versions reject v2 indexes.)
 
-### 5.7 Addendum (2026-09-18): byte-level evidence, determinism boundaries, follow-up validation data
-
-**1. Byte-level evidence for r = 1.** On-site re-verification of SRR1460477 on 2026-09-18: the SDK-orchestrated output and the reference pipeline's retained quant.sf are SHA256-identical (both `9b6a4cca0461e8d4117c88dc996f23f83a1730e6352936f82714377e691536af`, 1,503,599 bytes, bit for bit). r = 1.000000 is no statistical coincidence — the two files are the same string of bytes, produced independently by different orchestration paths on different dates.
-
-**2. Determinism boundaries: when r = 1 holds, and when it necessarily cannot.** r = 1.000000 holds only for "the same deterministic tool + same parameters + same input, re-run"; in that setting r < 1 would itself be an anomaly signal. Any comparison across implementations, parameters, or version factors necessarily gives r < 1 — this report's control group (dropping `--seqBias --gcBias`) measured r = 0.980896 with NumReads identical for only 75% of transcripts. Readers should not read this report's r = 1 as an accuracy claim; it asserts orchestration-layer equivalence only.
-
-**3. Follow-up validation (2026-09-17/18, same idle host).**
-
-1. **Full three-backend sweep**: all 6 capabilities covered by the python/r benchmark packs (sequence.stats / fastq.qc / enrichment.OR / expression.pca / set.venn / structure.pdb.summary) × rust,python,r × 3 repeats = **54/54 passed**; fixture-level median latency rust 2 ms / python 271–284 ms / r 468–2,623 ms. The remaining capabilities are rust-native by design.
-2. **Real-data anchors**: fastq.qc on a 1.2GB FASTQ — rust 21.9 s vs python 316.6 s (**14.5×**); PCA of the 33,955×172 expression matrix — rust and an independent numpy SVD agree on the top five principal-component ratios to four decimal places (PC1 22.36%).
-3. **A content-integrity lesson**: download acceptance based on byte size alone lets "size-correct, content-corrupt" files through (12 of the 18 files in this batch were gzip-corrupted, caused by interrupted splicing from multiple concurrent downloader instances). A post-download `gzip -t` content-acceptance gate has been added; the 12 affected files were deleted and re-downloaded. The lesson that multi-instance download concurrency and content acceptance do not mix has been recorded in the ops log.
-4. **A known, ticketed interface defect**: when calling WGCNA directly via the CLI, the rust glue layer pre-creates the output directory, which is mutually exclusive with the R driver's "output directory must not exist" check, so this path always fails (CI has no R, hence it went unexposed); the current workaround is to call the R driver directly, with the fix scheduled on the development track.
-
-## 6. Reproduction
-
-The SDK and all benchmark tooling are open source:
+### 7.3 Batch comparison and backfill
 
 ```bash
-# Three-backend baseline (any supported platform)
-linxira-bio benchmark run sequence.stats.v1 \
-  fasta=tests/fixtures/sequences/tiny.fa \
-  --backends rust,python,r --repeat 5 --dataset-class sequence
-
-# Real sample: SRA → quant.sf (public CLI; both timings are in the --json envelope)
-export LINXIRA_BIO_SALMON=/path/to/salmon
-fasterq-dump -e 8 --force -O tmp/run-fq SRR1460477.sra
-linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
-  tmp/run-fq/SRR1460477_2.fastq --index <salmon_idx> --threads 8 \
-  --seq-bias --gc-bias --output results/SRR1460477/quant.sf --json
-
-# Batch comparison and 3σ summary (scripts/tier23-bench.sh + tier23-summarize.py)
-
-# Batch backfill: checkpoint resume (completed samples auto-skipped by artifacts),
-# per-run CPU accounting into a CSV ledger
+# Batch comparison and 3σ summary; batch backfill supports checkpoint resume
+# (completed samples auto-skipped by artifacts), per-run CPU accounting into a CSV ledger
 scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
   --sra-dir <inbox> --reference-dir <ref_quant> --output-dir <results> \
   --tmp-dir <tmp> --csv <ledger.csv> --pin "taskset -c 8-15 nice -n 10" \
@@ -268,15 +268,48 @@ scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
   --fasterq <fasterq-dump> --runs <RUN...>
 ```
 
-The raw reports (per-run JSON envelopes, per-line CPU accounting, 3σ statistics objects) are in the repository under `benchmark-results/2026-09-13|14/`.
+The raw reports (per-run JSON envelopes, per-line CPU accounting, 3σ statistics objects) are archived as well — see §7.4 below.
 
-## 7. Closing
+### 7.4 Archived verification data and process files (this repository)
+
+All verification data, raw reports, and hash manifests behind this article are archived in the SDK repository under `benchmark-results/`, published together with the online article:
+
+1. **On-site r = 1.000000 re-verification (2026-09-18, SRR1460477)**
+   - Description and result table: `benchmark-results/2026-09-18/r-verification/README.md`
+   - Hash manifest (SDK output and the reference pipeline's quant.sf are byte-level identical): `benchmark-results/2026-09-18/r-verification/SHA256SUMS.txt`
+   - SDK output quant.sf / control-group (no bias parameters) quant.sf / reproduction script / raw verification output: the four files in the same directory
+2. **Full record of the first 10-sample bit-level reproduction and the 0.980896 parameter-mismatch control (2026-09-14, including per-run JSON envelopes, per-line CPU accounting, and 3σ statistics objects)**: `benchmark-results/2026-09-14/summary.md`
+3. **Full three-backend sweep (6 capabilities × rust/python/r × 3 repeats, 54/54 passed)**: `benchmark-results/2026-09-17/full-three-way/summary.csv`, `benchmark-results/2026-09-17/full-three-way/runs_raw.csv`
+4. **Index of all benchmark records**: `benchmark-results/RECORDS.md`
+
+Repository path (branch `dev/more-tools-and-cloud`; the path is unchanged after merging to main): <https://github.com/Linxira-OS/linxira-bio-sdk/tree/dev/more-tools-and-cloud/benchmark-results>
+
+## 8. Appendix: Engineering Records (2026-09-17/18)
+
+Deployment and ops records; not part of the results chapter.
+
+### 8.1 A content-integrity lesson: byte-size acceptance is not enough
+
+Download acceptance based on byte size alone lets "size-correct, content-corrupt" files through (12 of the 18 files in this batch were gzip-corrupted, caused by interrupted splicing from multiple concurrent downloader instances). A post-download `gzip -t` content-acceptance gate has been added; the 12 affected files were deleted and re-downloaded. The lesson that multi-instance download concurrency and content acceptance do not mix has been recorded in the ops log.
+
+### 8.2 A known, ticketed interface defect: calling WGCNA directly via the CLI
+
+When calling WGCNA directly via the CLI, the rust glue layer pre-creates the output directory, which is mutually exclusive with the R driver's "output directory must not exist" check, so this path always fails (CI has no R, hence it went unexposed); the current workaround is to call the R driver directly, with the fix scheduled on the development track.
+
+## 9. Closing
 
 The first question a "local-first" bioinformatics toolkit must answer is not "how fast" but "**is the result correct, and can others trust it**". This round answers: three languages corroborate the same algorithm; the existing pipeline is reproduced bit for bit under identical parameters; data anomalies are rejected loudly instead of quietly producing numbers; and a 4.3-hour backfill batch auto-resumed 20 seconds after a scheduled reboot and ran to completion with zero manual intervention. The speed figures (7.5–8.25× versus interpreters) came along for free — verifiability is the product.
 
 ## Appendix: the developer's note (2026-09-18)
 
 To be honest: this batch of numbers reads somewhat "abstract". r = 1.000000, SHA256-identical files — they do not say "our tool is more accurate" or "faster". They state something plainer: the same deterministic ruler, given aligned parameters and identical input, must yield the same string of bytes on two independent runs — we achieved that, and we can see it immediately whenever the ruler is handled wrong (control group r = 0.981). The factual data is what it is, and we publish it exactly as measured. If readers take one thing away from this report, we would like it to be: **the orchestration layer can be strictly verified, anomalies are rejected loudly, and every boundary is written down** — not any single pretty number among them.
+
+## Version & Declarations
+
+- **Version**: initial release 2026-09-14; deep-library backfill batch added 2026-09-15 (§5.4); 2026-09-18 added the derivation and control experiment, byte-level evidence, determinism boundary, follow-up independent validation, and engineering records, and completed the full restructuring (§6 as its own chapter, commands consolidated in §7, engineering records moved to §8). See the changelog at the top for itemized changes.
+- **Self-assessment**: this is an author-reported reproduction report, not independently verified by a third party. Self-assessed against the REFORMS checklist (a 32-item reporting standard for ML-based science, Science Advances 2024): **23 items met, 9 not applicable by study design (no ML modeling task here, so items on model selection, loss functions, data leakage, and statistical tests are naturally waived), 0 unmet**. Third-party replication is planned as follow-up work.
+- **License**: code AGPL-3.0-or-later; this article CC-BY-4.0.
+- **Author & provenance**: Linxira-OS project maintainer · Repository: <https://github.com/Linxira-OS/linxira-bio-sdk> · Product page: [Linxira Bio SDK](/bio-sdk/)
 
 ---
 
