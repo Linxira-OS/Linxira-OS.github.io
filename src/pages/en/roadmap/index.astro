@@ -16,7 +16,8 @@ import PageLayout from "../../../components/PageLayout.astro";
         <li>Headless server mode: linxira-config headless on/off, zero desktop footprint, all RAM for compute</li>
         <li>Desktop choice at install: KDE Plasma / server (no desktop)</li>
         <li>Chinese input method auto-configured from install language (fcitx5)</li>
-        <li>Self-signed repository [linxira] + 17 first-party tools (incl. lhwd hardware driver detection)</li>
+        <li>Self-signed [linxira] repository + 20 first-party packages, including the official handbook (linxira-wiki), readable by humans and AI agents alike and installed offline with the ISO</li>
+        <li>Workspace guard: a root timer takes an independent recovery point of every registered workspace (including its .git) every 30 minutes; the installer can create a separate ext4 partition, and restore always writes to a new directory rather than over the live workspace</li>
         <li>China mirror auto-fallback + [linxira] database pre-synced at install</li>
       </ul>
     </div>
@@ -46,6 +47,10 @@ import PageLayout from "../../../components/PageLayout.astro";
     <div class="card">
       <h3>First-party tools rolling into the ISO <span class="tag plan">Planned</span></h3>
       <p>Gaming manager, kernel manager, completion agent, recovery diagnostics, package center and other initiated tools ship in the ISO over time.</p>
+    </div>
+    <div class="card">
+      <h3>Adopting Linxira onto an existing Arch <span class="tag plan">Planned</span></h3>
+      <p>Turn a machine that already runs Arch into Linxira from the command line. The pure-Arch baseline already ships with "Server · pure-Arch minimal install"; what is missing is the entry point. We plan to reuse the existing transaction backend (plan → confirm → apply → receipt), probe bootloader, filesystem and desktop conflicts read-only first, and refuse rather than convert halfway. A bootloader change is always a separate confirmation. <a href="/en/blog/arch-adoption/">Read the design note →</a></p>
     </div>
 
     <h2>Long-term goals (long horizon)</h2>

@@ -12,11 +12,11 @@ import PageLayout from "../../../components/PageLayout.astro";
         <li>93 个精选应用（catalog v3），14 大分类——科学计算与游戏（Steam + 游戏基础组件）默认装载</li>
         <li>双内核：linux（主）+ linux-lts（兜底），GRUB 平铺菜单默认最新内核</li>
         <li>Timeshift + grub-btrfs 快照回滚，一键配置：linxira-config timeshift enable</li>
-        <li>容器生态默认化：Podman / Distrobox / Apptainer / Docker 开箱即用</li>
+        <li>自研签名仓库 [linxira] + 20 个自研包（含官方手册 linxira-wiki，人与 AI 同等可读，随 ISO 离线安装）</li>
+        <li>工作区守护：root 定时器每 30 分钟为已登记工作区生成独立恢复点（含 .git），装机可选建独立 ext4 分区，恢复永远写入新目录不覆盖原工作区</li>
         <li>无头服务器模式：linxira-config headless on/off，桌面零占用、内存全给计算</li>
         <li>桌面选择：KDE Plasma / 服务器（无桌面）安装时二选一</li>
         <li>中文输入法按安装语言自动配置（fcitx5）</li>
-        <li>自研签名仓库 [linxira] + 17 个自研工具（含 lhwd 硬件驱动检测）</li>
         <li>中国镜像自动 fallback + [linxira] 数据库安装期预同步</li>
       </ul>
     </div>
@@ -46,6 +46,10 @@ import PageLayout from "../../../components/PageLayout.astro";
     <div class="card">
       <h3>自研工具持续集成 <span class="tag plan">规划中</span></h3>
       <p>游戏管理、内核管理、补全代理、恢复诊断、应用中心等已立项工具陆续进入 ISO。</p>
+    </div>
+    <div class="card">
+      <h3>Arch 就地接管 <span class="tag plan">规划中</span></h3>
+      <p>让一台已经跑着 Arch 的机器用命令行变成 Linxira：纯 Arch 基线已在「服务器 · 纯 Arch 最小安装」里落地，缺的是入口。计划复用现成的事务后端（plan → 确认 → 执行 → 凭据），先只读探测引导器、文件系统与桌面冲突，再决定是否接管；引导器改动永远单独确认。<a href="/zh/blog/arch-adoption/">详见设计说明 →</a></p>
     </div>
 
     <h2>长期目标（长线研究）</h2>
