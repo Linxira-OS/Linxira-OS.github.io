@@ -4,27 +4,36 @@ import PageLayout from "../../../components/PageLayout.astro";
 <PageLayout lang="zh" active="download" title="下载 — Linxira OS">
     <a href="/zh/" class="back">← 返回首页</a>
     <h1>下载 Linxira OS</h1>
-    <p>当前为<b>实验性正式版</b>（2026.08.14）——首个通过完整安装测试的正式版。后续版本由用户按构建指南从源码自建。</p>
+    <p>当前为<b>2026.09.28</b>——引导器修复轮（rEFInd 可选可装、systemd-boot 校验修复），并首次随系统附带<b>官方手册</b>（linxira-wiki）与<b>工作区守护</b>。</p>
 
     <div class="dl-card">
-      <h3>linxira-2026.08.14-x86_64.iso</h3>
-      <div class="meta">4.79 GB · 实验性正式版 · x86_64</div>
+      <h3>linxira-2026.09.28-x86_64.iso</h3>
+      <div class="meta">4.8 GB · 桌面/服务器安装镜像 · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">打开 GitCode 仓库下载 →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.08.14-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.09.28-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">GitCode 仓库内点击 ISO 文件 → 下载按钮（大文件走 Git LFS，国内访问快）。</p>
+    </div>
+
+    <div class="dl-card">
+      <h3>linxira-wsl-2026.09.28-x86_64.tar.gz</h3>
+      <div class="meta">约 487 MB · WSL2 发行版（纯 CLI 工具链 + WSLg 图形工具）· x86_64</div>
+      <a class="dl-btn" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">GitHub Releases 下载 →</a>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">导入方式：<code>wsl --import linxira C:\wsldata linxira-wsl-2026.09.28-x86_64.tar.gz --version 2</code>，随后 <code>wsl -d linxira</code>。systemd 已启用；SHA256 见 Release 附件。</p>
     </div>
 
     <h2>校验和</h2>
     <pre><code>sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.08.14-x86_64.iso):
-b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145  linxira-2026.08.14-x86_64.iso</code></pre>
+# SHA256 (linxira-2026.09.28-x86_64.iso):
+53eac4f0daa2635c1aec9c6f51bee006c053985912ab5036ccd9dbf45298a93f  linxira-2026.09.28-x86_64.iso
+
+# WSL 镜像校验和见 GitHub Release 附件 *.sha256</code></pre>
 
     <h2>安装</h2>
-    <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong> 或 <strong>服务器（无桌面）</strong>。</p>
+    <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong>、<strong>COSMIC</strong>、<strong>服务器（无桌面）</strong>或<strong>服务器（最小 · 纯 Arch）</strong>。</p>
 
     <div class="note">
-      <p>说明：ISO 为聚合作品——内核 GPL-2.0-only、系统组件各自许可证、自研工具 MIT/GPL-3.0。校验和文件（SHA256SUMS）与 ISO 一同存放在 GitCode 仓库。</p>
+      <p>说明：ISO 为聚合作品——内核 GPL-2.0-only、系统组件各自许可证、自研工具 MIT/GPL-3.0。ISO 校验和文件（SHA256SUMS）与 ISO 一同存放在 GitCode 仓库；WSL 镜像存放在 linxira-wsl 仓库 Release。</p>
     </div>
 <style>
     h2 { font-size: 1.35rem; color: #20B8B0; margin: 2.5rem 0 0.8rem; }
