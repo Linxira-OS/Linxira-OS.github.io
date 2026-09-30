@@ -11,6 +11,10 @@ import PageLayout from "../../../components/PageLayout.astro";
       <div class="meta">4.8 GB · 桌面/服务器安装镜像 · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">打开 GitCode 仓库下载 →</a>
       <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/releases/tag/v2026.09.30-r17" target="_blank" rel="noopener">直达 ISO 文件页</a>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">ISO 按分片提供（3 个 part 文件，单文件 ≤2GB）。下载全部 part 后合并并校验：<br>
+      Linux/macOS/Git Bash：<code>cat linxira-2026.09.30-r17-x86_64.iso.part-* > linxira-2026.09.30-r17-x86_64.iso</code><br>
+      Windows (cmd)：<code>copy /b linxira-2026.09.30-r17-x86_64.iso.part-00+linxira-2026.09.30-r17-x86_64.iso.part-01+linxira-2026.09.30-r17-x86_64.iso.part-02 linxira-2026.09.30-r17-x86_64.iso</code><br>
+      合并后 SHA256 应为 <code>9162b270…c6ba</code>（见下方校验和）。</p>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">GitCode 仓库内点击 ISO 文件 → 下载按钮（大文件走 Git LFS，国内访问快）。</p>
     </div>
 
