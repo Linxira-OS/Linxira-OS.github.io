@@ -4,13 +4,13 @@ import PageLayout from "../../../components/PageLayout.astro";
 <PageLayout lang="en" active="download" title="Download — Linxira OS">
     <a href="/en/" class="back">← Back to Home</a>
     <h1>Download Linxira OS</h1>
-    <p>Current build is <b>2026-09-28</b> — the bootloader-fix round (rEFInd selectable and installable, systemd-boot validation fixed), and the first release to ship the <b>official handbook</b> (linxira-wiki) and <b>workspace guard</b>.</p>
+    <p>Current build is <b>2026-09-30</b> — the installer-134 root-cause round (pkexec session env injection, qml directory wired in, crash reports auto-uploaded with a short link) plus live-session privilege fixes (passwordless root/installer) and the <b>official handbook</b> (linxira-wiki) with <b>workspace guard</b>.</p>
 
     <div class="dl-card">
-      <h3>linxira-2026.09.29-r14-x86_64.iso</h3>
+      <h3>linxira-2026.09.30-r17-x86_64.iso</h3>
       <div class="meta">4.8 GB · Desktop / server installer · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">Open GitCode Repository →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.09.29-r14-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.09.30-r17-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">In the GitCode repository, click the ISO file → Download button (large file served via Git LFS).</p>
     </div>
 
@@ -24,8 +24,8 @@ import PageLayout from "../../../components/PageLayout.astro";
     <h2>Checksums</h2>
     <pre><code>sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.09.29-r14-x86_64.iso):
-f941331776f0976369b77aa73e51e90e0af8648c21c4d7fc57cd43b3fdb3bd9c  linxira-2026.09.29-r14-x86_64.iso
+# SHA256 (linxira-2026.09.30-r17-x86_64.iso):
+9162b2709dbd251eeadf84dfd949365b1c1767dadccb6a73abfd7f6765446cba  linxira-2026.09.30-r17-x86_64.iso
 
 # WSL image: see *.sha256 assets on the GitHub Release</code></pre>
 
