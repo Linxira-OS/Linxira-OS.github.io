@@ -140,6 +140,20 @@ const blogPosts = await getAllPosts();
 
     /* ---------- Hero 主打卡（Get Started 下方 · 单张 Zeta） ---------- */
     .product-feature { max-width: 560px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
+    /* ---------- Linxira WSL section ---------- */
+    .wsl-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.4rem; align-items: stretch; }
+    .wsl-text, .wsl-cmd { padding: 1.8rem 2rem; border-radius: 20px; }
+    .wsl-text p { color: var(--soft); line-height: 1.75; }
+    .wsl-text ul { margin: 1rem 0 1.4rem; padding-left: 1.1rem; }
+    .wsl-text li { color: var(--soft); margin-bottom: 0.5rem; line-height: 1.6; }
+    .wsl-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .wsl-cmd-title { font-weight: 700; margin-bottom: 0.8rem; color: var(--ink); }
+    .wsl-cmd pre { background: rgba(2,6,12,0.65); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; }
+    .wsl-cmd pre code { background: none; color: #a7f3d0; font-size: 0.86rem; }
+    .wsl-note { margin-top: 0.8rem; font-size: 0.82rem; color: #64748b; line-height: 1.7; }
+    .wsl-note code { color: #cbd5e1; }
+    @media (max-width: 900px) { .wsl-grid { grid-template-columns: 1fr; } }
+
 
     /* ---------- 自研产品大区（Zeta + Bio SDK 大展示卡 · 沉浸科技感） ---------- */
     .section-products { position: relative; overflow: hidden; }
@@ -333,15 +347,9 @@ const blogPosts = await getAllPosts();
       <div class="product-feature">
         <a href="/zeta/" class="pcard zeta glass">
           <span class="pmark">Z</span>
-          <h3>Zeta — Terminal Coding Agent</h3>
-          <p>Run coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI. An OMP-compatible release.</p>
+          <h3>Zeta — The Terminal Workbench Suite</h3>
+          <p>One terminal workspace, the whole toolkit: tabs and tilable real-terminal panes, with the coding agent (zeta-c), editor, terminal IDE, and file manager one command away. Rust-written, mouse-first.</p>
           <span class="pgo">Explore Zeta →</span>
-        </a>
-        <a href="/en/download/" class="pcard wsl glass">
-          <span class="pmark">W</span>
-          <h3>Linxira WSL — Linxira on Windows</h3>
-          <p>The same toolchain lands on WSL2: systemd ready, `linxira-config stack` installs Python/Java/LaTeX/containers in one command, with CLI, TUI and GUI (WSLg) forms.</p>
-          <span class="pgo">Get the WSL image →</span>
         </a>
       </div>
       <div class="badges">
@@ -410,12 +418,12 @@ const blogPosts = await getAllPosts();
         <a href="/zeta/" class="show-card zeta glass reveal reveal-d1">
           <div class="show-top">
             <span class="show-mark">Z</span>
-            <span class="show-tag">Terminal Coding Agent</span>
+            <span class="show-tag">Terminal Workbench Suite</span>
           </div>
           <h3>Zeta</h3>
-          <p class="show-desc">Run powerful coding agents in your terminal: multi-provider models, tool calling, native acceleration, embeddable TUI.</p>
+          <p class="show-desc">One terminal workspace holds the whole toolkit: tabs and tilable real-terminal panes, with the coding agent (zeta-c), terminal editor, terminal IDE, and file manager one command away; missing tools self-install inside the workbench. Rust-written, mouse-first.</p>
           <div class="show-chips">
-            <span>Multi-provider</span><span>Tool calling</span><span>Native acceleration</span><span>Embeddable TUI</span>
+            <span>Terminal workbench</span><span>Coding agent</span><span>Editor + IDE</span><span>Mouse-first</span>
           </div>
           <span class="show-cta">Explore Zeta →</span>
         </a>
@@ -436,7 +444,41 @@ const blogPosts = await getAllPosts();
   </section>
 
   <!-- Highlights (simulated UI slideshow · auto-play) -->
+  
+  <!-- Linxira WSL (the Linxira toolchain on Windows) -->
   <section class="section-block section-block-alt2">
+    <div class="section">
+      <div class="section-header reveal">
+        <h2 class="section-title">Linxira WSL — Linxira on Windows</h2>
+        <p class="section-subtitle">The whole Linxira toolchain inside WSL2, no reinstall required</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="wsl-grid">
+        <div class="wsl-text glass reveal reveal-d1">
+          <p>The same toolchain lands on <strong>WSL2</strong>: <strong>systemd</strong> ready, <code>linxira-config stack</code> installs <strong>Python / Java / LaTeX / containers</strong> in one command, with CLI, TUI, and GUI (<strong>WSLg</strong>) forms — for developing and doing research on Windows with a full Linxira environment.</p>
+          <ul>
+            <li>Pure CLI toolchain + WSLg graphical tools &middot; x86_64 &middot; about 487 MB</li>
+            <li>systemd enabled; the signed [linxira] repository tracks updates directly</li>
+            <li>Shares the same reviewed software and in-house tools as the desktop</li>
+          </ul>
+          <div class="wsl-actions">
+            <a class="cta" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">Get the WSL image &rarr;</a>
+            <a class="cta-ghost" href="/en/download/">Go to the download page</a>
+          </div>
+        </div>
+        <div class="wsl-cmd glass reveal reveal-d2">
+          <div class="wsl-cmd-title">Import into WSL2</div>
+          <pre><code>wsl --import linxira C:\wsldata ^
+  linxira-wsl-2026.09.29-x86_64.tar.gz ^
+  --version 2
+wsl -d linxira</code></pre>
+          <p class="wsl-note">SHA256 in the Release attachments <code>*.sha256</code>; after first entry run <code>linxira-config stack</code> to complete the toolchain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="section-block section-block-alt2">
     <div class="section">
       <div class="section-header reveal">
         <h2 class="section-title">Out of the Box</h2>
