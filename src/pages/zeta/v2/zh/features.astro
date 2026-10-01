@@ -8,9 +8,11 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 	active="features"
 >
 	<section class="page-hero">
+		<div class="container">
 		<div class="kicker">特性</div>
 		<h1>该有的都有,<br>不该有的不塞。</h1>
 		<p class="lede">核心能力开箱即用;工作台与项目追踪是 Zeta 的招牌。扩展覆盖其余——能自己搭的就自己搭,不想搭的就装现成的。</p>
+		</div>
 	</section>
 
 	<section class="block" id="workbench">
@@ -23,7 +25,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>窗格树布局</h3><p>窗格任意分裂,权重树管理比例;统一入口 <code class="keycap">zeta code / editor / ide / files</code> 直达四件套。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>窗格树布局</h3><p>窗格任意分裂,权重树管理比例;统一入口 <code class="keycap">zeta code / editor / ide</code> 直达各工具。</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3>子页栈</h3><p>每个窗格一叠子页:切页不杀 PTY,后台任务照常跑。</p></div>
 				<div class="grid-item"><div class="idx">03</div><h3>组件窗格</h3><p>时钟+日历、🍅番茄钟、📋剪贴板历史,原生窗格、鼠标可点。</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>自装与体检</h3><p>缺的工具在工作台里一键补装;<code class="keycap">zeta doctor</code> 逐项报告。</p></div>
@@ -202,7 +204,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">09</div>
 				<div>
 					<h2>单独安装每个工具</h2>
-					<div class="sub">四件 npm 工具 + 一个系统级文件管理器;也可以只装工作区,其余按需自装。</div>
+					<div class="sub">工作区 + 三件工具,全部 npm 一条命令;也可以只装工作区,其余按需自装。</div>
 				</div>
 			</div>
 			<div class="install-grid">
@@ -210,7 +212,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="install-row"><div class="t">编码 Agent zeta-c<small>@linxiraos/zeta · 编码 CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="已复制">复制</button></div>
 				<div class="install-row"><div class="t">编辑器 zeta-editor<small>@linxiraos/editor · TTT</small></div><code class="c">npm install -g @linxiraos/editor</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/editor" data-done="已复制">复制</button></div>
 				<div class="install-row"><div class="t">终端 IDE zeta-ide<small>@linxiraos/ide · TermIDE</small></div><code class="c">npm install -g @linxiraos/ide</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/ide" data-done="已复制">复制</button></div>
-				<div class="install-row"><div class="t">文件管理器 yazi<small>系统安装 · Windows / Linux</small></div><code class="c">winget install sxyazi.yazi  # Linux: pacman -S yazi</code><button class="copy-btn" type="button" data-copy="winget install sxyazi.yazi" data-done="已复制">复制</button></div>
 			</div>
 			<p class="install-note">Bun 用户把 <code>npm i -g</code> 换成 <code>bun add -g</code> 即可;装好任意一个后,<code>zeta doctor</code> 会报告全套件状态并给出缺失项的精确安装命令。</p>
 		</div>
@@ -232,7 +233,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 					<div class="cmd-row"><code>zeta code | zeta c</code><span>接力编码 Agent(zeta-c)</span></div>
 					<div class="cmd-row"><code>zeta editor | zeta e</code><span>接力终端编辑器(zeta-editor)</span></div>
 					<div class="cmd-row"><code>zeta ide | zeta i</code><span>接力终端 IDE(zeta-ide)</span></div>
-					<div class="cmd-row"><code>zeta files | zeta f</code><span>接力文件管理器(yazi)</span></div>
 					<div class="cmd-row"><code>zeta doctor</code><span>全套件安装状态 + 精确修复命令</span></div>
 					<div class="cmd-row"><code>zeta --help / --version</code><span>工作台帮助与版本</span></div>
 				</div>
@@ -253,7 +253,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 					<h3><span class="dot"></span>独立工具</h3>
 					<div class="cmd-row"><code>zeta-editor / zeta-e</code><span>终端编辑器(任意终端,含 SSH)</span></div>
 					<div class="cmd-row"><code>zeta-ide / zeta-i</code><span>终端 IDE</span></div>
-					<div class="cmd-row"><code>yazi</code><span>终端文件管理器</span></div>
 					<div class="cmd-row"><code>zeta-desktop</code><span>桌面版(内嵌 Web 工作台)</span></div>
 					<div class="cmd-row"><code>… --help</code><span>每个命令都有独立帮助</span></div>
 				</div>

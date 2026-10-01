@@ -8,9 +8,11 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 	active="features"
 >
 	<section class="page-hero">
+		<div class="container">
 		<div class="kicker">Features</div>
 		<h1>Everything it should have.<br>Nothing it shouldn't.</h1>
 		<p class="lede">Core capabilities are built-in defaults; the workbench and project tracking are Zeta's signature. Extensions cover the rest — build it yourself, or install something ready-made.</p>
+		</div>
 	</section>
 
 	<section class="block" id="workbench">
@@ -23,7 +25,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>Pane-tree layout</h3><p>Split panes freely; a weighted tree keeps proportions exact. <code class="keycap">zeta code / editor / ide / files</code> reaches the whole suite.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Pane-tree layout</h3><p>Split panes freely; a weighted tree keeps proportions exact. <code class="keycap">zeta code / editor / ide</code> reaches every tool.</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3>Page stacks</h3><p>Each pane holds a stack of pages: switching pages never kills the PTY — background work keeps running.</p></div>
 				<div class="grid-item"><div class="idx">03</div><h3>Widget panes</h3><p>Clock + calendar, 🍅 pomodoro, 📋 clipboard history — native panes, all clickable.</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>Self-install &amp; doctor</h3><p>Missing tools install themselves inside the workbench; <code class="keycap">zeta doctor</code> reports item by item.</p></div>
@@ -202,7 +204,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">09</div>
 				<div>
 					<h2>Install each tool standalone</h2>
-					<div class="sub">Four npm tools and one system-level file manager — or install just the workspace and let the rest self-install on demand.</div>
+					<div class="sub">Workspace plus three tools, all one npm command away — or install just the workspace and let the rest self-install on demand.</div>
 				</div>
 			</div>
 			<div class="install-grid">
@@ -210,7 +212,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="install-row"><div class="t">Coding agent zeta-c<small>@linxiraos/zeta · coding CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button></div>
 				<div class="install-row"><div class="t">Editor zeta-editor<small>@linxiraos/editor · TTT</small></div><code class="c">npm install -g @linxiraos/editor</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/editor" data-done="Copied">Copy</button></div>
 				<div class="install-row"><div class="t">Terminal IDE zeta-ide<small>@linxiraos/ide · TermIDE</small></div><code class="c">npm install -g @linxiraos/ide</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/ide" data-done="Copied">Copy</button></div>
-				<div class="install-row"><div class="t">File manager yazi<small>system install · Windows / Linux</small></div><code class="c">winget install sxyazi.yazi  # Linux: pacman -S yazi</code><button class="copy-btn" type="button" data-copy="winget install sxyazi.yazi" data-done="Copied">Copy</button></div>
 			</div>
 			<p class="install-note">On Bun, swap <code>npm i -g</code> for <code>bun add -g</code>. After installing any of them, <code>zeta doctor</code> reports the whole suite and prints the exact fix for what is missing.</p>
 		</div>
@@ -232,7 +233,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 					<div class="cmd-row"><code>zeta code | zeta c</code><span>Hand off to the coding agent (zeta-c)</span></div>
 					<div class="cmd-row"><code>zeta editor | zeta e</code><span>Hand off to the terminal editor (zeta-editor)</span></div>
 					<div class="cmd-row"><code>zeta ide | zeta i</code><span>Hand off to the terminal IDE (zeta-ide)</span></div>
-					<div class="cmd-row"><code>zeta files | zeta f</code><span>Hand off to the file manager (yazi)</span></div>
 					<div class="cmd-row"><code>zeta doctor</code><span>Suite install status + exact fixes</span></div>
 					<div class="cmd-row"><code>zeta --help / --version</code><span>Workspace help and version</span></div>
 				</div>
@@ -253,7 +253,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 					<h3><span class="dot"></span>Standalone tools</h3>
 					<div class="cmd-row"><code>zeta-editor / zeta-e</code><span>Terminal editor (any terminal, incl. SSH)</span></div>
 					<div class="cmd-row"><code>zeta-ide / zeta-i</code><span>Terminal IDE</span></div>
-					<div class="cmd-row"><code>yazi</code><span>Terminal file manager</span></div>
 					<div class="cmd-row"><code>zeta-desktop</code><span>Desktop app (embeds the web workbench)</span></div>
 					<div class="cmd-row"><code>… --help</code><span>Every command ships its own help</span></div>
 				</div>

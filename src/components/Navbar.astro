@@ -50,9 +50,13 @@ const base = `/${lang}`;
  */
 const otherLang = zh ? "en" : "zh";
 const langPathMatch = Astro.url.pathname.match(/^\/{0,}((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/);
-const langHref = langPathMatch
-  ? `/${langPathMatch[1] ?? ""}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
-  : Astro.url.pathname;
+// zeta v2 预览段:/zeta/v2/zh/... <-> /zeta/v2/en/...,语言切换不丢段
+const v2LangMatch = Astro.url.pathname.match(/^\/{0,}(zeta\/v2\/)(?:zh|en)(\/|$)/);
+const langHref = v2LangMatch
+  ? `/${v2LangMatch[1]}${otherLang}${v2LangMatch[2]}` + Astro.url.pathname.slice(v2LangMatch[0].length)
+  : langPathMatch
+    ? `/${langPathMatch[1] ?? ""}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
+    : Astro.url.pathname;
 
 /* ---------- 文案（中英） ---------- */
 const copy = {
@@ -87,11 +91,11 @@ const products = [
 	{
 		id: "zeta",
 		logo: "/assets/zeta-logo.svg",
-		name: zh ? "Zeta — 终端编码代理" : "Zeta — Terminal Coding Agent",
+		name: zh ? "Zeta — 终端工作台套件" : "Zeta — Terminal Workbench Suite",
 		desc: zh
-			? "在终端里运行编码代理：子代理、计划模式、LSP，原生 Rust 引擎。OMP 兼容发行版。"
-			: "Run coding agents in your terminal: subagents, plan mode, LSP, native Rust engine.",
-		href: "/zeta/",
+			? "一个终端工作区装下整套工具：工作台、编码 Agent zeta-c、编辑器与终端 IDE。Rust 编写，鼠标优先。"
+			: "One terminal workspace, the whole toolkit: workbench, coding agent zeta-c, editor, and terminal IDE. Rust-written, mouse-first.",
+		href: zh ? "/zeta/v2/zh/" : "/zeta/v2/en/",
 	},
 	{
 		id: "sdk",

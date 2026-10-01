@@ -8,9 +8,11 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 	active="ecosystem"
 >
 	<section class="page-hero">
+		<div class="container">
 		<div class="kicker">Ecosystem</div>
 		<h1>What Zeta itself brings.</h1>
 		<p class="lede">Zeta delivers its own product capabilities on top of the OMP runtime, while publicly stating each upstream source's role. This page lists Zeta's own capabilities first, then the four source projects and credits.</p>
+		</div>
 	</section>
 
 	<section class="block" id="own">
@@ -84,13 +86,6 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 					<div>
 						<div class="sname">TermIDE <span class="badge main">vendored</span></div>
 						<div class="sdesc">Upstream of the terminal IDE: a Rust snapshot vendored into <code>termide/</code> (<code>termide/VENDOR.md</code>); Zeta maintains the npm surface and branding, and the workbench pane tree builds on its crates.</div>
-					</div>
-					<div class="arrow">→</div>
-				</a>
-				<a class="source" href="https://github.com/sxyazi/yazi" target="_blank" rel="noopener">
-					<div>
-						<div class="sname">yazi <span class="badge adv">selected</span></div>
-						<div class="sdesc">Terminal file manager (the suite's files leg): installed at the system level, self-installed by the workbench; UI customization and the upstream-sync policy follow the fork plan.</div>
 					</div>
 					<div class="arrow">→</div>
 				</a>
