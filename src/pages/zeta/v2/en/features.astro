@@ -1,0 +1,263 @@
+---
+import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
+---
+<ZetaLayoutV2
+	lang="en"
+	title="Features — Zeta"
+	description="Zeta features: subagents, plan mode, LSP, DAP, hindsight memory, hashline editing, time-travel rules, context engineering, chat-platform bots, extensions — plus the workbench's tabs, pane tree, page stacks, and widget panes."
+	active="features"
+>
+	<section class="page-hero">
+		<div class="kicker">Features</div>
+		<h1>Everything it should have.<br>Nothing it shouldn't.</h1>
+		<p class="lede">Core capabilities are built-in defaults; the workbench and project tracking are Zeta's signature. Extensions cover the rest — build it yourself, or install something ready-made.</p>
+	</section>
+
+	<section class="block" id="workbench">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">01</div>
+				<div>
+					<h2>The workbench</h2>
+					<div class="sub">The zeta workspace: a terminal multiplexer with opinions.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Pane-tree layout</h3><p>Split panes freely; a weighted tree keeps proportions exact. <code class="keycap">zeta code / editor / ide / files</code> reaches the whole suite.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Page stacks</h3><p>Each pane holds a stack of pages: switching pages never kills the PTY — background work keeps running.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Widget panes</h3><p>Clock + calendar, 🍅 pomodoro, 📋 clipboard history — native panes, all clickable.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Self-install &amp; doctor</h3><p>Missing tools install themselves inside the workbench; <code class="keycap">zeta doctor</code> reports item by item.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="core">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">02</div>
+				<div>
+					<h2>Core capabilities</h2>
+					<div class="sub">zeta-c built-in defaults, not optional extensions.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Project tracking</h3><p>A long-term tracking system independent of memory: enable with <code class="keycap">/tracking</code> (off by default); the agent writes to <code class="keycap">.zeta/tracking/</code> at milestones and key decisions — kept across sessions, with compaction summaries persisted, browsable in desktop and Web UI.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Subagents</h3><p>Split tasks across parallel subagents, each with its own context and toolset; the main session collects results.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Plan mode</h3><p>Plan first, execute second: the agent produces a plan for review before touching the workspace.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>LSP language services</h3><p>A built-in LSP client: go to definition, find references, diagnostics, completions — semantic awareness while editing.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>DAP debugging</h3><p>Speaks the Debug Adapter Protocol: set breakpoints, read stack frames, inspect variables, explain failures.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Hindsight memory</h3><p>Reviews past sessions' successes and failures, reusing accumulated lessons in later tasks.</p></div>
+				<div class="grid-item"><div class="idx">07</div><h3>Hashline editing</h3><p>Line-precise, content-addressed edit semantics: refactors and bulk replaces stay traceable.</p></div>
+				<div class="grid-item"><div class="idx">08</div><h3>Time-travel rules</h3><p>Project rules on a timeline: conventions from old commits never leak onto new code.</p></div>
+				<div class="grid-item"><div class="idx">09</div><h3>Native Rust engine</h3><p>Text, regex, grep, and diff heavy lifting goes to Rust primitives — large files and repos don't drag.</p></div>
+				<div class="grid-item"><div class="idx">10</div><h3>Zh/En interface</h3><p><code class="keycap">/language zh</code> switches the CLI and command descriptions instantly; the choice persists.</p></div>
+				<div class="grid-item"><div class="idx">11</div><h3>Desktop default workspace</h3><p>The desktop app ships a global default workspace (<code class="keycap">~/.zeta/workspace</code>) — usable before you pick a directory.</p></div>
+				<div class="grid-item"><div class="idx">12</div><h3>Clear config paths</h3><p>Project-level <code class="keycap">.zeta/</code> and user-level <code class="keycap">~/.zeta/</code> — config, memory, tracking, and logs each in their place.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="context">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">03</div>
+				<div>
+					<h2>Context engineering</h2>
+					<div class="sub">Control what enters the context window and how — don't leave it to the model to guess.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>AGENTS.md</h3><p>Project instructions: loaded at startup from <code class="keycap">~/.zeta/agent/</code>, parent directories, and the current directory.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>SYSTEM.md</h3><p>Replace or extend the default system prompt per project — a personality and constraints for every repo.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Skills</h3><p>Load-on-demand capability packs: instructions plus tools, progressively disclosed without breaking prompt caches.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Prompt templates</h3><p>Reusable Markdown prompts, expanded with <code class="keycap">/name</code>.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>Auto-compaction</h3><p>Near the context limit, old messages are summarized automatically; the strategy is fully extensible.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Dynamic context</h3><p>Extensions can inject messages per turn, filter history, implement RAG or long-term memory.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="sessions">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>Sessions are trees, not logs</h2>
+					<div class="sub">Resume from any historical node; branches and the trunk live in one file.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Branching history</h3><p>Sessions are stored as trees; rewind to any earlier node and continue from there.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Export &amp; share</h3><p><code class="keycap">/export</code> writes HTML; <code class="keycap">/share</code> uploads a link anyone can open.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Encrypted collab</h3><p><code class="keycap">/collab</code> starts an end-to-end encrypted live session — every participant renders the same session and tool cards.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Pick up where you left off</h3><p>After a restart, <code class="keycap">--continue</code> returns to the original session with its full reasoning trail.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="webui">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">05</div>
+				<div>
+					<h2>Web workbench &amp; desktop</h2>
+					<div class="sub">One persistent session, three entries: terminal, browser, desktop app.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>One session, everywhere</h3><p>Desktop, browser, and CLI read and write the same persistent session — tasks started in the terminal continue on the desktop.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Tracking panels</h3><p>Project tracking docs are browsable in the UI: milestones, decisions, and progress at a glance.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Trace view</h3><p>Step through thinking and tool calls with timing and token counts; raw records expand for inspection.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>The right-side dock</h3><p>Session / files / tracking / plugins panes as a permanent rail; messages list the files they touched.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>43 themes</h3><p>Full light/dark presets (background, panels, syntax, 8-color chart palettes), pre-hydrated so the first paint never flashes.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Safe remote access</h3><p><code class="keycap">zeta-c serve</code> binds loopback only; remote access requires <code class="keycap">remote.token</code>, with CSRF and clickjacking protections.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">06</div>
+				<div>
+					<h2>Four run modes</h2>
+					<div class="sub">One agent, many interfaces.</div>
+				</div>
+			</div>
+			<div class="modes">
+				<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI: panels, previews, tool cards.</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> prints and exits; <code>--mode json</code> streams events for scripts.</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and own its whole lifecycle.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="bots">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">07</div>
+				<div>
+					<h2>Chat-platform bots</h2>
+					<div class="sub">Use zeta-c directly in WeChat, Feishu, and Telegram. One bot interface; more platforms keep landing.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>WeChat bot</h3><p>Hook zeta-c into WeChat: a conversation is a question, results land back in the chat, and session state stays continuous with CLI / desktop / Web UI.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Feishu bot</h3><p>Feishu integration: group and direct chats can summon the agent, with cards and rich text reporting progress live.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Telegram bot</h3><p>First-class Telegram support: private chats, groups, and inline mode — coding tasks from anywhere.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>One bot interface</h3><p>A single adapter layer covers every platform: messages, commands, and result streams share one protocol — a new platform is one adapter away.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="extensions">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">08</div>
+				<div>
+					<h2>Primitives, not features</h2>
+					<div class="sub">Features other agents ship built-in, you can build yourself. Extensions are TypeScript modules with access to tools, commands, shortcuts, events, and the full TUI.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Permission gates</h3><p>Custom confirmation flows — allow or block sensitive operations per environment and policy.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Path protection</h3><p>Declare protected paths; agent reads and writes are strictly contained.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>MCP integration</h3><p>Reach MCP servers through extensions, or build CLI tools directly from skills.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Sandboxed execution</h3><p>Run commands in containers or sandboxes; keep the risk outside the agent.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>Extension discovery</h3><p>skills, hooks, tools, commands, rules, prompts, and <code class="keycap">.mcp.json</code> are all discoverable from extensions.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>50+ examples</h3><p>Subagents, plan mode, SSH execution, custom editors, status lines, overlays — official examples that run as-is.</p></div>
+			</div>
+		</div>
+	</section>
+
+<style>
+	.install-grid { display: grid; grid-template-columns: 1fr; gap: .7rem; max-width: 860px; }
+	.install-row {
+		display: grid; grid-template-columns: 12rem 1fr auto; gap: 1rem; align-items: center;
+		background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+		padding: .85rem 1.1rem;
+	}
+	.install-row .t { font-weight: 650; font-size: .92rem; }
+	.install-row .t small { display: block; color: var(--faint); font-weight: 400; font-size: .74rem; margin-top: .15rem; }
+	.install-row .c { font-family: var(--mono); font-size: .82rem; color: var(--brand-2); overflow-wrap: anywhere; }
+	.install-row .copy-btn { flex-shrink: 0; }
+	.cmd-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: .9rem; }
+	.cmd-group { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem 1.4rem; }
+	.cmd-group h3 { font-size: .95rem; margin-bottom: .8rem; display: flex; align-items: center; gap: .5rem; }
+	.cmd-group h3 .dot { width: .5rem; height: .5rem; border-radius: 50%; background: linear-gradient(135deg, var(--brand), var(--accent)); }
+	.cmd-row { display: flex; gap: .8rem; align-items: baseline; padding: .32rem 0; border-bottom: 1px dashed var(--line); }
+	.cmd-row:last-child { border-bottom: none; }
+	.cmd-row code { font-family: var(--mono); font-size: .8rem; color: var(--brand-2); white-space: nowrap; }
+	.cmd-row span { color: var(--muted); font-size: .82rem; }
+	@media (max-width: 720px) {
+		.install-row { grid-template-columns: 1fr; gap: .4rem; }
+		.cmd-row { flex-direction: column; gap: .1rem; }
+	}
+</style>
+
+	<section class="block" id="install">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">09</div>
+				<div>
+					<h2>Install each tool standalone</h2>
+					<div class="sub">Four npm tools and one system-level file manager — or install just the workspace and let the rest self-install on demand.</div>
+				</div>
+			</div>
+			<div class="install-grid">
+				<div class="install-row"><div class="t">Workspace zeta<small>@linxiraos/main · Rust binaries</small></div><code class="c">npm install -g @linxiraos/main</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="Copied">Copy</button></div>
+				<div class="install-row"><div class="t">Coding agent zeta-c<small>@linxiraos/zeta · coding CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button></div>
+				<div class="install-row"><div class="t">Editor zeta-editor<small>@linxiraos/editor · TTT</small></div><code class="c">npm install -g @linxiraos/editor</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/editor" data-done="Copied">Copy</button></div>
+				<div class="install-row"><div class="t">Terminal IDE zeta-ide<small>@linxiraos/ide · TermIDE</small></div><code class="c">npm install -g @linxiraos/ide</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/ide" data-done="Copied">Copy</button></div>
+				<div class="install-row"><div class="t">File manager yazi<small>system install · Windows / Linux</small></div><code class="c">winget install sxyazi.yazi  # Linux: pacman -S yazi</code><button class="copy-btn" type="button" data-copy="winget install sxyazi.yazi" data-done="Copied">Copy</button></div>
+			</div>
+			<p class="install-note">On Bun, swap <code>npm i -g</code> for <code>bun add -g</code>. After installing any of them, <code>zeta doctor</code> reports the whole suite and prints the exact fix for what is missing.</p>
+		</div>
+	</section>
+
+	<section class="block" id="commands">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">10</div>
+				<div>
+					<h2>Command reference</h2>
+					<div class="sub">Every tool launches standalone with its own --help; the workspace is their unified entry.</div>
+				</div>
+			</div>
+			<div class="cmd-groups">
+				<div class="cmd-group">
+					<h3><span class="dot"></span>Workspace (unified entry)</h3>
+					<div class="cmd-row"><code>zeta</code><span>Open the workbench (= zetawork / zeta work)</span></div>
+					<div class="cmd-row"><code>zeta code | zeta c</code><span>Hand off to the coding agent (zeta-c)</span></div>
+					<div class="cmd-row"><code>zeta editor | zeta e</code><span>Hand off to the terminal editor (zeta-editor)</span></div>
+					<div class="cmd-row"><code>zeta ide | zeta i</code><span>Hand off to the terminal IDE (zeta-ide)</span></div>
+					<div class="cmd-row"><code>zeta files | zeta f</code><span>Hand off to the file manager (yazi)</span></div>
+					<div class="cmd-row"><code>zeta doctor</code><span>Suite install status + exact fixes</span></div>
+					<div class="cmd-row"><code>zeta --help / --version</code><span>Workspace help and version</span></div>
+				</div>
+				<div class="cmd-group">
+					<h3><span class="dot"></span>Coding agent (zeta-c)</h3>
+					<div class="cmd-row"><code>zeta-c</code><span>Interactive TUI (opens in the current directory)</span></div>
+					<div class="cmd-row"><code>zeta-c -p "query"</code><span>Print mode — output and exit</span></div>
+					<div class="cmd-row"><code>zeta-c --mode json</code><span>Event-stream output for scripts</span></div>
+					<div class="cmd-row"><code>zeta-c --continue</code><span>Resume the most recent session</span></div>
+					<div class="cmd-row"><code>zeta-c serve</code><span>Web workbench gateway (browser/desktop)</span></div>
+					<div class="cmd-row"><code>zeta-c stats</code><span>Local stats dashboard</span></div>
+					<div class="cmd-row"><code>zeta-c auth</code><span>Provider sign-in and credentials</span></div>
+					<div class="cmd-row"><code>zeta-c update</code><span>Self-update the CLI</span></div>
+					<div class="cmd-row"><code>zeta-c acp</code><span>Agent Client Protocol integration</span></div>
+					<div class="cmd-row"><code>zeta-c install / ssh</code><span>Install surface and remote-execution helpers</span></div>
+				</div>
+				<div class="cmd-group">
+					<h3><span class="dot"></span>Standalone tools</h3>
+					<div class="cmd-row"><code>zeta-editor / zeta-e</code><span>Terminal editor (any terminal, incl. SSH)</span></div>
+					<div class="cmd-row"><code>zeta-ide / zeta-i</code><span>Terminal IDE</span></div>
+					<div class="cmd-row"><code>yazi</code><span>Terminal file manager</span></div>
+					<div class="cmd-row"><code>zeta-desktop</code><span>Desktop app (embeds the web workbench)</span></div>
+					<div class="cmd-row"><code>… --help</code><span>Every command ships its own help</span></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</ZetaLayoutV2>

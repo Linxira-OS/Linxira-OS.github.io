@@ -1,0 +1,157 @@
+---
+import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
+---
+<ZetaLayoutV2
+	lang="zh"
+	title="生态 — Zeta"
+	description="Zeta 的自有能力与上游来源:工作台、项目追踪、Web 工作台、实验度量、命令市场、插件平台;上游角色与致谢——OMP 主线、Pi、OMP Web、Pi Web。"
+	active="ecosystem"
+>
+	<section class="page-hero">
+		<div class="kicker">生态</div>
+		<h1>先看 Zeta 自己带来了什么。</h1>
+		<p class="lede">Zeta 在 OMP 运行时之上交付自己的产品能力,同时公开标注每一个上游来源的角色。本页先列 Zeta 自有能力,再说明四个来源项目的分工与致谢。</p>
+	</section>
+
+	<section class="block" id="own">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">01</div>
+				<div>
+					<h2>Zeta 自有能力</h2>
+					<div class="sub">在共享的运行时之上,以下能力由 Zeta 自主开发与维护。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>工作台 zeta</h3><p>嵌套终端工作台:标签页、窗格树、子页栈、组件窗格、套件自装与 doctor;统一入口接力四件套。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>项目追踪 /tracking</h3><p>里程碑与关键决策写入 <code class="keycap">.zeta/tracking/</code>,跨会话保留,compaction 摘要持久化;默认关闭,显式开启。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Web 工作台与桌面版</h3><p>43 套深浅主题、轨迹视图、右侧工具坞、桌面信任打开桥;与 CLI 共享同一份持久会话。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>实验度量 Autoresearch</h3><p>按项目的本地实验追踪:指标、方向与基线 commit,SQLite 存储。</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>TypeScript 自定义命令与命令市场</h3><p>arktype / typebox / zod 参数校验;命令以 Bun 包安装、分享与复用。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>IM 渠道与多工作区</h3><p>微信 / 飞书 / Telegram 机器人,工作区别名与中转委派,会话与 CLI / 桌面同步。</p></div>
+				<div class="grid-item"><div class="idx">07</div><h3>远程访问安全</h3><p>网关默认仅 loopback;<code class="keycap">remote.token</code> 鉴权,CSRF 与点击劫持防护。</p></div>
+				<div class="grid-item"><div class="idx">08</div><h3>本地统计面板</h3><p><code class="keycap">zeta-c stats</code> 本地可观测性:会话、用量与成本。</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="sources">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">02</div>
+				<div>
+					<h2>参考项目</h2>
+					<div class="sub">Zeta 构建其上的四个来源。</div>
+				</div>
+			</div>
+			<div class="sources">
+				<a class="source" href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Oh My Pi <span class="badge main">主线</span></div>
+						<div class="sdesc">运行时、CLI、本地工具与会话——Zeta 的直接上游。运行时树、包布局与 Bun 工作流沿用 OMP 约定,上游更新保持可合并。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Pi <span class="badge adv">进阶</span></div>
+						<div class="sdesc">现代代理行为的语义移植来源:上下文工程、扩展原语、提供商正确性。以可验证的语义端口引入,而非整体合并。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/17380936778/omp-web" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">OMP Web <span class="badge main">快照</span></div>
+						<div class="sdesc">独立 <code>web-ui/</code> 快照的直接上游:agent.db、模型处理、会话 SSE、Windows 选择器。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/agegr/pi-web" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Pi Web <span class="badge adv">UX 来源</span></div>
+						<div class="sdesc">Web 产品与 UX 的语义移植来源:主机白名单、DNS 重绑定防护、CSP、项目信任。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/eugenioenko/ttt" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">TTT Editor <span class="badge main">vendored</span></div>
+						<div class="sdesc">终端编辑器的上游:Go 源码与预构建二进制整体 vendored 于 <code>editor/</code>,台账见 <code>editor/VENDOR.md</code>;品牌、主题与鼠标交互由 Zeta 维护。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/termide/termide" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">TermIDE <span class="badge main">vendored</span></div>
+						<div class="sdesc">终端 IDE 的上游:Rust 快照 vendored 于 <code>termide/</code>(<code>termide/VENDOR.md</code>);npm 面与品牌由 Zeta 维护,工作台窗格树也构建在其 crates 之上。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/sxyazi/yazi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">yazi <span class="badge adv">选型引入</span></div>
+						<div class="sdesc">终端文件管理器(套件 files 腿):系统级安装,工作台一键补装;UI 定制与上游同步策略随 fork 计划推进。</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="research">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">03</div>
+				<div>
+					<h2>研究参考</h2>
+					<div class="sub">仅研究语义,不作为运行时合并。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>DeepSeek Reasonix</h3><p>缓存行为研究:系统提示稳定性、缓存诊断、缓存感知压缩。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>OpenCode</h3><p>模型元数据、协议语义与缓存处理边界——仅作研究参考。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>OpenTUI</h3><p>TUI 设计与交互模式:参考布局、按键路由与组件设计。</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="credits">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>致谢</h2>
+					<div class="sub">没有这些项目与维护者,就没有 Zeta。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>can1357</h3><p>Oh My Pi 的作者与维护者——Zeta 的运行时与主线上游。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>mariozechner / earendil-works</h3><p>Pi 的作者与维护者——Zeta 进阶代理行为的来源。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>17380936778</h3><p>OMP Web 快照的维护者——Zeta 的 <code>web-ui/</code> 由此播种。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>agegr</h3><p>Pi Web 的作者——Zeta Web 安全与可靠性模式的来源。</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="distro">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">05</div>
+				<div>
+					<h2>发行版承诺</h2>
+					<div class="sub">Zeta 是 OMP 的下游发行版:运行时树、包布局、Bun 工作流与内部 <span class="keycap">@linxiraos/*</span> 包名沿用 OMP 约定,上游更新保持可合并。</div>
+				</div>
+			</div>
+			<div class="sources">
+				<a class="source" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
+					<div><div class="sname">linxira-zeta</div><div class="sdesc">产品主仓库:追踪 OMP 上游并持续整合,文档与发行都在这里。</div></div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">
+					<div><div class="sname">Linxira-OS 组织</div><div class="sdesc">组织主页:发行版与相关基础设施。</div></div>
+					<div class="arrow">→</div>
+				</a>
+			</div>
+		</div>
+	</section>
+</ZetaLayoutV2>

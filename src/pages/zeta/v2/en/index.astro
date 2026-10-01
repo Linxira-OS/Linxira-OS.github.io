@@ -1,0 +1,320 @@
+---
+import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
+---
+
+<ZetaLayoutV2
+	lang="en"
+	title="Zeta — The Terminal Workbench Suite"
+	description="Zeta is a terminal workbench suite: one workspace that tiles real terminals, plus the tools that live inside it — a coding agent, an editor, a terminal IDE, and a file manager. Linux-first, Windows supported, mouse-first."
+	active="home"
+>
+	<section class="hero">
+		<div class="container hero-grid">
+			<div class="hero-copy">
+				<div class="kicker">Terminal Workbench Suite · by Linxira-OS</div>
+				<h1>One terminal.<br>The <span class="accent">whole workbench.</span></h1>
+				<p class="lede">
+					<strong>Zeta</strong> is more than a coding agent. It is <strong>a workspace</strong>: tabs,
+					tilable real-terminal panes, and a fully clickable menu bar — with the
+					<strong>coding agent</strong> (zeta-c), the <strong>editor</strong> (zeta-e), the
+					<strong>terminal IDE</strong> (zeta-i), and the <strong>file manager</strong> (yazi) living inside it.
+					Linux is the primary platform; Windows is supported.
+				</p>
+				<div class="cta-row">
+					<a class="cta primary" href="#install">Get started</a>
+					<a class="cta ghost" href="/zeta/en/features/">See features →</a>
+					<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">Desktop app</a>
+				</div>
+			</div>
+
+			<!-- Pure-CSS workbench mock: menu bar / tabs / panes with pages / widget panes / status -->
+			<div class="term" role="img" aria-label="Zeta workbench mock: menu bar, tabs, terminal panes and widget panes">
+				<div class="term-bar">
+					<span class="dot"></span><span class="dot"></span><span class="dot"></span>
+					<span class="title">zeta — ~/projects/linxira</span>
+				</div>
+				<div class="term-menu">
+					<span>Files</span><span>Edit</span><span>View</span><span class="on">Panes</span><span>Tools</span><span>Settings</span>
+				</div>
+				<div class="term-tabs">
+					<span class="tt on">1 work</span><span class="tt">2 docs</span><span class="plus">＋</span>
+				</div>
+				<div class="term-panes">
+					<div class="pane">
+						<div class="pane-h on"><span class="ph-t">● zeta-c</span><span class="ctl">+ ↔ ↕ ✕</span></div>
+						<div class="out">
+							<div><span class="prompt">❯</span> zeta code</div>
+							<div><b>▸ planning</b> refactor: pane layout</div>
+							<div><span class="ok">✓</span> 3 files patched, tests green</div>
+							<div><span class="prompt">❯</span> <span class="cur"></span></div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="pane">
+							<div class="pane-h"><span class="ph-t">🍅 pomodoro</span><span class="ctl">+ ✕</span></div>
+							<div class="widget"><span class="big">24:31</span><span class="lbl">focus · 2nd round</span></div>
+							<div class="widget"><span class="lbl">today 6 ✓ / 0 ✗</span></div>
+						</div>
+						<div class="pane">
+							<div class="pane-h"><span class="ph-t">📋 clipboard</span><span class="ctl">+ ✕</span></div>
+							<div class="clip"><span class="n">03</span> src/layout.rs</div>
+							<div class="clip"><span class="n">02</span> bun run check:ts</div>
+							<div class="clip"><span class="n">01</span> zeta doctor</div>
+						</div>
+					</div>
+				</div>
+				<div class="term-status">
+					<span><span class="st-ok">●</span> shell: bash</span><span>3 panes · 2 tabs</span><span>zeta 1.1.22</span>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="suite">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">01</div>
+				<div>
+					<h2>One suite, five tools</h2>
+					<div class="sub">Every tool runs standalone with its own --help; the workspace puts them under one roof.</div>
+				</div>
+			</div>
+			<div class="suite">
+				<a class="suite-card hero-card" href="#install">
+					<span class="pkg">@linxiraos/main</span>
+					<div><span class="cmd">zeta</span><span class="alias">zetawork · zeta work</span></div>
+					<p>The workspace: a nested-terminal workbench. Tabs, a pane tree, page stacks, a menu bar, widget panes — written in Rust, mouse-first.</p>
+					<div class="foot">Unified entry: <b>zeta code / editor / ide / files</b></div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">@linxiraos/zeta</span>
+					<div><span class="cmd">zeta-c</span><span class="alias">zeta-cli · zetacode</span></div>
+					<p>Coding agent CLI: subagents, plan mode, LSP/DAP, hindsight memory, hashline editing, and time-travel rules out of the box.</p>
+					<div class="foot">Reach it with <b>zeta code</b> or <b>zeta c</b></div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">@linxiraos/editor</span>
+					<div><span class="cmd">zeta-editor</span><span class="alias">zeta-e</span></div>
+					<p>Terminal editor (TTT, vendored Go): works in any terminal, including over SSH — sessions, edits, and reviews need no GUI.</p>
+					<div class="foot">Reach it with <b>zeta editor</b> or <b>zeta e</b></div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">@linxiraos/ide</span>
+					<div><span class="cmd">zeta-ide</span><span class="alias">zeta-i</span></div>
+					<p>Terminal IDE (TermIDE, vendored Rust): a near-graphical engineering experience, in the terminal.</p>
+					<div class="foot">Reach it with <b>zeta ide</b> or <b>zeta i</b></div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">system install</span>
+					<div><span class="cmd">yazi</span><span class="alias">zeta files · zeta f</span></div>
+					<p>Terminal file manager: cross-drive navigation, image preview, full mouse support; the workspace self-installs it when missing.</p>
+					<div class="foot">Reach it with <b>zeta files</b> or <b>zeta f</b></div>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="workspace">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">02</div>
+				<div>
+					<h2>The workspace is mouse-first</h2>
+					<div class="sub">Every control is efficiently clickable; keyboard shortcuts are accelerators, not prerequisites.</div>
+				</div>
+			</div>
+			<div class="shot-strip" style="margin-bottom: 1.2rem;">
+				<button class="shot wide" type="button"><img src="/assets/zeta-workbench-demo.png" alt="The zeta workspace in action: shell, time+calendar, and 🍅 pomodoro panes" loading="lazy"></button>
+			</div>
+			<p class="install-note" style="margin: 0 0 1.6rem;">The real workspace: menu bar, tabs, three panes (shell / time+calendar / 🍅 pomodoro). Click to enlarge.</p>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Tabs and the pane tree</h3><p>Split any pane left/right or top/bottom; a weighted pane tree keeps proportions exact. Each pane also keeps a stack of pages — several terminals in one pane, nothing closed.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Fully clickable</h3><p>Menu bar, tab bar, pane title controls (+ ↔ ↕ ✕), and page tabs all respond to the pointer: switching, splitting, closing, and layout repair are mouse operations.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Widget panes</h3><p>A clock with a clickable calendar, a 🍅 pomodoro timer, and a 📋 clipboard history run as native panes — tools at hand, never leaving the terminal.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Suite-aware</h3><p>The Tools menu knows the suite: a missing tool installs itself into the pane that asked for it. <span class="keycap">zeta doctor</span> checks every tool and prints the exact fix.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="agent">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">03</div>
+				<div>
+					<h2>A coding agent, out of the box</h2>
+					<div class="sub">zeta-c is built on the OMP runtime: core capabilities are built-in defaults, not optional extensions.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>The full tool surface</h3><p>File read/write, search, patching, shell, git, task delegation, and structured tool output — heavy work runs on native Rust primitives.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Sessions are trees</h3><p>Branching history: resume from any node. Terminal, browser, and desktop share one persistent session.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Project tracking</h3><p>Turn on <span class="keycap">/tracking</span> and the agent writes milestones and key decisions to tracking docs — kept across sessions, browsable in the UI.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Extensible to the bone</h3><p>TypeScript custom commands, a command marketplace, skills, MCP, full TUI hooks — the agent can customize itself on the spot.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="install">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>One command to the workbench</h2>
+					<div class="sub">Install the workspace; the rest of the suite self-installs on demand — or run zeta doctor for a full checkup.</div>
+				</div>
+			</div>
+			<div class="install">
+				<div class="tabs">
+					<button class="tab active" type="button" data-tab="npm">npm</button>
+					<button class="tab" type="button" data-tab="bun">bun</button>
+					<button class="tab" type="button" data-tab="linux">Linux</button>
+					<button class="tab" type="button" data-tab="windows">Windows</button>
+					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
+				</div>
+				<div class="code" data-pane="npm">
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/main">npm install -g @linxiraos/main</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="bun" hidden>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/main">bun add -g @linxiraos/main</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/main" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="linux" hidden>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install.sh | sh">curl -fsSL https://linxira-os.github.io/install.sh | sh</span></span>
+					<button class="copy-btn" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install.sh | sh" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="windows" hidden>
+					<span class="cmd"><span class="prompt">PS&gt;</span><span class="type" data-typing="irm https://linxira-os.github.io/install.ps1 | iex">irm https://linxira-os.github.io/install.ps1 | iex</span></span>
+					<button class="copy-btn" type="button" data-copy="irm https://linxira-os.github.io/install.ps1 | iex" data-done="Copied">Copy</button>
+				</div>
+				<p class="install-note">
+					Then: <code>zeta</code> opens the workspace, <code>zeta doctor</code> checks the whole suite.
+					Coding agent alone: <code>npm install -g @linxiraos/zeta</code> (zeta-c).
+					Slow mirror? Try <code>--registry=https://mirrors.cloud.tencent.com/npm/</code>.
+					Desktop app on <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="webui">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">05</div>
+				<div>
+					<h2>Web workbench &amp; desktop</h2>
+					<div class="sub">43 themes, a trace view, and tracking panels — browser and desktop (Windows / Linux) share one persistent session with the CLI. Click a screenshot to enlarge.</div>
+				</div>
+			</div>
+			<div class="shot-strip">
+				<div class="shot-track">
+					<div class="shot-group">
+						<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="Zeta Web UI screenshot 1" loading="lazy"></button>
+						<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="Zeta Web UI screenshot 2" loading="lazy"></button>
+						<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="Zeta Web UI screenshot 3" loading="lazy"></button>
+					</div>
+					<div class="shot-group" aria-hidden="true">
+						<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="" loading="lazy"></button>
+						<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="" loading="lazy"></button>
+						<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="" loading="lazy"></button>
+					</div>
+				</div>
+			</div>
+			<div class="lightbox" id="lightbox" hidden>
+				<img id="lightboxImg" src="" alt="Enlarged Zeta Web UI screenshot">
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="modes">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">06</div>
+				<div>
+					<h2>Four run modes</h2>
+					<div class="sub">One agent, many interfaces — from the full TUI to scripts, event streams, and programmatic embedding.</div>
+				</div>
+			</div>
+			<div class="modes">
+				<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI: panels, previews, tool cards.</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> prints and exits; <code>--mode json</code> streams events.</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
+				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and own its lifecycle.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="providers">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">07</div>
+				<div>
+					<h2>15+ providers, hundreds of models</h2>
+					<div class="sub">Switch anytime in-session with <span class="keycap">/model</span>.</div>
+				</div>
+			</div>
+			<div class="tag-row">
+				<span class="tag hot">Anthropic</span><span class="tag hot">OpenAI</span><span class="tag hot">Google</span>
+				<span class="tag">Azure</span><span class="tag">Bedrock</span><span class="tag">Mistral</span>
+				<span class="tag">Groq</span><span class="tag">Cerebras</span><span class="tag">xAI</span>
+				<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
+				<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
+				<span class="tag">More…</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="bots">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">08</div>
+				<div>
+					<h2>Drive Zeta from chat apps</h2>
+					<div class="sub">Plug zeta-c into WeChat, Feishu, and Telegram — ask, dispatch tasks, and receive results where you already talk.</div>
+				</div>
+			</div>
+			<div class="tag-row">
+				<span class="tag hot">WeChat</span><span class="tag hot">Feishu</span><span class="tag hot">Telegram</span>
+				<span class="tag">One bot interface</span><span class="tag">More platforms coming…</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="linux">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">09</div>
+				<div>
+					<h2>Native on Linux, not wrapped</h2>
+					<div class="sub">Linux is the primary platform (Linxira OS, Arch-based); heavy work runs on native engines, and terminal and desktop are deeply integrated.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Native engines</h3><p>Text, regex, grep, and diff go to Rust primitives; the workbench itself is a native Rust binary.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>The terminal is home</h3><p>OSC 8 hyperlinks, native PTY management; the whole suite is terminal-born and works over SSH.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Desktop bridge</h3><p>Open local editors and file managers safely from the Web UI: HMAC gateway tokens, target allowlists, workspace containment.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>One command to land</h3><p>npm / Bun global install, or <code class="keycap">curl … install.sh | sh</code>; the desktop app ships Linux builds.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="identity">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">10</div>
+				<div>
+					<h2>A first-class citizen of Linxira OS</h2>
+					<div class="sub">Zeta is built by the Linxira OS team — a Linux distribution for research workstations. On Linxira OS, Zeta is not just another package.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>First-class identity</h3><p>Zeta will run under its own system identity (a dedicated UID) as a system-level citizen — not a process parasitic on some user session.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>OS-enforced permissions</h3><p>Permission boundaries are enforced by the OS: Zeta declares policy, the system enforces it, changes need human approval — overreach is refused at the system layer.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Private by default</h3><p>No access to personal data by default: private home files and other users' data are invisible to Zeta; every action is logged and auditable.</p></div>
+			</div>
+			<div class="cta-row" style="margin-top: 1.8rem;">
+				<a class="cta ghost" href="/en/">About Linxira OS →</a>
+			</div>
+		</div>
+	</section>
+</ZetaLayoutV2>

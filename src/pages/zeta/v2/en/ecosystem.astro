@@ -1,0 +1,157 @@
+---
+import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
+---
+<ZetaLayoutV2
+	lang="en"
+	title="Ecosystem — Zeta"
+	description="Zeta's own capabilities and upstream sources: the workbench, project tracking, the Web workbench, experiment measurement, the command marketplace, and the plugin platform; upstream roles and credits — OMP mainline, Pi, OMP Web, Pi Web."
+	active="ecosystem"
+>
+	<section class="page-hero">
+		<div class="kicker">Ecosystem</div>
+		<h1>What Zeta itself brings.</h1>
+		<p class="lede">Zeta delivers its own product capabilities on top of the OMP runtime, while publicly stating each upstream source's role. This page lists Zeta's own capabilities first, then the four source projects and credits.</p>
+	</section>
+
+	<section class="block" id="own">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">01</div>
+				<div>
+					<h2>Zeta's own capabilities</h2>
+					<div class="sub">On top of the shared runtime, these are developed and maintained by Zeta.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>The zeta workspace</h3><p>Nested-terminal workbench: tabs, a pane tree, page stacks, widget panes, suite self-install and doctor; one unified entry to the whole suite.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Project tracking /tracking</h3><p>Milestones and key decisions written to <code class="keycap">.zeta/tracking/</code>, kept across sessions with compaction summaries persisted; off by default, explicitly enabled.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Web workbench &amp; desktop</h3><p>43 light/dark themes, a trace view, the right-side dock, and the desktop trust-open bridge; one persistent session shared with the CLI.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Experiment measurement</h3><p>Per-project local experiment tracking: metrics, directions, and baseline commits, stored in SQLite.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>TS custom commands &amp; marketplace</h3><p>arktype / typebox / zod argument validation; commands install, share, and reuse as Bun packages.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>IM channels &amp; workspaces</h3><p>WeChat / Feishu / Telegram bots, workspace aliases and relayed delegation, sessions synced with CLI / desktop.</p></div>
+				<div class="grid-item"><div class="idx">07</div><h3>Remote access security</h3><p>The gateway binds loopback only; <code class="keycap">remote.token</code> auth, with CSRF and clickjacking protections.</p></div>
+				<div class="grid-item"><div class="idx">08</div><h3>Local stats dashboard</h3><p><code class="keycap">zeta-c stats</code> local observability: sessions, usage, and cost.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="sources">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">02</div>
+				<div>
+					<h2>Reference projects</h2>
+					<div class="sub">The four sources Zeta builds upon.</div>
+				</div>
+			</div>
+			<div class="sources">
+				<a class="source" href="https://github.com/can1357/oh-my-pi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Oh My Pi <span class="badge main">Mainline</span></div>
+						<div class="sdesc">Runtime, CLI, local tools, and sessions — Zeta's direct upstream. The runtime tree, package layout, and Bun workflow follow OMP conventions so upstream updates stay mergeable.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/earendil-works/pi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Pi <span class="badge adv">Advanced</span></div>
+						<div class="sdesc">Semantic-port source for modern agent behavior: context engineering, extension primitives, provider correctness. Brought in as verifiable semantic ports, never wholesale merges.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/17380936778/omp-web" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">OMP Web <span class="badge main">Snapshot</span></div>
+						<div class="sdesc">Direct upstream of the standalone <code>web-ui/</code> snapshot: agent.db, model handling, session SSE, the Windows picker.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/agegr/pi-web" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">Pi Web <span class="badge adv">UX source</span></div>
+						<div class="sdesc">Semantic-port source for web product and UX: host allowlists, DNS-rebinding protection, CSP, project trust.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/eugenioenko/ttt" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">TTT Editor <span class="badge main">vendored</span></div>
+						<div class="sdesc">Upstream of the terminal editor: Go source and prebuilt binaries vendored wholesale into <code>editor/</code> (ledger in <code>editor/VENDOR.md</code>); branding, theme, and mouse interaction are maintained by Zeta.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/termide/termide" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">TermIDE <span class="badge main">vendored</span></div>
+						<div class="sdesc">Upstream of the terminal IDE: a Rust snapshot vendored into <code>termide/</code> (<code>termide/VENDOR.md</code>); Zeta maintains the npm surface and branding, and the workbench pane tree builds on its crates.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/sxyazi/yazi" target="_blank" rel="noopener">
+					<div>
+						<div class="sname">yazi <span class="badge adv">selected</span></div>
+						<div class="sdesc">Terminal file manager (the suite's files leg): installed at the system level, self-installed by the workbench; UI customization and the upstream-sync policy follow the fork plan.</div>
+					</div>
+					<div class="arrow">→</div>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="research">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">03</div>
+				<div>
+					<h2>Research references</h2>
+					<div class="sub">Studied for semantics only — never merged into the runtime.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>DeepSeek Reasonix</h3><p>Cache behavior research: system-prompt stability, cache diagnostics, cache-aware compaction.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>OpenCode</h3><p>Model metadata, protocol semantics, and cache-handling boundaries — research reference only.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>OpenTUI</h3><p>TUI design and interaction patterns: layout references, key routing, component design.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="credits">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>Credits</h2>
+					<div class="sub">Without these projects and maintainers, there is no Zeta.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>can1357</h3><p>Author and maintainer of Oh My Pi — Zeta's runtime and mainline upstream.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>mariozechner / earendil-works</h3><p>Author and maintainer of Pi — the source of Zeta's advanced agent behaviors.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>17380936778</h3><p>Maintainer of the OMP Web snapshot — from which Zeta's <code>web-ui/</code> was seeded.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>agegr</h3><p>Author of Pi Web — the source of Zeta's web security and reliability patterns.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="distro">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">05</div>
+				<div>
+					<h2>The distribution promise</h2>
+					<div class="sub">Zeta is a downstream distribution of OMP: the runtime tree, package layout, Bun workflow, and internal <span class="keycap">@linxiraos/*</span> package names follow OMP conventions so upstream updates stay mergeable.</div>
+				</div>
+			</div>
+			<div class="sources">
+				<a class="source" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener">
+					<div><div class="sname">linxira-zeta</div><div class="sdesc">The product repository: tracking and integrating OMP upstream; docs and releases live here.</div></div>
+					<div class="arrow">→</div>
+				</a>
+				<a class="source" href="https://github.com/Linxira-OS" target="_blank" rel="noopener">
+					<div><div class="sname">Linxira-OS org</div><div class="sdesc">The organization home: the distribution and its infrastructure.</div></div>
+					<div class="arrow">→</div>
+				</a>
+			</div>
+		</div>
+	</section>
+</ZetaLayoutV2>
