@@ -28,73 +28,91 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <div class="section">
         <div class="sidebar-title">参考</div>
         <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
       </div>
   </aside>
 
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
-      <h1>Config Hub CLI</h1>
-      <p>Config Hub 提供面向管理员的命令行工具 <code>linxira-config</code>，负责 SSH、镜像源、网络、安全状态与只读 catalog 查询。通用软件管理由 Shelly 负责，精选应用安装由 Package Center / Component Manager 基于 <code>linxira-components</code> 事务后端完成。</p>
+      <h1>Config Hub CLI（linxira-config）</h1>
+      <p><code>linxira-config</code> 是系统配置中心 <b>config-hub</b> 的命令行入口：SSH、镜像源、诊断日志、环境变量、软件栈、工作区守护、安全态势，一条命令一个动作。直接输入 <code>linxira-config</code> 回车可进入纯 bash 的数字菜单（TUI），所有菜单项与命令行子命令一一对应。</p>
+      <div class="note">📌 本页对应 <b>config-hub 2.5.2</b>。任何子命令加 <code>--json</code> 可获得机器可读输出（workspace-guard / ssh status / net diag / mirror list 均支持），方便脚本与 AI 助手消费。</div>
 
-      <h2>命令总览</h2>
-      <pre><code>linxira-config &lt;command&gt; [action] [options]
+      <h2 id="logs">诊断日志：一键收集与上传</h2>
+      <p>安装失败、更新异常、行为诡异时，第一步永远是它——收集本机诊断并换回一个可分享的短链：</p>
+      <pre><code>linxira-config logs collect          # 收集到 ~/linxira-logs/linxira-logs-*.txt
+linxira-config logs upload           # 上传最新一份，打印短链
+linxira-config logs upload 某文件    # 上传指定文件</code></pre>
+      <p>收集内容包括：系统与磁盘概况、已装 linxira 软件包、失败单元、<b>安装器完整日志</b>（/tmp/linxira-installer.log 与 Calamares 会话日志）、pacman.log、本次开机的错误日志。上传走 <b>paste.rs → termbin → dpaste</b> 三通道自动降级（国内外均可达），返回的链接可直接发给维护者或 AI 助手。</p>
 
-  mirror &lt;type&gt;        镜像源管理（Arch/npm/pip/AUR/Go/Flatpak）
-  source               查看软件源
-  service &lt;svc&gt; &lt;act&gt; 服务管理（ssh/vnc）
-  security &lt;action&gt;    安全加固与防火墙
-  ssh &lt;action&gt;         SSH 服务与密钥管理
-  rdp &lt;action&gt;         远程桌面状态
-  virt &lt;action&gt;        虚拟化状态
-  power &lt;action&gt;       电源状态
-  catalog &lt;kind&gt;       查询软件/组件/套餐状态
-  runtime &lt;action&gt;     运行时与包管理器状态
-  conda channels &lt;act&gt; Miniforge 频道配置
-  gpu &lt;action&gt;         GPU 驱动管理
-  net &lt;action&gt;         网络诊断
-  info / status        系统信息 / 快速状态
-  help                 帮助</code></pre>
+      <h2 id="ssh">SSH 远程访问</h2>
+      <p>把电脑变成可远程管理的服务器，一条命令：</p>
+      <pre><code>linxira-config ssh on                # 启用并启动 sshd（免密 sudo 会话内同样可用）
+linxira-config ssh status            # 服务状态与连接信息（IP / 端口）
+linxira-config ssh off               # 关闭远程 SSH
+linxira-config ssh port 2222         # 更换端口
+linxira-config ssh status --json     # 机器可读</code></pre>
+      <p>密钥管理（Ed25519）：</p>
+      <pre><code>linxira-config ssh key generate [名称]           # 生成密钥对
+linxira-config ssh key list / show / fingerprint  # 查看
+linxira-config ssh authorized add &lt;公钥&gt;          # 添加授权公钥
+linxira-config ssh authorized list / remove       # 管理授权列表</code></pre>
+      <p>分步教程（含密钥登录）见 <a href="/zh/docs/remote-access/">远程访问指南</a>。注意：<code>authorized add</code> 只接受无 options 的纯公钥；密钥路径拒绝 symlink。</p>
 
-      <h2>SSH 管理</h2>
-      <p>Config Hub 提供完整的 SSH 服务与密钥管理。把电脑变成服务器的分步教程见 <a href="/zh/docs/remote-access/">远程访问指南</a>。</p>
-      <pre><code>linxira-config ssh status                       # 服务状态与连接信息
-linxira-config ssh key generate [name]          # 生成 Ed25519 密钥对
-linxira-config ssh key list                     # 列出本机公钥
-linxira-config ssh key show [name]              # 显示公钥内容
-linxira-config ssh key fingerprint [name]       # 显示公钥指纹
-linxira-config ssh key remove &lt;name&gt; --yes      # 删除密钥对
-linxira-config ssh authorized list              # 列出已授权密钥
-linxira-config ssh authorized add &lt;pubkey&gt;      # 授权一个纯公钥
-linxira-config ssh authorized remove &lt;fp&gt; --yes # 按 SHA256 指纹移除</code></pre>
+      <h2 id="env">环境变量</h2>
+      <p>机器级环境变量统一落在 <code>/etc/profile.d/linxira-env.sh</code>，重启不丢：</p>
+      <pre><code>linxira-config env list              # 列出全部
+linxira-config env set KEY value     # 写入
+linxira-config env get KEY           # 读取
+linxira-config env unset KEY         # 删除</code></pre>
 
-      <div class="note">📌 <code>ssh on / off / port</code> 已实现但需等待事务后端启用，当前请用 <code>sudo systemctl enable --now sshd</code>；<code>ssh key</code> 与 <code>ssh authorized</code> 命令现在即可用。密钥为 Ed25519，拒绝 symlink 的 SSH 路径，<code>authorized add</code> 只接受无 options 的纯公钥。</div>
+      <h2 id="stack">软件栈</h2>
+      <p>面向科研场景的一键软件栈（桥接 linxira-component-manager 的事务后端）：</p>
+      <pre><code>linxira-config stack list            # 可用栈：科学计算、办公、开发等
+linxira-config stack status          # 安装状态
+linxira-config stack install &lt;id&gt;    # 安装一个栈
+linxira-config stack tui             # 终端交互界面</code></pre>
 
-      <h2>镜像源管理</h2>
-      <p>管理 Arch、npm、PyPI、AUR、Go 模块与 Flatpak 远程源：</p>
-      <pre><code>linxira-config mirror arch list         # 列出 Arch 镜像候选
-linxira-config mirror npm set taobao    # 选择用户级 npm 源
-linxira-config mirror pip set tuna      # 选择 PyPI 源
-linxira-config mirror aur set https://... # 设置校验过的自定义 AUR 镜像
-linxira-config mirror go set goproxy.cn # 配置 Go 模块代理
-linxira-config mirror flatpak set flathub # 显式 Flatpak 远程（主动开启）
-linxira-config mirror &lt;type&gt; reset      # 恢复官方源
-linxira-config mirror &lt;type&gt; speed [id] # 测速</code></pre>
-      <p>用户级源按用户生效（<code>npm config</code> / <code>pip config</code> / <code>go env -w</code>）。Arch 与 Flatpak 的 <code>set/reset</code> 待事务后端启用。Conda 仅限 Miniforge，只允许审核过的 <code>conda-forge</code> 与 <code>bioconda</code> 频道。</p>
+      <h2 id="workspace-guard">工作区守护</h2>
+      <p>每 30 分钟对工作区做一次独立恢复点（含 .git），误删可回滚：</p>
+      <pre><code>linxira-config workspace-guard status            # 配置与定时器状态（--json 可用）
+sudo linxira-config workspace-guard enable       # 选盘、建 ext4 存储、注册并启动定时器
+sudo linxira-config workspace-guard disable      # 停止定时器（保留全部恢复点）
+linxira-config workspace-guard handbook          # 打印 AI 可读手册清单</code></pre>
+      <p>日常恢复点操作用 <code>linxira-components guard &lt;status|list|snapshot|restore&gt;</code>。</p>
 
-      <h2>Catalog 查询（只读）</h2>
-      <p>查询经审核的 catalog 状态。命令接受 catalog ID，不接受包名：</p>
+      <h2 id="mirror">镜像源管理</h2>
+      <p>覆盖 Arch、npm、PyPI、AUR、Go 模块与 Flatpak 六类源：</p>
+      <pre><code>linxira-config mirror arch list              # 列出候选镜像
+linxira-config mirror arch speed             # 全量测速
+linxira-config mirror arch auto              # 自动选最快
+linxira-config mirror pip set tsinghua       # 按名称切换（npm/pip/aur/go 用户级生效）
+linxira-config mirror flatpak set &lt;id|url&gt;   # 指定 Flatpak 远程
+linxira-config mirror arch reset             # 恢复官方源
+linxira-config mirror arch list --json       # 机器可读</code></pre>
+      <p>Miniforge 频道单独管理，仅允许审核过的 <code>conda-forge</code> 与 <code>bioconda</code>：<code>conda channels list|add|remove|reset</code>。</p>
+
+      <h2 id="catalog">Catalog 查询（只读）</h2>
+      <p>查询经审核的软件目录状态。命令接受 catalog ID（不是包名）：</p>
       <pre><code>linxira-config catalog software --all
-linxira-config catalog component --status partial
+linxira-config catalog software --status drifted
+linxira-config catalog component list
 linxira-config catalog bundle show kde-plasma
 linxira-config catalog software show firefox</code></pre>
-      <p>默认只显示 <code>installed</code>、<code>partial</code>、<code>external</code>、<code>pending</code>、<code>drifted</code>、<code>reboot-required</code> 状态；<code>--all</code> 增加 <code>not-installed</code>。</p>
+      <p>默认显示 <code>installed / partial / external / pending / drifted / reboot-required</code>；<code>--all</code> 追加 <code>not-installed</code>。</p>
 
-      <h2>网络与安全</h2>
-      <pre><code>linxira-config net diag              # 完整网络诊断
+      <h2 id="netsec">网络与安全</h2>
+      <pre><code>linxira-config net diag              # 完整网络诊断（--json 可用）
 linxira-config net dns               # 查看当前 DNS
-linxira-config security status       # 防火墙与 SSH 状态
+linxira-config net dns set 223.5.5.5 # 设置 DNS
+linxira-config security status       # 安全态势总览（UFW/SSH/fail2ban/KVM）
+linxira-config security ufw allow 22 # 放行一个 TCP 端口
 linxira-config runtime status        # 运行时与包管理器状态</code></pre>
+
+      <h2 id="misc">其他</h2>
+      <pre><code>linxira-config timeshift status      # Timeshift 快照（enable/disable/status）
+linxira-config headless on           # 无头模式：下次启动不加载桌面，内存全给计算
+linxira-config info / status         # 系统信息 / 快速状态摘要
+linxira-config tui                   # 数字菜单（同命令行能力）</code></pre>
+      <p><code>rdp</code>、<code>virt kvm-on/docker-on</code>、<code>security harden</code>、<code>power</code> 写操作目前<b>等待事务后端</b>启用（状态查询可用）——这是有意的安全设计：所有变更类操作必须经过可回滚的事务通道。</p>
 
       <p>问题、bug 与功能建议请提交到 <a href="https://github.com/Linxira-OS/linxira-config-hub" target="_blank">linxira-config-hub 仓库</a>。</p>
 
