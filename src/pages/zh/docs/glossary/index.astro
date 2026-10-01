@@ -7,7 +7,8 @@ import PageLayout from "../../../../components/PageLayout.astro";
   <p>本页汇集 Linxira OS 文档与项目中使用的主要术语，按主题分类，每个词条说明其在项目语境下的含义。通用 Arch Linux 概念可进一步参考 <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>。</p>
 
   <h2>系统与发行</h2>
-  <p class="term-item"><strong>Direct Arch</strong> — Linxira 的发行方式：直接基于 Arch Linux 构建的工作站，使用 <code>pacman</code> 与 Arch 官方仓库，不叠加发行层；自有软件包通过项目控制并签名的独立仓库提供。</p>
+  <p class="term-item"><strong>Direct Arch</strong> — Linxira 的发行方式：直接基于 Arch Linux 构建的工作站，使用 <code>pacman</code> 与 Arch 官方仓库，<strong>不叠加发行层</strong>；自有软件包通过项目控制并签名的独立仓库提供。
+  <br><span class="term-note">「不叠加发行层」指不复制 Debian→Ubuntu 那条路：Ubuntu 把 Debian 的包池 fork 成自己的 archive、打自己的补丁、按自己的节奏发布，时间一长同名包在两边是不同的二进制；Manjaro 之于 Arch 同理（自建仓库 + 扣住上游更新两周以上）。Linxira 则相反——<code>pacman</code> 直连 Arch 官方镜像，系统里每个 Arch 包都是原版构建（同源码、同二进制、同天抵达），不 fork、不扣更新、不重编译；Linxira 只把<strong>自研软件</strong>放进额外的签名仓库 <code>[linxira]</code>。随时可验证：<code>pacman -Qqm</code> 列出的外来包只有自研那一批，其余与 Arch 官方逐字节一致。</span></p>
   <p class="term-item"><strong>滚动更新（rolling release）</strong> — 无固定版本周期，持续接收上游更新；Arch 上游（含安全补丁）发布后立即同步进入仓库，无需等待发行版统一调度。</p>
   <p class="term-item"><strong>双内核（linux + linux-lts）</strong> — 同时安装两个 Arch 通用内核：<code>linux</code> 为主、<code>linux-lts</code> 为兜底，GRUB 平铺菜单默认最新内核；单一内核更新异常时可回退。</p>
   <p class="term-item"><strong>快照（Timeshift / grub-btrfs）</strong> — btrfs 系统快照：Timeshift 负责快照管理，grub-btrfs 把快照加入 GRUB 启动菜单以便回滚；<code>linxira-update</code> 默认在更新前自动创建快照，也可用 <code>linxira-config timeshift enable</code> 一键配置。</p>
@@ -56,5 +57,6 @@ import PageLayout from "../../../../components/PageLayout.astro";
     h2 { font-size: 1.3rem; color: #e2e8f0; margin: 2.2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
     .term-item { margin: 0.9rem 0; color: #94a3b8; line-height: 1.7; }
     .term-item strong { color: #20B8B0; font-weight: 600; }
+  .term-note { color: #94a3b8; font-size: 0.9rem; } 
   </style>
 </PageLayout>
