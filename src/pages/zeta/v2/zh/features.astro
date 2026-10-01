@@ -39,7 +39,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">02</div>
 				<div>
 					<h2>核心能力</h2>
-					<div class="sub">zeta-c 内置默认,而非可选扩展。</div>
+					<div class="sub">zetacode 内置默认,而非可选扩展。</div>
 				</div>
 			</div>
 			<div class="grid-table">
@@ -112,7 +112,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="grid-item"><div class="idx">03</div><h3>轨迹视图</h3><p>逐步查看思考与工具调用,附耗时与 token 计数,原始记录可展开检查。</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>右侧工具坞</h3><p>会话 / 文件 / 追踪 / 插件四窗格常驻导轨,消息附「涉及文件」下拉。</p></div>
 				<div class="grid-item"><div class="idx">05</div><h3>43 套主题</h3><p>完整浅 / 深预设(背景、面板、语法、图表 8 色板全量变量),预水合引导首屏不闪白。</p></div>
-				<div class="grid-item"><div class="idx">06</div><h3>安全远程访问</h3><p><code class="keycap">zeta-c serve</code> 默认仅 loopback;远程访问须配置 <code class="keycap">remote.token</code>,附 CSRF 与点击劫持防护。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>安全远程访问</h3><p><code class="keycap">zetacode serve</code> 默认仅 loopback;远程访问须配置 <code class="keycap">remote.token</code>,附 CSRF 与点击劫持防护。</p></div>
 			</div>
 		</div>
 	</section>
@@ -128,7 +128,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="modes">
 				<div class="mode"><div class="mname"><span class="dot"></span>交互式</div><p>完整 TUI 体验:面板、预览、工具卡片。</p></div>
-				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> 输出即用;<code>--mode json</code> 输出事件流供脚本消费。</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zetacode -p "query"</code> 输出即用;<code>--mode json</code> 输出事件流供脚本消费。</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>stdin/stdout 上的 JSON 协议,供非 Node 集成直接调用。</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>以库的形式嵌入你自己的应用,完整控制代理生命周期。</p></div>
 			</div>
@@ -141,11 +141,11 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">07</div>
 				<div>
 					<h2>聊天平台机器人</h2>
-					<div class="sub">在微信、飞书与 Telegram 里直接使用 zeta-c。统一的 bot 接口,更多平台持续接入。</div>
+					<div class="sub">在微信、飞书与 Telegram 里直接使用 zetacode。统一的 bot 接口,更多平台持续接入。</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3><span class="k">W</span>微信机器人</h3><p>把 zeta-c 挂进微信:对话即提问,任务结果直接回到聊天窗口,会话状态与 CLI / 桌面 / Web UI 无缝衔接。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3><span class="k">W</span>微信机器人</h3><p>把 zetacode 挂进微信:对话即提问,任务结果直接回到聊天窗口,会话状态与 CLI / 桌面 / Web UI 无缝衔接。</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3><span class="k">F</span>飞书机器人</h3><p>接入飞书:群聊与单聊都能唤起代理,卡片与富文本实时反馈任务进度。</p></div>
 				<div class="grid-item"><div class="idx">03</div><h3><span class="k">T</span>Telegram 机器人</h3><p>Telegram 内置 bot 支持:私聊、群组与内联模式,随时随地发起编码任务。</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>统一 Bot 接口</h3><p>一套适配层覆盖所有平台:消息、命令与结果流走同一协议——新增平台只需一个适配器。</p></div>
@@ -209,7 +209,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="install-grid">
 				<div class="install-row"><div class="t">工作区 zeta<small>@linxiraos/main · Rust 二进制</small></div><code class="c">npm install -g @linxiraos/main</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="已复制">复制</button></div>
-				<div class="install-row"><div class="t">编码 Agent zeta-c<small>@linxiraos/zeta · 编码 CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="已复制">复制</button></div>
+				<div class="install-row"><div class="t">编码 Agent zetacode<small>@linxiraos/zeta · 编码 CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="已复制">复制</button></div>
 				<div class="install-row"><div class="t">编辑器 zeta-editor<small>@linxiraos/editor · TTT</small></div><code class="c">npm install -g @linxiraos/editor</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/editor" data-done="已复制">复制</button></div>
 				<div class="install-row"><div class="t">终端 IDE zeta-ide<small>@linxiraos/ide · TermIDE</small></div><code class="c">npm install -g @linxiraos/ide</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/ide" data-done="已复制">复制</button></div>
 			</div>
@@ -230,29 +230,29 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="cmd-group">
 					<h3><span class="dot"></span>工作区(统一入口)</h3>
 					<div class="cmd-row"><code>zeta</code><span>打开工作台(= zetawork / zeta work)</span></div>
-					<div class="cmd-row"><code>zeta code | zeta c</code><span>接力编码 Agent(zeta-c)</span></div>
+					<div class="cmd-row"><code>zeta code | zeta c</code><span>接力编码 Agent(zetacode)</span></div>
 					<div class="cmd-row"><code>zeta editor | zeta e</code><span>接力终端编辑器(zeta-editor)</span></div>
 					<div class="cmd-row"><code>zeta ide | zeta i</code><span>接力终端 IDE(zeta-ide)</span></div>
 					<div class="cmd-row"><code>zeta doctor</code><span>全套件安装状态 + 精确修复命令</span></div>
 					<div class="cmd-row"><code>zeta --help / --version</code><span>工作台帮助与版本</span></div>
 				</div>
 				<div class="cmd-group">
-					<h3><span class="dot"></span>编码 Agent(zeta-c)</h3>
-					<div class="cmd-row"><code>zeta-c</code><span>交互式 TUI(当前目录打开)</span></div>
-					<div class="cmd-row"><code>zeta-c -p "query"</code><span>Print 模式,输出即用</span></div>
-					<div class="cmd-row"><code>zeta-c --mode json</code><span>事件流输出,供脚本消费</span></div>
-					<div class="cmd-row"><code>zeta-c --continue</code><span>回到上一个会话继续</span></div>
-					<div class="cmd-row"><code>zeta-c serve</code><span>Web 工作台网关(浏览器/桌面)</span></div>
-					<div class="cmd-row"><code>zeta-c stats</code><span>本地统计仪表板</span></div>
-					<div class="cmd-row"><code>zeta-c auth</code><span>提供商登录与凭证管理</span></div>
-					<div class="cmd-row"><code>zeta-c update</code><span>自更新 CLI</span></div>
-					<div class="cmd-row"><code>zeta-c acp</code><span>Agent Client Protocol 接入</span></div>
-					<div class="cmd-row"><code>zeta-c install / ssh</code><span>安装面与远程执行辅助</span></div>
+					<h3><span class="dot"></span>编码 Agent(zetacode)</h3>
+					<div class="cmd-row"><code>zetacode</code><span>交互式 TUI(当前目录打开)</span></div>
+					<div class="cmd-row"><code>zetacode -p "query"</code><span>Print 模式,输出即用</span></div>
+					<div class="cmd-row"><code>zetacode --mode json</code><span>事件流输出,供脚本消费</span></div>
+					<div class="cmd-row"><code>zetacode --continue</code><span>回到上一个会话继续</span></div>
+					<div class="cmd-row"><code>zetacode serve</code><span>Web 工作台网关(浏览器/桌面)</span></div>
+					<div class="cmd-row"><code>zetacode stats</code><span>本地统计仪表板</span></div>
+					<div class="cmd-row"><code>zetacode auth</code><span>提供商登录与凭证管理</span></div>
+					<div class="cmd-row"><code>zetacode update</code><span>自更新 CLI</span></div>
+					<div class="cmd-row"><code>zetacode acp</code><span>Agent Client Protocol 接入</span></div>
+					<div class="cmd-row"><code>zetacode install / ssh</code><span>安装面与远程执行辅助</span></div>
 				</div>
 				<div class="cmd-group">
 					<h3><span class="dot"></span>独立工具</h3>
-					<div class="cmd-row"><code>zeta-editor / zeta-e</code><span>终端编辑器(任意终端,含 SSH)</span></div>
-					<div class="cmd-row"><code>zeta-ide / zeta-i</code><span>终端 IDE</span></div>
+					<div class="cmd-row"><code>zetaeditor / zeta-e</code><span>终端编辑器(任意终端,含 SSH)</span></div>
+					<div class="cmd-row"><code>zetaide / zeta-i</code><span>终端 IDE</span></div>
 					<div class="cmd-row"><code>zeta-desktop</code><span>桌面版(内嵌 Web 工作台)</span></div>
 					<div class="cmd-row"><code>… --help</code><span>每个命令都有独立帮助</span></div>
 				</div>

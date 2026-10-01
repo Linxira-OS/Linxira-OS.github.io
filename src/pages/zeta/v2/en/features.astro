@@ -39,7 +39,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">02</div>
 				<div>
 					<h2>Core capabilities</h2>
-					<div class="sub">zeta-c built-in defaults, not optional extensions.</div>
+					<div class="sub">zetacode built-in defaults, not optional extensions.</div>
 				</div>
 			</div>
 			<div class="grid-table">
@@ -112,7 +112,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="grid-item"><div class="idx">03</div><h3>Trace view</h3><p>Step through thinking and tool calls with timing and token counts; raw records expand for inspection.</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>The right-side dock</h3><p>Session / files / tracking / plugins panes as a permanent rail; messages list the files they touched.</p></div>
 				<div class="grid-item"><div class="idx">05</div><h3>43 themes</h3><p>Full light/dark presets (background, panels, syntax, 8-color chart palettes), pre-hydrated so the first paint never flashes.</p></div>
-				<div class="grid-item"><div class="idx">06</div><h3>Safe remote access</h3><p><code class="keycap">zeta-c serve</code> binds loopback only; remote access requires <code class="keycap">remote.token</code>, with CSRF and clickjacking protections.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Safe remote access</h3><p><code class="keycap">zetacode serve</code> binds loopback only; remote access requires <code class="keycap">remote.token</code>, with CSRF and clickjacking protections.</p></div>
 			</div>
 		</div>
 	</section>
@@ -128,7 +128,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="modes">
 				<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI: panels, previews, tool cards.</p></div>
-				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> prints and exits; <code>--mode json</code> streams events for scripts.</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zetacode -p "query"</code> prints and exits; <code>--mode json</code> streams events for scripts.</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and own its whole lifecycle.</p></div>
 			</div>
@@ -141,11 +141,11 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">07</div>
 				<div>
 					<h2>Chat-platform bots</h2>
-					<div class="sub">Use zeta-c directly in WeChat, Feishu, and Telegram. One bot interface; more platforms keep landing.</div>
+					<div class="sub">Use zetacode directly in WeChat, Feishu, and Telegram. One bot interface; more platforms keep landing.</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>WeChat bot</h3><p>Hook zeta-c into WeChat: a conversation is a question, results land back in the chat, and session state stays continuous with CLI / desktop / Web UI.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>WeChat bot</h3><p>Hook zetacode into WeChat: a conversation is a question, results land back in the chat, and session state stays continuous with CLI / desktop / Web UI.</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3>Feishu bot</h3><p>Feishu integration: group and direct chats can summon the agent, with cards and rich text reporting progress live.</p></div>
 				<div class="grid-item"><div class="idx">03</div><h3>Telegram bot</h3><p>First-class Telegram support: private chats, groups, and inline mode — coding tasks from anywhere.</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>One bot interface</h3><p>A single adapter layer covers every platform: messages, commands, and result streams share one protocol — a new platform is one adapter away.</p></div>
@@ -209,7 +209,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="install-grid">
 				<div class="install-row"><div class="t">Workspace zeta<small>@linxiraos/main · Rust binaries</small></div><code class="c">npm install -g @linxiraos/main</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="Copied">Copy</button></div>
-				<div class="install-row"><div class="t">Coding agent zeta-c<small>@linxiraos/zeta · coding CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button></div>
+				<div class="install-row"><div class="t">Coding agent zetacode<small>@linxiraos/zeta · coding CLI</small></div><code class="c">npm install -g @linxiraos/zeta</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button></div>
 				<div class="install-row"><div class="t">Editor zeta-editor<small>@linxiraos/editor · TTT</small></div><code class="c">npm install -g @linxiraos/editor</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/editor" data-done="Copied">Copy</button></div>
 				<div class="install-row"><div class="t">Terminal IDE zeta-ide<small>@linxiraos/ide · TermIDE</small></div><code class="c">npm install -g @linxiraos/ide</code><button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/ide" data-done="Copied">Copy</button></div>
 			</div>
@@ -230,29 +230,29 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="cmd-group">
 					<h3><span class="dot"></span>Workspace (unified entry)</h3>
 					<div class="cmd-row"><code>zeta</code><span>Open the workbench (= zetawork / zeta work)</span></div>
-					<div class="cmd-row"><code>zeta code | zeta c</code><span>Hand off to the coding agent (zeta-c)</span></div>
+					<div class="cmd-row"><code>zeta code | zeta c</code><span>Hand off to the coding agent (zetacode)</span></div>
 					<div class="cmd-row"><code>zeta editor | zeta e</code><span>Hand off to the terminal editor (zeta-editor)</span></div>
 					<div class="cmd-row"><code>zeta ide | zeta i</code><span>Hand off to the terminal IDE (zeta-ide)</span></div>
 					<div class="cmd-row"><code>zeta doctor</code><span>Suite install status + exact fixes</span></div>
 					<div class="cmd-row"><code>zeta --help / --version</code><span>Workspace help and version</span></div>
 				</div>
 				<div class="cmd-group">
-					<h3><span class="dot"></span>Coding agent (zeta-c)</h3>
-					<div class="cmd-row"><code>zeta-c</code><span>Interactive TUI (opens in the current directory)</span></div>
-					<div class="cmd-row"><code>zeta-c -p "query"</code><span>Print mode — output and exit</span></div>
-					<div class="cmd-row"><code>zeta-c --mode json</code><span>Event-stream output for scripts</span></div>
-					<div class="cmd-row"><code>zeta-c --continue</code><span>Resume the most recent session</span></div>
-					<div class="cmd-row"><code>zeta-c serve</code><span>Web workbench gateway (browser/desktop)</span></div>
-					<div class="cmd-row"><code>zeta-c stats</code><span>Local stats dashboard</span></div>
-					<div class="cmd-row"><code>zeta-c auth</code><span>Provider sign-in and credentials</span></div>
-					<div class="cmd-row"><code>zeta-c update</code><span>Self-update the CLI</span></div>
-					<div class="cmd-row"><code>zeta-c acp</code><span>Agent Client Protocol integration</span></div>
-					<div class="cmd-row"><code>zeta-c install / ssh</code><span>Install surface and remote-execution helpers</span></div>
+					<h3><span class="dot"></span>Coding agent (zetacode)</h3>
+					<div class="cmd-row"><code>zetacode</code><span>Interactive TUI (opens in the current directory)</span></div>
+					<div class="cmd-row"><code>zetacode -p "query"</code><span>Print mode — output and exit</span></div>
+					<div class="cmd-row"><code>zetacode --mode json</code><span>Event-stream output for scripts</span></div>
+					<div class="cmd-row"><code>zetacode --continue</code><span>Resume the most recent session</span></div>
+					<div class="cmd-row"><code>zetacode serve</code><span>Web workbench gateway (browser/desktop)</span></div>
+					<div class="cmd-row"><code>zetacode stats</code><span>Local stats dashboard</span></div>
+					<div class="cmd-row"><code>zetacode auth</code><span>Provider sign-in and credentials</span></div>
+					<div class="cmd-row"><code>zetacode update</code><span>Self-update the CLI</span></div>
+					<div class="cmd-row"><code>zetacode acp</code><span>Agent Client Protocol integration</span></div>
+					<div class="cmd-row"><code>zetacode install / ssh</code><span>Install surface and remote-execution helpers</span></div>
 				</div>
 				<div class="cmd-group">
 					<h3><span class="dot"></span>Standalone tools</h3>
-					<div class="cmd-row"><code>zeta-editor / zeta-e</code><span>Terminal editor (any terminal, incl. SSH)</span></div>
-					<div class="cmd-row"><code>zeta-ide / zeta-i</code><span>Terminal IDE</span></div>
+					<div class="cmd-row"><code>zetaeditor / zeta-e</code><span>Terminal editor (any terminal, incl. SSH)</span></div>
+					<div class="cmd-row"><code>zetaide / zeta-i</code><span>Terminal IDE</span></div>
 					<div class="cmd-row"><code>zeta-desktop</code><span>Desktop app (embeds the web workbench)</span></div>
 					<div class="cmd-row"><code>… --help</code><span>Every command ships its own help</span></div>
 				</div>

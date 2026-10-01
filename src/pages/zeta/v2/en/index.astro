@@ -16,7 +16,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<p class="lede">
 					<strong>Zeta</strong> is more than a coding agent. It is <strong>a workspace</strong>: tabs,
 					tilable real-terminal panes, and a fully clickable menu bar — with the
-					<strong>coding agent</strong> (zeta-c), the <strong>editor</strong> (zeta-e), and the
+					<strong>coding agent</strong> (zetacode), the <strong>editor</strong> (zeta-e), and the
 					<strong>terminal IDE</strong> (zeta-i) living inside it.
 					Linux is the primary platform; Windows is supported.
 				</p>
@@ -41,7 +41,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 				<div class="term-panes">
 					<div class="pane">
-						<div class="pane-h on"><span class="ph-t">● zeta-c</span><span class="ctl">+ ↔ ↕ ✕</span></div>
+						<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">+ ↔ ↕ ✕</span></div>
 						<div class="out">
 							<div><span class="prompt">❯</span> zeta code</div>
 							<div><b>▸ planning</b> refactor: pane layout</div>
@@ -88,19 +88,19 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/zeta</span>
-					<div><span class="cmd">zeta-c</span><span class="alias">zeta-cli · zetacode</span></div>
+					<div><span class="cmd">zetacode</span><span class="alias">zetacode · zetacodeli</span></div>
 					<p>Coding agent CLI: subagents, plan mode, LSP/DAP, hindsight memory, hashline editing, and time-travel rules out of the box.</p>
 					<div class="foot">Reach it with <b>zeta code</b> or <b>zeta c</b></div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/editor</span>
-					<div><span class="cmd">zeta-editor</span><span class="alias">zeta-e</span></div>
+					<div><span class="cmd">zetaeditor</span><span class="alias">zeta-editor · zeta-e</span></div>
 					<p>Terminal editor (TTT, vendored Go): works in any terminal, including over SSH — sessions, edits, and reviews need no GUI.</p>
 					<div class="foot">Reach it with <b>zeta editor</b> or <b>zeta e</b></div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/ide</span>
-					<div><span class="cmd">zeta-ide</span><span class="alias">zeta-i</span></div>
+					<div><span class="cmd">zetaide</span><span class="alias">zeta-ide · zeta-i</span></div>
 					<p>Terminal IDE (TermIDE, vendored Rust): a near-graphical engineering experience, in the terminal.</p>
 					<div class="foot">Reach it with <b>zeta ide</b> or <b>zeta i</b></div>
 				</a>
@@ -136,7 +136,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">03</div>
 				<div>
 					<h2>A coding agent, out of the box</h2>
-					<div class="sub">zeta-c is built on the OMP runtime: core capabilities are built-in defaults, not optional extensions.</div>
+					<div class="sub">zetacode is built on the OMP runtime: core capabilities are built-in defaults, not optional extensions.</div>
 				</div>
 			</div>
 			<div class="grid-table">
@@ -183,7 +183,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 				<p class="install-note">
 					Then: <code>zeta</code> opens the workspace, <code>zeta doctor</code> checks the whole suite.
-					Coding agent alone: <code>npm install -g @linxiraos/zeta</code> (zeta-c).
+					Coding agent alone: <code>npm install -g @linxiraos/zeta</code> (zetacode).
 					Slow mirror? Try <code>--registry=https://mirrors.cloud.tencent.com/npm/</code>.
 					Desktop app on <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>.
 				</p>
@@ -231,7 +231,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="modes">
 				<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI: panels, previews, tool cards.</p></div>
-				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> prints and exits; <code>--mode json</code> streams events.</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zetacode -p "query"</code> prints and exits; <code>--mode json</code> streams events.</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and own its lifecycle.</p></div>
 			</div>
@@ -264,7 +264,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">08</div>
 				<div>
 					<h2>Drive Zeta from chat apps</h2>
-					<div class="sub">Plug zeta-c into WeChat, Feishu, and Telegram — ask, dispatch tasks, and receive results where you already talk.</div>
+					<div class="sub">Plug zetacode into WeChat, Feishu, and Telegram — ask, dispatch tasks, and receive results where you already talk.</div>
 				</div>
 			</div>
 			<div class="tag-row">

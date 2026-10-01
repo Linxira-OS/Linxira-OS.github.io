@@ -15,7 +15,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<h1>一个终端,<br>装下<span class="accent">整个工作台。</span></h1>
 				<p class="lede">
 					<strong>Zeta</strong> 不只是编码代理。它是<strong>一个工作区</strong>:标签页、可分裂的真实终端窗格、
-					全鼠标可控的菜单栏;工作区里住着<strong>编码 Agent</strong>(zeta-c)、<strong>编辑器</strong>(zeta-e)和<strong>终端 IDE</strong>(zeta-i)。Linux 主力平台,Windows 同样支持。
+					全鼠标可控的菜单栏;工作区里住着<strong>编码 Agent</strong>(zetacode)、<strong>编辑器</strong>(zeta-e)和<strong>终端 IDE</strong>(zeta-i)。Linux 主力平台,Windows 同样支持。
 				</p>
 				<div class="cta-row">
 					<a class="cta primary" href="#install">开始使用</a>
@@ -38,7 +38,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 				<div class="term-panes">
 					<div class="pane">
-						<div class="pane-h on"><span class="ph-t">● zeta-c</span><span class="ctl">+ ↔ ↕ ✕</span></div>
+						<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">+ ↔ ↕ ✕</span></div>
 						<div class="out">
 							<div><span class="prompt">❯</span> zeta code</div>
 							<div><b>▸ planning</b> refactor: pane layout</div>
@@ -85,19 +85,19 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/zeta</span>
-					<div><span class="cmd">zeta-c</span><span class="alias">zeta-cli · zetacode</span></div>
+					<div><span class="cmd">zetacode</span><span class="alias">zetacode · zetacodeli</span></div>
 					<p>编码 Agent CLI:子代理、计划模式、LSP/DAP、事后记忆、hashline 编辑、时间旅行规则开箱即用。</p>
 					<div class="foot">命令:<b>zeta code</b> 或 <b>zeta c</b> 直达</div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/editor</span>
-					<div><span class="cmd">zeta-editor</span><span class="alias">zeta-e</span></div>
+					<div><span class="cmd">zetaeditor</span><span class="alias">zeta-editor · zeta-e</span></div>
 					<p>终端编辑器(TTT,vendored Go):任意终端可用,包括 SSH 远程——会话、编辑、评审不需要 GUI。</p>
 					<div class="foot">命令:<b>zeta editor</b> 或 <b>zeta e</b></div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/ide</span>
-					<div><span class="cmd">zeta-ide</span><span class="alias">zeta-i</span></div>
+					<div><span class="cmd">zetaide</span><span class="alias">zeta-ide · zeta-i</span></div>
 					<p>终端 IDE(TermIDE,vendored Rust):在终端里获得接近图形 IDE 的工程体验。</p>
 					<div class="foot">命令:<b>zeta ide</b> 或 <b>zeta i</b></div>
 				</a>
@@ -133,7 +133,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">03</div>
 				<div>
 					<h2>编码 Agent,开箱即用</h2>
-					<div class="sub">zeta-c 基于 OMP 运行时:该有的能力都是内置默认,而非可选扩展。</div>
+					<div class="sub">zetacode 基于 OMP 运行时:该有的能力都是内置默认,而非可选扩展。</div>
 				</div>
 			</div>
 			<div class="grid-table">
@@ -180,7 +180,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 				<p class="install-note">
 					然后:<code>zeta</code> 打开工作台,<code>zeta doctor</code> 检查全套件安装状态。
-					编码 Agent 单装:<code>npm install -g @linxiraos/zeta</code>(zeta-c)。
+					编码 Agent 单装:<code>npm install -g @linxiraos/zeta</code>(zetacode)。
 					国内网络慢时可用腾讯镜像 <code>--registry=https://mirrors.cloud.tencent.com/npm/</code>。
 					桌面版(图形界面)见 <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>。
 				</p>
@@ -228,7 +228,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 			</div>
 			<div class="modes">
 				<div class="mode"><div class="mname"><span class="dot"></span>交互式</div><p>完整 TUI 体验:面板、预览、工具卡片。</p></div>
-				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta-c -p "query"</code> 输出即用;<code>--mode json</code> 输出事件流。</p></div>
+				<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zetacode -p "query"</code> 输出即用;<code>--mode json</code> 输出事件流。</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>stdin/stdout 上的 JSON 协议,供非 Node 集成调用。</p></div>
 				<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>以库的形式嵌入你的应用,控制代理生命周期。</p></div>
 			</div>
@@ -261,7 +261,7 @@ import ZetaLayoutV2 from "../../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">08</div>
 				<div>
 					<h2>在聊天平台里驱动 Zeta</h2>
-					<div class="sub">把 zeta-c 接入微信、飞书与 Telegram——在熟悉的消息应用里提问、发起任务、接收结果。</div>
+					<div class="sub">把 zetacode 接入微信、飞书与 Telegram——在熟悉的消息应用里提问、发起任务、接收结果。</div>
 				</div>
 			</div>
 			<div class="tag-row">
