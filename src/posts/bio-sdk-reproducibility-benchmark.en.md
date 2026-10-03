@@ -55,7 +55,7 @@ Raw reads and the reference index stay on the lab workstation and are not commit
 | Item | Value |
 |---|---|
 | OS | CachyOS (Arch-based), kernel 7.2.3-1-cachyos |
-| CPU | Intel Xeon E5-2676 v3 @ 2.40GHz (24 threads; runs pinned to cores 8–15, nice 10) |
+| CPU | Intel Xeon E5-2676 v3 @ 2.40GHz (whole machine 12C/24T; 8C/16T allocated to this task, 4C reserved for the system; runs pinned to its logical cores 8–15, nice 10) |
 | Memory | 32 GiB DDR3-1600 MT/s (2×16 GiB DIMM) |
 | GPU | AMD Radeon RX 580 2048SP (Polaris 20, amdgpu driver) — **unused**; all workloads are CPU-only |
 | Storage | System/logs: Kingston SA400S37 120GB **SSD**; benchmark I/O volume: WD WD5000AZLX 500GB 7200rpm **HDD**; reference volume: Seagate ST3000DM001 3TB **HDD** |
@@ -145,7 +145,7 @@ Per-run detail (decompression/quantification seconds; CPU utilization = (user+sy
 
 ### 5.4 Deep-library backfill batch (26 samples, ~520M reads, one real reboot)
 
-From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.2 (same salmon 2.7.0, same index, `-l A -p 8 --validateMappings --seqBias --gcBias`, 8 threads pinned to cores 8–15), we backfilled **26 paired-end samples** from the same 172-run study that the existing pipeline **had not yet computed**. These samples have no existing output to compare against — they are precisely the part waiting to be computed — so the acceptance criteria were threefold: ① complete output row count and transcript ID set (33,955/33,955); ② the pipeline itself had already achieved bit-level reproduction with r = 1.000000 on comparable samples in §5.2; ③ structured logging throughout (per-run quantify.json / logs / CPU accounting).
+From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.2 (same salmon 2.7.0, same index, `-l A -p 8 --validateMappings --seqBias --gcBias`, 8 threads pinned to the logical cores 8–15 described in §3.1), we backfilled **26 paired-end samples** from the same 172-run study that the existing pipeline **had not yet computed**. These samples have no existing output to compare against — they are precisely the part waiting to be computed — so the acceptance criteria were threefold: ① complete output row count and transcript ID set (33,955/33,955); ② the pipeline itself had already achieved bit-level reproduction with r = 1.000000 on comparable samples in §5.2; ③ structured logging throughout (per-run quantify.json / logs / CPU accounting).
 
 **Batch results**: 26/26 passed, every quant.sf exactly 33,955 rows; total decompression 8,891 s and quantification 6,551 s (≈4.3 hours of pure compute, excluding NAS pulls); median quantification CPU utilization 681% (8 threads nearly saturated). Per-run detail (reads = NumReads total, util = (user+sys)/wall; the edge-case sample SRR24322347 is moved to the anomaly detail below and excluded from the homogeneous rows):
 
@@ -183,11 +183,11 @@ From 2026-09-14 to 09-15, using exactly the same pipeline and parameters as §5.
 |---|---|---|---|---|---|---|
 | SRR24322347 | 0.02 | 4,257 | 162 | 64 | 690.9% | near-empty library edge case (12.5% of the index), see observation 2 |
 
-**Observation 1: CPU-seconds are far more stable than wall time — which is exactly why CPU accounting is recorded per run.** The same group of deep-library samples (SRR1904944x, 16.9–18.5 M reads) completed under three load conditions: concurrent with the main analysis workload (util 68–96%), quantification wall time was 806–1,063 s; after the reboot, with near-exclusive use of the pinned cores (util 659–694%), comparable samples took only 72–154 s; an intermediate state (SRR243 group, util ~213–241%) fell in between. But converted to CPU time (user+sys), samples of this size converge to roughly 475–772 CPU·s, while wall time spreads over 15× (72–1,063 s). The conclusion matches the honest boundaries in §5.5: **in this mechanical-disk + shared-workstation deployment environment, wall time describes I/O and concurrency, while CPU-seconds describe the computation itself**. Any wall-time comparison across load states should start from the util column.
+**Observation 1: CPU-seconds are far more stable than wall time — which is exactly why CPU accounting is recorded per run.** The same group of deep-library samples (SRR1904944x, 16.9–18.5 M reads) completed under three load conditions: concurrent with other analysis tasks on the same server (util 68–96%; see the resource allocation in §3.1), quantification wall time was 806–1,063 s; after the reboot, with near-exclusive use of the pinned cores (util 659–694%), comparable samples took only 72–154 s; an intermediate state (SRR243 group, util ~213–241%) fell in between. But converted to CPU time (user+sys), samples of this size converge to roughly 475–772 CPU·s, while wall time spreads over 15× (72–1,063 s). The conclusion matches the honest boundaries in §5.5: **in this mechanical-disk + shared-workstation deployment environment, wall time describes I/O and concurrency, while CPU-seconds describe the computation itself**. Any wall-time comparison across load states should start from the util column.
 
 **Observation 2: the empty-library edge case was exposed automatically again.** SRR24322347 has only 16,927 reads and 4,257 expressed transcripts (12.5% of the index) — a nearly idle library. Like the non-mRNA case in §5.3, it was not silently folded into any mean; it remains a separate line in the anomaly detail for downstream researchers to judge, and its 64 s quantification time is proportional to its read count — the processing itself was normal.
 
-**Automatic resumption across a real reboot.** The batch deliberately crossed the host's daily 06:50 scheduled reboot: the machine rebooted at 06:50:30, and at 06:50:50 (20 seconds after boot) a user-level systemd oneshot unit automatically triggered the resume — completed samples were skipped by output existence (4), the remaining 22 continued in order, and the batch finished at 09:24:18 with zero manual intervention. Before starting, the resume entry cleans two kinds of interruption debris: half-decompressed FASTQ files in tmp, and partial writes where "quant.sf exists but the CSV has no final row" (preventing incomplete artifacts from being mistaken for completed ones). Each sample directory includes a README (new_computation annotation: source accession, quantifier and parameters, verification records); the batch ledger (per-run CPU model / pinned cores / threads / utilization) is in bench/tier26-benchmark.csv.
+**Automatic resumption across a real reboot.** The batch deliberately crossed the host's daily 06:50 scheduled reboot: the machine rebooted at 06:50:30, and at 06:50:50 (20 seconds after boot) a user-level systemd oneshot unit automatically triggered the resume — completed samples were skipped by output existence (4), the remaining 22 continued in order, and the batch finished at 09:24:18 with zero manual intervention. Before starting, the resume entry cleans two kinds of interruption debris: half-decompressed FASTQ files in tmp, and partial writes where "quant.sf exists but the CSV has no final row" (preventing incomplete artifacts from being mistaken for completed ones). Each sample directory includes a README (new_computation annotation: source accession, quantifier and parameters, verification records); the batch ledger (per-run CPU model / pinned cores / threads / utilization) is in bench/batch-ledger.csv.
 
 ### 5.5 Honest boundaries (the single authoritative list — what we do not claim)
 
@@ -248,10 +248,10 @@ linxira-bio expression quantify tmp/run-fq/SRR1460477_1.fastq \
 Concrete example starting from the NAS authoritative copy (the same input as §6.1's control experiment):
 
 ```bash
-scp -r <NAS>:/mnt/disk1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
+scp -r <NAS>:/mnt/storage-1/tier23/SRR1460477 . && fasterq-dump --split-files SRR1460477
 gzip SRR1460477_1.fastq SRR1460477_2.fastq
 linxira-bio expression quantify SRR1460477_1.fastq.gz SRR1460477_2.fastq.gz \
-  --index <pinku1_cds_idx> --threads 8 --seq-bias --gc-bias --output quant.sf
+  --index <reference_cds_idx> --threads 8 --seq-bias --gc-bias --output quant.sf
 ```
 
 (The comparison target is the reference pipeline's quant.sf for the same run; salmon must be ≥ 2.7.0 — older versions reject v2 indexes.)
@@ -302,7 +302,7 @@ The first question a "local-first" bioinformatics toolkit must answer is not "ho
 
 ## Appendix: the developer's note (2026-09-18)
 
-Honestly, even I find this batch of numbers abstract. r = 1.000000, identical SHA256s — it may not land with anyone at first hearing. But the point is plain: same tool, same parameters, same data — run it again and you should get the exact same result. We did; and the moment one parameter is wrong, it shows immediately (the control group dropped to r = 0.981). The data is what it is, and we publish it as measured. More than hoping people remember any particular number, what I want to make plain is this: results here can be strictly verified, errors are reported loudly instead of quietly producing numbers, and every boundary is laid out in the open.
+To be honest: this batch of numbers reads somewhat "abstract". r = 1.000000, SHA256-identical files — they do not say "our tool is more accurate" or "faster". They state something plainer: the same deterministic ruler, given aligned parameters and identical input, must yield the same string of bytes on two independent runs — we achieved that, and we can see it immediately whenever the ruler is handled wrong (control group r = 0.981). The factual data is what it is, and we publish it exactly as measured. If readers take one thing away from this report, we would like it to be: **the orchestration layer can be strictly verified, anomalies are rejected loudly, and every boundary is written down** — not any single pretty number among them.
 
 ## Version & Declarations
 
