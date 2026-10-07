@@ -18,6 +18,7 @@ import DocsLayout from "../../../components/DocsLayout.astro";
       <a href="/zh/docs/config-hub/">配置中心</a>
       <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
       <a href="/zh/docs/desktop/">桌面环境</a>
+      <a href="/zh/docs/updates/">更新与快照回滚</a>
     </div>
     <div class="section">
       <div class="sidebar-title">开发者</div>
@@ -66,6 +67,11 @@ import DocsLayout from "../../../components/DocsLayout.astro";
     <p>底层使用 pacman 与签名仓库，安装后由 Shelly 提供图形软件管理。</p>
   </a>
 
+  <a href="/zh/docs/updates/" class="doc-card">
+    <h3>系统更新与快照回滚</h3>
+    <p>每小时自动检查、每个 pacman 事务前自动快照、GRUB 一键回滚；可选全自动更新 EnableAutoApply（默认关）。</p>
+  </a>
+
   <a href="/zh/docs/apps/" class="doc-card">
     <h3>官方软件</h3>
     <p>全部 17 个自研工具：Welcome、Config Hub、Shelly、Package Center、Component Manager、硬件与恢复工具、系统组件。</p>
@@ -98,6 +104,7 @@ import DocsLayout from "../../../components/DocsLayout.astro";
     <span class="keyword">Arch 官方仓库</span>
     <span class="keyword">KDE Plasma</span>
     <span class="keyword">Btrfs 恢复</span>
+    <span class="keyword">快照回滚</span>
     <span class="keyword">审核配置</span>
   </div>
 </DocsLayout>

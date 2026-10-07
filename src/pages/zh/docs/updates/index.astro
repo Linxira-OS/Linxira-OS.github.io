@@ -1,0 +1,175 @@
+---
+import DocsLayout from "../../../../components/DocsLayout.astro";
+---
+<DocsLayout lang="zh" active="docs" title="系统更新与快照回滚 — Linxira OS">
+  <aside slot="sidebar">
+      <div class="section">
+        <div class="sidebar-title">开始</div>
+        <a href="/zh/docs/">概述</a>
+        <a href="/zh/docs/install/">安装指南</a>
+        <a href="/zh/docs/quick-start/">快速开始</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">用户指南</div>
+        <a href="/zh/docs/package-managers/">包管理器</a>
+        <a href="/zh/docs/ecosystem/">软件生态</a>
+        <a href="/zh/docs/apps/">官方软件</a>
+        <a href="/zh/docs/config-hub/">配置中心</a>
+        <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
+        <a href="/zh/docs/desktop/">桌面环境</a>
+        <a href="/zh/docs/updates/" class="active">更新与快照回滚</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">开发者</div>
+        <a href="/zh/docs/contributing/">参与贡献</a>
+        <a href="/zh/docs/building/">构建 ISO</a>
+        <a href="/zh/docs/repository-structure/">仓库结构</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">参考</div>
+        <a href="/zh/legal/license/">开源协议</a>
+        <a href="/zh/docs/glossary/">术语表</a>
+        <a href="/zh/docs/faq/">常见问题</a>
+      </div>
+  </aside>
+
+      <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
+      <h1>系统更新与快照回滚</h1>
+      <p>Linxira OS 是滚动发行：安全补丁上游一发布即可获得，不用等版本周期。配套的安全网也是自动的——系统每小时静默检查更新，<strong>每个 pacman 事务前自动创建 Timeshift 快照</strong>，真出问题时重启在 GRUB 菜单里选一下快照就能回滚。本文覆盖这套机制的日常用法，以及可选的「全自动更新」开关 <code>EnableAutoApply</code>。</p>
+
+      <h2>1. 自动检查：默认开启，无需动手</h2>
+      <p>装好系统后不需要装任何「更新管理器」，检查机制随 <code>linxira-update</code> 包自动生效：</p>
+      <ul>
+        <li><strong>随首次登录自动启用</strong>：包自带 systemd 用户 preset（<code>/usr/lib/systemd/user-preset/80-linxira-update.preset</code>），用户首次登录时 <code>linxira-update.timer</code> 自动启用。</li>
+        <li><strong>检查节奏</strong>：开机 2 分钟后先查一次，之后每 1 小时一次；<code>Persistent=true</code>，关机错过的检查会在下次开机补跑。</li>
+        <li><strong>检查动作</strong>：每小时执行 <code>linxira-update --check</code>，底层调用 <code>checkupdates</code>（超时 120 秒，硬错误自动重试一次），只查询不安装。</li>
+        <li><strong>结果落盘</strong>：检查结果原子写入 <code>~/.local/state/linxira-update/status.json</code>。</li>
+        <li><strong>三处入口读同一份结果</strong>：Welcome 的更新卡片、系统托盘图标、桌面通知（<code>notify-send</code>）都读这个文件，不做二次查询。</li>
+      </ul>
+      <p>想立刻手动查一次：</p>
+      <pre><code>linxira-update --check</code></pre>
+      <p><code>status.json</code>（version 1）的字段：</p>
+      <table>
+        <tr><th>字段</th><th>说明</th></tr>
+        <tr><td><code>check_status</code></td><td><code>ok</code>（检查成功）/ <code>error</code>（检查失败）/ <code>incomplete</code>（有包查不到来源，未谎报最新）</td></tr>
+        <tr><td><code>pre_snapshot_id</code></td><td>可选，字符串。自动应用更新前创建的快照 ID（见第 5 节）</td></tr>
+        <tr><td><code>auto_apply</code></td><td>可选，布尔。本次是否执行了全自动更新，拒绝时附带原因（见第 5 节）</td></tr>
+      </table>
+
+      <h2>2. 更新系统的几种方式</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p><strong>Welcome 一键更新</strong>：打开 Linxira Welcome，更新卡片会显示检查结果，点击即可启动更新（Welcome 只是启动器，实际执行的是 <code>linxira-update --launch</code>，没有内嵌第二套更新逻辑）。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p><strong>命令行更新</strong>：终端直接运行 <code>linxira-update</code>，交互式确认后执行。</p>
+          <pre><code>linxira-update</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p><strong>手动 pacman 同样安全</strong>：<code>sudo pacman -Syu</code> 随时可用。自动快照由 pacman 钩子实现，对<strong>任何</strong> pacman 事务生效（见第 3 节），不走 linxira-update 也有快照保护。</p>
+        </div>
+      </div>
+      <h3>更新范围与边界</h3>
+      <ul>
+        <li>默认更新<strong>全部已配置的 pacman 仓库</strong>：签名仓库 <code>[linxira]</code> + Arch 官方 <code>core</code>/<code>extra</code>，一次到位、不做部分升级。</li>
+        <li>AUR 与 Flatpak <strong>默认不碰</strong>，需要在配置里显式开启（<code>EnableAUR</code> / <code>EnableFlatpak</code>）。</li>
+        <li><code>linxira-*</code> 自有包<strong>永远不会</strong>被送给 AUR helper——它们只来自签名仓库。</li>
+        <li>某个包查不到来源时，检查结果记为 <code>incomplete</code>，不会谎报「已是最新」。</li>
+      </ul>
+
+      <h2>3. 快照：每个 pacman 事务前自动执行</h2>
+      <p>系统内置 pacman 钩子 <code>/etc/pacman.d/hooks/linxira-timeshift-autosnap.hook</code>：<code>PreTransaction</code> 阶段、匹配 <code>Upgrade</code>/<code>Install</code>/<code>Remove</code> 全部操作、目标 <code>*</code>——也就是说，<strong>任何</strong> pacman 事务（系统升级、装组件、甚至你手敲的 <code>pacman -R</code>）动手改系统之前，都会先执行 <code>timeshift --create --tags O</code> 记录当前状态。</p>
+      <ul>
+        <li><strong>成本近零</strong>：btrfs 快照写时复制，初始几乎不占空间，之后只有被改动的数据产生增量。</li>
+        <li><strong>自动修剪</strong>：保留最近 20 个快照，旧的自动清理，不用手动管空间。</li>
+        <li><strong>软门控（刻意设计）</strong>：系统未配置 Timeshift（无 <code>/etc/timeshift/timeshift.json</code>）时静默跳过；快照失败也<strong>不会阻塞事务</strong>——PreTransaction 返回非零会中止整个事务，把它做成硬依赖反而会让「保底手段」变成「单点故障」。</li>
+      </ul>
+      <h3>定时快照</h3>
+      <p>除了「事务前」，还有「按时间/按开机」的周期快照。安装时已由安装器自动配置（btrfs 模式，<strong>每日 3 份 + 每次开机 3 份</strong>）；运行期随时用 <code>linxira-config</code> 查看 or 开关，底层与安装期是同一个幂等脚本：</p>
+      <pre><code>linxira-config timeshift status    # 查看当前配置
+linxira-config timeshift enable    # 启用（幂等）
+linxira-config timeshift disable   # 停用</code></pre>
+
+      <h2>4. 出问题怎么办：重启，在 GRUB 里选快照</h2>
+      <p>快照不是摆设，<code>grub-btrfsd</code> 服务（<code>--timeshift-auto</code> 模式）会自动探测 Timeshift 快照并生成对应 GRUB 启动项；<code>grub-btrfs-overlayfs</code> 已写入 mkinitcpio HOOKS，快照条目以只读 overlay 方式引导。</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p><strong>重启</strong>，在 GRUB 菜单里找到快照条目（按时间排列，选更新之前的那一个）。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p><strong>只读验证</strong>：从快照条目启动的是「那个时间点的完整系统」（含当时的内核、驱动与用户态软件），但以只读方式运行、不落盘——先确认问题确实是这次更新引起的。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p><strong>确认后恢复</strong>：验证无误后执行恢复（Timeshift 图形界面或 <code>sudo timeshift --restore</code>），系统回到更新前状态。想重试更新也没问题——下次更新前照样会自动快照。</p>
+        </div>
+      </div>
+      <div class="note">💡 内核更新导致无法开机这类问题，优先用 GRUB 菜单里的 <code>linux-lts</code> 备用内核启动（双内核兜底）；快照回滚针对的是「用户态包更新把系统搞坏」这一类问题。两层分工详见博客《<a href="/zh/blog/btrfs-snapshots-rollback/">btrfs 快照与回滚</a>》。</div>
+
+      <h2>5. 全自动更新：EnableAutoApply（默认关闭）</h2>
+      <p>检查到更新后，连「点一下确认」都省掉——自动完成「快照 → 全量升级」。这个开关<strong>默认关闭</strong>，适合放在固定网络环境下、希望无人值守保持最新的机器。</p>
+      <h3>开启方法</h3>
+      <p>编辑 <code>~/.config/linxira-update/linxira-update.conf</code>，加裸键一行（与 <code>EnableAUR</code> 同风格，单独一行即可）：</p>
+      <pre><code>EnableAutoApply</code></pre>
+      <p>删掉这一行即恢复默认关闭。</p>
+      <h3>硬门控：四个条件全满足才会自动动系统</h3>
+      <p>开启后，<code>--check</code> 一旦发现更新，先做门控检查，<strong>全部满足</strong>才继续：</p>
+      <ol>
+        <li>根文件系统是 <strong>btrfs</strong>；</li>
+        <li><code>/etc/timeshift/timeshift.json</code> 存在（Timeshift 已配置）；</li>
+        <li>mkinitcpio HOOKS 包含 <code>grub-btrfs-overlayfs</code>（快照可引导）；</li>
+        <li><code>grub-btrfsd</code> 单元已启用（快照会进 GRUB 菜单）。</li>
+      </ol>
+      <p>四项齐备后执行：<strong>显式创建快照并校验成功</strong> → 非交互全量升级（<code>pacman -Syu --noconfirm</code>）→ 把快照 ID 写入 <code>status.json</code> 的 <code>pre_snapshot_id</code>。</p>
+      <h3>拒绝与降级</h3>
+      <p><strong>任一门控不满足，或快照创建失败</strong>，本次自动应用直接拒绝：保持「只检查 + 通知」的原有行为，<code>status.json</code> 记 <code>auto_apply: false</code> 及原因。快照打不出来就不碰系统，这是硬规则，没有例外路径。</p>
+      <ul>
+        <li><strong>非 btrfs 天然不支持</strong>：服务器模式、WSL、ext4 安装都会被门控拒绝，保持手动更新。</li>
+        <li><strong>自动应用不碰 AUR/Flatpak</strong>，也<strong>不做白名单式部分升级</strong>——Arch 纪律：要升就全量升，部分升级出的问题不属于支持范围。</li>
+      </ul>
+      <div class="warn">⚠️ 全自动更新意味着「补丁到达即安装」，极端情况下一个坏更新会在无人值守时进入系统——此时第 4 节的快照回滚就是兜底。对可用性敏感的生产机器，建议保持默认关闭、看到通知后再手动更新。</div>
+
+      <h2>命令速查表</h2>
+      <table>
+        <tr><th>命令 / 位置</th><th>作用</th></tr>
+        <tr><td><code>linxira-update --check</code></td><td>立即检查更新（不安装）</td></tr>
+        <tr><td><code>linxira-update</code></td><td>交互式检查并更新</td></tr>
+        <tr><td><code>~/.local/state/linxira-update/status.json</code></td><td>最近一次检查结果（Welcome/托盘/通知读同一文件）</td></tr>
+        <tr><td><code>linxira-config timeshift status</code></td><td>查看快照配置与状态</td></tr>
+        <tr><td><code>linxira-config timeshift enable / disable</code></td><td>启用 / 停用周期快照（每日 3 + 开机 3）</td></tr>
+        <tr><td><code>sudo timeshift --list</code></td><td>列出现有快照</td></tr>
+        <tr><td><code>sudo timeshift --restore</code></td><td>恢复到指定快照</td></tr>
+        <tr><td>conf 中一行 <code>EnableAutoApply</code></td><td>开启全自动更新（默认关闭，硬门控保护）</td></tr>
+      </table>
+
+      <p>相关页面：<a href="/zh/docs/install/">安装指南</a>（btrfs + Timeshift 分区方案）、<a href="/zh/docs/apps/">官方软件</a>（linxira-update 与其他自研工具）、<a href="/zh/docs/config-hub/">Config Hub</a>（<code>timeshift</code> 子命令）、博客《<a href="/zh/blog/btrfs-snapshots-rollback/">btrfs 快照与回滚</a>》（设计原理与演练建议）。</p>
+
+  <style>
+ul, ol { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+pre { background: #111827; border-left: 3px solid #20B8B0; padding: 1rem 1.2rem; overflow-x: auto; margin-bottom: 1.2rem; }
+pre code { background: none; padding: 0; color: #67e8f9; font-size: 0.88rem; }
+.note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.3); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 1.2rem 0; color: #a7f3d0; }
+.warn { background: rgba(243,111,93,0.08); border: 1px solid rgba(243,111,93,0.35); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 1.2rem 0; color: #fecaca; }
+.step { display: flex; gap: 1rem; margin: 1.5rem 0; }
+.step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+.step-body { flex: 1; }
+.step-body p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+th { background: rgba(30,41,59,0.6); color: #e2e8f0; text-align: left; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+td { color: #94a3b8; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+h3 { font-size: 1.1rem; color: #e2e8f0; margin: 1.6rem 0 0.6rem; }
+  </style>
+</DocsLayout>

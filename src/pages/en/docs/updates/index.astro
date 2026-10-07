@@ -1,0 +1,175 @@
+---
+import DocsLayout from "../../../../components/DocsLayout.astro";
+---
+<DocsLayout lang="en" active="docs" title="System Updates &amp; Snapshot Rollback — Linxira OS">
+  <aside slot="sidebar">
+      <div class="section">
+        <div class="sidebar-title">Getting Started</div>
+        <a href="/en/docs/">Overview</a>
+        <a href="/en/docs/install/">Installation</a>
+        <a href="/en/docs/quick-start/">Quick Start</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">User Guide</div>
+        <a href="/en/docs/package-managers/">Package Managers</a>
+        <a href="/en/docs/ecosystem/">Ecosystem</a>
+        <a href="/en/docs/apps/">Official Apps</a>
+        <a href="/en/docs/config-hub/">Config Hub</a>
+        <a href="/en/docs/remote-access/">Remote Access (SSH)</a>
+        <a href="/en/docs/desktop/">Desktop</a>
+        <a href="/en/docs/updates/" class="active">Updates &amp; Rollback</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">Developers</div>
+        <a href="/en/docs/contributing/">Contributing</a>
+        <a href="/en/docs/building/">Building ISO</a>
+        <a href="/en/docs/repository-structure/">Repository Structure</a>
+      </div>
+      <div class="section">
+        <div class="sidebar-title">Reference</div>
+        <a href="/en/legal/license/">License</a>
+        <a href="/en/docs/glossary/">Glossary</a>
+        <a href="/en/docs/faq/">FAQ</a>
+      </div>
+  </aside>
+
+      <a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← Back to Docs</a>
+      <h1>System Updates &amp; Snapshot Rollback</h1>
+      <p>Linxira OS is a rolling release: security patches become available as soon as upstream publishes them, with no release cycle to wait for. The safety net is automatic too — the system quietly checks for updates every hour, <strong>a Timeshift snapshot is created before every pacman transaction</strong>, and if anything breaks, picking the snapshot entry in the GRUB menu at reboot rolls you back. This page covers everyday use of that machinery, plus the optional fully-automatic update switch <code>EnableAutoApply</code>.</p>
+
+      <h2>1. Automatic Checks: On by Default, Hands-Free</h2>
+      <p>No "update manager" needs installing after setup — the check mechanism ships with the <code>linxira-update</code> package and activates itself:</p>
+      <ul>
+        <li><strong>Enabled at first login</strong>: the package ships a systemd user preset (<code>/usr/lib/systemd/user-preset/80-linxira-update.preset</code>), so <code>linxira-update.timer</code> is enabled automatically the first time you log in.</li>
+        <li><strong>Cadence</strong>: first check 2 minutes after boot, then hourly; <code>Persistent=true</code> means checks missed while powered off are caught up at next boot.</li>
+        <li><strong>What it does</strong>: each run executes <code>linxira-update --check</code>, which calls <code>checkupdates</code> underneath (120 s timeout, hard failures retried once). It only queries — nothing is installed.</li>
+        <li><strong>Result on disk</strong>: the outcome is atomically written to <code>~/.local/state/linxira-update/status.json</code>.</li>
+        <li><strong>Three surfaces, one file</strong>: the Welcome update card, the tray icon, and desktop notifications (<code>notify-send</code>) all read that file — no second query is made.</li>
+      </ul>
+      <p>To check once manually:</p>
+      <pre><code>linxira-update --check</code></pre>
+      <p>Fields of <code>status.json</code> (version 1):</p>
+      <table>
+        <tr><th>Field</th><th>Meaning</th></tr>
+        <tr><td><code>check_status</code></td><td><code>ok</code> (check succeeded) / <code>error</code> (check failed) / <code>incomplete</code> (some package's origin could not be determined — never falsely reported as up to date)</td></tr>
+        <tr><td><code>pre_snapshot_id</code></td><td>Optional, string. ID of the snapshot created before an automatic apply (see §5)</td></tr>
+        <tr><td><code>auto_apply</code></td><td>Optional, boolean. Whether a fully-automatic update ran; when refused, a reason is included (see §5)</td></tr>
+      </table>
+
+      <h2>2. Ways to Update</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p><strong>One click in Welcome</strong>: open Linxira Welcome — the update card shows the check result and starts the update on click. Welcome is only a launcher: what actually runs is <code>linxira-update --launch</code>; there is no second, embedded update logic.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p><strong>Command line</strong>: run <code>linxira-update</code> in a terminal and confirm interactively.</p>
+          <pre><code>linxira-update</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p><strong>Plain pacman is just as safe</strong>: <code>sudo pacman -Syu</code> works any time. The auto-snapshot is implemented as a pacman hook that applies to <strong>every</strong> pacman transaction (see §3), so updates outside linxira-update get the same protection.</p>
+        </div>
+      </div>
+      <h3>Scope and Boundaries</h3>
+      <ul>
+        <li>By default <strong>all configured pacman repositories</strong> are updated: the signed <code>[linxira]</code> repo plus Arch <code>core</code>/<code>extra</code> — one full upgrade, no partial upgrades.</li>
+        <li>AUR and Flatpak are <strong>left alone by default</strong>; both require explicit opt-in in the config (<code>EnableAUR</code> / <code>EnableFlatpak</code>).</li>
+        <li>First-party <code>linxira-*</code> packages are <strong>never</strong> handed to AUR helpers — they come only from the signed repository.</li>
+        <li>If a package's origin cannot be determined, the check is recorded as <code>incomplete</code> rather than falsely claiming "up to date".</li>
+      </ul>
+
+      <h2>3. Snapshots: Automatic Before Every pacman Transaction</h2>
+      <p>The system ships the pacman hook <code>/etc/pacman.d/hooks/linxira-timeshift-autosnap.hook</code>: it fires in the <code>PreTransaction</code> phase, matches <code>Upgrade</code>/<code>Install</code>/<code>Remove</code> on target <code>*</code> — meaning <strong>any</strong> pacman transaction (a system upgrade, installing a component, even a hand-typed <code>pacman -R</code>) runs <code>timeshift --create --tags O</code> to record the current state before touching the system.</p>
+      <ul>
+        <li><strong>Near-zero cost</strong>: btrfs snapshots are copy-on-write — initially they take almost no space, and afterwards only modified data produces deltas.</li>
+        <li><strong>Automatic pruning</strong>: the 20 most recent snapshots are kept; older ones are cleaned up without manual attention.</li>
+        <li><strong>Soft gating (intentional)</strong>: if Timeshift is not configured (no <code>/etc/timeshift/timeshift.json</code>) the hook silently skips; a failed snapshot also <strong>does not block the transaction</strong> — a non-zero PreTransaction exit would abort the whole transaction, and making a safety net a hard dependency would turn it into a single point of failure.</li>
+      </ul>
+      <h3>Scheduled Snapshots</h3>
+      <p>Beyond "before every transaction" there are periodic snapshots on a time/boot schedule. The installer enables them automatically at install time (btrfs mode, <strong>3 daily + 3 per boot</strong>); at runtime <code>linxira-config</code> manages them, driving the same idempotent script used by the installer:</p>
+      <pre><code>linxira-config timeshift status    # current configuration
+linxira-config timeshift enable    # enable (idempotent)
+linxira-config timeshift disable   # disable</code></pre>
+
+      <h2>4. When Something Breaks: Reboot and Pick a Snapshot in GRUB</h2>
+      <p>Snapshots are not decorative: the <code>grub-btrfsd</code> service (<code>--timeshift-auto</code> mode) watches Timeshift snapshots and generates matching GRUB boot entries, and <code>grub-btrfs-overlayfs</code> is present in the mkinitcpio HOOKS so snapshot entries boot through a read-only overlay.</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p><strong>Reboot</strong> and find the snapshot entries in the GRUB menu (ordered by time — pick the one from before the update).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p><strong>Read-only verification</strong>: a snapshot entry boots the complete system as it was at that moment (kernel, drivers and userspace alike), but read-only and without writing to disk — confirm the problem really came from the update.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p><strong>Restore once satisfied</strong>: after verifying, restore (the Timeshift GUI or <code>sudo timeshift --restore</code>) and the system returns to its pre-update state. Retrying the update later is fine — the next update gets its own automatic snapshot.</p>
+        </div>
+      </div>
+      <div class="note">💡 For a kernel update that refuses to boot, prefer the <code>linux-lts</code> fallback kernel in the GRUB menu (the dual-kernel safety net); snapshot rollback targets the "a userspace update broke the system" class of failures. How the two layers divide the work is covered in the blog post <a href="/en/blog/btrfs-snapshots-rollback/">Btrfs Snapshots &amp; Rollback</a>.</div>
+
+      <h2>5. Fully-Automatic Updates: EnableAutoApply (Off by Default)</h2>
+      <p>This removes even the "click to confirm" step — once updates are found, "snapshot → full upgrade" runs by itself. The switch is <strong>off by default</strong>; it suits machines on stable networks that should stay current unattended.</p>
+      <h3>How to Enable</h3>
+      <p>Edit <code>~/.config/linxira-update/linxira-update.conf</code> and add a bare key on its own line (same style as <code>EnableAUR</code>):</p>
+      <pre><code>EnableAutoApply</code></pre>
+      <p>Remove the line to return to the default (off).</p>
+      <h3>Hard Gates: All Four Must Pass Before the System Is Touched</h3>
+      <p>When <code>--check</code> finds updates and the switch is on, gating runs first and <strong>all</strong> of the following must hold:</p>
+      <ol>
+        <li>The root filesystem is <strong>btrfs</strong>;</li>
+        <li><code>/etc/timeshift/timeshift.json</code> exists (Timeshift is configured);</li>
+        <li>the mkinitcpio HOOKS contain <code>grub-btrfs-overlayfs</code> (snapshots are bootable);</li>
+        <li>the <code>grub-btrfsd</code> unit is enabled (snapshots reach the GRUB menu).</li>
+      </ol>
+      <p>Only then: <strong>an explicit snapshot is created and verified</strong> → a non-interactive full upgrade runs (<code>pacman -Syu --noconfirm</code>) → the snapshot ID is written to <code>pre_snapshot_id</code> in <code>status.json</code>.</p>
+      <h3>Refusal and Fallback</h3>
+      <p><strong>If any gate fails, or the snapshot cannot be created</strong>, the automatic apply is refused for that run: behavior stays "check and notify only", and <code>status.json</code> records <code>auto_apply: false</code> with the reason. No snapshot, no system changes — a hard rule with no exception path.</p>
+      <ul>
+        <li><strong>Non-btrfs is unsupported by construction</strong>: server mode, WSL, and ext4 installs are rejected by the gates and stay on manual updates.</li>
+        <li><strong>Automatic apply never touches AUR/Flatpak</strong> and <strong>never performs whitelisted partial upgrades</strong> — Arch discipline: upgrade everything or nothing; problems caused by partial upgrades are out of scope.</li>
+      </ul>
+      <div class="warn">⚠️ Fully-automatic updates mean "installed as soon as patches arrive"; in the worst case a bad update lands while nobody is watching — the snapshot rollback from §4 is then the safety net. For availability-sensitive machines, keep the default (off) and apply updates manually after reading the notification.</div>
+
+      <h2>Command Cheat Sheet</h2>
+      <table>
+        <tr><th>Command / Location</th><th>Purpose</th></tr>
+        <tr><td><code>linxira-update --check</code></td><td>Check for updates now (nothing installed)</td></tr>
+        <tr><td><code>linxira-update</code></td><td>Interactive check and update</td></tr>
+        <tr><td><code>~/.local/state/linxira-update/status.json</code></td><td>Latest check result (read by Welcome, tray and notifications alike)</td></tr>
+        <tr><td><code>linxira-config timeshift status</code></td><td>Show snapshot configuration and status</td></tr>
+        <tr><td><code>linxira-config timeshift enable / disable</code></td><td>Enable / disable scheduled snapshots (3 daily + 3 per boot)</td></tr>
+        <tr><td><code>sudo timeshift --list</code></td><td>List existing snapshots</td></tr>
+        <tr><td><code>sudo timeshift --restore</code></td><td>Restore a snapshot</td></tr>
+        <tr><td>A bare <code>EnableAutoApply</code> line in the config</td><td>Turn on fully-automatic updates (off by default, hard-gated)</td></tr>
+      </table>
+
+      <p>Related pages: the <a href="/en/docs/install/">installation guide</a> (btrfs + Timeshift partitioning scheme), <a href="/en/docs/apps/">Official Apps</a> (linxira-update and the other first-party tools), <a href="/en/docs/config-hub/">Config Hub</a> (the <code>timeshift</code> subcommands), and the blog post <a href="/en/blog/btrfs-snapshots-rollback/">Btrfs Snapshots &amp; Rollback</a> (design rationale and drill suggestions).</p>
+
+  <style>
+ul, ol { color: #94a3b8; margin: 0.5rem 0 1rem 1.5rem; }
+pre { background: #111827; border-left: 3px solid #20B8B0; padding: 1rem 1.2rem; overflow-x: auto; margin-bottom: 1.2rem; }
+pre code { background: none; padding: 0; color: #67e8f9; font-size: 0.88rem; }
+.note { background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.3); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 1.2rem 0; color: #a7f3d0; }
+.warn { background: rgba(243,111,93,0.08); border: 1px solid rgba(243,111,93,0.35); border-radius: 8px; padding: 0.8rem 1.2rem; margin: 1.2rem 0; color: #fecaca; }
+.step { display: flex; gap: 1rem; margin: 1.5rem 0; }
+.step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+.step-body { flex: 1; }
+.step-body p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+th { background: rgba(30,41,59,0.6); color: #e2e8f0; text-align: left; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+td { color: #94a3b8; padding: 0.6rem 1rem; border: 1px solid rgba(51,65,85,0.5); }
+h3 { font-size: 1.1rem; color: #e2e8f0; margin: 1.6rem 0 0.6rem; }
+  </style>
+</DocsLayout>
