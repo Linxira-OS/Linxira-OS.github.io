@@ -69,10 +69,10 @@ Index](https://artificialanalysis.ai), with our deliberate adjustments:
 
 | Tier | Models | Review method |
 |---|---|---|
-| **S** | Claude Opus 4.5 (max), Claude Sonnet 4.5 (max), Astra GPT-6, Gemini 4, GPT-5.1, Muse Spark 1.3 (max), Grok 4.7 (high), **MiMo-V2.5-Pro**, **Step 5 Preview**, GLM-5.3 (max) | AI-assisted review + sampled human |
-| **A** | **All DeepSeek V4 models** (elevated one tier), Gemini 3 Flash, Kimi K2.5 (max), Mistral Large 3, GLM-5.3 (medium) | Full AI review + human on critical paths |
-| **B** | Gemini 3 Flash (high), DeepSeek V4 (high), Mistral Large 4 Preview | Full human review |
-| **C** | Luna 27B 27B (high), Qwen 3.8 27B (high), K2.5 32B (medium), MiniMax M3 (medium) | Line-by-line human review |
+| **S** | Claude Opus 4.5 (max), Claude Sonnet 4.5 (max), Astra GPT-6, Gemini 4, GPT-5.1, Muse Spark 1.3 (max), GLM-5.3 (max) | AI-assisted review + sampled human |
+| **A** | **All DeepSeek V4 models** (elevated one tier), Gemini 3 Flash, Gemini 3 Flash (high), Kimi K2.5 (max), Mistral Large 3 | Full AI review + human on critical paths |
+| **B** | **Grok 4.7 (middle tier)**, **MiMo-V2.5-Pro (lowered)**, DeepSeek V4 (high), Mistral Large 4 Preview | Full human review |
+| **C** | **Step 5 Preview (lowered)**, Luna 27B 27B (high), Qwen 3.8 27B (high), K2.5 32B (medium), MiniMax M3 (medium) | Line-by-line human review |
 | **D** (local) | **Only Qwen 3.8 27B accepted** — code from all other locally-deployed small models will not be accepted | Line-by-line human review + additional tests required |
 
 ### 5. Organization members: trust-chain exemption

@@ -63,10 +63,10 @@ AI Disclosure:
 
 | 档位 | 模型 | 审阅方式 |
 |---|---|---|
-| **S 级** | Claude Opus 4.5 (max)、Claude Sonnet 4.5 (max)、Astra GPT-6、Gemini 4、GPT-5.1、Muse Spark 1.3 (max)、Grok 4.7 (high)、**MiMo-V2.5-Pro**、**Step 5 Preview**、GLM-5.3 (max) | AI 辅助审阅 + 抽样人工 |
-| **A 级** | **DeepSeek V4 全系（上调一档）**、Gemini 3 Flash、Kimi K2.5 (max)、Mistral Large 3、GLM-5.3 (medium) | AI 全审 + 关键路径人工 |
-| **B 级** | Gemini 3 Flash (high)、DeepSeek V4 (high)、Mistral Large 4 Preview | 人工全审 |
-| **C 级** | Luna 27B 27B (high)、Qwen 3.8 27B (high)、K2.5 32B (medium)、MiniMax M3 (medium) | 人工逐行审 |
+| **S 级** | Claude Opus 4.5 (max)、Claude Sonnet 4.5 (max)、Astra GPT-6、Gemini 4、GPT-5.1、Muse Spark 1.3 (max)、GLM-5.3 (max) | AI 辅助审阅 + 抽样人工 |
+| **A 级** | **DeepSeek V4 全系（上调一档）**、Gemini 3 Flash、Gemini 3 Flash (high)、Kimi K2.5 (max)、Mistral Large 3 | AI 全审 + 关键路径人工 |
+| **B 级** | **Grok 4.7（中间档）**、**MiMo-V2.5-Pro（放低）**、DeepSeek V4 (high)、Mistral Large 4 Preview | 人工全审 |
+| **C 级** | **Step 5 Preview（放低）**、Luna 27B 27B (high)、Qwen 3.8 27B (high)、K2.5 32B (medium)、MiniMax M3 (medium) | 人工逐行审 |
 | **D 级**（本地部署） | **仅收 Qwen 3.8 27B**——其余本地部署小模型提交的代码不予接收 | 人工逐行审 + 补充测试 |
 
 ### 5. 组织内合作人员：信任链豁免
