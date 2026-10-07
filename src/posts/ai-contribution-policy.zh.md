@@ -49,19 +49,13 @@ AI Disclosure:
 
 ### 4. 五档审阅
 
-数据来源：致知 · 大模型七轮跟踪榜单（2026-10 月榜，全部取带思考分数）。
-**低于 30 分的通通忽略。**
-
-| 档位 | 模型（带思考得分） | 审阅方式 |
+| 档位 | 模型 | 审阅方式 |
 |---|---|---|
-| **S 级** | GPT-6 Astra (xhigh) 91.27 · Opus 5.5 (xhigh) 82.86 · GPT-6.1 Sol (xhigh) 79.59 · Fable 5.1 (xhigh) 78.69 · GPT-6 Sol (xhigh) 70.23 · Sonnet 5.5 (xhigh) 67.30 · Seed-2.1-Pro 0915 (xhigh) 64.98 · Kimi-K3 (max) 64.22 · **DeepSeek V4.1 Flash (max) 63.61**（上调一档） | AI 辅助审阅 + 抽样人工 |
-| **A 级** | Gemini 3.7 Flash (xhigh) 62.27 · Gemini 3.1 Pro (high) 62.27 · GLM-5.3 (max) 62.55 · Fable 5.1 w/ refuse 63.22 · Opus 5.5 w/ refuse 68.10 · Muse Spark 1.2 (xhigh) 60.92 · **DeepSeek V4 Pro 0813 (max) 59.59**（DeepSeek 上调） · GLM-5.3 Flash (max) 58.83 · Qwen3.8-Max (xhigh) 54.70 | AI 全审 + 关键路径人工 |
-| **B 级** | Step 5 Preview (xhigh) 55.66 · Qwen3.8 Flash (xhigh) 53.95 | 人工全审 |
-| **C 级** | Qwen3.8 27B (xhigh) 44.67 · Hy3 (high) 40.27 · GPT-5 Luna (xhigh) 37.33 · MiniMax-M3 31.28 | 人工逐行审 |
+| **S 级** | GPT-6 Astra (xhigh) · Opus 5.5 (xhigh) · GPT-6.1 Sol (xhigh) · Fable 5.1 (xhigh) · GPT-6 Sol (xhigh) · Sonnet 5.5 (xhigh) · Seed-2.1-Pro 0915 (xhigh) · Kimi-K3 (max) · **DeepSeek V4.1 Flash (max)**（上调一档） · Grok 4.7 | AI 辅助审阅 + 抽样人工 |
+| **A 级** | Gemini 3.7 Flash (xhigh) · Gemini 3.1 Pro (high) · GLM-5.3 (max) · Fable 5.1 w/ refuse · Opus 5.5 w/ refuse · Muse Spark 1.2 (xhigh) · **DeepSeek V4 Pro 0813 (max)**（DeepSeek 上调） · GLM-5.3 Flash (max) · Qwen3.8-Max (xhigh) | AI 全审 + 关键路径人工 |
+| **B 级** | Step 5 Preview (xhigh) · Qwen3.8 Flash (xhigh) | 人工全审 |
+| **C 级** | Qwen3.8 27B (xhigh) · Hy3 (high) · GPT-5 Luna (xhigh) · MiniMax-M3 | 人工逐行审 |
 | **D 级**（本地部署） | **仅收 Qwen 3.8 27B**——其余本地部署小模型提交的代码不予接收 | 人工逐行审 + 补充测试 |
-
-**调整说明**：DeepSeek 上调一档（实际使用体验好于分数体现）；Grok 4.7 调至
-S 级（实际使用体验好于分数体现）；低于 30 分全部忽略。
 
 ### 5. 组织内合作人员：信任链豁免
 
