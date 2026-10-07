@@ -1,94 +1,102 @@
 ---
-title: "Our AI Contribution Policy: Between Linus's Line and the Desktop Bans"
+title: "Our AI Contribution Policy: We Encourage AI Code — Disclose Every Model and Agent You Used"
 date: 2026-10-07
 tag: announcement
 lang: en
-desc: "Kernel land accepts AI code (correct style, proven stability); KDE/GNOME/COSMIC explicitly ban AI submissions. Our position: AI is a tool, not an author — humans own responsibility, everything is traceable, tests are the ticket. Five rules, enforcement mechanisms, and full disclosure: this distro is itself built in deep AI collaboration."
+desc: "Linxira OS is built with AI tools — we encourage AI contributions and require honesty. External contributors must disclose every model and every agent tool actually used. We apply five-tier review depth based on model capability (referencing the Artificial Analysis Intelligence Index), with deliberate adjustments. Organization members with AGENTS.md trust chains are exempt."
 ---
 
-# Our AI Contribution Policy: Between Linus's Line and the Desktop Bans
+# Our AI Contribution Policy: We Encourage AI Code — Disclose Every Model and Agent You Used
 
 > 2026-10-07 · Position statement
 
-## The map of the dispute
+## Where we start
 
-**Kernel land (Linus's position)**: doesn't care who — or what — wrote the
-code. If the style is right, the stability is proven, and a maintainer can
-stomach reading it, AI-generated code carries no original sin. The kernel's
-bar has always been "code quality + a maintainer willing to put their name
-on it", not "pedigree".
+Linxira OS itself embraces agent tools and AI tooling — this distribution's
+build scripts, installer fixes, release pipeline, documentation, and tests
+were substantially produced by AI agents. **We encourage AI-assisted code
+contributions, and we want you to use the best tools available.**
 
-**Desktop communities (KDE / GNOME / COSMIC et al.)**: explicitly ban AI
-submissions. The reasoning is understandable — desktop codebases are large
-and tightly coupled, UX decisions need human judgment, and floods of
-AI-written "looks right" patches drown maintainer review bandwidth and
-dilute design consistency.
+But "use the best" presupposes that **we know what you used**.
 
-Both positions are coherent — because they constrain **different things**:
-the kernel constrains *code*; the desktops constrain *review bandwidth and
-design coherence*.
+## Why we require disclosure
 
-## Our situation is more particular than either
+Code quality varies enormously across models. Only with honest disclosure
+of **every model, every agent tool, and the runtime environment** actually
+used can we:
 
-Linxira doesn't pretend to neutrality: **this distribution is itself a
-product of deep AI collaboration** — build scripts, installer fixes, the
-release pipeline, documentation, tests — much of the work was done by AI
-agents, with humans making directional decisions, adjudicating, and
-accepting. If we declared "no AI submissions", we would be lying; if we
-declared "AI, submit freely", we would be suicidal.
+1. **Assess the general quality band of the code**
+2. **Decide review depth** — line-by-line human review vs. AI-assisted
+   verification
+3. **Build a trust profile** — repeated high-quality contributions earn
+   faster review lanes
 
-So our policy answers exactly one question: **where does responsibility
-live?**
+## Six rules
 
-## Five rules
+### 1. We encourage AI contributions — use them well
 
-1. **The human is the author; the AI is a tool.** Every commit's
-   author/committer must be a person who can answer for it. AI drafts,
-   humans review and commit — the chain of accountability terminates at a
-   human.
+Not "tolerate" but "encourage". Use the best models, the best agent tools.
+AI is part of this project.
 
-2. **Traceability over deniability.** Commit messages honestly describe
-   *what* and *why*. We do not require declaring "this patch was
-   AI-generated" — but claiming "fully hand-written" when it was not is
-   **forbidden**. Lying is an order of magnitude worse than using AI.
+### 2. External contributors: full disclosure required
 
-3. **Tests and verification are the ticket, not decoration.** Whoever (or
-   whatever) wrote the code: behavior changes ship with tests that can
-   fail; release-pipeline changes run the full chain locally before push.
-   The kernel's "proven stable" bar is our bar.
+**Anyone outside the organization** who submits a PR must disclose
+**every model and every agent tool actually used** — used two, report two;
+switched mid-stream, report that too.
 
-4. **Review bandwidth is a commons.** Mass AI patches must not drown human
-   maintainers — one PR, one topic; don't change ten things at once;
-   firehose PRs get rejected outright.
+- **All models used**: e.g., GLM-5.1, Claude Opus 4.5, GPT-5.1
+- **All agent tools used**: e.g., OMP/zeta-c, Claude Code, Cursor
+- **Runtime environment**: what system you developed on
 
-5. **Design decisions belong to humans.** UX, architectural direction,
-   API shape — humans adjudicate. AI may draft proposals; it may not
-   choose for the community.
+Format example:
+```
+AI Disclosure:
+- Models: GLM-5.1 (max), Claude Sonnet 4.5
+- Agents: zeta-c (OMP), Claude Code
+- Runtime: Linxira WSL (Arch Linux)
+```
 
-## Enforcement (not slogans)
+### 3. Honesty is the floor
 
-| Mechanism | What it does |
-|---|---|
-| CI gates | Every repo's CI must be green to merge — red means the code isn't finished, whoever wrote it |
-| Release-pipeline gates | Version-consistency checks, build verification, signature validation — already in place, still tightening |
-| PR conventions | Commit messages explain *why*; single-topic diffs; changes readable by a human in one pass |
-| AGENTS.md | Binding rules of conduct for AI agents working in a repo (deployed across our repos) |
+**Report what you actually used.** Faking disclosure is an order of
+magnitude worse than using a weak model — false disclosure means instant
+PR rejection; repeated offenses mean a ban.
 
-## Why not a ban
+### 4. Five-tier review by model capability
 
-The core pain behind the desktop bans is review bandwidth drowning in
-noise — but that is the result of **missing rules**, not an original sin
-of AI. We build the gate on **responsibility and verification**:
+Referencing the [Artificial Analysis Intelligence
+Index](https://artificialanalysis.ai), with our deliberate adjustments:
 
-- You wrote 2,000 lines with AI? Fine — as long as tests cover it, the
-  diff is readable, and you can vouch for every line.
-- You hand-wrote 10 lines but broke the release pipeline? Also rejected —
-  we judge results, not pedigree.
+| Tier | Models | Review method |
+|---|---|---|
+| **S** | Claude Opus 4.5 (max), Claude Sonnet 4.5 (max), Astra GPT-6, Gemini 4, GPT-5.1, Muse Spark 1.3 (max), Grok 4.7 (high), **MiMo-V2.5-Pro**, **Step 5 Preview**, GLM-5.3 (max) | AI-assisted review + sampled human |
+| **A** | **All DeepSeek V4 models** (elevated one tier), Gemini 3 Flash, Kimi K2.5 (max), Mistral Large 3, GLM-5.3 (medium) | Full AI review + human on critical paths |
+| **B** | Gemini 3 Flash (high), DeepSeek V4 (high), Mistral Large 4 Preview | Full human review |
+| **C** | Luna 27B 27B (high), Qwen 3.8 27B (high), K2.5 32B (medium), MiniMax M3 (medium) | Line-by-line human review |
+| **D** (local) | **Only Qwen 3.8 27B accepted** — code from all other locally-deployed small models will not be accepted | Line-by-line human review + additional tests required |
 
-One sentence: **we ban irresponsible commits, not responsible use of
-tools.**
+### 5. Organization members: trust-chain exemption
+
+Collaborators who have signed AGENTS.md and are recognized by the
+organization are **exempt from per-PR disclosure** — but their AGENTS.md
+must declare the agent toolchain in use.
+
+### 6. Tests are the ticket, regardless of pedigree
+
+Whatever model wrote the code: behavior changes ship with tests that can
+fail; release-pipeline changes run the full chain locally. Model tier
+affects **review method**, not **testing standards**.
+
+## This is not a barrier — it's an accelerator
+
+- **S/A-tier model PRs** → fast lane (AI review + sampled human), merging
+  faster
+- **Knowing the quality band** → maintainers spend human attention where it
+  matters most
+- **Empirical data** → "which models work well in which contexts" feeds
+  back into our own toolchain choices
 
 ---
 
-*The Linxira OS project team. This post was drafted by AI, adjudicated and
-finalized by humans — per rules 1 and 2.*
+*Linxira OS project team. Drafted by GLM-5.1 (max), adjudicated and
+finalized by humans.*
