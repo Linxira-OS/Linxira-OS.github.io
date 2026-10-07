@@ -3,7 +3,7 @@ title: "AI 贡献公约：我们鼓励用 AI 写代码——但请如实披露�
 date: 2026-10-07
 tag: announcement
 lang: zh
-desc: "Linxira OS 本身就深度使用 AI 工具构建——我们不是禁止 AI 贡献，而是要求诚实。外部贡献者必须披露实际使用的全部模型与 Agent 工具。我们按模型能力档位（参照 Artificial Analysis Intelligence Index 公开榜单）决定人工/AI 审阅深度，分五档。组织内合作人员凭 AGENTS.md 信任链豁免逐次披露。"
+desc: "Linxira OS 本身就深度使用 AI 工具构建——我们不是禁止 AI 贡献，而是要求诚实。外部贡献者必须披露实际使用的全部模型与 Agent 工具，我们按模型能力五档决定审阅深度（低于 30 分忽略）。组织内合作人员凭 AGENTS.md 信任链豁免逐次披露。"
 ---
 
 # AI 贡献公约：我们鼓励用 AI 写代码——但请如实披露你的模型与 Agent
@@ -18,15 +18,6 @@ Linxira OS 本身就推崇系统自带的 agent 工具和 AI 工具——这个�
 
 但"用好"的前提是**我们知道你用了什么**。
 
-## 为什么要求披露模型和 Agent
-
-不同模型的代码质量差异巨大。只有如实披露实际使用的**每一个模型、
-每一个 Agent 工具、运行时环境**，我们才能：
-
-1. **判断代码的大体质量档位**
-2. **决定审阅深度**——是人工逐行审，还是 AI 辅助快速验证
-3. **建立信任档案**——多次高质量贡献获得更快审阅通道
-
 ## 公约六条
 
 ### 1. 我们鼓励 AI 贡献——用好它
@@ -39,35 +30,38 @@ Linxira OS 本身就推崇系统自带的 agent 工具和 AI 工具——这个�
 **非组织内合作人员的所有外部贡献**，提交 PR 时必须披露**实际使用的
 每一个模型和每一个 Agent 工具**——用了几个报几个，中途换过也报。
 
-- **使用的全部模型**：例如 GLM-5.1、Claude Opus 4.5、GPT-5.1
-- **使用的全部 Agent 工具**：例如 OMP/zeta-c、Claude Code、Cursor
-- **运行时环境**：在什么系统上开发
+- **使用的全部模型**
+- **使用的全部 Agent 工具**
+- **运行时环境**
 
 格式示例：
 ```
 AI Disclosure:
-- Models: GLM-5.1 (max), Claude Sonnet 4.5
+- Models: GLM-5.3 (max), Grok 4.7 (xhigh)
 - Agents: zeta-c (OMP), Claude Code
 - Runtime: Linxira WSL (Arch Linux)
 ```
 
 ### 3. 诚实是底线
 
-**如实报告你实际用了什么**。用了两个模型报两个，用了三个 Agent 报
-三个。谎报比用差模型严重一个量级——虚假披露直接拒 PR，多次发现拉黑。
+**如实报告你实际用了什么**。谎报比用差模型严重一个量级——虚假披露
+直接拒 PR，多次发现拉黑。
 
-### 4. 按模型档位分级审阅（五档）
+### 4. 五档审阅
 
-参照 [Artificial Analysis Intelligence Index](https://artificialanalysis.ai)
-公开榜单，结合我们的实际经验，做如下调整：
+数据来源：致知 · 大模型七轮跟踪榜单（2026-10 月榜，全部取带思考分数）。
+**低于 30 分的通通忽略。**
 
-| 档位 | 模型 | 审阅方式 |
+| 档位 | 模型（带思考得分） | 审阅方式 |
 |---|---|---|
-| **S 级** | Claude Opus 4.5 (max)、Claude Sonnet 4.5 (max)、Astra GPT-6、Gemini 4、GPT-5.1、Muse Spark 1.3 (max)、GLM-5.3 (max) | AI 辅助审阅 + 抽样人工 |
-| **A 级** | **DeepSeek V4 全系（上调一档）**、Gemini 3 Flash、Gemini 3 Flash (high)、Kimi K2.5 (max)、Mistral Large 3 | AI 全审 + 关键路径人工 |
-| **B 级** | **Grok 4.7（中间档）**、**MiMo-V2.5-Pro（放低）**、DeepSeek V4 (high)、Mistral Large 4 Preview | 人工全审 |
-| **C 级** | **Step 5 Preview（放低）**、Luna 27B 27B (high)、Qwen 3.8 27B (high)、K2.5 32B (medium)、MiniMax M3 (medium) | 人工逐行审 |
+| **S 级** | GPT-6 Astra (xhigh) 91.27 · Opus 5.5 (xhigh) 82.86 · GPT-6.1 Sol (xhigh) 79.59 · Fable 5.1 (xhigh) 78.69 · GPT-6 Sol (xhigh) 70.23 · Sonnet 5.5 (xhigh) 67.30 · Seed-2.1-Pro 0915 (xhigh) 64.98 · Kimi-K3 (max) 64.22 · **DeepSeek V4.1 Flash (max) 63.61**（上调一档） | AI 辅助审阅 + 抽样人工 |
+| **A 级** | Gemini 3.7 Flash (xhigh) 62.27 · Gemini 3.1 Pro (high) 62.27 · GLM-5.3 (max) 62.55 · Fable 5.1 w/ refuse 63.22 · Opus 5.5 w/ refuse 68.10 · Muse Spark 1.2 (xhigh) 60.92 · **DeepSeek V4 Pro 0813 (max) 59.59**（DeepSeek 上调） · GLM-5.3 Flash (max) 58.83 · Qwen3.8-Max (xhigh) 54.70 | AI 全审 + 关键路径人工 |
+| **B 级** | Step 5 Preview (xhigh) 55.66 · Qwen3.8 Flash (xhigh) 53.95 | 人工全审 |
+| **C 级** | Qwen3.8 27B (xhigh) 44.67 · Hy3 (high) 40.27 · GPT-5 Luna (xhigh) 37.33 · MiniMax-M3 31.28 | 人工逐行审 |
 | **D 级**（本地部署） | **仅收 Qwen 3.8 27B**——其余本地部署小模型提交的代码不予接收 | 人工逐行审 + 补充测试 |
+
+**调整说明**：DeepSeek 上调一档（实际使用体验好于分数体现）；Grok 4.7 调至
+S 级（实际使用体验好于分数体现）；低于 30 分全部忽略。
 
 ### 5. 组织内合作人员：信任链豁免
 
@@ -79,12 +73,6 @@ AI Disclosure:
 无论什么模型写的：行为变更必须带能失败的测试；发布链变更必须本地
 跑通全链。模型档位影响**审阅方式**，不影响**测试标准**。
 
-## 这不是门槛，这是加速器
-
-- **S/A 级模型的 PR** → 走快速通道（AI 审 + 抽样人工），合并更快
-- **知道质量档位** → 维护者把人工时间用在真正需要人的地方
-- **实证数据** → "什么模型在什么场景好用"反哺我们自身工具链选型
-
 ---
 
-*Linxira OS 项目组 · 本文由 GLM-5.1 (max) 起草，人类裁决定稿。*
+*Linxira OS 项目组*
