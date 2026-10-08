@@ -3,7 +3,7 @@ title: "Our AI Contribution Policy: We Encourage AI Code — Disclose Every Mode
 date: 2026-10-07
 tag: announcement
 lang: en
-desc: "Linxira OS is built with AI tools — we encourage AI contributions and require honesty. External contributors must disclose every model and every agent tool actually used. We apply five-tier review depth based on model capability (referencing the Artificial Analysis Intelligence Index), with deliberate adjustments. Organization members with AGENTS.md trust chains are exempt."
+desc: "Linxira OS is built with AI tools — we encourage AI contributions and require honesty. External contributors must disclose every model and every agent tool actually used. We apply five-tier review depth based on model capability, with deliberate adjustments. Organization members with AGENTS.md trust chains are exempt."
 ---
 
 # Our AI Contribution Policy: We Encourage AI Code — Disclose Every Model and Agent You Used
@@ -64,15 +64,12 @@ PR rejection; repeated offenses mean a ban.
 
 ### 4. Five-tier review by model capability
 
-Referencing the [Artificial Analysis Intelligence
-Index](https://artificialanalysis.ai), with our deliberate adjustments:
-
 | Tier | Models | Review method |
 |---|---|---|
-| **S** | Claude Opus 4.5 (max), Claude Sonnet 4.5 (max), Astra GPT-6, Gemini 4, GPT-5.1, Muse Spark 1.3 (max), GLM-5.3 (max) | AI-assisted review + sampled human |
-| **A** | **All DeepSeek V4 models** (elevated one tier), Gemini 3 Flash, Gemini 3 Flash (high), Kimi K2.5 (max), Mistral Large 3 | Full AI review + human on critical paths |
-| **B** | DeepSeek V4 (high), Mistral Large 4 Preview | Full human review |
-| **C** (lowered) | **Grok 4.7**, **MiMo-V2.5-Pro**, **Step 5 Preview**, Luna 27B 27B (high), Qwen 3.8 27B (high), K2.5 32B (medium), MiniMax M3 (medium) | Line-by-line human review |
+| **S** | GPT-6 Astra (xhigh) · Opus 5.5 (xhigh) · GPT-6.1 Sol (xhigh) · Fable 5.1 (xhigh) · GPT-6 Sol (xhigh) · Sonnet 5.5 (xhigh) · Seed-2.1-Pro 0915 (xhigh) · Kimi-K3 (max) · **DeepSeek V4.1 Flash (max)** (elevated one tier) · Grok 4.7 | AI-assisted review + sampled human |
+| **A** | Gemini 3.7 Flash (xhigh) · Gemini 3.1 Pro (high) · GLM-5.3 (max) · Fable 5.1 w/ refuse · Opus 5.5 w/ refuse · Muse Spark 1.2 (xhigh) · **DeepSeek V4 Pro 0813 (max)** (DeepSeek elevated) · GLM-5.3 Flash (max) · Qwen3.8-Max (xhigh) | Full AI review + human on critical paths |
+| **B** | Step 5 Preview (xhigh) · Qwen3.8 Flash (xhigh) | Full human review |
+| **C** | Qwen3.8 27B (xhigh) · Hy3 (high) · GPT-5 Luna (xhigh) · MiniMax-M3 | Line-by-line human review |
 | **D** (local) | **Only Qwen 3.8 27B accepted** — code from all other locally-deployed small models will not be accepted | Line-by-line human review + additional tests required |
 
 ### 5. Organization members: trust-chain exemption
