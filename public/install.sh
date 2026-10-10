@@ -1,13 +1,19 @@
 #!/bin/sh
 # Zeta — Linux 一键安装脚本
 # 用法: curl -fsSL https://linxira-os.github.io/install.sh | sh
-# 从 GitHub Releases 拉取最新编译二进制，安装到 ~/.local/bin/zeta（root 时为 /usr/local/bin）。
-# 仅支持 Linux x64/arm64（含 musl）；macOS 暂未提供构建产物。
+#
+# 从 GitHub Releases 拉取编译好的 CLI 二进制，安装为 `zetacode`。
+# 仅支持 Linux（x64/arm64，含 musl）；macOS 与 Windows 请用 npm 安装。
 
 set -e
 
 REPO="Linxira-OS/linxira-zeta"
 API="https://api.github.com/repos/${REPO}/releases/latest"
+
+# 命令名是 `zetacode`，不是 `zeta` —— 裸 `zeta` 是工作台（zetawork）的 bin，
+# 装错会互相遮蔽。三层命名：zetacode = CLI，zetawork = 工作台，zeta = 产品自称。
+BIN="zetacode"
+
 VERSION=""
 DRY=0
 
@@ -15,6 +21,13 @@ for arg in "$@"; do
 	case "$arg" in
 		--version=*) VERSION="${arg#--version=}" ;;
 		--dry-run) DRY=1 ;;
+		-h|--help)
+			say() { printf '%s\n' "$*"; }
+			say "用法: curl -fsSL https://linxira-os.github.io/install.sh | sh"
+			say "  --version=vX.Y.Z  安装指定版本（默认最新）"
+			say "  --dry-run         只打印将要执行的动作"
+			exit 0
+			;;
 	esac
 done
 
@@ -25,7 +38,7 @@ die() { printf '错误: %s\n' "$*" >&2; exit 1; }
 OS="$(uname -s 2>/dev/null || true)"
 ARCH="$(uname -m 2>/dev/null || true)"
 case "$OS" in
-	Linux) PLAT="linux" ;;
+	Linux) ;;
 	Darwin) die "暂不支持 macOS：暂无 darwin 构建产物，请改用 npm 安装（npm install -g @linxiraos/zeta）" ;;
 	*) die "不支持的平台: $OS（当前仅支持 Linux）" ;;
 esac
@@ -35,16 +48,15 @@ case "$ARCH" in
 	*) die "不支持的架构: $ARCH" ;;
 esac
 
-# musl 检测（仅 Linux）
+# musl 检测（Alpine 等静态链接发行版）
 LIBC=""
-if [ "$PLAT" = "linux" ]; then
-	case "$(ldd --version 2>/dev/null | head -1)" in
-		*musl*) LIBC="musl-" ;;
-		*) [ -n "$(ls /lib/ld-musl-* 2>/dev/null | head -1)" ] && LIBC="musl-" ;;
-	esac
-fi
+case "$(ldd --version 2>&1 | head -1)" in
+	*musl*) LIBC="musl-" ;;
+	*) [ -n "$(ls /lib/ld-musl-* 2>/dev/null | head -1)" ] && LIBC="musl-" ;;
+esac
 
-ASSET="zeta-linux-${LIBC}${TRIPLE}"
+# 资产名与 CI 的 release_native_leaves job 保持一致（zeta-cli-* 前缀）。
+ASSET="zeta-cli-linux-${LIBC}${TRIPLE}"
 
 # ---- 取版本 ----
 if [ -z "$VERSION" ]; then
@@ -65,11 +77,12 @@ fi
 
 if [ "$DRY" = "1" ]; then
 	say "[dry-run] 将下载: $URL"
-	say "[dry-run] 安装到: $DEST_DIR/zeta"
+	say "[dry-run] 安装到: $DEST_DIR/$BIN"
 	exit 0
 fi
+
 mkdir -p "$DEST_DIR"
-DEST="$DEST_DIR/zeta"
+DEST="$DEST_DIR/$BIN"
 
 say "下载 $ASSET → $DEST ..."
 TMP="$(mktemp)"
@@ -82,5 +95,11 @@ mv "$TMP" "$DEST"
 
 say ""
 say "安装完成: $DEST"
-"$DEST" --version || say "（运行 zeta --version 确认版本）"
-say "提示: 确保 $DEST_DIR 在 PATH 中。"
+"$DEST" --version || say "（运行 $BIN --version 确认版本）"
+case ":$PATH:" in
+	*":$DEST_DIR:"*) ;;
+	*) say "提示: $DEST_DIR 不在 PATH 中，请把它加进你的 shell 配置。" ;;
+esac
+say ""
+say "下一步: $BIN            # 进入交互界面"
+say "        $BIN --help     # 查看全部命令"

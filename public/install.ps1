@@ -1,7 +1,7 @@
 # Zeta - Windows one-shot installer (PowerShell)
 # Usage: irm https://linxira-os.github.io/install.ps1 | iex
-# Downloads the latest zeta-windows-x64.exe from GitHub Releases to %LOCALAPPDATA%\Zeta\,
-# and creates a zeta.cmd launcher in the user profile.
+# Downloads the latest zetacode CLI binary from GitHub Releases to %LOCALAPPDATA%\Zeta\,
+# and creates a zetacode.cmd launcher under %USERPROFILE%\.zeta\bin.
 # NOTE: ASCII-only on purpose so it parses identically under Windows PowerShell 5.1 and 7
 # in any system locale, whether run via irm|iex, -File, or dot-sourcing.
 
@@ -10,7 +10,10 @@ $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 $Repo = "Linxira-OS/linxira-zeta"
 $Api = "https://api.github.com/repos/$Repo/releases/latest"
-$Asset = "zeta-windows-x64.exe"
+# The command is `zetacode`, not `zeta` -- a bare `zeta` is the workbench bin
+# (zetawork), and shipping both under one name makes them shadow each other.
+$Bin = "zetacode"
+$Asset = "zeta-cli-windows-x64.exe"
 
 Write-Host "Zeta Windows installer" -ForegroundColor Cyan
 
@@ -28,9 +31,9 @@ $Url = "https://github.com/$Repo/releases/download/$Version/$Asset"
 $LocalAppData = $env:LOCALAPPDATA
 if (-not $LocalAppData) { $LocalAppData = Join-Path $env:USERPROFILE "AppData\Local" }
 $DestDir = Join-Path $LocalAppData "Zeta"
-$Dest = Join-Path $DestDir "zeta.exe"
+$Dest = Join-Path $DestDir "$Bin.exe"
 $ShimDir = Join-Path $env:USERPROFILE ".zeta\bin"
-$Shim = Join-Path $ShimDir "zeta.cmd"
+$Shim = Join-Path $ShimDir "$Bin.cmd"
 
 New-Item -ItemType Directory -Force -Path $DestDir | Out-Null
 New-Item -ItemType Directory -Force -Path $ShimDir | Out-Null
@@ -44,7 +47,7 @@ try {
     throw
 }
 
-# ---- zeta.cmd launcher ----
+# ---- zetacode.cmd launcher ----
 $cmd = "@echo off`r`n`"$Dest`" %*`r`n"
 Set-Content -Path $Shim -Value $cmd -Encoding ASCII
 Write-Host "Launcher: $Shim"
@@ -61,4 +64,4 @@ if ($userPath -notlike "*$ShimDir*") {
 Write-Host ""
 Write-Host "Installed: $Dest" -ForegroundColor Green
 & $Dest --version
-Write-Host "Open a new terminal and run zeta."
+Write-Host "Open a new terminal and run $Bin."
