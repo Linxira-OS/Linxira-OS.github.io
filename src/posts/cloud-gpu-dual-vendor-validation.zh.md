@@ -24,7 +24,9 @@ desc: "Linxira Bio SDK 上线 GPU 厂商支持前的云端验证：全部采用�
    一条定向富集通路，五步分析链把它以 p = 6×10⁻³¹ 挖出来，其余通路
    全在背景水平——不漏报、不误报。
 3. **两台机器的输出一个字节都不差**：对接、SSR 微卫星挖掘、表达谱
-   五步链、富集分析——五类输出文件的 SHA256 在两台服务器上完全相同。
+   五步链、富集分析——五类输出文件的 SHA256 在两台服务器上完全相同
+   （**前提见 §3.3**：对接 JSON 的信封要求两次运行的 `--cpu` 相同；
+   姿态文件与 `--cpu` 无关）。
 4. **Rust 实现相对传统 Python 工具稳定快 3.6–4.0 倍**（100 万碱基 SSR
    挖掘，三个不同 CPU 上复测），输出与参照实现逐字节一致。
 5. **国产卡能跑我们的东西**：同一份 **C/C++ 内核源码**（同一个文件，MUSA 与 CUDA
@@ -118,6 +120,17 @@ desc: "Linxira Bio SDK 上线 GPU 厂商支持前的云端验证：全部采用�
 表达谱五步链 JSON、富集 JSON——**五类文件的 SHA256 在两台服务器上
 完全相同**。换厂商、换 CPU、换核数，结果不变。
 
+**但必须把前提写清楚（2026-10-12 更正）**：这里的"逐字节一致"指的是**这两轮的配置**——
+JSON 信封里唯一的机器相关字段是 `result.thread_count`，它回显请求的 `--cpu`（引擎
+`native_tools.rs` 始终透传该参数），因此**只有当两次运行的 `--cpu` 相同时，JSON 才是逐字节相同**；
+后续第三轮扫描里 NVIDIA 用 `--cpu 32`、摩尔线程用 `--cpu 15`，每个 `A_*.json` 都因此不同，
+**且仅差这一个字段**（把该字段归一化后即逐字节相同）。
+**与 `--cpu` 无关的是姿态文件**：同种子复跑得到的 `*_out*.pdbqt`
+（12,180 字节，SHA256 `6d5830…063e2`）在两台机器、以及在不同 `--cpu` 下都逐字节相同；
+数值层（亲和力/RMSD 12 行）在两台机器上逐值相同。
+另外诚实说明：我们没有证明 libm/ULP 级无关性，只证明了"这两台机器 + 这个官方二进制
+（`vina_1.2.5_linux_x86_64`）+ 这个负载"逐字节相同；第一轮的 Vina 获取过程未留安装日志。
+
 ## 四、我们相对传统工具的速度
 
 SSR（微卫星）挖掘是"同一算法、两种实现"的直接对照：我们的 Rust
@@ -149,6 +162,7 @@ SSR（微卫星）挖掘是"同一算法、两种实现"的直接对照：我们
 
 结论：**两块卡的内存带宽同档**（各达标称值九成左右），跑数据搬运
 为主的生信内核等价；原子操作差距写 MUSA 内核时应回避（换分桶归并）。
+
 > **本文口径：哪部分是 Rust、哪部分是 C++（2026-10-12 补记）**
 >
 > 本文（以及同一批 GPU 实验）容易被读成"我们用 Rust 写了 GPU 内核"，不是。分工是：
@@ -166,7 +180,6 @@ SSR（微卫星）挖掘是"同一算法、两种实现"的直接对照：我们
 > 各家 Rust 支持的分层矩阵（谁能用 Rust 调 GPU、谁能用 Rust 写内核、什么仍必须 C++）记录在仓库
 > 台账：<https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/docs/engine-evals/vendor-rust-status-2026-10-12.md>
 
-
 ## 六、期间发现的两个驱动层事实
 
 中性记录，日志证据在仓库台账里：NVIDIA 的 vGPU 云实例驱动不带
@@ -180,11 +193,11 @@ Vulkan 入口（三个独立实例同一报错）；摩尔线程的 Vulkan 驱�
 git clone https://github.com/Linxira-OS/linxira-bio-sdk.git
 cd linxira-bio-sdk && cargo build --release -p linxira-bio-cli
 
-bash scripts/rental/dock-study.sh                          # 对接研究 + RMSD 分析
-mcc -O3 scripts/rental/bench_suite.mu -o bench_mu -lmusart # GPU 内核（MUSA）
-cp scripts/rental/bench_suite.mu b.cu && nvcc -O3 -arch=sm_89 b.cu -o bench_cu
-bash scripts/rental/rna_analysis.sh                        # 信号注入验证
-bash scripts/rental/system_bench.sh                        # 存储/内存带宽
+bash scripts/benchmark/rental/dock-study.sh                          # 对接研究 + RMSD 分析
+mcc -O3 scripts/benchmark/rental/bench_suite.mu -o bench_mu -lmusart # GPU 内核（MUSA）
+cp scripts/benchmark/rental/bench_suite.mu b.cu && nvcc -O3 -arch=sm_89 b.cu -o bench_cu
+bash scripts/benchmark/rental/rna_analysis.sh                        # 信号注入验证
+bash scripts/benchmark/rental/system_bench.sh                        # 存储/内存带宽
 ```
 
 原始输出（JSON/TSV/日志/哈希）在本地归档 `release-artifacts-rental/`
