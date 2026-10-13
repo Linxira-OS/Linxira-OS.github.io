@@ -3,7 +3,7 @@
 # 用法: curl -fsSL https://linxira-os.github.io/install.sh | sh
 #
 # 从 GitHub Releases 拉取编译好的 CLI 二进制，安装为 `zetacode`。
-# 仅支持 Linux（x64/arm64，含 musl）；macOS 与 Windows 请用 npm 安装。
+# 仅支持 Linux x64（含 musl）；macOS、arm64 与 Windows 请用 npm 安装。
 
 set -e
 
@@ -44,7 +44,7 @@ case "$OS" in
 esac
 case "$ARCH" in
 	x86_64|amd64) TRIPLE="x64" ;;
-	aarch64|arm64) TRIPLE="arm64" ;;
+	aarch64|arm64) die "暂不支持 arm64：暂无 arm64 构建产物，请改用 npm 安装（npm install -g @linxiraos/zeta）" ;;
 	*) die "不支持的架构: $ARCH" ;;
 esac
 
