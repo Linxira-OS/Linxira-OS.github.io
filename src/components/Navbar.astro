@@ -49,14 +49,11 @@ const base = `/${lang}`;
  *   这样中英文切换不会丢页面，修正原导航「跳回首页」的跳转问题。
  */
 const otherLang = zh ? "en" : "zh";
-const langPathMatch = Astro.url.pathname.match(/^\/{0,}((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/);
-// zeta v2 预览段:/zeta/v2/zh/... <-> /zeta/v2/en/...,语言切换不丢段
-const v2LangMatch = Astro.url.pathname.match(/^\/{0,}(zeta\/v2\/)(?:zh|en)(\/|$)/);
-const langHref = v2LangMatch
-  ? `/${v2LangMatch[1]}${otherLang}${v2LangMatch[2]}` + Astro.url.pathname.slice(v2LangMatch[0].length)
-  : langPathMatch
-    ? `/${langPathMatch[1] ?? ""}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
-    : Astro.url.pathname;
+// `zeta/v1` is the archived site and keeps its own language switch.
+const langPathMatch = Astro.url.pathname.match(/^\/{0,}((?:zeta(?:\/v1)?|bio-sdk)\/)?(?:zh|en)(\/|$)/);
+const langHref = langPathMatch
+  ? `/${langPathMatch[1] ?? ""}${otherLang}${langPathMatch[2]}` + Astro.url.pathname.slice(langPathMatch[0].length)
+  : Astro.url.pathname;
 
 /* ---------- 文案（中英） ---------- */
 const copy = {
@@ -95,7 +92,7 @@ const products = [
 		desc: zh
 			? "一个终端工作区装下整套工具：工作台、编码 Agent zetacode、编辑器与终端 IDE。Rust 编写，鼠标优先。"
 			: "One terminal workspace, the whole toolkit: workbench, coding agent zetacode, editor, and terminal IDE. Rust-written, mouse-first.",
-		href: zh ? "/zeta/v2/zh/" : "/zeta/v2/en/",
+		href: zh ? "/zeta/zh/" : "/zeta/en/",
 	},
 	{
 		id: "sdk",

@@ -1,0 +1,247 @@
+---
+import ZetaLayout from "../../../../sites/zeta/ZetaLayout.astro";
+---
+<style>
+	.shot-strip { overflow: hidden; width: 100%; max-width: 100%; contain: inline-size; }
+	.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
+	.shot-strip:hover .shot-track { animation-play-state: paused; }
+	.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
+	.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
+	.shot:hover { border-color: #2f6f78; transform: translateY(-2px); }
+	.shot img { display: block; width: 100%; height: auto; }
+	.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
+	.lightbox[hidden] { display: none; }
+	.lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 12px 48px rgba(0,0,0,.6); animation: lbIn .28s cubic-bezier(.22,.61,.36,1); }
+	.lightbox { animation: lbFade .2s ease-out; }
+	@keyframes lbIn { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+	@keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+	@media (prefers-reduced-motion: reduce) { .lightbox, .lightbox img { animation: none; } }
+	@keyframes zeta-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+	@media (prefers-reduced-motion: reduce) { .shot-track { animation: none; } }
+</style>
+
+<script>
+	const strip = document.querySelector('#webui .shot-strip');
+	const lb = document.getElementById('lightbox');
+	const lbImg = document.getElementById('lightboxImg');
+	if (strip && lb && lbImg) {
+		strip.querySelectorAll('.shot').forEach((btn) => {
+			btn.addEventListener('click', () => {
+				const img = btn.querySelector('img');
+				if (!img) return;
+				lbImg.src = img.src;
+				lb.hidden = false;
+			});
+		});
+		lb.addEventListener('click', () => { lb.hidden = true; lbImg.src = ''; });
+		lbImg.addEventListener('click', (e) => e.stopPropagation());
+	}
+</script>
+
+<ZetaLayout
+	lang="en"
+	title="Zeta — a coding agent for your terminal"
+	description="Zeta is a coding agent for the terminal: subagents, plan mode, LSP, DAP, hindsight memory, hashline edits, and time-traveling rules out of the box; project tracking, experiment measurement, a command marketplace, and the Web desktop workbench are Zeta's own."
+	active="home"
+	archived={true}
+	basePath="/zeta/v1/en"
+>
+	<section class="hero">
+		<div class="hero-inner">
+			<div class="kicker">Coding agent · built by Linxira-OS</div>
+			<h1>There are many agent harnesses.<br>This one is <span class="accent">yours.</span></h1>
+			<p class="lede">
+				<strong>Zeta</strong> is a coding agent for the terminal: <strong>subagents</strong>, <strong>plan mode</strong>,
+				<strong>LSP/DAP</strong>, <strong>hindsight memory</strong>, <strong>hashline edits</strong>, and
+				<strong>time-traveling rules</strong> out of the box; <strong>project tracking</strong>, <strong>experiment
+				measurement</strong>, a <strong>command marketplace</strong>, and the <strong>Web desktop workbench</strong>
+				are Zeta's own. Built on the <strong>OMP</strong> runtime — while Zeta owns its package namespace,
+				product presentation, and release cadence.
+			</p>
+			<div class="cta-row">
+				<a class="cta primary" href="#install">Get started</a>
+				<a class="cta ghost" href="/zeta/en/features/">Explore features →</a>
+				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.545 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.92 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</a>
+				<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">Desktop download</a>
+			</div>
+			<div class="install" id="install">
+				<div class="tabs">
+					<button class="tab active" type="button" data-tab="npm">npm</button>
+					<button class="tab" type="button" data-tab="bun">bun</button>
+					<button class="tab" type="button" data-tab="linux">Linux</button>
+					<button class="tab" type="button" data-tab="windows">Windows</button>
+					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
+				</div>
+				<div class="code" data-pane="npm">
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/zeta">npm install -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="bun" hidden>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/zeta">bun add -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/zeta" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="linux" hidden>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install.sh | sh">curl -fsSL https://linxira-os.github.io/install.sh | sh</span></span>
+					<button class="copy-btn" type="button" data-copy="curl -fsSL https://linxira-os.github.io/install.sh | sh" data-done="Copied">Copy</button>
+				</div>
+				<div class="code" data-pane="windows" hidden>
+					<span class="cmd"><span class="prompt">PS&gt;</span><span class="type" data-typing="irm https://linxira-os.github.io/install.ps1 | iex">irm https://linxira-os.github.io/install.ps1 | iex</span></span>
+					<button class="copy-btn" type="button" data-copy="irm https://linxira-os.github.io/install.ps1 | iex" data-done="Copied">Copy</button>
+				</div>
+				<p class="install-note">
+					In China: if the official registry is slow, use the Tencent mirror
+					<code>npm install -g @linxiraos/zeta --registry=https://mirrors.cloud.tencent.com/npm/</code>.
+					Alibaba's npmmirror has previously lagged on <code>pi-natives@1.0.2</code> and broken installs — if you hit an error, switch to the official registry or the Tencent mirror.
+					Desktop (GUI) builds: <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>.
+				</p>
+			<p class="install-note" style="margin-top:1rem">Or grab the desktop (GUI) build — stable link, always the newest release:</p>
+			<a class="cta ghost" href="https://github.com/Linxira-OS/linxira-zeta/releases/latest">Download desktop (Windows / macOS / Linux)</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="goals">
+		<div class="section-head">
+			<div class="num">01</div>
+			<div>
+				<h2>Design goals</h2>
+				<div class="sub">Three priorities shape every release: modern out-of-the-box experience, cache-first execution, and an agent that evolves with you.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">M</span>Modern first</h3><p>A clear product identity, secure onboarding, reliable sessions, a full-featured Web UI — no hand-assembled extension stacks for everyday coding.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">C</span>Cache first</h3><p>Keep provider prompt-cache eligibility without sacrificing protocol correctness, tool freshness, or session reliability. Long sessions stay cheap.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>Self-evolving</h3><p>Extensions, skills, prompt templates, and themes are first-class. Ask the agent to build what you need — it can customize itself on the fly.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">U</span>Upstream mergeable</h3><p>Runtime tree, package layout, Bun workflow, and internal <span class="keycap">@zeta/*</span> names follow OMP conventions, so upstream updates stay mergeable.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">F</span>Frictionless setup</h3><p>Sensible defaults and a guided onboarding flow: the critical paths work without hand-assembling extension stacks or tuning config.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">W</span>Web UI first-class</h3><p>The browser and desktop apps (Windows / macOS / Linux) share one durable session with the CLI: themes, the Tracking panel, and trajectory view are built in, so agent state continues wherever you pick up.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="highlights">
+		<div class="section-head">
+			<div class="num">02</div>
+			<div>
+				<h2>Zeta's own capabilities</h2>
+				<div class="sub">On top of the OMP runtime, Zeta keeps shipping its own product surface — all of it already in releases.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3><span class="k">T</span>Project tracking</h3><p>Turn on with <span class="keycap">/tracking</span>: the AI writes milestones and key decisions into <span class="keycap">.zeta/tracking/</span>, kept across sessions and browsable in the desktop and Web UI.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3><span class="k">W</span>Web workbench &amp; desktop</h3><p>43 light/dark themes, trajectory view, and a four-pane right dock; the desktop app shares one durable session with the CLI.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3><span class="k">E</span>Experiment measurement</h3><p>Per-project local experiments: metrics, directions, and baseline commits in SQLite, ready to revisit and compare.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3><span class="k">C</span>TypeScript custom commands</h3><p>From <span class="keycap">~/.zeta/commands/</span> and project command dirs; arktype / typebox / zod schemas, full runtime API.</p></div>
+			<div class="grid-item"><div class="idx">05</div><h3><span class="k">M</span>Command marketplace</h3><p>Install, share, and reuse slash commands as Bun packages.</p></div>
+			<div class="grid-item"><div class="idx">06</div><h3><span class="k">S</span>Local stats dashboard</h3><p><span class="keycap">zeta stats</span>: sessions, usage, and cost at a glance — data never leaves your machine.</p></div>
+		</div>
+	</section>
+	<section class="block" id="webui">
+		<div class="section-head">
+			<div class="num">03</div>
+			<div>
+				<h2>Web UI</h2>
+				<div class="sub">The browser and desktop workbench for Zeta: 43 themes, trajectory view, the Tracking panel, and the right-side dock — one durable session shared with the CLI. Desktop builds (Windows / macOS / Linux) on Releases. Click any shot to enlarge.</div>
+			</div>
+		</div>
+		<div class="shot-strip">
+			<div class="shot-track">
+				<div class="shot-group">
+					<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="Zeta Web UI screenshot 1" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="Zeta Web UI screenshot 2" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="Zeta Web UI screenshot 3" loading="lazy"></button>
+				</div>
+				<div class="shot-group" aria-hidden="true">
+					<button class="shot" type="button"><img src="/assets/zeta-webui-1.png" alt="" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-2.png" alt="" loading="lazy"></button>
+					<button class="shot" type="button"><img src="/assets/zeta-webui-3.png" alt="" loading="lazy"></button>
+				</div>
+			</div>
+		</div>
+		<div class="lightbox" id="lightbox" hidden>
+			<img id="lightboxImg" src="" alt="Enlarged Zeta Web UI screenshot">
+		</div>
+	</section>
+
+
+	<section class="block" id="modes">
+		<div class="section-head">
+			<div class="num">04</div>
+			<div>
+				<h2>Four modes</h2>
+				<div class="sub">From the full TUI to scripts, event streams, and programmatic embedding.</div>
+			</div>
+		</div>
+		<div class="modes">
+			<div class="mode"><div class="mname"><span class="dot"></span>Interactive</div><p>The full TUI experience: panels, previews, tool cards, keyboard shortcuts.</p></div>
+			<div class="mode"><div class="mname"><span class="dot"></span>Print / JSON</div><p><code>zeta -p "query"</code> for scripts; <code>--mode json</code> streams events.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>RPC</div><p>A JSON protocol over stdin/stdout for non-Node integrations.</p></div>
+			<div class="mode"><div class="mname"><span class="dot alt"></span>SDK</div><p>Embed the agent as a library and control its full lifecycle.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="providers">
+		<div class="section-head">
+			<div class="num">05</div>
+			<div>
+				<h2>15+ providers, hundreds of models</h2>
+				<div class="sub">Switch models mid-session with <span class="keycap">/model</span> or <span class="keycap">Ctrl+L</span>.</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">Anthropic</span><span class="tag hot">OpenAI</span><span class="tag hot">Google</span>
+			<span class="tag">Azure</span><span class="tag">Bedrock</span><span class="tag">Mistral</span>
+			<span class="tag">Groq</span><span class="tag">Cerebras</span><span class="tag">xAI</span>
+			<span class="tag">Hugging Face</span><span class="tag">Kimi</span><span class="tag">MiniMax</span>
+			<span class="tag">NVIDIA</span><span class="tag">OpenRouter</span><span class="tag">Ollama</span>
+			<span class="tag">more…</span>
+		</div>
+	</section>
+
+	<section class="block" id="bots">
+		<div class="section-head">
+			<div class="num">06</div>
+			<div>
+				<h2>Drive Zeta from your chat apps</h2>
+				<div class="sub">Hook Zeta into WeChat, Feishu, and Telegram — ask questions, start tasks, and get results from the messaging apps you already use. One unified bot interface, with more chat platforms on the way.</div>
+			</div>
+		</div>
+		<div class="tag-row">
+			<span class="tag hot">WeChat</span><span class="tag hot">Feishu</span><span class="tag hot">Telegram</span>
+			<span class="tag">Unified Bot Interface</span><span class="tag">More platforms coming…</span>
+		</div>
+	</section>
+
+	<section class="block" id="linux">
+		<div class="section-head">
+			<div class="num">07</div>
+			<div>
+				<h2>Native Linux integration</h2>
+				<div class="sub">Not a wrapped cross-platform tool: heavy lifting on a native engine, terminal and desktop deeply wired.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>Native engine</h3><p>Text, regex, grep, and diff run on Rust primitives; the Bun runtime executes TypeScript directly — fast startup, low memory.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>Terminal is home</h3><p>The full TUI: panels, previews, tool cards, and keybindings; OSC 8 hyperlinks and native PTY / shell process management.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Desktop bridge</h3><p>Open local editors and file managers securely from the Web UI: HMAC gateway tokens, a target allowlist, and workspace containment — the renderer never touches executable paths.</p></div>
+			<div class="grid-item"><div class="idx">04</div><h3>One command to land</h3><p>Global install via npm / Bun, or <code class="keycap">curl … install.sh | sh</code>; the desktop app ships Linux builds with a global default workspace.</p></div>
+		</div>
+	</section>
+
+	<section class="block" id="identity">
+		<div class="section-head">
+			<div class="num">08</div>
+			<div>
+				<h2>A first-class citizen of Linxira OS</h2>
+				<div class="sub">Zeta is built by the Linxira OS team — a Linux workstation distribution for scientific computing. On Linxira OS, Zeta is more than a package in a terminal.</div>
+			</div>
+		</div>
+		<div class="grid-table">
+			<div class="grid-item"><div class="idx">01</div><h3>First-class identity</h3><p>Zeta will hold its own identity in the system (a dedicated UID), running as a first-class system citizen rather than an ordinary process inside a user session.</p></div>
+			<div class="grid-item"><div class="idx">02</div><h3>System-enforced boundaries</h3><p>Permission boundaries are enforced by the operating system: policy is declared by Zeta, enforced by the system, and changes require human approval — over-reach is denied at the system layer.</p></div>
+			<div class="grid-item"><div class="idx">03</div><h3>Privacy isolation by default</h3><p>Users' private data stays out of reach by default: personal files in home directories and other users' data are invisible to Zeta, and every action leaves an auditable trail.</p></div>
+		</div>
+		<div class="cta-row" style="margin-top: 2rem;">
+			<a class="cta ghost" href="/en/">Explore Linxira OS →</a>
+		</div>
+	</section>
+</ZetaLayout>

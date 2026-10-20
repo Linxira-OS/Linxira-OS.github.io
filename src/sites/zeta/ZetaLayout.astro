@@ -5,8 +5,12 @@ interface Props {
 	title: string;
 	description: string;
 	active: "home" | "features" | "ecosystem";
+	/** Left in place for the archived v1 site: noindex, banner, and links that stay under the base. */
+	archived?: boolean;
+	/** Overrides the `/zeta/<lang>` base so an archived copy keeps its own namespace. */
+	basePath?: string;
 }
-const { lang, title, description, active } = Astro.props;
+const { lang, title, description, active, archived = false, basePath } = Astro.props;
 const zh = lang === "zh";
 const copy = zh
 	? {
@@ -21,7 +25,8 @@ const copy = zh
 			footOrg: "Linxira OS", footGitHub: "GitHub",
 			footCopy: "© 2026 Zeta · Linxira-OS",
 	  };
-const base = zh ? "/zeta/zh" : "/zeta/en";
+const base = basePath ?? (zh ? "/zeta/zh" : "/zeta/en");
+const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 // 中英切换由主站 Navbar 统一提供（保留当前 zeta 子页面路径），rail 不再重复
 ---
 <!DOCTYPE html>
@@ -35,7 +40,8 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 	<meta property="og:type" content="website">
 	<meta property="og:title" content={title}>
 	<meta property="og:description" content={description}>
-	<meta property="og:url" content={"https://linxira-os.github.io/zeta/" + lang + "/"}>
+	<meta property="og:url" content={"https://linxira-os.github.io" + base + "/"}>
+	{archived && <meta name="robots" content="noindex, nofollow" />}
 	<meta name="theme-color" content="#0E1417" media="(prefers-color-scheme: dark)">
 	<meta name="theme-color" content="#E8F7F6" media="(prefers-color-scheme: light)">
 	<link rel="icon" type="image/svg+xml" href="/assets/zeta-logo.svg">
@@ -411,12 +417,22 @@ const base = zh ? "/zeta/zh" : "/zeta/en";
 			.install-note { font-size: .78rem; }
 			.shot { width: min(300px, 82vw); }
 		}
+		.zeta-archive-banner { position: relative; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; padding: .55rem 1rem; border-bottom: 1px solid #2f6f78; background: #0b1a1d; color: #cfe3e2; font-size: .85rem; }
+		.zeta-archive-tag { padding: .05rem .4rem; border: 1px solid #2f6f78; border-radius: 4px; font-weight: 600; letter-spacing: .04em; }
+		.zeta-archive-banner a { color: #7fd6cf; text-decoration: underline; }
 	</style>
 </head>
 <body>
 	<div class="zeta-progress" id="zetaProgress" aria-hidden="true"></div>
 	<div class="gridlines" aria-hidden="true"></div>
 
+	{archived && (
+		<div class="zeta-archive-banner" role="note">
+			<span class="zeta-archive-tag">v1</span>
+			<span>{zh ? "这是 Zeta 的旧版站点（v1），已停止更新；当前版本请看" : "This is the archived Zeta v1 site, no longer updated; the current site is"}</span>
+			<a href={latest}>{zh ? "最新站点 →" : "the current site →"}</a>
+		</div>
+	)}
 	<Navbar lang={lang} active="products" />
 
 	<div class="zeta-body">

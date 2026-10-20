@@ -1,0 +1,28 @@
+---
+// Every `/zeta/v2/...` URL that was handed out while v2 sat under a preview
+// prefix now points at the same page on the official site. Static hosts cannot
+// answer a redirect, so each path emits a tiny document instead of a 404.
+export function getStaticPaths() {
+	// Astro evaluates this function in isolation, so the list lives inside it.
+	const paths = ["", "zh", "en", "zh/features", "zh/ecosystem", "en/features", "en/ecosystem"];
+	return paths.map(slug => ({ params: { slug: slug === "" ? undefined : slug } }));
+}
+const slug = Astro.params.slug ?? "";
+const target = "/zeta/" + (slug === "" ? "" : slug + "/");
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Zeta</title>
+	<link rel="canonical" href={target} />
+	<meta name="robots" content="noindex" />
+	<meta http-equiv="refresh" content={"0; url=" + target} />
+	<script is:inline define:vars={{ target }}>
+		window.location.replace(target);
+	</script>
+</head>
+<body>
+	<p>This page has moved to <a href={target}>{target}</a>.</p>
+</body>
+</html>
