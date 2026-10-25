@@ -4,34 +4,38 @@ import PageLayout from "../../../components/PageLayout.astro";
 <PageLayout lang="en" active="download" title="Download — Linxira OS">
     <a href="/en/" class="back">← Back to Home</a>
     <h1>Download Linxira OS</h1>
-    <p>Current build is <b>2026-09-30</b> — the installer-134 root-cause round (pkexec session env injection, qml directory wired in, crash reports auto-uploaded with a short link) plus live-session privilege fixes (passwordless root/installer) and the <b>official handbook</b> (linxira-wiki) with <b>workspace guard</b>.</p>
+    <p>Current build is <b>2026-10-26</b> — the November image batch: crash watch (<code>linxira-crash-watch</code>) with the <code>diagnose-crash</code> skill ships on the image, desktops are narrowed to <b>Plasma + COSMIC</b>, headless comes in two sizes (full toolset / minimal), and Zeta is preinstalled on desktop installs and upgraded through <code>update</code>.</p>
 
     <div class="dl-card">
-      <h3>linxira-2026.09.30-r17-x86_64.iso</h3>
-      <div class="meta">4.8 GB · Desktop / server installer · x86_64</div>
+      <h3>linxira-2026.10.26-x86_64.iso</h3>
+      <div class="meta">5.0 GB · Desktop / headless installer · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">Open GitCode Repository →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.09.30-r17-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/master/linxira-2026.10.26-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">In the GitCode repository, click the ISO file → Download button (large file served via Git LFS).</p>
     </div>
 
     <div class="dl-card">
-      <h3>linxira-wsl-2026.09.29-x86_64.tar.gz</h3>
-      <div class="meta">~487 MB · WSL2 distro (CLI-first toolchain + WSLg-capable GUI tools) · x86_64</div>
+      <h3>linxira-wsl-2026.10.25-x86_64.tar.gz</h3>
+      <div class="meta">~566 MB · WSL2 distro (CLI-first toolchain + WSLg-capable GUI tools) · x86_64</div>
       <p style="font-size:0.9rem;color:#94a3b8;margin-bottom:0.9rem;">Linxira WSL puts the whole Linxira toolchain inside Windows' WSL2: <strong>systemd</strong> enabled, the signed [linxira] repository tracks updates directly, and <code>linxira-config stack</code> completes Python / Java / LaTeX / containers in one command — CLI, TUI, and GUI (WSLg) forms, a full Linxira environment without reinstalling.</p>
       <a class="dl-btn" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">GitHub Releases →</a>
-      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">Import with <code>wsl --import linxira C:\wsldata linxira-wsl-2026.09.29-x86_64.tar.gz --version 2</code>, then <code>wsl -d linxira</code>. systemd is enabled; see the Release assets for the SHA256 file.</p>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">Import with <code>wsl --import linxira C:\wsldata linxira-wsl-2026.10.25-x86_64.tar.gz --version 2</code>, then <code>wsl -d linxira</code>. systemd is enabled; see the Release assets for the SHA256 file.</p>
     </div>
 
     <h2>Checksums</h2>
     <pre><code>sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.09.30-r17-x86_64.iso):
-9162b2709dbd251eeadf84dfd949365b1c1767dadccb6a73abfd7f6765446cba  linxira-2026.09.30-r17-x86_64.iso
+# SHA256 (linxira-2026.10.26-x86_64.iso):
+4111d82b033293c85f7a11c609fc777a367799488e576771d4d39bfcbe43d09e  linxira-2026.10.26-x86_64.iso
 
 # WSL image: see *.sha256 assets on the GitHub Release</code></pre>
 
     <h2>Installation</h2>
-    <p>See the <a href="/en/docs/install/" style="color:#20B8B0;">installation guide</a>: write the ISO to a USB drive, then choose <strong>KDE Plasma</strong>, <strong>COSMIC</strong>, <strong>Server (no desktop)</strong> or <strong>Server (minimal · pure Arch)</strong> at the desktop step.</p>
+    <p>See the <a href="/en/docs/install/" style="color:#20B8B0;">installation guide</a>: write the ISO to a USB drive, then choose <strong>KDE Plasma</strong>, <strong>COSMIC</strong>, <strong>Headless (full toolset)</strong> or <strong>Headless (minimal)</strong> at the desktop step.</p>
+
+    <div class="note">
+      <p><strong>No old versions</strong>: Arch Linux is a rolling release, so an image only reflects the repositories of its build day. Old images are not retained or offered — always use the current version on this page.</p>
+    </div>
 
     <div class="note">
       <p>Note: the ISO is an aggregate work — kernel GPL-2.0-only, system components under their own licenses, first-party tools MIT/GPL-3.0. The SHA256SUMS file is stored alongside the ISO in the GitCode repository; WSL images live in the linxira-wsl repository Releases.</p>

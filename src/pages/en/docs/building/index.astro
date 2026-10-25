@@ -63,11 +63,11 @@ cd linxira-iso-direct</code></pre>
   <h2>4. Artifacts and verification</h2>
   <p><code>--output ./out</code> selects the output directory. ISOs are named <code>linxira-YYYY.MM.DD-x86_64.iso</code> (date = build date), each with a matching <code>.sha256</code> checksum file:</p>
 <pre><code>out/
-├── linxira-2026.08.14-x86_64.iso
-└── linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+├── linxira-2026.10.26-x86_64.iso
+└── linxira-2026.10.26-x86_64.iso.sha256</code></pre>
   <p>Verify a build artifact:</p>
 <pre><code>cd out
-sha256sum -c linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+sha256sum -c linxira-2026.10.26-x86_64.iso.sha256</code></pre>
   <p>Released images live in the <code>iso-release/</code> directory with a <code>SHA256SUMS</code> manifest, one line per image in the form <code>&lt;sha256 hash&gt;&nbsp;&nbsp;linxira-YYYY.MM.DD-x86_64.iso</code>.</p>
 
   <h2>5. Build options</h2>

@@ -3,13 +3,26 @@ import PageLayout from "../../../components/PageLayout.astro";
 ---
 <PageLayout lang="en" active="roadmap" title="Release Log — Linxira OS" maxWidth="860px">
   <h1>Release Log</h1>
-  <p class="subtitle">Archived ISO builds. The first Experimental Stable (2026-08-14) passed full installation testing; future releases are built from source by users following the build guide.</p>
+  <p class="subtitle">Released ISO builds. The current image is 2026-10-26; Arch is a rolling release, so old images are not retained or offered.</p>
   <div class="section-divider"></div>
 
   <div class="rel-item reveal">
     <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
+      <code class="rel-name">linxira-2026.10.26-x86_64.iso</code>
       <span class="tag latest">Latest</span>
+    </div>
+    <div class="rel-meta">2026-10-26 · 5.0 GB · SHA256 <code class="sha">4111d82b033293c85f7a11c609fc777a367799488e576771d4d39bfcbe43d09e</code></div>
+    <ul>
+      <li>Crash watch 0.1.1 with the diagnose-crash skill ships on the image</li>
+      <li>Desktops narrowed to Plasma + COSMIC; headless in two sizes (full / minimal)</li>
+      <li>Zeta preinstalled on desktop installs and upgraded through update</li>
+      <li>catalog 3.6.0 / components 0.8.3 / config-hub 2.5.3 / package-center 0.2.4</li>
+    </ul>
+  </div>
+
+  <div class="rel-item reveal reveal-d1">
+    <div class="rel-head">
+      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
       <span class="tag stable">Experimental Stable</span>
     </div>
     <div class="rel-meta">2026-08-14 · 4.79 GB · SHA256 <code class="sha">b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code></div>

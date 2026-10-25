@@ -63,11 +63,11 @@ cd linxira-iso-direct</code></pre>
   <h2>4. 产物与校验</h2>
   <p><code>--output ./out</code> 指定输出目录，ISO 命名遵循 <code>linxira-YYYY.MM.DD-x86_64.iso</code>（日期为构建日期），并伴随同名 <code>.sha256</code> 校验文件：</p>
 <pre><code>out/
-├── linxira-2026.08.14-x86_64.iso
-└── linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+├── linxira-2026.10.26-x86_64.iso
+└── linxira-2026.10.26-x86_64.iso.sha256</code></pre>
   <p>校验构建产物：</p>
 <pre><code>cd out
-sha256sum -c linxira-2026.08.14-x86_64.iso.sha256</code></pre>
+sha256sum -c linxira-2026.10.26-x86_64.iso.sha256</code></pre>
   <p>发布镜像由 <code>iso-release/</code> 目录管理，随附 <code>SHA256SUMS</code> 汇总清单，每行格式为 <code>&lt;sha256 哈希&gt;&nbsp;&nbsp;linxira-YYYY.MM.DD-x86_64.iso</code>。</p>
 
   <h2>5. 构建选项说明</h2>

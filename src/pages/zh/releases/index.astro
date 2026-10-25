@@ -3,13 +3,26 @@ import PageLayout from "../../../components/PageLayout.astro";
 ---
 <PageLayout lang="zh" active="roadmap" title="发布日志 — Linxira OS" maxWidth="860px">
   <h1>发布日志</h1>
-  <p class="subtitle">已发布 ISO 构建记录。首个实验性正式版（2026.08.14）已通过完整安装测试；后续版本由用户按构建指南从源码自建。</p>
+  <p class="subtitle">已发布 ISO 构建记录。当前镜像 2026.10.26；Arch 为滚动发行，旧镜像不保留、不提供下载。</p>
   <div class="section-divider"></div>
 
   <div class="rel-item reveal">
     <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
+      <code class="rel-name">linxira-2026.10.26-x86_64.iso</code>
       <span class="tag latest">最新</span>
+    </div>
+    <div class="rel-meta">2026-10-26 · 5.0 GB · SHA256 <code class="sha">4111d82b033293c85f7a11c609fc777a367799488e576771d4d39bfcbe43d09e</code></div>
+    <ul>
+      <li>崩溃监视 linxira-crash-watch 0.1.1 + diagnose-crash 技能随盘</li>
+      <li>桌面收窄为 Plasma + COSMIC；无桌面两档（完整工具集 / 超精简）</li>
+      <li>Zeta 桌面版预装，随 update 升级</li>
+      <li>catalog 3.6.0 / components 0.8.3 / config-hub 2.5.3 / package-center 0.2.4</li>
+    </ul>
+  </div>
+
+  <div class="rel-item reveal reveal-d1">
+    <div class="rel-head">
+      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
       <span class="tag stable">实验性正式版</span>
     </div>
     <div class="rel-meta">2026-08-14 · 4.79 GB · SHA256 <code class="sha">b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code></div>
