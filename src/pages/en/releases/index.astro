@@ -87,22 +87,23 @@ import PageLayout from "../../../components/PageLayout.astro";
     </tbody>
   </table>
 
-  <h2>Cloud release record</h2>
-  <p>Only cloud-verifiable items are listed. The image body was committed only for r17 and the current build; earlier versions left release records (metadata and checksums) but no binary. Old images are not offered for download.</p>
+  <h2>Upload history (old builds deleted)</h2>
+  <p>These builds were uploaded at the dates shown and have all been deleted since. Every download site keeps <b>only the newest release and its assets</b>: the system is a rolling Arch release, old images are no longer maintained, and support requests for them are not accepted.</p>
   <table class="hist-table">
-    <thead><tr><th>Version</th><th>Date</th><th>Size</th><th>SHA256</th><th>Status</th><th>Cloud</th></tr></thead>
+    <thead><tr><th>Version</th><th>Date</th><th>Size</th><th>SHA256</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>4111d82b…</code></td><td class="cur">Uploading</td><td>GitCode (image body)</td></tr>
-      <tr><td>linxira-wsl-2026.10.25</td><td>2026-10-25</td><td>566 MB</td><td><code>c9c5ed9e…</code></td><td class="cur">Current</td><td>GitHub Release</td></tr>
-      <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>Withdrawn</td><td>GitCode (image body, replaced)</td></tr>
-      <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>4.8 GiB</td><td><code>f9413317…</code></td><td>Withdrawn</td><td>GitCode (tag, metadata only)</td></tr>
-      <tr><td>linxira-wsl-2026.09.29</td><td>2026-09-29</td><td>488 MB</td><td><code>b5b7b485…</code></td><td>Withdrawn</td><td>GitHub Release (deleted)</td></tr>
-      <tr><td>linxira-2026.09.28</td><td>2026-09-28</td><td>—</td><td>See repo history</td><td>Withdrawn</td><td>GitCode (metadata only)</td></tr>
-      <tr><td>linxira-2026.09.27</td><td>2026-09-27</td><td>—</td><td>See repo history</td><td>Withdrawn</td><td>GitCode (metadata only)</td></tr>
-      <tr><td>linxira-2026.08.14</td><td>2026-08-14</td><td>4.79 GB</td><td><code>b85ffcea…</code></td><td>Withdrawn</td><td>GitCode (metadata only)</td></tr>
+      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>4111d82b…</code></td><td class="cur">Latest (kept)</td></tr>
+      <tr><td>linxira-wsl-2026.10.25</td><td>2026-10-25</td><td>566 MB</td><td><code>c9c5ed9e…</code></td><td class="cur">Latest (kept)</td></tr>
+      <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>4.8 GiB</td><td><code>f9413317…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.09.29-r13</td><td>2026-09-29</td><td>—</td><td><code>31fd005c…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.09.29-r12</td><td>2026-09-29</td><td>—</td><td><code>174acbe2…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-wsl-2026.09.29</td><td>2026-09-29</td><td>488 MB</td><td><code>b5b7b485…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.09.28</td><td>2026-09-28</td><td>—</td><td><code>63a20c95…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.09.27</td><td>2026-09-27</td><td>—</td><td><code>1f832cc3…</code></td><td>Deleted</td></tr>
+      <tr><td>linxira-2026.08.14</td><td>2026-08-14</td><td>4.79 GB</td><td><code>b85ffcea…</code></td><td>Deleted</td></tr>
     </tbody>
   </table>
-  <p style="font-size:0.85rem;color:var(--faint);">Earlier uploads in early/mid September used a channel that has since been taken offline; they cannot be verified and are therefore not listed.</p>
   <p style="font-size:0.85rem;color:var(--faint);">2026-08-14 is the earliest test build: features were incomplete — it only validated that installation completes and that some first-party system software starts.</p>
 
   <h2>Internal builds (never uploaded)</h2>

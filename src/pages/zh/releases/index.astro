@@ -87,22 +87,23 @@ import PageLayout from "../../../components/PageLayout.astro";
     </tbody>
   </table>
 
-  <h2>云端发布记录</h2>
-  <p>以云端是否留下痕迹为准。镜像本体只在 r17 与当前版本入仓，早期版本仅有发布记录（元数据与校验和）；旧镜像不提供下载。</p>
+  <h2>历史上传记录（旧版已删除）</h2>
+  <p>下列版本在对应时间上传过云端，现已全部删除。任何下载站点只保留<b>最新的一个 release 及其资源</b>：系统为 Arch 滚动更新，旧镜像不再维护，也不受理旧版本的支持请求。</p>
   <table class="hist-table">
-    <thead><tr><th>版本</th><th>日期</th><th>大小</th><th>SHA256</th><th>状态</th><th>云端</th></tr></thead>
+    <thead><tr><th>版本</th><th>日期</th><th>大小</th><th>SHA256</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>4111d82b…</code></td><td class="cur">上传中</td><td>GitCode（镜像本体）</td></tr>
-      <tr><td>linxira-wsl-2026.10.25</td><td>2026-10-25</td><td>566 MB</td><td><code>c9c5ed9e…</code></td><td class="cur">当前</td><td>GitHub Release</td></tr>
-      <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>已下架</td><td>GitCode（镜像本体，已替换）</td></tr>
-      <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>4.8 GiB</td><td><code>f9413317…</code></td><td>已下架</td><td>GitCode（tag，仅元数据）</td></tr>
-      <tr><td>linxira-wsl-2026.09.29</td><td>2026-09-29</td><td>488 MB</td><td><code>b5b7b485…</code></td><td>已下架</td><td>GitHub Release（已删除）</td></tr>
-      <tr><td>linxira-2026.09.28</td><td>2026-09-28</td><td>—</td><td>见仓库历史</td><td>已下架</td><td>GitCode（仅元数据）</td></tr>
-      <tr><td>linxira-2026.09.27</td><td>2026-09-27</td><td>—</td><td>见仓库历史</td><td>已下架</td><td>GitCode（仅元数据）</td></tr>
-      <tr><td>linxira-2026.08.14</td><td>2026-08-14</td><td>4.79 GB</td><td><code>b85ffcea…</code></td><td>已下架</td><td>GitCode（仅元数据）</td></tr>
+      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>4111d82b…</code></td><td class="cur">最新（保留）</td></tr>
+      <tr><td>linxira-wsl-2026.10.25</td><td>2026-10-25</td><td>566 MB</td><td><code>c9c5ed9e…</code></td><td class="cur">最新（保留）</td></tr>
+      <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>4.8 GiB</td><td><code>f9413317…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.09.29-r13</td><td>2026-09-29</td><td>—</td><td><code>31fd005c…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.09.29-r12</td><td>2026-09-29</td><td>—</td><td><code>174acbe2…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-wsl-2026.09.29</td><td>2026-09-29</td><td>488 MB</td><td><code>b5b7b485…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.09.28</td><td>2026-09-28</td><td>—</td><td><code>63a20c95…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.09.27</td><td>2026-09-27</td><td>—</td><td><code>1f832cc3…</code></td><td>已删除</td></tr>
+      <tr><td>linxira-2026.08.14</td><td>2026-08-14</td><td>4.79 GB</td><td><code>b85ffcea…</code></td><td>已删除</td></tr>
     </tbody>
   </table>
-  <p style="font-size:0.85rem;color:var(--faint);">更早的 2026-09 上旬/中旬上传使用过已下线的旧渠道，无法核验，故不列入。</p>
   <p style="font-size:0.85rem;color:var(--faint);">2026.08.14 是最早的测试版：功能不完整，只验证了能否完成安装、以及部分自研系统软件能否正常启动。</p>
 
   <h2>内部构建记录（未上传云端）</h2>
