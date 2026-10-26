@@ -72,6 +72,41 @@ import PageLayout from "../../../components/PageLayout.astro";
     </ul>
   </div>
 
+  <h2>Cadence and update frequency</h2>
+  <p>Images ship as monthly batches (current: 2026-10-26); packages roll with Arch, so the signed <code>[linxira]</code> repository can be updated at any time; the WSL image follows each batch (current: 2026-10-25). Mid-August was a daily-iteration sprint; since September the model is "monthly batch + targeted fixes".</p>
+  <table class="hist-table">
+    <thead><tr><th>Build date</th><th>Since previous</th><th>Type</th></tr></thead>
+    <tbody>
+      <tr><td>2026-10-26</td><td>26 days</td><td>Monthly image (current)</td></tr>
+      <tr><td>2026-09-30</td><td>1 day</td><td>Fix round r17</td></tr>
+      <tr><td>2026-09-29</td><td>8 days</td><td>Fix round r14 + WSL</td></tr>
+      <tr><td>2026-09-21</td><td>38 days</td><td>Fix rounds r2–r4</td></tr>
+      <tr><td>2026-08-14</td><td>1 day</td><td>Test baseline</td></tr>
+      <tr><td>2026-08-12 / 08-13</td><td>1 day</td><td>Daily iteration</td></tr>
+      <tr><td>2026-08-09</td><td>—</td><td>RC candidate</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Release history</h2>
+  <p>Old images are withdrawn and not offered for download; only the version, date and checksum are kept for reference.</p>
+  <table class="hist-table">
+    <thead><tr><th>Version</th><th>Date</th><th>Size</th><th>SHA256</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>4111d82b…</code></td><td class="cur">Current</td></tr>
+      <tr><td>linxira-wsl-2026.10.25</td><td>2026-10-25</td><td>566 MB</td><td><code>c9c5ed9e…</code></td><td class="cur">Current</td></tr>
+      <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>4.8 GiB</td><td><code>f9413317…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-wsl-2026.09.29</td><td>2026-09-29</td><td>488 MB</td><td><code>b5b7b485…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.09.21r4</td><td>2026-09-21</td><td>4.74 GiB</td><td><code>b36aec3b…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.09.21r3</td><td>2026-09-21</td><td>4.74 GiB</td><td><code>4dfb2e87…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.09.21r2</td><td>2026-09-21</td><td>5.05 GiB</td><td><code>d5e1e308…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.08.14</td><td>2026-08-14</td><td>4.79 GB</td><td><code>b85ffcea…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.08.13</td><td>2026-08-13</td><td>4.79 GB</td><td><code>b880391c…</code></td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.08.12</td><td>2026-08-12</td><td>4.73 GB</td><td>Not archived</td><td>Withdrawn</td></tr>
+      <tr><td>linxira-2026.08.09-r17</td><td>2026-08-09</td><td>4.69 GB</td><td>Not archived</td><td>Candidate</td></tr>
+    </tbody>
+  </table>
+
   <div style="text-align:center; margin-top:2.5rem;">
     <a href="/en/download/" class="cta-ghost">Download latest ISO →</a>
   </div>
@@ -91,5 +126,10 @@ import PageLayout from "../../../components/PageLayout.astro";
     .rel-item ul { color: var(--muted); font-size: 0.9rem; padding-left: 1.2rem; margin: 0.3rem 0 0; }
     .cta-ghost { display: inline-block; padding: 0.85rem 1.8rem; color: var(--ink-strong); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
     .cta-ghost:hover { border-color: var(--teal); color: var(--teal); }
+    .hist-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.6rem; font-size: 0.88rem; }
+    .hist-table th { text-align: left; padding: 0.5rem 0.7rem; color: var(--faint); font-weight: 600; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .hist-table td { padding: 0.55rem 0.7rem; color: var(--muted); border-bottom: 1px solid rgba(51,65,85,0.35); vertical-align: top; }
+    .hist-table code { font-size: 0.8rem; color: var(--soft); }
+    .hist-table .cur { color: #4DD8D0; font-weight: 600; }
   </style>
 </PageLayout>
