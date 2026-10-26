@@ -37,7 +37,7 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <h1>远程访问：SSH</h1>
       <p>Linxira OS 内置 OpenSSH 服务端与 <code>linxira-config</code> SSH 管理工具。本文介绍如何快速把 Linxira 电脑变成可远程连接的服务器，以及如何从其他设备安全地连入。</p>
 
-      <div class="note">📌 当前实验性正式版状态：<code>linxira-config ssh status / key / authorized</code> 命令完全可用；<code>ssh on / off / port</code> 已实现但需等待事务后端正式启用，本文第 1 步提供了当前可直接使用的等效命令。</div>
+      <div class="note">📌 <code>linxira-config ssh on|off|status|port|key|authorized</code> 均已可用。<code>ssh on</code> 会写入 <code>PasswordAuthentication yes</code>、启用并启动 sshd、并在 UFW 启用时放行 22。</div>
 
       <h2>1. 开启 SSH 服务</h2>
       <p>先查看 SSH 当前状态：</p>
@@ -54,8 +54,12 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <p><strong>启用并启动 sshd 服务</strong>（当前实验性正式版使用等效命令，后续版本将统一为 <code>linxira-config ssh on</code>）：</p>
-          <pre><code>sudo systemctl enable --now sshd</code></pre>
+          <p><strong>持久开启</strong>（开机自启）：</p>
+          <pre><code>sudo linxira-config ssh on</code></pre>
+          <p><strong>临时开启</strong>（仅本次，重启后关闭，适合一次性排障）：</p>
+          <pre><code>sudo systemctl start sshd
+# 用完关闭
+sudo systemctl stop sshd</code></pre>
           <p>如果启用了 UFW 防火墙，放行 SSH 端口：</p>
           <pre><code>sudo ufw allow ssh   # 或指定端口: sudo ufw allow 22/tcp</code></pre>
         </div>
@@ -70,7 +74,12 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
         </div>
       </div>
 
-      <h2>2. 生成密钥对（本机）</h2>
+      <h2>2. 从另一台机器连接</h2>
+      <p>首次连接建议带上这两个参数：跳过交互式指纹确认、8 秒超时，适合临时排障：</p>
+      <pre><code>ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=8 用户名@IP</code></pre>
+      <p>Windows 10/11 自带 <code>ssh</code>，在 PowerShell 里直接执行同一命令即可。IP 用 <code>ip -4 addr show</code> 或 <code>linxira-config ssh status</code> 查看。</p>
+
+      <h2>3. 生成密钥对（本机）</h2>
       <p>在<strong>客户端</strong>（即你想用来连接的那台电脑）上生成 Ed25519 密钥对，比密码登录更安全：</p>
       <pre><code>linxira-config ssh key generate
 # 或指定名称: linxira-config ssh key generate work-laptop</code></pre>

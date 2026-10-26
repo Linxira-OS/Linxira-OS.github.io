@@ -37,7 +37,7 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <h1>Remote Access: SSH</h1>
       <p>Linxira OS ships with the OpenSSH server and the <code>linxira-config</code> SSH management tool. This guide shows how to turn your Linxira machine into a remote-accessible server and how to connect to it securely from other devices.</p>
 
-      <div class="note">📌 Current test-build status: <code>linxira-config ssh status / key / authorized</code> are fully functional. <code>ssh on / off / port</code> are implemented but waiting for the transactional backend; step 1 below shows equivalent commands that work today.</div>
+      <div class="note">📌 <code>linxira-config ssh on|off|status|port|key|authorized</code> are all available. <code>ssh on</code> writes <code>PasswordAuthentication yes</code>, enables and starts sshd, and opens port 22 when UFW is active.</div>
 
       <h2>1. Enable the SSH service</h2>
       <p>First, check the current SSH status:</p>
@@ -55,7 +55,15 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
         <div class="step-num">1</div>
         <div class="step-body">
           <p><strong>Enable and start sshd</strong> (equivalent command for the current test build; a future release will unify this into <code>linxira-config ssh on</code>):</p>
-          <pre><code>sudo systemctl enable --now sshd</code></pre>
+          <p><strong>Persistent</strong> (starts at boot):</p>
+          <pre><code>sudo linxira-config ssh on</code></pre>
+          <p><strong>Temporary</strong> (this boot only — useful for a one-off debugging session):</p>
+          <pre><code>sudo systemctl start sshd
+# when done
+sudo systemctl stop sshd</code></pre>
+          <p>Connect from another machine with non-interactive first-contact flags:</p>
+          <pre><code>ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=8 user@IP</code></pre>
+          <p>Windows 10/11 ships <code>ssh</code>; run the same command in PowerShell. Find the IP with <code>ip -4 addr show</code> or <code>linxira-config ssh status</code>.</p>
           <p>If you use the UFW firewall, allow the SSH port:</p>
           <pre><code>sudo ufw allow ssh   # or a specific port: sudo ufw allow 22/tcp</code></pre>
         </div>
