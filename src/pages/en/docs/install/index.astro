@@ -63,11 +63,21 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
         <li>Open "Install Linxira OS" in Welcome or the application menu</li>
         <li>Choose your language and keyboard layout</li>
         <li>Select a partitioning scheme. <code>btrfs</code> with Timeshift is recommended.</li>
-        <li>Choose optional reviewed profiles from catalog v2 and create your user account</li>
+        <li>Choose optional reviewed profiles from catalog v3 and create your user account</li>
         <li>Wait for the installer to finish</li>
         <li>Restart the system and remove the USB drive</li>
       </ol>
-      <p>After first boot, use Shelly for graphical package management. Shelly is not an installer dependency and does not perform Calamares transactions.</p>
+      <p>After first boot, use Package Center for graphical package management.</p>
+
+      <h2>Dual-boot with Windows</h2>
+      <p>The installer offers "install alongside Windows", but prepare on the Windows side first:</p>
+      <ul style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
+        <li>Disable Windows Fast Startup and shut down fully (not hibernate)</li>
+        <li>If BitLocker is on, <strong>suspend protection</strong> until the install finishes</li>
+        <li>Disable Secure Boot (this image ships no signed boot chain)</li>
+        <li>Switch Intel RST / RAID to AHCI if enabled</li>
+      </ul>
+      <p>Pick "alongside" during install; the installer shrinks the NTFS partition and creates btrfs. GRUB then lists Windows through <code>os-prober</code>, which the target installs by default.</p>
 
       <h2>System Requirements</h2>
       <table>

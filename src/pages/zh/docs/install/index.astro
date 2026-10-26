@@ -60,11 +60,21 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
         <li>在 Welcome 或应用菜单中打开“安装 Linxira OS”</li>
         <li>选择语言和键盘布局</li>
         <li>选择分区方案（推荐 btrfs + Timeshift）</li>
-        <li>从 catalog v2 选择可选的审核配置，并创建用户账户</li>
+        <li>从 catalog v3 选择可选的审核配置，并创建用户账户</li>
         <li>等待安装完成</li>
         <li>重启并移除 USB</li>
       </ol>
-      <p>首次进入安装后的系统后，使用 Shelly 进行图形软件管理。Shelly 不是安装器依赖，也不执行 Calamares 安装事务。</p>
+      <p>首次进入安装后的系统后，使用 Package Center 进行图形软件管理。</p>
+
+      <h2>双系统（与 Windows 共存）</h2>
+      <p>安装器提供「与 Windows 共存」，但需要先在 Windows 侧准备好：</p>
+      <ul style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
+        <li>关闭 Windows「快速启动」，并完整关机（不要用休眠）</li>
+        <li>若启用了 BitLocker，先<strong>暂停保护</strong>，装完再恢复</li>
+        <li>关闭 Secure Boot（本镜像不提供签名引导链）</li>
+        <li>若主板启用了 Intel RST / RAID，先切到 AHCI</li>
+      </ul>
+      <p>安装时选择「与 Windows 共存」，安装器会缩小 NTFS 分区并新建 btrfs。装完后 GRUB 通过 <code>os-prober</code> 自动列出 Windows（目标系统已默认安装该包）。</p>
 
       <h2>系统要求</h2>
       <table>
