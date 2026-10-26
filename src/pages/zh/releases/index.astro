@@ -20,64 +20,12 @@ import PageLayout from "../../../components/PageLayout.astro";
     </ul>
   </div>
 
-  <div class="rel-item reveal reveal-d1">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
-      <span class="tag stable">实验性正式版</span>
-    </div>
-    <div class="rel-meta">2026-08-14 · 4.79 GB · SHA256 <code class="sha">b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code></div>
-    <ul>
-      <li>93 个精选应用（catalog v3），14 大分类，科学计算与游戏默认装载</li>
-      <li>双内核（linux + linux-lts）+ Timeshift / grub-btrfs 快照回滚</li>
-      <li>容器生态默认化：Podman / Distrobox / Apptainer / Docker 开箱即用</li>
-      <li>无头计算模式：linxira-config headless on/off，桌面零占用、内存全给计算</li>
-      <li>签名仓库 [linxira] + 17 个自研工具；中文输入法按安装语言自动配置</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d1">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.13-x86_64.iso</code>
-      <span class="tag beta">测试版</span>
-    </div>
-    <div class="rel-meta">2026-08-13 · 4.79 GB · SHA256 <code class="sha">b880391c29f96b6fc3c71d17be7ed6eb7248c6e0bb9021c6ccce522431f34d6b</code></div>
-    <ul>
-      <li>8.12 构建的增量修复：启动 / 关机标识与终端字符画定稿</li>
-      <li>自研软件全部可正常安装与启动验证</li>
-      <li>签名仓库更新链路（pacman）可追踪</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d2">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.12-x86_64.iso</code>
-      <span class="tag beta">测试版</span>
-    </div>
-    <div class="rel-meta">2026-08-12 · 4.73 GB · SHA256 未单独归档</div>
-    <ul>
-      <li>测试版镜像基线：KDE Plasma 桌面 + 预装软件离线可用</li>
-      <li>中国镜像自动 fallback + [linxira] 数据库安装期预同步</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d3">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.09-x86_64-r17.iso</code>
-      <span class="tag rc">RC 候选</span>
-    </div>
-    <div class="rel-meta">2026-08-09 · 4.69 GB</div>
-    <ul>
-      <li>17 次迭代候选版：安装器、品牌、默认应用集逐轮收敛</li>
-      <li>为 8.12 测试版基线的前身</li>
-    </ul>
-  </div>
-
   <h2>发布节奏与更新频次</h2>
   <p>只有已上传云端的镜像才算发布，内部构建不计入发布记录。镜像按月出批；软件包随 Arch 滚动，签名仓库 <code>[linxira]</code> 随时可更新；WSL 镜像随批次同步。</p>
   <table class="hist-table">
     <thead><tr><th>构建日期</th><th>距上一版</th><th>类型</th><th>云端</th></tr></thead>
     <tbody>
-      <tr><td>2026-10-26</td><td>26 天</td><td>月度镜像（当前）</td><td class="cur">上传中</td></tr>
+      <tr><td>2026-10-26</td><td>26 天</td><td>月度镜像（当前）</td><td class="cur">已发布</td></tr>
       <tr><td>2026-10-25</td><td>26 天</td><td>WSL 镜像（当前）</td><td class="cur">已发布</td></tr>
       <tr><td>2026-09-30</td><td>1 天</td><td>修复轮 r17</td><td>已下架</td></tr>
       <tr><td>2026-09-29</td><td>8 天</td><td>WSL v1.1</td><td>已下架</td></tr>

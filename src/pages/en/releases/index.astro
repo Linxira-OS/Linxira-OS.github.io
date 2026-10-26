@@ -20,64 +20,12 @@ import PageLayout from "../../../components/PageLayout.astro";
     </ul>
   </div>
 
-  <div class="rel-item reveal reveal-d1">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.14-x86_64.iso</code>
-      <span class="tag stable">Experimental Stable</span>
-    </div>
-    <div class="rel-meta">2026-08-14 · 4.79 GB · SHA256 <code class="sha">b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code></div>
-    <ul>
-      <li>93 curated apps (catalog v3) across 14 categories; scientific computing and gaming ships by default</li>
-      <li>Dual kernel (linux + linux-lts) with Timeshift / grub-btrfs snapshot rollback</li>
-      <li>Containers by default: Podman / Distrobox / Apptainer / Docker out of the box</li>
-      <li>Headless compute mode: linxira-config headless on/off — zero desktop overhead, all RAM for compute</li>
-      <li>Signed [linxira] repository with 17 first-party tools; Chinese IME auto-configured by install language</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d1">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.13-x86_64.iso</code>
-      <span class="tag beta">Test</span>
-    </div>
-    <div class="rel-meta">2026-08-13 · 4.79 GB · SHA256 <code class="sha">b880391c29f96b6fc3c71d17be7ed6eb7248c6e0bb9021c6ccce522431f34d6b</code></div>
-    <ul>
-      <li>Incremental fixes over 08.12: boot / shutdown artwork and terminal char-art finalized</li>
-      <li>All first-party software verified installable and launchable</li>
-      <li>Signed repository update chain (pacman) trackable</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d2">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.12-x86_64.iso</code>
-      <span class="tag beta">Test</span>
-    </div>
-    <div class="rel-meta">2026-08-12 · 4.73 GB · SHA256 not separately archived</div>
-    <ul>
-      <li>Test baseline: KDE Plasma desktop + preinstalled software usable offline</li>
-      <li>China mirror auto-fallback + [linxira] database pre-sync during install</li>
-    </ul>
-  </div>
-
-  <div class="rel-item reveal reveal-d3">
-    <div class="rel-head">
-      <code class="rel-name">linxira-2026.08.09-x86_64-r17.iso</code>
-      <span class="tag rc">RC</span>
-    </div>
-    <div class="rel-meta">2026-08-09 · 4.69 GB</div>
-    <ul>
-      <li>17th iteration candidate: installer, branding and default app set converged</li>
-      <li>Predecessor to the 08.12 test baseline</li>
-    </ul>
-  </div>
-
   <h2>Cadence and update frequency</h2>
   <p>Only images actually uploaded to the cloud count as released; internal builds are not part of the release record. Images ship as monthly batches; packages roll with Arch, so the signed <code>[linxira]</code> repository can be updated at any time; the WSL image follows each batch.</p>
   <table class="hist-table">
     <thead><tr><th>Build date</th><th>Since previous</th><th>Type</th><th>Cloud</th></tr></thead>
     <tbody>
-      <tr><td>2026-10-26</td><td>26 days</td><td>Monthly image (current)</td><td class="cur">Uploading</td></tr>
+      <tr><td>2026-10-26</td><td>26 days</td><td>Monthly image (current)</td><td class="cur">Released</td></tr>
       <tr><td>2026-10-25</td><td>26 days</td><td>WSL image (current)</td><td class="cur">Released</td></tr>
       <tr><td>2026-09-30</td><td>1 day</td><td>Fix round r17</td><td>Withdrawn</td></tr>
       <tr><td>2026-09-29</td><td>8 days</td><td>WSL v1.1</td><td>Withdrawn</td></tr>
