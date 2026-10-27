@@ -34,9 +34,11 @@ KDE Plasma 的输入设备面板支持：
 ## 3. 屏幕亮度与背光
 
 ```bash
-ls /sys/class/backlight/          # 通常为 amdgpu_bl0 / intel_backlight / nvidia_0
+ls /sys/class/backlight/
 brightnessctl -d amdgpu_bl0 get   # 读当前亮度百分比
 ```
+
+- `ls /sys/class/backlight/` — 通常为 amdgpu_bl0 / intel_backlight / nvidia_0
 
 
 亮度键不工作时，先确认内核是否加载了对应 backlight 驱动；不要直接手写 `bl_power`。
@@ -44,9 +46,11 @@ brightnessctl -d amdgpu_bl0 get   # 读当前亮度百分比
 ## 4. 外接显示器
 
 ```bash
-kscreen-doctor -o                 # 列出所有输出与模式
+kscreen-doctor -o
 kscreen-doctor output.HDMI-1.mode.2560x1440@60
 ```
+
+- `kscreen-doctor -o` — 列出所有输出与模式
 
 
 合盖外接时，在系统设置 → 电源管理里把「合盖时」设为**不采取任何操作**，否则会直接休眠。
@@ -54,8 +58,10 @@ kscreen-doctor output.HDMI-1.mode.2560x1440@60
 ## 5. 热与风扇
 
 ```bash
-sensors                           # 需要 lm_sensors
+sensors
 ```
+
+- `sensors` — 需要 lm_sensors
 
 
 持续 90°C 以上先查是不是单核跑满（`top` 按 1 展开每核）。`power-saver` 配置能显著降温。

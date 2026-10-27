@@ -26,9 +26,11 @@ System Settings → Input Devices covers tap-to-click, two-finger scrolling, thr
 ## 3. Brightness
 
 ```bash
-ls /sys/class/backlight/          # amdgpu_bl0 / intel_backlight / nvidia_0
+ls /sys/class/backlight/
 brightnessctl -d amdgpu_bl0 get
 ```
+
+- `ls /sys/class/backlight/` — amdgpu_bl0 / intel_backlight / nvidia_0
 
 
 If the keys do nothing, check whether a backlight driver is loaded.
