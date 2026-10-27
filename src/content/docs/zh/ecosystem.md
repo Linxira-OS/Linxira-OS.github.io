@@ -6,7 +6,7 @@ order: 1
 
 <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
 <h1>软件生态</h1>
-<p>Linxira OS 的软件生态由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是官方推荐的常用应用，<span class="tag prop">专有</span> 标记表示专有软件（安装时需接受其许可协议）。</p>
+<p>Linxira OS 的软件生态由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是项目维护者推荐的常用应用；<span class="tag prop">专有</span> 标记只表示该软件的<b>许可证非开源</b>（按 catalog 的 license 分级，如 Steam、WPS Office），与它由谁开发无关，安装时需接受其许可协议。</p>
 <h2>网络与浏览器 <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
 <div class="app-grid">
 <div class="app-card">
@@ -90,8 +90,8 @@ order: 1
 <div class="app-card">
 <h3>ONLYOFFICE 桌面编辑器</h3>
 <div class="pkg">onlyoffice-bin</div>
-<p>第三方办公套件候选。</p>
-<span class="tag rec">推荐</span><span class="tag prop">专有</span>
+<p>第三方办公套件候选；桌面版按厂商 EULA 分发，首次启动需接受许可协议。</p>
+<span class="tag prop">专有</span>
 </div>
 <div class="app-card">
 <h3>LibreOffice 维护版</h3>

@@ -6,7 +6,7 @@ order: 1
 
 <a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回Docs</a>
 <h1>Ecosystem</h1>
-<p>Linxira OS 的Ecosystem由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是官方推荐的常用应用，<span class="tag prop">专有</span> 标记表示专有软件（安装时需接受其许可License）。</p>
+<p>Linxira OS 的Ecosystem由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；The <span class="tag rec">Recommended</span> tag marks everyday apps the maintainers recommend; <span class="tag prop">Proprietary</span> only means the <b>license is not open source</b> (per the catalog license classification, e.g. Steam or WPS Office) — it says nothing about who develops it. Those apps ask you to accept their license on install.</p>
 <h2>Web and browsers <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
 <div class="app-grid">
 <div class="app-card">
@@ -90,8 +90,8 @@ order: 1
 <div class="app-card">
 <h3>ONLYOFFICE Desktop Editors</h3>
 <div class="pkg">onlyoffice-bin</div>
-<p>Third-party office suite candidate.</p>
-<span class="tag rec">Recommended</span><span class="tag prop">Proprietary</span>
+<p>Third-party office suite candidate; the desktop edition ships under the vendor EULA and asks for acceptance on first launch.</p>
+<span class="tag prop">Proprietary</span>
 </div>
 <div class="app-card">
 <h3>LibreOffice (Still)</h3>
