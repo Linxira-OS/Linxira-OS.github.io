@@ -4,13 +4,17 @@ import PageLayout from "../../../components/PageLayout.astro";
 <PageLayout lang="en" active="download" title="Download — Linxira OS">
     <a href="/en/" class="back">← Back to Home</a>
     <h1>Download Linxira OS</h1>
-    <p>Current build is <b>2026-10-26</b> — the November image batch: crash watch (<code>linxira-crash-watch</code>) with the <code>diagnose-crash</code> skill ships on the image, desktops are narrowed to <b>Plasma + COSMIC</b>, headless comes in two sizes (full toolset / minimal), and Zeta is preinstalled on desktop installs and upgraded through <code>update</code>.</p>
+    <p>Current build is <b>2026.10.27-r4</b> (October 27 batch, iteration 4): installer boot/ESP gating fixes, a new System page in Welcome, the <code>linxira-config capabilities</code> manifest, and copyable crash prompts.</p>
+
+    <div class="note">
+      <p><strong>Choose KDE Plasma.</strong> This image recommends <b>KDE Plasma</b>: terminal, system settings, updates, and configuration entry points are all verified there. The COSMIC desktop still has known defects (some system entries do not open a terminal, a few components exit immediately) and is not recommended for daily use yet; we will fix these through package updates.</p>
+    </div>
 
     <div class="dl-card">
-      <h3>linxira-2026.10.26-x86_64.iso</h3>
+      <h3>linxira-2026.10.27-r4-x86_64.iso</h3>
       <div class="meta">5.0 GB · Desktop / headless installer · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">Open GitCode Repository →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.26-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.27-r4-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">In the GitCode repository, click the ISO file → Download button (large file served via Git LFS).</p>
     </div>
 
@@ -25,13 +29,21 @@ import PageLayout from "../../../components/PageLayout.astro";
     <h2>Checksums</h2>
     <pre><code>sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.10.26-x86_64.iso):
-6dff5dc73cba68ed8d45f127c50d427120251079876c8a006ebc1f0412acf8c3  linxira-2026.10.26-x86_64.iso
+# SHA256 (linxira-2026.10.27-r4-x86_64.iso):
+9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70  linxira-2026.10.27-r4-x86_64.iso
 
 # WSL image: see *.sha256 assets on the GitHub Release</code></pre>
 
     <h2>Installation</h2>
-    <p>See the <a href="/en/docs/install/" style="color:#20B8B0;">installation guide</a>: write the ISO to a USB drive, then choose <strong>KDE Plasma</strong>, <strong>COSMIC</strong>, <strong>Headless (full toolset)</strong> or <strong>Headless (minimal)</strong> at the desktop step.</p>
+    <p>See the <a href="/en/docs/install/" style="color:#20B8B0;">installation guide</a>: write the ISO to a USB drive, then choose <strong>KDE Plasma</strong> (recommended), <strong>Headless (full toolset)</strong> or <strong>Headless (minimal)</strong> at the desktop step. COSMIC is still listed but should be treated as experimental.</p>
+
+    <h2>Known issues in this build</h2>
+    <ul>
+      <li><strong>Zeta 1.4.4 is unstable on Linux</strong>: prefer the npm install path; it is solidly fixed from 1.4.6 onward.</li>
+      <li><strong>COSMIC system entries</strong>: some entries do not open a terminal or close immediately; terminal-based components may also exit on COSMIC. Plasma is unaffected.</li>
+      <li><strong>The first <code>linxira-update</code> may report an unsynced repository</strong>: run <code>sudo pacman -Sy</code> once to restore detection.</li>
+      <li><strong>Audio pop on power transitions</strong>: headphones or speakers may click briefly at power-on; this is hardware-level noise and is not addressed here.</li>
+    </ul>
 
     <div class="note">
       <p><strong>No old versions</strong>: Arch Linux is a rolling release, so an image only reflects the repositories of its build day. Old images are not retained or offered — always use the current version on this page.</p>

@@ -4,13 +4,17 @@ import PageLayout from "../../../components/PageLayout.astro";
 <PageLayout lang="zh" active="download" title="下载 — Linxira OS">
     <a href="/zh/" class="back">← 返回首页</a>
     <h1>下载 Linxira OS</h1>
-    <p>当前为<b>2026.10.26</b>——11 月镜像批次：崩溃监视 <code>linxira-crash-watch</code> 与 <code>diagnose-crash</code> 技能随盘、桌面收窄为 <b>Plasma + COSMIC</b>、无桌面提供「完整工具集 / 超精简」两档、Zeta 在桌面版预装并随 <code>update</code> 升级。</p>
+    <p>当前为<b>2026.10.27-r4</b>（10 月 27 日批次，第 4 次迭代）：安装器引导/ESP 门禁修复、Welcome 新增 System 页、config-hub 能力清单 <code>linxira-config capabilities</code>、崩溃通知可复制提示词。</p>
+
+    <div class="note">
+      <p><strong>请选择 KDE Plasma。</strong>本版镜像的默认桌面推荐 <b>KDE Plasma</b>：终端、系统设置、更新与配置入口均已实测可用。COSMIC 桌面仍有已知缺陷（部分系统入口点击后不弹终端、个别组件闪退），暂不建议日常使用，我们会在后续软件包更新中逐步修复。</p>
+    </div>
 
     <div class="dl-card">
-      <h3>linxira-2026.10.26-x86_64.iso</h3>
+      <h3>linxira-2026.10.27-r4-x86_64.iso</h3>
       <div class="meta">5.0 GB · 桌面/无桌面安装镜像 · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">打开 GitCode 仓库下载 →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.26-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
+      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.27-r4-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">GitCode 仓库内点击 ISO 文件 → 下载按钮（大文件走 Git LFS，国内访问快）。</p>
     </div>
 
@@ -25,13 +29,21 @@ import PageLayout from "../../../components/PageLayout.astro";
     <h2>校验和</h2>
     <pre><code>sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.10.26-x86_64.iso):
-6dff5dc73cba68ed8d45f127c50d427120251079876c8a006ebc1f0412acf8c3  linxira-2026.10.26-x86_64.iso
+# SHA256 (linxira-2026.10.27-r4-x86_64.iso):
+9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70  linxira-2026.10.27-r4-x86_64.iso
 
 # WSL 镜像校验和见 GitHub Release 附件 *.sha256</code></pre>
 
     <h2>安装</h2>
-    <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong>、<strong>COSMIC</strong>、<strong>无桌面（完整工具集）</strong>或<strong>无桌面（超精简）</strong>。</p>
+    <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong>（推荐）、<strong>无桌面（完整工具集）</strong>或<strong>无桌面（超精简）</strong>。COSMIC 选项仍在，但仅作尝鲜。</p>
+
+    <h2>本版已知问题</h2>
+    <ul>
+      <li><strong>Zeta 1.4.4 在 Linux 上不稳定</strong>：请优先使用 npm 的安装方式，1.4.6 之后才稳定修复。</li>
+      <li><strong>COSMIC 桌面的系统入口</strong>：部分入口点击后不弹出终端或窗口一闪即退；终端类组件在 COSMIC 上亦可能闪退。Plasma 下不受影响。</li>
+      <li><strong>首次 <code>linxira-update</code> 可能报仓库未同步</strong>：执行一次 <code>sudo pacman -Sy</code> 即可恢复识别。</li>
+      <li><strong>开关机音频爆音</strong>：耳机/音箱在上电瞬间可能出现轻微异响，属硬件电平噪声，暂不处理。</li>
+    </ul>
 
     <div class="note">
       <p><strong>不提供旧版本</strong>：Arch Linux 为滚动更新发行版，镜像只反映构建当日的仓库状态；旧镜像不保留、不提供下载，请始终使用本页的最新版本。</p>

@@ -3,21 +3,31 @@ import PageLayout from "../../../components/PageLayout.astro";
 ---
 <PageLayout lang="zh" active="roadmap" title="发布日志 — Linxira OS" maxWidth="860px">
   <h1>发布日志</h1>
-  <p class="subtitle">已发布 ISO 构建记录。当前镜像 2026.10.26；Arch 为滚动发行，旧镜像不保留、不提供下载。</p>
+  <p class="subtitle">已发布 ISO 构建记录。当前镜像 2026.10.27-r4；Arch 为滚动发行，旧镜像不保留、不提供下载。</p>
   <div class="section-divider"></div>
 
   <div class="rel-item reveal">
     <div class="rel-head">
-      <code class="rel-name">linxira-2026.10.26-x86_64.iso</code>
+      <code class="rel-name">linxira-2026.10.27-r4-x86_64.iso</code>
       <span class="tag latest">最新</span>
     </div>
-    <div class="rel-meta">2026-10-26 · 5.0 GB · SHA256 <code class="sha">6dff5dc73cba68ed8d45f127c50d427120251079876c8a006ebc1f0412acf8c3</code></div>
+    <div class="rel-meta">2026-10-27 · 5.0 GB · SHA256 <code class="sha">9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70</code></div>
     <ul>
-      <li>崩溃监视 linxira-crash-watch 0.1.1 + diagnose-crash 技能随盘</li>
-      <li>桌面收窄为 Plasma + COSMIC；无桌面两档（完整工具集 / 超精简）</li>
-      <li>Zeta 桌面版预装，随 update 升级</li>
-      <li>catalog 3.6.0 / components 0.8.3 / config-hub 2.5.3 / package-center 0.2.4</li>
+      <li><b>请选 KDE Plasma</b>：终端、系统设置、更新与配置入口均已在该桌面实测可用</li>
+      <li>Welcome 新增 System 页（1.2.1），读 <code>capabilities.json</code> 渲染入口</li>
+      <li>config-hub 2.6.1：<code>linxira-config capabilities --json</code> 与 linxira-config 技能</li>
+      <li>crash-watch 0.1.2 通知可复制提示词；hooks 1.1.3 修复 os-release 符号链接</li>
+      <li>安装器引导/ESP 门禁与 GRUB 多字号主题；Zeta 1.4.4-1 / catalog 3.6.0 随盘</li>
     </ul>
+    <div class="rel-note">
+      <p><b>本版已知问题</b></p>
+      <ul>
+        <li>Zeta 1.4.4 在 Linux 上不稳定，请优先用 npm 安装；1.4.6 之后才稳定修复</li>
+        <li>COSMIC 桌面部分系统入口不弹终端或窗口一闪即退，暂不建议日常使用；Plasma 不受影响</li>
+        <li>首次 <code>linxira-update</code> 可能报仓库未同步，执行一次 <code>sudo pacman -Sy</code> 即可</li>
+        <li>开关机时耳机/音箱可能轻微爆音，属上电瞬间电平噪声，暂不处理</li>
+      </ul>
+    </div>
   </div>
 
   <h2>发布节奏与更新频次</h2>
@@ -25,7 +35,8 @@ import PageLayout from "../../../components/PageLayout.astro";
   <table class="hist-table">
     <thead><tr><th>构建日期</th><th>距上一版</th><th>类型</th><th>云端</th></tr></thead>
     <tbody>
-      <tr><td>2026-10-26</td><td>26 天</td><td>月度镜像（当前）</td><td class="cur">已发布</td></tr>
+      <tr><td>2026-10-27</td><td>1 天</td><td>修复轮 r4（当前）</td><td class="cur">已发布</td></tr>
+      <tr><td>2026-10-26</td><td>26 天</td><td>月度镜像</td><td>已下架</td></tr>
       <tr><td>2026-10-25</td><td>26 天</td><td>WSL 镜像（当前）</td><td class="cur">已发布</td></tr>
       <tr><td>2026-09-30</td><td>1 天</td><td>修复轮 r17</td><td>已下架</td></tr>
       <tr><td>2026-09-29</td><td>8 天</td><td>WSL v1.1</td><td>已下架</td></tr>
