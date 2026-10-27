@@ -4,11 +4,13 @@ section: developer
 order: 0
 ---
 
-  <h1>Contributing</h1>
-  <p>The <a href="https://github.com/Linxira-OS/packages" target="_blank">Linxira-OS/packages</a> repository centrally manages the PKGBUILDs of every first-party Linxira OS package. CI builds each package in a clean Arch Linux container, signs it, and publishes it to the <code>[linxira]</code> repository on GitHub Pages. This page explains the repository layout, the four package source modes, and how to update or add a package.</p>
+<h1>Contributing</h1>
+<p>The <a href="https://github.com/Linxira-OS/packages" target="_blank">Linxira-OS/packages</a> repository centrally manages the PKGBUILDs of every first-party Linxira OS package. CI builds each package in a clean Arch Linux container, signs it, and publishes it to the <code>[linxira]</code> repository on GitHub Pages. This page explains the repository layout, the four package source modes, and how to update or add a package.</p>
 
-  <h2>Repository structure</h2>
-<pre><code>packages/
+<h2>Repository structure</h2>
+
+```
+packages/
 ├── packages/                  # each subdirectory = one package
 │   ├── calamares/             # adopted upstream installer (release tarball + patch)
 │   ├── linxira-catalog/       # first-party package (codeload commit mode)
@@ -22,81 +24,109 @@ order: 0
 │   └── packages.yml           # CI: boundaries → build (4) + system-stack (13) → publish
 ├── README.md                  # repo overview + per-package purpose
 ├── RELEASE.md                 # release process + key management
-└── CONTRIBUTING.md            # this file</code></pre>
+└── CONTRIBUTING.md            # this file
+```
 
-  <h2>Package source modes</h2>
-  <p>PKGBUILD <code>source=()</code> supports four forms, corresponding to four package source modes:</p>
 
-  <h3>Mode A: codeload commit (most first-party packages)</h3>
-  <p>The source is pinned to a commit; makepkg downloads it from codeload automatically and sha256 verifies integrity.</p>
-<pre><code>_commit=&lt;40-hex SHA&gt;
+<h2>Package source modes</h2>
+<p>PKGBUILD <code>source=()</code> supports four forms, corresponding to four package source modes:</p>
+
+<h3>Mode A: codeload commit (most first-party packages)</h3>
+<p>The source is pinned to a commit; makepkg downloads it from codeload automatically and sha256 verifies integrity.</p>
+
+```
+_commit=<40-hex SHA>
 source=("$pkgname-$_commit.tar.gz::https://codeload.github.com/Linxira-OS/$pkgname/tar.gz/$_commit")
-sha256sums=('&lt;sha256 of the tarball&gt;')</code></pre>
+sha256sums=('<sha256 of the tarball>')
+```
 
-  <h3>Mode B: release tarball (calamares)</h3>
-  <p>Uses the upstream release tarball; tags are immutable.</p>
-<pre><code>source=("https://github.com/calamares/calamares/releases/download/v$&#123;pkgver&#125;/calamares-$&#123;pkgver&#125;.tar.gz")
-sha256sums=('&lt;upstream-published sha256&gt;')</code></pre>
 
-  <h3>Mode C: git source (linxira-hooks)</h3>
-  <p>Git source does not verify sha256 (git clone has its own integrity checks).</p>
-<pre><code>source=("git+$url.git#commit=$_commit")
-sha256sums=('SKIP')</code></pre>
+<h3>Mode B: release tarball (calamares)</h3>
+<p>Uses the upstream release tarball; tags are immutable.</p>
 
-  <h3>Mode D: local file (linxira-keyring)</h3>
-  <p>The keyring's .gpg file lives directly in the same directory as the PKGBUILD.</p>
-<pre><code>source=("linxira.gpg")
-sha256sums=('&lt;sha256 of the local file&gt;')</code></pre>
+```
+source=("https://github.com/calamares/calamares/releases/download/v${pkgver}/calamares-${pkgver}.tar.gz")
+sha256sums=('<upstream-published sha256>')
+```
 
-  <h2>Updating a package (the most common operation)</h2>
-  <p>When a first-party repository (e.g. linxira-catalog) gets a new commit, update the PKGBUILD in the packages repository:</p>
 
-  <h3>Step 1: get the full SHA of the new commit</h3>
-<pre><code># in the source repository
+<h3>Mode C: git source (linxira-hooks)</h3>
+<p>Git source does not verify sha256 (git clone has its own integrity checks).</p>
+
+```
+source=("git+$url.git#commit=$_commit")
+sha256sums=('SKIP')
+```
+
+
+<h3>Mode D: local file (linxira-keyring)</h3>
+<p>The keyring's .gpg file lives directly in the same directory as the PKGBUILD.</p>
+
+```
+source=("linxira.gpg")
+sha256sums=('<sha256 of the local file>')
+```
+
+
+<h2>Updating a package (the most common operation)</h2>
+<p>When a first-party repository (e.g. linxira-catalog) gets a new commit, update the PKGBUILD in the packages repository:</p>
+
+<h3>Step 1: get the full SHA of the new commit</h3>
+
+```
 git log --oneline -1
-# output: 9dd16cda... (use the full 40-character SHA)</code></pre>
+```
 
-  <h3>Step 2: update the PKGBUILD</h3>
-  <p>Change two things: <code>_commit=&lt;new 40-hex SHA&gt;</code> and <code>sha256sums=('&lt;new tarball sha256&gt;')</code>. Three ways to compute the new sha256 (Arch environment):</p>
-<pre><code># Method 1: updpkgsums (recommended; updates the PKGBUILD automatically)
+
+<h3>Step 2: update the PKGBUILD</h3>
+<p>Change two things: <code>_commit=&lt;new 40-hex SHA&gt;</code> and <code>sha256sums=('&lt;new tarball sha256&gt;')</code>. Three ways to compute the new sha256 (Arch environment):</p>
+
+```
 cd packages/linxira-catalog
 updpkgsums
 
-# Method 2: makepkg -g (prints only the new sha256; paste it manually)
 cd packages/linxira-catalog
 makepkg -g
 
-# Method 3: download and hash manually
-curl -L "https://codeload.github.com/Linxira-OS/linxira-catalog/tar.gz/&lt;commit&gt;" -o /tmp/tarball.tar.gz
-sha256sum /tmp/tarball.tar.gz</code></pre>
-  <p>If pkgver or pkgrel also need updating, change them at the same time.</p>
+curl -L "https://codeload.github.com/Linxira-OS/linxira-catalog/tar.gz/<commit>" -o /tmp/tarball.tar.gz
+sha256sum /tmp/tarball.tar.gz
+```
 
-  <h3>Step 3: sync check-boundaries.sh</h3>
-  <div class="note"><strong>This step is the easiest to forget.</strong></div>
-  <p><a href="https://github.com/Linxira-OS/packages/blob/main/scripts/check-boundaries.sh" target="_blank">scripts/check-boundaries.sh</a> hardcodes each package's <code>_commit</code> and <code>sha256sums</code>. After changing the PKGBUILD you must update the matching lines in this script, otherwise the CI boundaries job fails.</p>
-<pre><code># Find your package's lines in check-boundaries.sh
+<p>If pkgver or pkgrel also need updating, change them at the same time.</p>
+
+<h3>Step 3: sync check-boundaries.sh</h3>
+<div class="note"><strong>This step is the easiest to forget.</strong></div>
+<p><a href="https://github.com/Linxira-OS/packages/blob/main/scripts/check-boundaries.sh" target="_blank">scripts/check-boundaries.sh</a> hardcodes each package's <code>_commit</code> and <code>sha256sums</code>. After changing the PKGBUILD you must update the matching lines in this script, otherwise the CI boundaries job fails.</p>
+
+```
 grep linxira-catalog scripts/check-boundaries.sh
-# Output: two lines:
-#   grep -q '89b25593...' packages/linxira-catalog/PKGBUILD
-#   grep -q 'bdf3657d...' packages/linxira-catalog/PKGBUILD
-# Update both hashes to the new values in the PKGBUILD</code></pre>
+```
 
-  <h3>Step 4: verify locally</h3>
-<pre><code># Run the boundary check (same as CI)
+
+<h3>Step 4: verify locally</h3>
+
+```
 bash scripts/check-boundaries.sh
 
-# If you have an Arch environment, try building
 cd packages/linxira-catalog
-makepkg -f</code></pre>
+makepkg -f
+```
 
-  <h3>Step 5: commit</h3>
-<pre><code>git add packages/&lt;pkg&gt;/PKGBUILD scripts/check-boundaries.sh
-git commit -m "update &lt;pkg&gt; to &lt;first 7 chars of commit&gt;"
-git push</code></pre>
-  <p>After the push, CI runs automatically: boundaries → build/system-stack. If CI is green, the package is built automatically (artifacts are downloadable).</p>
 
-  <h2>CI pipeline</h2>
-<pre><code>push/PR
+<h3>Step 5: commit</h3>
+
+```
+git add packages/<pkg>/PKGBUILD scripts/check-boundaries.sh
+git commit -m "update <pkg> to <first 7 chars of commit>"
+git push
+```
+
+<p>After the push, CI runs automatically: boundaries → build/system-stack. If CI is green, the package is built automatically (artifacts are downloadable).</p>
+
+<h2>CI pipeline</h2>
+
+```
+push/PR
   │
   ├─ boundaries          # check-boundaries.sh (seconds)
   │
@@ -106,40 +136,42 @@ git push</code></pre>
   ├─ system-stack        # 13 linxira-* packages, built in dependency order
   │   └─ docker archlinux:base-devel → makepkg + pacman -U (installed into the container for downstream packages)
   │
-  └─ publish (manual only)  # sign + repo-add → GitHub Pages</code></pre>
+  └─ publish (manual only)  # sign + repo-add → GitHub Pages
+```
 
-  <h2>Common causes of CI failures</h2>
-  <table>
-    <tr><th>Cause</th><th>Symptom</th><th>Fix</th></tr>
-    <tr><td>sha256 mismatch</td><td><code>==&gt; ERROR: One or more files did not pass the validity check!</code></td><td>Recompute the sha256: <code>makepkg -g</code></td></tr>
-    <tr><td>_commit updated but sha256 not</td><td>Same as above</td><td>Update _commit and sha256 together</td></tr>
-    <tr><td>check-boundaries.sh not synced</td><td><code>boundaries</code> job fails</td><td>Sync the hardcoded _commit/sha256</td></tr>
-    <tr><td>Missing makedepends</td><td><code>error: header file not found</code> or <code>bindgen failed</code></td><td>Add the missing package to makedepends in the PKGBUILD</td></tr>
-    <tr><td>CRLF issue</td><td>makepkg reports strange errors while parsing the PKGBUILD</td><td>Make sure the PKGBUILD uses LF line endings (<code>.gitattributes</code> or <code>dos2unix</code>)</td></tr>
-  </table>
 
-  <h2>Adding a new package</h2>
-  <ol>
-    <li>Create a subdirectory under <code>packages/</code> and put the PKGBUILD in it</li>
-    <li>If there are patches or extra files, put them in the same directory</li>
-    <li>If the package must be part of system-stack, add its name to the <code>packages=(...)</code> array in <code>packages.yml</code></li>
-    <li>If boundary checks are needed, add a check rule in <code>check-boundaries.sh</code></li>
-    <li>Make sure the package has <code>groups=('linxira')</code> so <code>pacman -S linxira</code> can discover it</li>
-  </ol>
+<h2>Common causes of CI failures</h2>
+<table>
+<tr><th>Cause</th><th>Symptom</th><th>Fix</th></tr>
+<tr><td>sha256 mismatch</td><td><code>==&gt; ERROR: One or more files did not pass the validity check!</code></td><td>Recompute the sha256: <code>makepkg -g</code></td></tr>
+<tr><td>_commit updated but sha256 not</td><td>Same as above</td><td>Update _commit and sha256 together</td></tr>
+<tr><td>check-boundaries.sh not synced</td><td><code>boundaries</code> job fails</td><td>Sync the hardcoded _commit/sha256</td></tr>
+<tr><td>Missing makedepends</td><td><code>error: header file not found</code> or <code>bindgen failed</code></td><td>Add the missing package to makedepends in the PKGBUILD</td></tr>
+<tr><td>CRLF issue</td><td>makepkg reports strange errors while parsing the PKGBUILD</td><td>Make sure the PKGBUILD uses LF line endings (<code>.gitattributes</code> or <code>dos2unix</code>)</td></tr>
+</table>
 
-  <h2>Keys and signing</h2>
-  <p>See <a href="https://github.com/Linxira-OS/packages/blob/main/RELEASE.md" target="_blank">RELEASE.md</a> for details. Key points:</p>
-  <ul>
-    <li>Packages are signed with the signing subkey (rotated 2026-08-04); GitHub Actions secrets <code>LINXIRA_GPG_PRIVATE_KEY</code> + <code>LINXIRA_GPG_FINGERPRINT</code>; exact fingerprints are not published on this site</li>
-    <li>The master key is kept offline; the signing subkey is used only in CI</li>
-    <li>The <code>linxira-keyring</code> package distributes the public key; users must install it to verify packages from the <code>[linxira]</code> repository</li>
-  </ul>
+<h2>Adding a new package</h2>
+<ol>
+<li>Create a subdirectory under <code>packages/</code> and put the PKGBUILD in it</li>
+<li>If there are patches or extra files, put them in the same directory</li>
+<li>If the package must be part of system-stack, add its name to the <code>packages=(...)</code> array in <code>packages.yml</code></li>
+<li>If boundary checks are needed, add a check rule in <code>check-boundaries.sh</code></li>
+<li>Make sure the package has <code>groups=('linxira')</code> so <code>pacman -S linxira</code> can discover it</li>
+</ol>
 
-  <h2>Things not to do</h2>
-  <ul>
-    <li><strong>Never use <code>git add -A</code></strong>: it may stage unexpected files (e.g. <code>.pkg.tar.zst</code> build artifacts). Use explicit paths: <code>git add packages/&lt;pkg&gt;/PKGBUILD</code></li>
-    <li><strong>Never hand-tar the source</strong>: the PKGBUILD source must use codeload URLs or release tarballs, never local paths (linxira-keyring excepted)</li>
-    <li><strong>Never skip check-boundaries.sh</strong>: it is CI's first gate; if it fails locally, CI will fail too</li>
-    <li><strong>Never change _commit without changing sha256</strong>: different commits always produce tarballs with different sha256</li>
-    <li><strong>Never write CachyOS/AUR/Seafoam repository references in PKGBUILDs</strong>: check-boundaries.sh rejects them</li>
-  </ul>
+<h2>Keys and signing</h2>
+<p>See <a href="https://github.com/Linxira-OS/packages/blob/main/RELEASE.md" target="_blank">RELEASE.md</a> for details. Key points:</p>
+<ul>
+<li>Packages are signed with the signing subkey (rotated 2026-08-04); GitHub Actions secrets <code>LINXIRA_GPG_PRIVATE_KEY</code> + <code>LINXIRA_GPG_FINGERPRINT</code>; exact fingerprints are not published on this site</li>
+<li>The master key is kept offline; the signing subkey is used only in CI</li>
+<li>The <code>linxira-keyring</code> package distributes the public key; users must install it to verify packages from the <code>[linxira]</code> repository</li>
+</ul>
+
+<h2>Things not to do</h2>
+<ul>
+<li><strong>Never use <code>git add -A</code></strong>: it may stage unexpected files (e.g. <code>.pkg.tar.zst</code> build artifacts). Use explicit paths: <code>git add packages/&lt;pkg&gt;/PKGBUILD</code></li>
+<li><strong>Never hand-tar the source</strong>: the PKGBUILD source must use codeload URLs or release tarballs, never local paths (linxira-keyring excepted)</li>
+<li><strong>Never skip check-boundaries.sh</strong>: it is CI's first gate; if it fails locally, CI will fail too</li>
+<li><strong>Never change _commit without changing sha256</strong>: different commits always produce tarballs with different sha256</li>
+<li><strong>Never write CachyOS/AUR/Seafoam repository references in PKGBUILDs</strong>: check-boundaries.sh rejects them</li>
+</ul>

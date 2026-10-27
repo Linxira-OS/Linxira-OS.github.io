@@ -11,67 +11,67 @@ order: 0
 <h2>快速导航</h2>
 
 <a href="/zh/docs/newbie/" class="doc-card">
-  <h3>新手向导</h3>
-  <p>第一次用 Linux？终端基础、查资料、中文输入法与桌面选择。</p>
+<h3>新手向导</h3>
+<p>第一次用 Linux？终端基础、查资料、中文输入法与桌面选择。</p>
 </a>
 
 <a href="/zh/docs/install/" class="doc-card">
-  <h3>安装指南</h3>
-  <p>当前镜像（2026.10.26）随盘带崩溃监视与诊断技能；启动 Live 会话后运行 Calamares 安装，桌面可选 Plasma / COSMIC / 无桌面。</p>
+<h3>安装指南</h3>
+<p>当前镜像（2026.10.26）随盘带崩溃监视与诊断技能；启动 Live 会话后运行 Calamares 安装，桌面可选 Plasma / COSMIC / 无桌面。</p>
 </a>
 
 <a href="/zh/docs/quick-start/" class="doc-card">
-  <h3>快速开始</h3>
-  <p>安装后的第一步：配置源、安装工具、开始使用。</p>
+<h3>快速开始</h3>
+<p>安装后的第一步：配置源、安装工具、开始使用。</p>
 </a>
 
 <a href="/zh/docs/ecosystem/" class="doc-card">
-  <h3>软件生态</h3>
-  <p>92 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
+<h3>软件生态</h3>
+<p>92 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
 </a>
 
 <a href="/zh/docs/package-managers/" class="doc-card">
-  <h3>软件管理</h3>
-  <p>底层使用 pacman 与签名仓库，安装后由 Shelly 提供图形软件管理。</p>
+<h3>软件管理</h3>
+<p>底层使用 pacman 与签名仓库，安装后由 Shelly 提供图形软件管理。</p>
 </a>
 
 <a href="/zh/docs/updates/" class="doc-card">
-  <h3>系统更新与快照回滚</h3>
-  <p>每小时自动检查、每个 pacman 事务前自动快照、GRUB 一键回滚；可选全自动更新 EnableAutoApply（默认关）。</p>
+<h3>系统更新与快照回滚</h3>
+<p>每小时自动检查、每个 pacman 事务前自动快照、GRUB 一键回滚；可选全自动更新 EnableAutoApply（默认关）。</p>
 </a>
 
 <a href="/zh/docs/apps/" class="doc-card">
-  <h3>官方软件</h3>
-  <p>全部 17 个自研工具：Welcome、Config Hub、Shelly、Package Center、Component Manager、硬件与恢复工具、系统组件。</p>
+<h3>官方软件</h3>
+<p>全部 17 个自研工具：Welcome、Config Hub、Shelly、Package Center、Component Manager、硬件与恢复工具、系统组件。</p>
 </a>
 
 <a href="/zh/docs/remote-access/" class="doc-card">
-  <h3>远程访问（SSH）</h3>
-  <p>把 Linxira 电脑变成服务器：开启 sshd、生成与授权密钥、远程连接、安全加固。</p>
+<h3>远程访问（SSH）</h3>
+<p>把 Linxira 电脑变成服务器：开启 sshd、生成与授权密钥、远程连接、安全加固。</p>
 </a>
 
 <a href="/zh/docs/workflows/" class="doc-card">
-  <h3>Catalog v2 配置</h3>
-  <p>经过审核的办公、创作、开发、容器、AI、科学计算与生物信息配置。</p>
+<h3>Catalog v2 配置</h3>
+<p>经过审核的办公、创作、开发、容器、AI、科学计算与生物信息配置。</p>
 </a>
 
 <a href="/zh/docs/config-hub/" class="doc-card">
-  <h3>Config Hub CLI</h3>
-  <p>安装后查看并请求 catalog v2 允许列表中的配置。</p>
+<h3>Config Hub CLI</h3>
+<p>安装后查看并请求 catalog v2 允许列表中的配置。</p>
 </a>
 
 <h2>关键词索引</h2>
 <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
-  <span class="keyword">Direct Arch</span>
-  <span class="keyword">Linxira Welcome</span>
-  <span class="keyword">catalog v2</span>
-  <span class="keyword">Calamares（手动）</span>
-  <span class="keyword">Shelly</span>
-  <span class="keyword">Config Hub CLI</span>
-  <span class="keyword">pacman</span>
-  <span class="keyword">Arch 官方仓库</span>
-  <span class="keyword">KDE Plasma</span>
-  <span class="keyword">Btrfs 恢复</span>
-  <span class="keyword">快照回滚</span>
-  <span class="keyword">审核配置</span>
+<span class="keyword">Direct Arch</span>
+<span class="keyword">Linxira Welcome</span>
+<span class="keyword">catalog v2</span>
+<span class="keyword">Calamares（手动）</span>
+<span class="keyword">Shelly</span>
+<span class="keyword">Config Hub CLI</span>
+<span class="keyword">pacman</span>
+<span class="keyword">Arch 官方仓库</span>
+<span class="keyword">KDE Plasma</span>
+<span class="keyword">Btrfs 恢复</span>
+<span class="keyword">快照回滚</span>
+<span class="keyword">审核配置</span>
 </div>

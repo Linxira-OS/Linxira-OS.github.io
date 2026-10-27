@@ -18,6 +18,7 @@ fwupdmgr get-updates
 sudo fwupdmgr update
 ```
 
+
 更新 BIOS/EC 时**必须插电**，过程中不要合盖。更新后重启一次再继续。
 
 ## 2. 触摸板与手势
@@ -37,6 +38,7 @@ ls /sys/class/backlight/          # 通常为 amdgpu_bl0 / intel_backlight / nvi
 brightnessctl -d amdgpu_bl0 get   # 读当前亮度百分比
 ```
 
+
 亮度键不工作时，先确认内核是否加载了对应 backlight 驱动；不要直接手写 `bl_power`。
 
 ## 4. 外接显示器
@@ -46,6 +48,7 @@ kscreen-doctor -o                 # 列出所有输出与模式
 kscreen-doctor output.HDMI-1.mode.2560x1440@60
 ```
 
+
 合盖外接时，在系统设置 → 电源管理里把「合盖时」设为**不采取任何操作**，否则会直接休眠。
 
 ## 5. 热与风扇
@@ -53,6 +56,7 @@ kscreen-doctor output.HDMI-1.mode.2560x1440@60
 ```bash
 sensors                           # 需要 lm_sensors
 ```
+
 
 持续 90°C 以上先查是不是单核跑满（`top` 按 1 展开每核）。`power-saver` 配置能显著降温。
 
@@ -62,6 +66,7 @@ sensors                           # 需要 lm_sensors
 linxira-config gpu status         # 驱动与切换状态
 lspci -k | grep -A3 VGA           # 确认内核驱动
 ```
+
 
 不要手动装 NVIDIA 官方 runfile —— 会与仓库里的 DKMS 包冲突。
 

@@ -16,6 +16,7 @@ powerprofilesctl get           # performance / balanced / power-saver
 powerprofilesctl list          # available profiles and drivers
 ```
 
+
 Write actions under `linxira-config power` (suspend/hibernate policy changes) are **disabled** pending the transactional backend; use System Settings → Power Management instead.
 
 ## Which profile
@@ -30,6 +31,7 @@ Write actions under `linxira-config power` (suspend/hibernate policy changes) ar
 powerprofilesctl set power-saver
 ```
 
+
 ## Battery health
 
 Whether you can cap charging depends on firmware exposure:
@@ -38,11 +40,13 @@ Whether you can cap charging depends on firmware exposure:
 ls /sys/class/power_supply/BAT*/charge_control_end_threshold
 ```
 
+
 If the file exists (root required):
 
 ```bash
 echo 80 | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold
 ```
+
 
 Most firmware keeps the value across reboots; if not, persist it with a udev rule.
 
@@ -64,11 +68,13 @@ One command tells you whether it is supported:
 ls /sys/class/power_supply/BAT*/charge_control_end_threshold 2>/dev/null || echo "unsupported — leave it alone"
 ```
 
+
 ## What is draining the battery
 
 ```bash
 upower -i "$(upower -e | grep BAT)"   # charge, discharge rate, health
 ```
+
 
 ## Hibernate
 
@@ -78,6 +84,7 @@ Requires swap ≥ RAM:
 swapon --show
 free -h
 ```
+
 
 Test manually with `systemctl hibernate` before making it the default.
 

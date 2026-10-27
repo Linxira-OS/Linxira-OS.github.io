@@ -15,6 +15,7 @@ linxira-config source                 # 当前启用的包源
 linxira-config mirror arch list       # 候选镜像（含官方与国内）
 ```
 
+
 ## 系统源（Arch）
 
 ```bash
@@ -24,11 +25,13 @@ linxira-config mirror arch set ustc   # 直接指定
 linxira-config mirror arch reset      # 回到官方 geo 镜像
 ```
 
+
 改完刷新索引：
 
 ```bash
 sudo pacman -Syu
 ```
+
 
 `linxira-config` 会写 `/etc/pacman.d/mirrorlist`；如果你手动编辑过这个文件，先备份。
 
@@ -41,6 +44,7 @@ linxira-config mirror npm auto
 linxira-config mirror pip set tuna
 linxira-config mirror go set official
 ```
+
 
 | 类型 | 写入位置 | 影响 |
 |---|---|---|
@@ -56,6 +60,7 @@ linxira-config mirror aur set https://aur.tuna.tsinghua.edu.cn
 linxira-config mirror aur reset
 ```
 
+
 只接受 https 地址，且会校验格式。AUR 构建仍走 `yay`/`paru`，这里只换 Git 源。
 
 ## Flatpak
@@ -64,6 +69,7 @@ linxira-config mirror aur reset
 linxira-config mirror flatpak list
 linxira-config mirror flatpak set flathub
 ```
+
 
 ## 什么时候不用 auto
 

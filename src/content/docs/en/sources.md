@@ -15,6 +15,7 @@ linxira-config source
 linxira-config mirror arch list
 ```
 
+
 ## System sources (Arch)
 
 ```bash
@@ -24,6 +25,7 @@ linxira-config mirror arch set ustc
 linxira-config mirror arch reset       # back to the official geo mirror
 sudo pacman -Syu
 ```
+
 
 `linxira-config` writes `/etc/pacman.d/mirrorlist` — back it up if you have customised it.
 
@@ -36,6 +38,7 @@ linxira-config mirror npm auto
 linxira-config mirror pip set tuna
 linxira-config mirror go set official
 ```
+
 
 | Type | File | Affects |
 |---|---|---|
@@ -51,6 +54,7 @@ linxira-config mirror aur set https://aur.tuna.tsinghua.edu.cn
 linxira-config mirror aur reset
 ```
 
+
 Only https URLs are accepted. Builds still go through `yay`/`paru`; only the Git remote changes.
 
 ## Flatpak
@@ -59,6 +63,7 @@ Only https URLs are accepted. Builds still go through `yay`/`paru`; only the Git
 linxira-config mirror flatpak list
 linxira-config mirror flatpak set flathub
 ```
+
 
 ## When not to use `auto`
 

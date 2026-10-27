@@ -22,16 +22,16 @@ order: 0
 
 <h2>Keyword Index</h2>
 <div style="display:flex; flex-wrap:wrap; gap:0.3rem;">
-  <span class="keyword">Direct Arch</span>
-  <span class="keyword">Linxira Welcome</span>
-  <span class="keyword">catalog v2</span>
-  <span class="keyword">Calamares (manual)</span>
-  <span class="keyword">Shelly</span>
-  <span class="keyword">Config Hub CLI</span>
-  <span class="keyword">pacman</span>
-  <span class="keyword">Arch repositories</span>
-  <span class="keyword">KDE Plasma</span>
-  <span class="keyword">Btrfs recovery</span>
-  <span class="keyword">Snapshot rollback</span>
-  <span class="keyword">reviewed profiles</span>
+<span class="keyword">Direct Arch</span>
+<span class="keyword">Linxira Welcome</span>
+<span class="keyword">catalog v2</span>
+<span class="keyword">Calamares (manual)</span>
+<span class="keyword">Shelly</span>
+<span class="keyword">Config Hub CLI</span>
+<span class="keyword">pacman</span>
+<span class="keyword">Arch repositories</span>
+<span class="keyword">KDE Plasma</span>
+<span class="keyword">Btrfs recovery</span>
+<span class="keyword">Snapshot rollback</span>
+<span class="keyword">reviewed profiles</span>
 </div>

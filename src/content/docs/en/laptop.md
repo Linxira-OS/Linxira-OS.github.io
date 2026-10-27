@@ -16,6 +16,7 @@ fwupdmgr get-updates
 sudo fwupdmgr update
 ```
 
+
 Plug in power; never close the lid during a BIOS/EC update.
 
 ## 2. Touchpad and gestures
@@ -29,6 +30,7 @@ ls /sys/class/backlight/          # amdgpu_bl0 / intel_backlight / nvidia_0
 brightnessctl -d amdgpu_bl0 get
 ```
 
+
 If the keys do nothing, check whether a backlight driver is loaded.
 
 ## 4. External displays
@@ -38,6 +40,7 @@ kscreen-doctor -o
 kscreen-doctor output.HDMI-1.mode.2560x1440@60
 ```
 
+
 When docking with the lid closed, set "When laptop lid is closed" to **do nothing**, otherwise the machine suspends.
 
 ## 5. Heat
@@ -45,6 +48,7 @@ When docking with the lid closed, set "When laptop lid is closed" to **do nothin
 ```bash
 sensors
 ```
+
 
 Sustained 90°C+ usually means a single core is pegged; `power-saver` drops temperatures noticeably.
 
@@ -54,6 +58,7 @@ Sustained 90°C+ usually means a single core is pegged; `power-saver` drops temp
 linxira-config gpu status
 lspci -k | grep -A3 VGA
 ```
+
 
 Do not install NVIDIA's runfile installer — it conflicts with the DKMS packages from the repository.
 

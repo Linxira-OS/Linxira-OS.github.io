@@ -29,6 +29,7 @@ sudo mkdir -p /boot/efi/EFI/BOOT
 sudo cp /boot/efi/EFI/linxira/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 ```
 
+
 ## 查看与调整启动顺序
 
 ```bash
@@ -37,12 +38,14 @@ sudo efibootmgr -o 0002,0001  # 调整顺序
 sudo efibootmgr -b 0003 -B    # 删除某条目
 ```
 
+
 systemd-boot 用 `bootctl`：
 
 ```bash
 bootctl status
 sudo bootctl set-default linxira-*
 ```
+
 
 `efibootmgr` 只对 UEFI 有效；`BootCurrent` 显示本次从哪条启动。
 
@@ -53,6 +56,7 @@ fwupdmgr refresh
 fwupdmgr get-devices
 sudo fwupdmgr update
 ```
+
 
 固件更新必须插电、不能断电。部分机型需要先关闭 BIOS 里的「BIOS 写保护」。
 
@@ -67,5 +71,6 @@ sudo fwupdmgr update
 ```bash
 systemctl reboot --firmware-setup
 ```
+
 
 比反复按 Del/F2 可靠；不支持时会直接重启。

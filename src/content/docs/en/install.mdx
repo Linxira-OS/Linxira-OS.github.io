@@ -20,11 +20,11 @@ import { releases } from "../../../data/releases";
 <h3>Windows</h3>
 <p>Use <a href="https://rufus.ie/" target="_blank">Rufus</a> or <a href="https://etcher.balena.io/" target="_blank">balenaEtcher</a>:</p>
 <ul>
-  <li>Insert a USB drive with at least 8 GB of space</li>
-  <li>Open Rufus</li>
-  <li>Select the downloaded ISO file</li>
-  <li>Select your USB device</li>
-  <li>Click "Start"</li>
+<li>Insert a USB drive with at least 8 GB of space</li>
+<li>Open Rufus</li>
+<li>Select the downloaded ISO file</li>
+<li>Select your USB device</li>
+<li>Click "Start"</li>
 </ul>
 
 <h3>Linux</h3>
@@ -33,31 +33,31 @@ import { releases } from "../../../data/releases";
 <h2>Planned Installer</h2>
 <p>The Direct Arch Live image boots into a complete Plasma desktop and opens Linxira Welcome automatically. Calamares does not auto-start: launch it manually from Welcome or the application menu when you are ready. The expected flow is:</p>
 <ol style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
-  <li>Boot from the USB drive</li>
-  <li>Open "Install Linxira OS" in Welcome or the application menu</li>
-  <li>Choose your language and keyboard layout</li>
-  <li>Select a partitioning scheme. <code>btrfs</code> with Timeshift is recommended.</li>
-  <li>Choose optional reviewed profiles from catalog v3 and create your user account</li>
-  <li>Wait for the installer to finish</li>
-  <li>Restart the system and remove the USB drive</li>
+<li>Boot from the USB drive</li>
+<li>Open "Install Linxira OS" in Welcome or the application menu</li>
+<li>Choose your language and keyboard layout</li>
+<li>Select a partitioning scheme. <code>btrfs</code> with Timeshift is recommended.</li>
+<li>Choose optional reviewed profiles from catalog v3 and create your user account</li>
+<li>Wait for the installer to finish</li>
+<li>Restart the system and remove the USB drive</li>
 </ol>
 <p>After first boot, use Package Center for graphical package management.</p>
 
 <h2>Dual-boot with Windows</h2>
 <p>The installer offers "install alongside Windows", but prepare on the Windows side first:</p>
 <ul style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
-  <li>Disable Windows Fast Startup and shut down fully (not hibernate)</li>
-  <li>If BitLocker is on, <strong>suspend protection</strong> until the install finishes</li>
-  <li>Disable Secure Boot (this image ships no signed boot chain)</li>
-  <li>Switch Intel RST / RAID to AHCI if enabled</li>
+<li>Disable Windows Fast Startup and shut down fully (not hibernate)</li>
+<li>If BitLocker is on, <strong>suspend protection</strong> until the install finishes</li>
+<li>Disable Secure Boot (this image ships no signed boot chain)</li>
+<li>Switch Intel RST / RAID to AHCI if enabled</li>
 </ul>
 <p>Pick "alongside" during install; the installer shrinks the NTFS partition and creates btrfs. GRUB then lists Windows through <code>os-prober</code>, which the target installs by default.</p>
 
 <h2>System Requirements</h2>
 <table>
-  <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
-  <tr><td>CPU</td><td>64-bit x86</td><td>4+ cores</td></tr>
-  <tr><td>Memory</td><td>4 GB</td><td>8+ GB</td></tr>
-  <tr><td>Storage</td><td>20 GB</td><td>50+ GB</td></tr>
-  <tr><td>Graphics</td><td>OpenGL 2.0 support</td><td>Dedicated NVIDIA or AMD GPU</td></tr>
+<tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
+<tr><td>CPU</td><td>64-bit x86</td><td>4+ cores</td></tr>
+<tr><td>Memory</td><td>4 GB</td><td>8+ GB</td></tr>
+<tr><td>Storage</td><td>20 GB</td><td>50+ GB</td></tr>
+<tr><td>Graphics</td><td>OpenGL 2.0 support</td><td>Dedicated NVIDIA or AMD GPU</td></tr>
 </table>

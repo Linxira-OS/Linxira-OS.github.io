@@ -9,12 +9,14 @@ order: 11
 ## 装之前必须做的三件事
 
 1. **关闭 Windows 快速启动**（控制面板 → 电源选项 → 选择电源按钮的功能 → 取消「启用快速启动」）。
-   开着快速启动时 NTFS 处于半休眠，Linux 挂载会拒绝写，甚至损坏分区。
+开着快速启动时 NTFS 处于半休眠，Linux 挂载会拒绝写，甚至损坏分区。
 2. **挂起 BitLocker**。装完再恢复，否则会要求恢复密钥：
-   ```powershell
+
+```powershell
    manage-bde -status
    manage-bde -protectors -disable C: -RebootCount 2
-   ```
+```
+
 3. **腾出未分配空间**（不是新建 NTFS 分区）。用磁盘管理压缩卷，留至少 40 GB。
 
 ## 分区怎么分
@@ -36,6 +38,7 @@ title   Windows
 efi     /EFI/Microsoft/Boot/bootmgfw.efi
 ```
 
+
 - **rEFInd**：自动扫描，装上就能看到 Windows。
 
 ## 时间差 8 小时
@@ -43,9 +46,9 @@ efi     /EFI/Microsoft/Boot/bootmgfw.efi
 Windows 用本地时间，Linux 默认 UTC。二选一：
 
 ```bash
-# 让 Linux 跟随 Windows 的本地时间
 sudo timedatectl set-local-rtc 1 --adjust-system-clock
 ```
+
 
 或在 Windows 注册表里把 `RealTimeIsUniversal` 设为 1（推荐，保持 UTC）。
 
@@ -55,6 +58,7 @@ sudo timedatectl set-local-rtc 1 --adjust-system-clock
 sudo os-prober                 # 确认能看到 Windows
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
 
 若 os-prober 返回空：确认 Windows 分区已挂载（`lsblk -f`），并检查 `/etc/default/grub` 里 `GRUB_DISABLE_OS_PROBER=false`。
 

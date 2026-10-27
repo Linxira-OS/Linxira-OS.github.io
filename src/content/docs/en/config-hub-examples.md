@@ -17,6 +17,7 @@ linxira-config info            # hardware and system info
 linxira-config capabilities    # machine-readable manifest (for agents)
 ```
 
+
 ## Package sources
 
 ```bash
@@ -26,6 +27,7 @@ linxira-config mirror arch auto
 linxira-config source
 ```
 
+
 User-scoped sources:
 
 ```bash
@@ -34,6 +36,7 @@ linxira-config mirror pip set tuna
 linxira-config mirror aur list
 linxira-config mirror go set official
 ```
+
 
 ## Remote access
 
@@ -46,6 +49,7 @@ linxira-config ssh key fingerprint work
 linxira-config ssh authorized add "ssh-ed25519 AAAA..."
 ```
 
+
 `rdp` and `vnc` are **disabled**: xrdp is not in the signed repositories yet and the per-user TigerVNC policy is undecided.
 
 ## Network
@@ -55,6 +59,7 @@ linxira-config net diag
 linxira-config net dns
 linxira-config net dns set 1.1.1.1
 ```
+
 
 `net dns set` writes `/etc/resolv.conf` directly; NetworkManager may overwrite it on reconnect.
 
@@ -66,6 +71,7 @@ linxira-config security ufw on
 linxira-config security ufw allow 22
 linxira-config security ufw status
 ```
+
 
 `security harden` is disabled pending the transactional backend.
 
@@ -79,6 +85,7 @@ sudo linxira-config workspace-guard enable
 linxira-config workspace-guard handbook
 ```
 
+
 ## Catalog (read-only)
 
 ```bash
@@ -86,6 +93,7 @@ linxira-config catalog software --all
 linxira-config catalog component list
 linxira-config catalog bundle show science
 ```
+
 
 Installing goes through `linxira-components` — the only entry point with a transaction plan.
 
@@ -99,6 +107,7 @@ linxira-config gpu status
 linxira-config stack list
 ```
 
+
 ## Environment variables
 
 ```bash
@@ -108,6 +117,7 @@ linxira-config env get OMP_NUM_THREADS
 linxira-config env unset OMP_NUM_THREADS
 ```
 
+
 Written to `/etc/profile.d/linxira-env.sh`, system-wide.
 
 ## Diagnostics
@@ -116,6 +126,7 @@ Written to `/etc/profile.d/linxira-env.sh`, system-wide.
 linxira-config logs collect
 linxira-config logs upload
 ```
+
 
 Run `collect` before filing an issue — far more useful than a screenshot.
 

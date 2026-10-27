@@ -16,6 +16,7 @@ powerprofilesctl get           # 当前电源配置：performance / balanced / p
 powerprofilesctl list          # 可用配置与各自的驱动
 ```
 
+
 `linxira-config power` 的写操作（休眠、挂起策略变更）目前**处于禁用状态**，等待事务化后端；需要改策略请用系统设置 → 电源管理。
 
 ## 三档性能配置怎么选
@@ -31,6 +32,7 @@ powerprofilesctl set power-saver
 powerprofilesctl set balanced
 ```
 
+
 笔记本建议：插电时 `balanced`，拔电自动切 `power-saver`（系统设置里可绑定）。
 
 ## 电池养护
@@ -42,11 +44,13 @@ ls /sys/class/power_supply/BAT*/charge_control_end_threshold
 cat /sys/class/power_supply/BAT0/charge_control_end_threshold
 ```
 
+
 存在该文件时，写入百分比即可（需要 root）：
 
 ```bash
 echo 80 | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold
 ```
+
 
 该值重启后通常由固件保留；若丢失，需要写成 udev 规则或 systemd 单元。
 
@@ -68,11 +72,13 @@ echo 80 | sudo tee /sys/class/power_supply/BAT0/charge_control_end_threshold
 ls /sys/class/power_supply/BAT*/charge_control_end_threshold 2>/dev/null || echo "不支持，别设了"
 ```
 
+
 ## 查看耗电来源
 
 ```bash
 upower -i "$(upower -e | grep BAT)"   # 电量、放电速率、健康度
 ```
+
 
 `upower` 随桌面环境安装；若命令不存在，用 KDE 电源管理面板查看。持续高放电但 CPU 空闲时，先查：
 
@@ -80,6 +86,7 @@ upower -i "$(upower -e | grep BAT)"   # 电量、放电速率、健康度
 linxira-config status      # 快速总览
 linxira-config net diag    # 网络异常重连也会耗电
 ```
+
 
 ## 休眠（suspend-then-hibernate）
 
@@ -90,11 +97,13 @@ swapon --show
 free -h
 ```
 
+
 swap 小于物理内存时不要把休眠设为默认，否则恢复会丢数据。启用前先手动验证一次：
 
 ```bash
 systemctl hibernate
 ```
+
 
 能正常恢复再改 `/etc/systemd/sleep.conf`。
 
