@@ -63,9 +63,12 @@ sensors                           # 需要 lm_sensors
 ## 6. 独显与混合显卡
 
 ```bash
-linxira-config gpu status         # 驱动与切换状态
-lspci -k | grep -A3 VGA           # 确认内核驱动
+linxira-config gpu status
+lspci -k | grep -A3 VGA
 ```
+
+- `linxira-config gpu status` — 驱动与切换状态
+- `lspci -k | grep -A3 VGA` — 确认内核驱动
 
 
 不要手动装 NVIDIA 官方 runfile —— 会与仓库里的 DKMS 包冲突。

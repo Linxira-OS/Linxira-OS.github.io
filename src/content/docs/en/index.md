@@ -12,7 +12,7 @@ order: 0
 <a href="/en/docs/newbie/" class="doc-card"><h3>Beginner's Guide</h3><p>First time using Linux? Terminal basics, looking things up, the Chinese input method, and choosing a desktop.</p></a>
 <a href="/en/docs/install/" class="doc-card"><h3>Installation Guide</h3><p>The current image (2026-10-26) ships crash watch and its diagnostic skill; boot the Live session and run Calamares, choosing Plasma, COSMIC, or headless.</p></a>
 <a href="/en/docs/quick-start/" class="doc-card"><h3>Quick Start</h3><p>First steps after installation: configure sources, install tools, start working.</p></a>
-<a href="/en/docs/ecosystem/" class="doc-card"><h3>Software Ecosystem</h3><p>92 curated applications across 14 categories, all passing catalog v3 review and installed from the official signed repository.</p></a>
+<a href="/en/docs/ecosystem/" class="doc-card"><h3>Software Ecosystem</h3><p>93 curated applications across 14 categories, all passing catalog v3 review and installed from the official signed repository.</p></a>
 <a href="/en/docs/package-managers/" class="doc-card"><h3>Software Management</h3><p>pacman and signed repositories underneath, Shelly as the post-install graphical manager.</p></a>
 <a href="/en/docs/updates/" class="doc-card"><h3>Updates &amp; Snapshot Rollback</h3><p>Hourly automatic checks, a snapshot before every pacman transaction, one-click GRUB rollback; optional fully-automatic updates via EnableAutoApply (off by default).</p></a>
 <a href="/en/docs/apps/" class="doc-card"><h3>Official Apps</h3><p>All 17 first-party tools: Welcome, Config Hub, Shelly, Package Center, Component Manager, hardware &amp; recovery tools, and system components.</p></a>

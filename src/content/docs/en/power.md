@@ -11,10 +11,14 @@ Linxira OS ships `power-profiles-daemon`, driven by the KDE Plasma power panel. 
 ## Check current state
 
 ```bash
-linxira-config power status    # power settings summary
-powerprofilesctl get           # performance / balanced / power-saver
-powerprofilesctl list          # available profiles and drivers
+linxira-config power status
+powerprofilesctl get
+powerprofilesctl list
 ```
+
+- `linxira-config power status` — power settings summary
+- `powerprofilesctl get` — performance / balanced / power-saver
+- `powerprofilesctl list` — available profiles and drivers
 
 
 Write actions under `linxira-config power` (suspend/hibernate policy changes) are **disabled** pending the transactional backend; use System Settings → Power Management instead.
@@ -72,8 +76,10 @@ ls /sys/class/power_supply/BAT*/charge_control_end_threshold 2>/dev/null || echo
 ## What is draining the battery
 
 ```bash
-upower -i "$(upower -e | grep BAT)"   # charge, discharge rate, health
+upower -i "$(upower -e | grep BAT)"
 ```
+
+- `upower -i "$(upower -e | grep BAT)"` — charge, discharge rate, health
 
 
 ## Hibernate

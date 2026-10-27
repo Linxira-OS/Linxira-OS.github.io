@@ -55,9 +55,11 @@ sudo timedatectl set-local-rtc 1 --adjust-system-clock
 ## 装完之后
 
 ```bash
-sudo os-prober                 # 确认能看到 Windows
+sudo os-prober
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
+
+- `sudo os-prober` — 确认能看到 Windows
 
 
 若 os-prober 返回空：确认 Windows 分区已挂载（`lsblk -f`），并检查 `/etc/default/grub` 里 `GRUB_DISABLE_OS_PROBER=false`。

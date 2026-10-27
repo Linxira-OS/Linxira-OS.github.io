@@ -11,19 +11,27 @@ order: 12
 ## 先看现状
 
 ```bash
-linxira-config source                 # 当前启用的包源
-linxira-config mirror arch list       # 候选镜像（含官方与国内）
+linxira-config source
+linxira-config mirror arch list
 ```
+
+- `linxira-config source` — 当前启用的包源
+- `linxira-config mirror arch list` — 候选镜像（含官方与国内）
 
 
 ## 系统源（Arch）
 
 ```bash
-linxira-config mirror arch auto       # 探测全部候选并选最快的
-linxira-config mirror arch speed tuna # 只测清华源
-linxira-config mirror arch set ustc   # 直接指定
-linxira-config mirror arch reset      # 回到官方 geo 镜像
+linxira-config mirror arch auto
+linxira-config mirror arch speed tuna
+linxira-config mirror arch set ustc
+linxira-config mirror arch reset
 ```
+
+- `linxira-config mirror arch auto` — 探测全部候选并选最快的
+- `linxira-config mirror arch speed tuna` — 只测清华源
+- `linxira-config mirror arch set ustc` — 直接指定
+- `linxira-config mirror arch reset` — 回到官方 geo 镜像
 
 
 改完刷新索引：

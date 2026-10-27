@@ -11,10 +11,14 @@ Linxira OS 自带 `power-profiles-daemon`，由 KDE Plasma 的电源管理界面
 ## 当前状态
 
 ```bash
-linxira-config power status    # 查看电源设置摘要
-powerprofilesctl get           # 当前电源配置：performance / balanced / power-saver
-powerprofilesctl list          # 可用配置与各自的驱动
+linxira-config power status
+powerprofilesctl get
+powerprofilesctl list
 ```
+
+- `linxira-config power status` — 查看电源设置摘要
+- `powerprofilesctl get` — 当前电源配置：performance / balanced / power-saver
+- `powerprofilesctl list` — 可用配置与各自的驱动
 
 
 `linxira-config power` 的写操作（休眠、挂起策略变更）目前**处于禁用状态**，等待事务化后端；需要改策略请用系统设置 → 电源管理。
@@ -76,16 +80,21 @@ ls /sys/class/power_supply/BAT*/charge_control_end_threshold 2>/dev/null || echo
 ## 查看耗电来源
 
 ```bash
-upower -i "$(upower -e | grep BAT)"   # 电量、放电速率、健康度
+upower -i "$(upower -e | grep BAT)"
 ```
+
+- `upower -i "$(upower -e | grep BAT)"` — 电量、放电速率、健康度
 
 
 `upower` 随桌面环境安装；若命令不存在，用 KDE 电源管理面板查看。持续高放电但 CPU 空闲时，先查：
 
 ```bash
-linxira-config status      # 快速总览
-linxira-config net diag    # 网络异常重连也会耗电
+linxira-config status
+linxira-config net diag
 ```
+
+- `linxira-config status` — 快速总览
+- `linxira-config net diag` — 网络异常重连也会耗电
 
 
 ## 休眠（suspend-then-hibernate）

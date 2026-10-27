@@ -37,7 +37,7 @@ sudo pacman -Syu
 <p>Checking and updating are handled by <code>linxira-update</code> (hourly automatic checks, a snapshot before every pacman transaction, optional fully-automatic updates); for manual methods, snapshots and GRUB rollback see <a href="/en/docs/updates/">Updates &amp; Rollback</a>.</p>
 
 <h2>3. Install software</h2>
-<p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (92 curated applications) or install directly with pacman:</p>
+<p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (93 curated applications) or install directly with pacman:</p>
 
 ```
 sudo pacman -S firefox libreoffice-fresh vlc
@@ -48,10 +48,14 @@ sudo pacman -S firefox libreoffice-fresh vlc
 <p>Use <code>linxira-config</code> to manage mirrors for each language ecosystem, with auto speed-testing:</p>
 
 ```
-linxira-config mirror pip auto   # auto-pick fastest PyPI mirror
-linxira-config mirror arch list  # list Arch mirrors
-linxira-config mirror npm auto   # auto-pick fastest npm mirror (run this if npmjs.org is slow)
+linxira-config mirror pip auto
+linxira-config mirror arch list
+linxira-config mirror npm auto
 ```
+
+- `linxira-config mirror pip auto` — auto-pick fastest PyPI mirror
+- `linxira-config mirror arch list` — list Arch mirrors
+- `linxira-config mirror npm auto` — auto-pick fastest npm mirror (run this if npmjs.org is slow)
 
 
 <h2>5. Enable remote access (optional)</h2>
@@ -74,12 +78,19 @@ linxira-config mirror npm auto
 <p>Then install the coding agents you need (all official npm packages):</p>
 
 ```
-npm i -g @anthropic-ai/claude-code@latest   # Claude Code
-npm i -g @openai/codex@latest                # Codex
-npm i -g @google/gemini-cli@latest           # Gemini CLI
-npm i -g @xai-official/grok@latest           # Grok Build
-npm i -g opencode-ai@latest                  # OpenCode
-npm i -g openclaw@latest                     # OpenClaw
+npm i -g @anthropic-ai/claude-code@latest
+npm i -g @openai/codex@latest
+npm i -g @google/gemini-cli@latest
+npm i -g @xai-official/grok@latest
+npm i -g opencode-ai@latest
+npm i -g openclaw@latest
 ```
+
+- `npm i -g @anthropic-ai/claude-code@latest` — Claude Code
+- `npm i -g @openai/codex@latest` — Codex
+- `npm i -g @google/gemini-cli@latest` — Gemini CLI
+- `npm i -g @xai-official/grok@latest` — Grok Build
+- `npm i -g opencode-ai@latest` — OpenCode
+- `npm i -g openclaw@latest` — OpenClaw
 
 <p>Other terminal agents: Hermes via <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code> (CN mirror <code>res1.hermesagent.org.cn</code>); Pi / OMP via <code>curl -fsSL https://omp.sh/install | sh</code>.</p>

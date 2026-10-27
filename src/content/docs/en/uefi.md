@@ -31,10 +31,14 @@ sudo cp /boot/efi/EFI/linxira/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 ## Boot order
 
 ```bash
-efibootmgr                    # entries and BootOrder
-sudo efibootmgr -o 0002,0001  # reorder
-sudo efibootmgr -b 0003 -B    # delete
+efibootmgr
+sudo efibootmgr -o 0002,0001
+sudo efibootmgr -b 0003 -B
 ```
+
+- `efibootmgr` — entries and BootOrder
+- `sudo efibootmgr -o 0002,0001` — reorder
+- `sudo efibootmgr -b 0003 -B` — delete
 
 
 For systemd-boot:

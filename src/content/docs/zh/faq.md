@@ -18,7 +18,7 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何安装软件？</h2>
 <div class="answer" style="display:none;">
-<p>系统预装 <a href="/zh/docs/apps/">Shelly</a> 图形包管理器；也可直接用 <code>pacman</code>。92 个精选应用见 <a href="/zh/docs/ecosystem/">软件生态</a>。自研软件从签名仓库 <code>[linxira]</code> 安装。</p>
+<p>系统预装 <a href="/zh/docs/apps/">Shelly</a> 图形包管理器；也可直接用 <code>pacman</code>。93 个精选应用见 <a href="/zh/docs/ecosystem/">软件生态</a>。自研软件从签名仓库 <code>[linxira]</code> 安装。</p>
 </div>
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">为什么有些软件列表里看不到？</h2>

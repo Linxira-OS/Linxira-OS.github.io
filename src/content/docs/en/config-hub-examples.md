@@ -11,11 +11,16 @@ Organised by "what you want to do". Every command is copy-pasteable.
 ## Discover
 
 ```bash
-linxira-config help            # full command list
-linxira-config status          # one-screen summary
-linxira-config info            # hardware and system info
-linxira-config capabilities    # machine-readable manifest (for agents)
+linxira-config help
+linxira-config status
+linxira-config info
+linxira-config capabilities
 ```
+
+- `linxira-config help` — full command list
+- `linxira-config status` — one-screen summary
+- `linxira-config info` — hardware and system info
+- `linxira-config capabilities` — machine-readable manifest (for agents)
 
 
 ## Package sources

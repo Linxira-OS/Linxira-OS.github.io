@@ -27,7 +27,7 @@ order: 0
 
 <a href="/zh/docs/ecosystem/" class="doc-card">
 <h3>软件生态</h3>
-<p>92 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
+<p>93 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
 </a>
 
 <a href="/zh/docs/package-managers/" class="doc-card">

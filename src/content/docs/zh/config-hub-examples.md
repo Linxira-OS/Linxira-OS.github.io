@@ -11,21 +11,31 @@ order: 4
 ## 先看有什么
 
 ```bash
-linxira-config help            # 完整命令表
-linxira-config status          # 一屏总览
-linxira-config info            # 硬件与系统信息
-linxira-config capabilities    # 机器可读能力清单（给 agent 用）
+linxira-config help
+linxira-config status
+linxira-config info
+linxira-config capabilities
 ```
+
+- `linxira-config help` — 完整命令表
+- `linxira-config status` — 一屏总览
+- `linxira-config info` — 硬件与系统信息
+- `linxira-config capabilities` — 机器可读能力清单（给 agent 用）
 
 
 ## 软件源
 
 ```bash
-linxira-config mirror arch list          # 候选镜像
-linxira-config mirror arch speed tuna    # 测单个源
-linxira-config mirror arch auto          # 探测并选最快的
-linxira-config source                    # 查看当前启用的源
+linxira-config mirror arch list
+linxira-config mirror arch speed tuna
+linxira-config mirror arch auto
+linxira-config source
 ```
+
+- `linxira-config mirror arch list` — 候选镜像
+- `linxira-config mirror arch speed tuna` — 测单个源
+- `linxira-config mirror arch auto` — 探测并选最快的
+- `linxira-config source` — 查看当前启用的源
 
 
 非系统源（用户级，不改系统文件）：
@@ -41,13 +51,16 @@ linxira-config mirror go set official
 ## 远程访问
 
 ```bash
-linxira-config ssh on            # 安装 openssh、启用 sshd
-linxira-config ssh status        # 连接信息与端口
+linxira-config ssh on
+linxira-config ssh status
 linxira-config ssh port 2222
 linxira-config ssh key generate work
 linxira-config ssh key fingerprint work
 linxira-config ssh authorized add "ssh-ed25519 AAAA..."
 ```
+
+- `linxira-config ssh on` — 安装 openssh、启用 sshd
+- `linxira-config ssh status` — 连接信息与端口
 
 
 `rdp` 与 `vnc` 目前**禁用**：xrdp 尚未进入签名仓库，TigerVNC 的按用户策略也没定案。
@@ -55,10 +68,13 @@ linxira-config ssh authorized add "ssh-ed25519 AAAA..."
 ## 网络诊断
 
 ```bash
-linxira-config net diag          # 全量诊断
-linxira-config net dns           # 当前 DNS
+linxira-config net diag
+linxira-config net dns
 linxira-config net dns set 1.1.1.1
 ```
+
+- `linxira-config net diag` — 全量诊断
+- `linxira-config net dns` — 当前 DNS
 
 
 `net dns set` 会直接写 `/etc/resolv.conf`；若启用了 NetworkManager 的自动管理，重启后会被覆盖。
@@ -126,9 +142,12 @@ linxira-config env unset OMP_NUM_THREADS
 ## 诊断日志
 
 ```bash
-linxira-config logs collect      # 收集到 ~/linxira-logs/
-linxira-config logs upload       # 上传并返回分享链接
+linxira-config logs collect
+linxira-config logs upload
 ```
+
+- `linxira-config logs collect` — 收集到 ~/linxira-logs/
+- `linxira-config logs upload` — 上传并返回分享链接
 
 
 提交 issue 前先跑 `collect`，比截图有用。

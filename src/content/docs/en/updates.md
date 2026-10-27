@@ -74,10 +74,14 @@ linxira-update
 <p>Beyond "before every transaction" there are periodic snapshots on a time/boot schedule. The installer enables them automatically at install time (btrfs mode, <strong>3 daily + 3 per boot</strong>); at runtime <code>linxira-config</code> manages them, driving the same idempotent script used by the installer:</p>
 
 ```
-linxira-config timeshift status    # current configuration
-linxira-config timeshift enable    # enable (idempotent)
-linxira-config timeshift disable   # disable
+linxira-config timeshift status
+linxira-config timeshift enable
+linxira-config timeshift disable
 ```
+
+- `linxira-config timeshift status` — current configuration
+- `linxira-config timeshift enable` — enable (idempotent)
+- `linxira-config timeshift disable` — disable
 
 
 <h2>4. When Something Breaks: Reboot and Pick a Snapshot in GRUB</h2>

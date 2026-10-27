@@ -74,10 +74,14 @@ linxira-update
 <p>除了「事务前」，还有「按时间/按开机」的周期快照。安装时已由安装器自动配置（btrfs 模式，<strong>每日 3 份 + 每次开机 3 份</strong>）；运行期随时用 <code>linxira-config</code> 查看 or 开关，底层与安装期是同一个幂等脚本：</p>
 
 ```
-linxira-config timeshift status    # 查看当前配置
-linxira-config timeshift enable    # 启用（幂等）
-linxira-config timeshift disable   # 停用
+linxira-config timeshift status
+linxira-config timeshift enable
+linxira-config timeshift disable
 ```
+
+- `linxira-config timeshift status` — 查看当前配置
+- `linxira-config timeshift enable` — 启用（幂等）
+- `linxira-config timeshift disable` — 停用
 
 
 <h2>4. 出问题怎么办：重启，在 GRUB 里选快照</h2>

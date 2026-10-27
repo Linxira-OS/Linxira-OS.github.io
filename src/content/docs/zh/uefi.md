@@ -33,10 +33,14 @@ sudo cp /boot/efi/EFI/linxira/grubx64.efi /boot/efi/EFI/BOOT/BOOTX64.EFI
 ## 查看与调整启动顺序
 
 ```bash
-efibootmgr                    # 列出条目与当前 BootOrder
-sudo efibootmgr -o 0002,0001  # 调整顺序
-sudo efibootmgr -b 0003 -B    # 删除某条目
+efibootmgr
+sudo efibootmgr -o 0002,0001
+sudo efibootmgr -b 0003 -B
 ```
+
+- `efibootmgr` — 列出条目与当前 BootOrder
+- `sudo efibootmgr -o 0002,0001` — 调整顺序
+- `sudo efibootmgr -b 0003 -B` — 删除某条目
 
 
 systemd-boot 用 `bootctl`：

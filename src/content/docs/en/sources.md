@@ -19,12 +19,15 @@ linxira-config mirror arch list
 ## System sources (Arch)
 
 ```bash
-linxira-config mirror arch auto        # probe all candidates, pick the fastest
+linxira-config mirror arch auto
 linxira-config mirror arch speed tuna
 linxira-config mirror arch set ustc
-linxira-config mirror arch reset       # back to the official geo mirror
+linxira-config mirror arch reset
 sudo pacman -Syu
 ```
+
+- `linxira-config mirror arch auto` — probe all candidates, pick the fastest
+- `linxira-config mirror arch reset` — back to the official geo mirror
 
 
 `linxira-config` writes `/etc/pacman.d/mirrorlist` — back it up if you have customised it.

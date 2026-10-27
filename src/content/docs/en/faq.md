@@ -18,7 +18,7 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">How do I install software?</h2>
 <div class="answer" style="display:none;">
-<p>The system ships with <a href="/en/docs/apps/">Shelly</a>, a graphical package manager; you can also use <code>pacman</code> directly. See the <a href="/en/docs/ecosystem/">Software Ecosystem</a> for 92 curated applications. First-party software installs from the signed <code>[linxira]</code> repository.</p>
+<p>The system ships with <a href="/en/docs/apps/">Shelly</a>, a graphical package manager; you can also use <code>pacman</code> directly. See the <a href="/en/docs/ecosystem/">Software Ecosystem</a> for 93 curated applications. First-party software installs from the signed <code>[linxira]</code> repository.</p>
 </div>
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Why is some software not listed?</h2>
