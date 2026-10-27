@@ -45,7 +45,7 @@ order: 0
 
 <h2>Installation &amp; Desktop</h2>
 <p class="term-item"><strong>Calamares (manual)</strong> — The installer Linxira adopts. It does not auto-start on the Live desktop: launch it manually from Welcome or the application menu when ready. The current slice supports an unencrypted, GPT, Btrfs (documented subvolumes) installation including GRUB, dual kernels, Plasma, and Shelly.</p>
-<p class="term-item"><strong>KDE Plasma</strong> — The default desktop environment; at install time the "Desktop environment" step offers a choice between KDE Plasma and server (no desktop), with Plasma as the default desktop in both the Live and target environments.</p>
+<p class="term-item"><strong>KDE Plasma</strong> — The default desktop environment; at install time the "Desktop environment" step offers four profiles (KDE Plasma, COSMIC, headless with full toolset, headless minimal), with Plasma as the default desktop in both the Live and target environments.</p>
 <p class="term-item"><strong>Fcitx5 (Chinese input method)</strong> — The Chinese input method framework; installing in Chinese auto-configures Fcitx5.</p>
 <p class="term-item"><strong>Discover (deliberately excluded)</strong> — KDE's default app store is not shipped: Linxira Package Center is the catalog application installer, and Shelly remains for reviewed recommendations and package browsing.</p>
 

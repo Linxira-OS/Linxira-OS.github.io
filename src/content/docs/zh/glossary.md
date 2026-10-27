@@ -45,7 +45,7 @@ order: 0
 
 <h2>安装与桌面</h2>
 <p class="term-item"><strong>Calamares（手动运行）</strong> — Linxira 采用的安装器。Live 桌面不会自动启动它：准备好后从 Welcome 或应用菜单手动打开。当前分片支持无加密、GPT、Btrfs（含文档化子卷）安装，含 GRUB、双内核、Plasma 与 Shelly。</p>
-<p class="term-item"><strong>KDE Plasma</strong> — 默认桌面环境；安装时在「桌面环境」一步二选一（KDE Plasma 或服务器无桌面），Plasma 为 Live 与目标系统两个环境的默认桌面。</p>
+<p class="term-item"><strong>KDE Plasma</strong> — 默认桌面环境；安装时在「桌面环境」一步四选一（KDE Plasma、COSMIC、无桌面·完整工具集、无桌面·超精简），Plasma 为 Live 与目标系统两个环境的默认桌面。</p>
 <p class="term-item"><strong>Fcitx5（中文输入法）</strong> — 中文输入法框架；安装时选择中文即自动配置好 Fcitx5。</p>
 <p class="term-item"><strong>Discover（刻意排除）</strong> — KDE 默认应用商店未随系统提供：Linxira Package Center 是目录式应用安装器，Shelly 保留用于审核推荐与包浏览。</p>
 

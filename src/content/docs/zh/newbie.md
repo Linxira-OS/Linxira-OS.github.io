@@ -76,4 +76,4 @@ export XMODIFIERS=@im=fcitx
 <p>locale 未生效（<code>locale</code> 命令输出异常）时：<code>sudo nano /etc/locale.gen</code> 取消 <code>zh_CN.UTF-8 UTF-8</code> 行的注释，然后执行 <code>sudo locale-gen</code>。</p>
 
 <h2>桌面环境选择</h2>
-<p>默认桌面是 KDE Plasma；安装时在「桌面环境」一步二选一（KDE Plasma 或服务器无桌面）；装完后随时可自行安装其他桌面（Plasma、GNOME 等）。「无头模式」只是临时关掉桌面把内存让给计算任务，不是换桌面。详见 <a href="/zh/docs/desktop/">桌面与服务器模式</a>。</p>
+<p>默认桌面是 KDE Plasma；安装时在「桌面环境」一步可选 KDE Plasma、COSMIC 或无桌面（两档）；装完后随时可自行安装其他桌面（Plasma、COSMIC、GNOME 等）。「无头模式」只是临时关掉桌面把内存让给计算任务，不是换桌面。详见 <a href="/zh/docs/desktop/">桌面与服务器模式</a>。</p>

@@ -76,4 +76,4 @@ export XMODIFIERS=@im=fcitx
 <p>If the locale is not taking effect (the <code>locale</code> command output looks wrong): run <code>sudo nano /etc/locale.gen</code>, uncomment the <code>zh_CN.UTF-8 UTF-8</code> line, then run <code>sudo locale-gen</code>.</p>
 
 <h2>Choosing a Desktop Environment</h2>
-<p>The default desktop is KDE Plasma. During installation you choose between KDE Plasma and Server (no desktop). You can install any other desktop (Plasma, GNOME, and more) yourself at any time. "Headless mode" only turns the desktop off temporarily to free memory for compute — it is not a desktop switch. See <a href="/en/docs/desktop/">Desktop &amp; Server Mode</a>.</p>
+<p>The default desktop is KDE Plasma. During installation you choose between KDE Plasma, COSMIC, and two headless profiles. You can install any other desktop (Plasma, COSMIC, GNOME, and more) yourself at any time. "Headless mode" only turns the desktop off temporarily to free memory for compute — it is not a desktop switch. See <a href="/en/docs/desktop/">Desktop &amp; Server Mode</a>.</p>
