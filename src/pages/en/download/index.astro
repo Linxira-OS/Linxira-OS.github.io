@@ -7,7 +7,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     <p>Current build is <b>2026.10.27-r4</b> (October 27 batch, iteration 4): installer boot/ESP gating fixes, a new System page in Welcome, the <code>linxira-config capabilities</code> manifest, and copyable crash prompts.</p>
 
     <div class="note">
-      <p><strong>Choose KDE Plasma.</strong> This image recommends <b>KDE Plasma</b>: terminal, system settings, updates, and configuration entry points are all verified there. The COSMIC desktop still has known defects (some system entries do not open a terminal, a few components exit immediately) and is not recommended for daily use yet; we will fix these through package updates.</p>
+      <p><strong>KDE Plasma is the only recommended desktop.</strong> Terminal, system settings, updates, and configuration entry points are all verified there. Other desktops (including COSMIC) still have known defects — some system entries do not open a terminal, a few components exit immediately; these are being fixed gradually across build cycles, so do not use them for daily work in the meantime. The r4 terminal-dispatch fix has shipped as packages (<code>linxira-config-hub 2.6.2</code>, <code>linxira-update 0.1.10</code>, <code>linxira-crash-watch 0.1.3</code>) — run <code>sudo pacman -Syu</code>.</p>
     </div>
 
     <div class="dl-card">
@@ -40,13 +40,13 @@ import PageLayout from "../../../components/PageLayout.astro";
     <h2>Known issues in this build</h2>
     <ul>
       <li><strong>Zeta 1.4.4 is unstable on Linux</strong>: prefer the npm install path; it is solidly fixed from 1.4.6 onward.</li>
-      <li><strong>COSMIC system entries</strong>: some entries do not open a terminal or close immediately; terminal-based components may also exit on COSMIC. Plasma is unaffected.</li>
-      <li><strong>The first <code>linxira-update</code> may report an unsynced repository</strong>: run <code>sudo pacman -Sy</code> once to restore detection.</li>
+      <li><strong>COSMIC system entries</strong>: some entries do not open a terminal or close immediately; terminal-based components may also exit on COSMIC. Root cause: <code>cosmic-term</code> has no <code>-e</code>. Fixed in <code>linxira-config-hub 2.6.2</code>, <code>linxira-update 0.1.10</code>, <code>linxira-crash-watch 0.1.3</code>; run <code>sudo pacman -Syu</code>. Plasma is unaffected.</li>
+      <li><strong>The first <code>linxira-update</code> may report an unsynced repository</strong>: from <code>linxira-update 0.1.10</code> the tool retries <code>pacman -Sy</code> and re-detects automatically; older versions need one manual <code>sudo pacman -Sy</code>.</li>
       <li><strong>Audio pop on power transitions</strong>: headphones or speakers may click briefly at power-on; this is hardware-level noise and is not addressed here.</li>
     </ul>
 
     <div class="note">
-      <p><strong>No old versions</strong>: Arch Linux is a rolling release, so an image only reflects the repositories of its build day. Old images are not retained or offered — always use the current version on this page.</p>
+      <p><strong>No old versions</strong>: Arch Linux is a rolling release, so an image only reflects the repositories of its build day. <strong>Old images are not retained or offered — only each version's SHA256 is recorded</strong>. Images are built roughly every 25–45 days; always use the current version on this page.</p>
     </div>
 
     <div class="note">

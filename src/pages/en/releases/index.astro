@@ -3,7 +3,7 @@ import PageLayout from "../../../components/PageLayout.astro";
 ---
 <PageLayout lang="en" active="roadmap" title="Release Log — Linxira OS" maxWidth="860px">
   <h1>Release Log</h1>
-  <p class="subtitle">Released ISO builds. The current image is 2026.10.27-r4; Arch is a rolling release, so old images are not retained or offered.</p>
+  <p class="subtitle">Released ISO builds. The current image is 2026.10.27-r4, with the next build expected in November; Arch is a rolling release, so old images are never retained — only their SHA256 is recorded.</p>
   <div class="section-divider"></div>
 
   <div class="rel-item reveal">
@@ -13,7 +13,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     </div>
     <div class="rel-meta">2026-10-27 · 5.0 GB · SHA256 <code class="sha">9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70</code></div>
     <ul>
-      <li><b>Choose KDE Plasma</b>: terminal, system settings, updates, and configuration entries are verified there</li>
+      <li><b>KDE Plasma is the only recommended desktop</b>: terminal, system settings, updates, and configuration entries are verified there; defects on other desktops (including COSMIC) are fixed gradually across build cycles — do not use them for daily work in the meantime</li>
       <li>Welcome 1.2.1 adds a System page driven by <code>capabilities.json</code></li>
       <li>config-hub 2.6.1: <code>linxira-config capabilities --json</code> plus the linxira-config skill</li>
       <li>crash-watch 0.1.2 copyable prompts; hooks 1.1.3 fixes the os-release symlink</li>
@@ -23,15 +23,15 @@ import PageLayout from "../../../components/PageLayout.astro";
       <p><b>Known issues in this build</b></p>
       <ul>
         <li>Zeta 1.4.4 is unstable on Linux; prefer npm, solidly fixed from 1.4.6 onward</li>
-        <li>COSMIC: some system entries do not open a terminal or close immediately; not recommended for daily use. Plasma is unaffected</li>
-        <li>The first <code>linxira-update</code> may report an unsynced repository; run <code>sudo pacman -Sy</code> once</li>
+        <li><b>COSMIC: config, update, and crash-triage entries do not open or close immediately</b>: the image dispatches <code>cosmic-term -e</code>, but <code>cosmic-term</code> has no <code>-e</code> (only <code>--working-directory</code>), so the argument is read as a file and the process exits at once. Fixed and shipped as packages: <code>linxira-config-hub 2.6.2</code>, <code>linxira-update 0.1.10</code>, <code>linxira-crash-watch 0.1.3</code>; run <code>sudo pacman -Syu</code> and reopen the entry. Plasma is unaffected</li>
+        <li><b>The first <code>linxira-update</code> may report "No synced pacman repository"</b>: when the install-time <code>[linxira]</code> database pre-sync fails, installed packages are misread as foreign. From <code>linxira-update 0.1.10</code> the tool retries <code>pacman -Sy</code> and re-detects automatically; older versions need one manual <code>sudo pacman -Sy</code></li>
         <li>Headphones or speakers may click briefly at power-on; hardware-level noise, not addressed</li>
       </ul>
     </div>
   </div>
 
   <h2>Cadence and update frequency</h2>
-  <p>Only images actually uploaded to the cloud count as released; internal builds are not part of the release record. Images ship as monthly batches; packages roll with Arch, so the signed <code>[linxira]</code> repository can be updated at any time; the WSL image follows each batch.</p>
+  <p>Only images actually uploaded to the cloud count as released; internal builds are not part of the release record. <b>Images are built roughly every 25–45 days</b>, depending on schedule and capacity — not a hard commitment. Because Arch is a rolling release, an ISO only reflects its build day, so <b>old images are not retained or offered; only each version's SHA256 is recorded</b>. Packages roll with Arch, so the signed <code>[linxira]</code> repository can be updated at any time — day-to-day fixes ship as package updates and need no image rebuild; the WSL image follows each batch.</p>
   <table class="hist-table">
     <thead><tr><th>Build date</th><th>Since previous</th><th>Type</th><th>Cloud</th></tr></thead>
     <tbody>
