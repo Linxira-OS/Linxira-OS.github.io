@@ -83,6 +83,21 @@ import PageLayout from "../../../components/PageLayout.astro";
       <p>安装时提供完整的多桌面选择（KDE / GNOME / 更多），桌面环境与平铺窗口管理器分类管理。</p>
     </div>
 
+    <h2>后期计划（发布后）</h2>
+    <p class="card" style="color:#94a3b8;font-size:0.9rem;">以下内容与当前发布排期解耦，先记录，不承诺时间。</p>
+    <div class="card">
+      <h3>服务器 profile 包拆分 <span class="tag plan">稳定一年后</span></h3>
+      <p>把 GUI、字体、音频、浏览器从无桌面基线中移出，让服务器安装真正精简。需要先积累至少一年的发布稳定性，并同步改造安装校验。</p>
+    </div>
+    <div class="card">
+      <h3>无头安装与 VM 镜像 <span class="tag plan">搁置</span></h3>
+      <p>计划复用现有 ISO，通过 <code>linxira.autoinstall</code> 和配置文件完成无人值守安装；VM 镜像、cloud-init 变体暂不制作，避免增加第二份大体积产物。</p>
+    </div>
+    <div class="card">
+      <h3>Welcome 系统页 <span class="tag plan">规划中</span></h3>
+      <p>读取系统能力清单，集中展示 Linxira 自有软件与特色系统配置入口；不重复包安装、环境管理或桌面原生设置。</p>
+    </div>
+
     <div class="footer">Linxira OS — 面向科研与开发的桌面超算系统</div>
 <style>
     .subtitle { color: #94a3b8; margin-bottom: 2.5rem; }

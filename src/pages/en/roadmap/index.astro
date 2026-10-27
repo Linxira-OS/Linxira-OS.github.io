@@ -84,6 +84,21 @@ import PageLayout from "../../../components/PageLayout.astro";
       <p>Full multi-desktop selection at install time (KDE / GNOME / more), with desktop environments and tiling window managers managed separately.</p>
     </div>
 
+    <h2>Later plans (post-release)</h2>
+    <p class="card" style="color:#94a3b8;font-size:0.9rem;">These items are decoupled from the current release schedule. Recorded, not promised.</p>
+    <div class="card">
+      <h3>Server profile package split <span class="tag plan">After one stable year</span></h3>
+      <p>Move GUI, fonts, audio and browsers out of the headless baseline so server installs are genuinely lean. Requires at least one year of release stability plus profile-aware install validation.</p>
+    </div>
+    <div class="card">
+      <h3>Headless install and VM images <span class="tag plan">Deferred</span></h3>
+      <p>Reuse the existing ISO for unattended installs via <code>linxira.autoinstall</code> and a config file. VM images and cloud-init variants are deferred so we do not ship a second large artifact.</p>
+    </div>
+    <div class="card">
+      <h3>Welcome system page <span class="tag plan">Planned</span></h3>
+      <p>Read the system capability manifest and surface Linxira-owned software plus system-specific configuration entry points. It will not duplicate package installation, environment setup or native desktop settings.</p>
+    </div>
+
     <div class="footer">Linxira OS — a desktop supercomputer system for science and development</div>
 <style>
     .subtitle { color: #94a3b8; margin-bottom: 2.5rem; }
