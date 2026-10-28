@@ -33,10 +33,20 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">How do I access the system remotely?</h2>
 <div class="answer" style="display:none;">
-<p>Run <code>linxira-config ssh on</code> to enable sshd, then <code>linxira-config ssh key add</code> to authorize keys. Full guide in <a href="/en/docs/remote-access/">Remote Access (SSH)</a>.</p>
+<p>Run <code>linxira-config ssh on</code> to enable sshd, then <code>linxira-config ssh authorized add "&lt;public-key&gt;"</code> to authorize a key. Full guide in <a href="/en/docs/remote-access/">Remote Access (SSH)</a>.</p>
 </div>
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">How can I contribute?</h2>
 <div class="answer" style="display:none;">
 <p>All first-party repositories are open source on <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>. Everything is rebuildable from source (PKGBUILDs pin commit + sha256); see <a href="/en/docs/building/">Build ISO</a> and <a href="/en/docs/contributing/">Contributing</a>.</p>
+</div>
+
+<h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Are AUR packages safe?</h2>
+<div class="answer" style="display:none;">
+<p>AUR is not a repository: it is user-submitted build scripts, compiled on your machine, with no signature guaranteeing the result. AUR is disabled by default and no helper is preinstalled. If you use it, read the PKGBUILD and any .install file, and check the source URLs and checksums. See <a href="/en/docs/maintenance-security/">Maintenance, trust and security</a>.</p>
+</div>
+
+<h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Can Linux read Windows NTFS / ReFS partitions?</h2>
+<div class="answer" style="display:none;">
+<p>NTFS: yes. The in-kernel <code>ntfs3</code> driver (5.15+) reads and writes it, which makes it the usual choice for a shared dual-boot disk. ReFS: no. It is Windows-proprietary and Linux has no usable driver, so it cannot be mounted. Shut Windows down completely (Fast Startup off) before mounting a shared disk.</p>
 </div>

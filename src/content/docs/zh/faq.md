@@ -33,10 +33,20 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何远程访问系统？</h2>
 <div class="answer" style="display:none;">
-<p><code>linxira-config ssh on</code> 开启 sshd，<code>linxira-config ssh key add</code> 授权密钥。完整教程见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
+<p><code>linxira-config ssh on</code> 开启 sshd，<code>linxira-config ssh authorized add "&lt;公钥&gt;"</code> 授权密钥。完整教程见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>
 </div>
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何参与贡献？</h2>
 <div class="answer" style="display:none;">
 <p>所有自研仓库开源托管在 <a href="https://github.com/Linxira-OS" target="_blank">GitHub</a>。源码可复现构建（PKGBUILD 固定 commit + sha256），见 <a href="/zh/docs/building/">构建 ISO</a> 与 <a href="/zh/docs/contributing/">参与贡献</a>。</p>
+</div>
+
+<h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">AUR 包安全吗？</h2>
+<div class="answer" style="display:none;">
+<p>AUR 不是仓库，是用户提交的构建脚本，包在本机编译、没有签名担保，风险由你承担。系统默认不启用 AUR，也不预装 helper；要用就先把 PKGBUILD 和 .install 读完，确认 source 与校验和。来源分级与信任模型见 <a href="/zh/docs/maintenance-security/">维护、信任与软件安全</a>。</p>
+</div>
+
+<h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">能读 Windows 的 NTFS / ReFS 分区吗？</h2>
+<div class="answer" style="display:none;">
+<p>NTFS 可以：内核自带 <code>ntfs3</code>（5.15+）支持读写，适合做双系统共享盘。ReFS 不行：它是 Windows 专有文件系统，Linux 没有可用驱动，无法挂载。挂载共享盘前请确保 Windows 已完全关机并关闭快速启动。</p>
 </div>
