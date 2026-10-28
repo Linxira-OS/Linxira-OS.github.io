@@ -17,7 +17,7 @@ order: 0
 
 <a href="/zh/docs/install/" class="doc-card">
 <h3>安装指南</h3>
-<p>当前镜像（2026.10.26）随盘带崩溃监视与诊断技能；启动 Live 会话后运行 Calamares 安装，桌面可选 Plasma / COSMIC / 无桌面。</p>
+<p>当前镜像随盘带崩溃监视与诊断技能；启动 Live 会话后运行 Calamares 安装，桌面可选 Plasma / COSMIC / 无桌面。</p>
 </a>
 
 <a href="/zh/docs/quick-start/" class="doc-card">

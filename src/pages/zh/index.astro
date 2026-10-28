@@ -1,6 +1,7 @@
 ---
 import Navbar from "../../components/Navbar.astro";
 import { getAllPosts } from "../../data/allPosts";
+import { releases } from "../../data/releases";
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -369,9 +370,9 @@ const blogPosts = await getAllPosts();
         </a>
       </div>
       <div class="badges reveal in reveal-d4">
-        <span class="badge">11 月镜像批次已完成</span>
+        <span class="badge">最新镜像批次已完成</span>
         <span class="badge">签名软件仓库 [linxira]</span>
-        <span class="badge badge-coral">最新镜像 · 2026.10.26</span>
+        <span class="badge badge-coral">最新镜像 · {releases.iso.label}</span>
       </div>
     </div>
   </section>
@@ -379,13 +380,13 @@ const blogPosts = await getAllPosts();
   <!-- 动态更新滚动条（自动滚动 · hover 暂停） -->
   <div class="ticker-wrap">
     <div class="ticker">
-      <span class="ticker-item"><span class="tdot"></span><b>11 月镜像批次</b> 已完成（ISO 2026.10.26 + WSL 10.25）</span>
+      <span class="ticker-item"><span class="tdot"></span><b>最新镜像批次</b> 已完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
       <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
       <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
       <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
       <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
       <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
-      <span class="ticker-item"><span class="tdot"></span><b>11 月镜像批次</b> 已完成（ISO 2026.10.26 + WSL 10.25）</span>
+      <span class="ticker-item"><span class="tdot"></span><b>最新镜像批次</b> 已完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
       <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
       <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
       <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
@@ -644,7 +645,7 @@ const blogPosts = await getAllPosts();
         <div class="wsl-cmd glass reveal reveal-d2">
           <div class="wsl-cmd-title">导入到 WSL2</div>
           <pre><code>wsl --import linxira C:\wsldata ^
-  linxira-wsl-2026.10.25-x86_64.tar.gz ^
+  {releases.wsl.filename} ^
   --version 2
 wsl -d linxira</code></pre>
           <p class="wsl-note">SHA256 见 Release 附件 <code>*.sha256</code>；首次进入后 <code>linxira-config stack</code> 一键补齐工具链。</p>
@@ -729,15 +730,15 @@ wsl -d linxira</code></pre>
     <div class="section">
       <div class="release-card glass reveal">
         <h3>发布状态</h3>
-        <p><b>11 月镜像批次</b>已完成：<b>linxira-2026.10.26</b> 随盘带崩溃监视与 <code>diagnose-crash</code> 技能；桌面收窄为 <b>Plasma + COSMIC</b>，无桌面提供「完整工具集 / 超精简」两档；Zeta 在桌面版预装并随 <code>update</code> 升级。<b>WSL 镜像</b>（2026.10.25）同步发布。Arch 为滚动更新，旧镜像不保留、不提供下载。</p>
+        <p><b>最新镜像批次</b>已完成：<b>{releases.iso.filename}</b>（{releases.iso.sizeHuman}）把 KDE 桌面补到日常可用——终端派发不再闪退、更新能在缺源时自愈；COSMIC 作为第二个一等桌面随盘离线提供，安装器可选 Plasma / COSMIC / 无桌面（完整 / 超精简）四档；Zeta 在桌面版预装并随 <code>update</code> 升级。<b>WSL 镜像</b>（{releases.wsl.date}）同步发布。Arch 为滚动更新，旧镜像不保留、不提供下载。</p>
         <a href="/zh/roadmap/" class="cta-ghost" style="padding:0.8rem 1.8rem;">查看发布路线图 →</a>
         <a href="/zh/releases/" class="cta-ghost" style="padding:0.8rem 1.8rem;">发布日志</a>
         <a href="/zh/gallery/" class="cta-ghost" style="padding:0.8rem 1.8rem;">亮点画廊</a>
         <a href="/zh/security/" class="cta-ghost" style="padding:0.8rem 1.8rem;">安全中心</a>
         <div class="release-status-line">
-          <span class="release-item">✅ 11 月镜像批次完成（ISO 2026.10.26 + WSL 10.25）</span>
+          <span class="release-item">✅ 最新镜像批次完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
           <span class="release-item">🛠️ 后续版本由源码自建（<a href="/zh/docs/building/" style="color:#20B8B0;">构建指南</a>）</span>
-          <span class="release-item">📦 2026.10.26 ISO 已上架 GitCode（LFS 直传）</span>
+          <span class="release-item">📦 {releases.iso.label} ISO 已上架 GitCode（LFS 直传）</span>
         </div>
       </div>
     </div>

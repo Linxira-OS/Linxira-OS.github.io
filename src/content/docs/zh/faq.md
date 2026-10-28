@@ -13,7 +13,7 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">当前版本可用吗？</h2>
 <div class="answer" style="display:none;">
-<p>当前镜像（2026.10.26）随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC。Arch 为滚动发行，旧镜像不保留；请从<a href="/zh/download/" style="color:#20B8B0;">下载页</a>获取最新版本并校验 SHA-256。</p>
+<p>当前镜像随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC。Arch 为滚动发行，旧镜像不保留；请从<a href="/zh/download/" style="color:#20B8B0;">下载页</a>获取最新版本并校验 SHA-256。</p>
 </div>
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">如何安装软件？</h2>

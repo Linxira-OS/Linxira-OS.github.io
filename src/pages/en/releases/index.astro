@@ -14,7 +14,7 @@ import { releases } from "../../../data/releases";
     </div>
     <div class="rel-meta">{releases.iso.date} · {releases.iso.sizeHuman} · SHA256 <code class="sha">{releases.iso.sha256}</code></div>
     <ul>
-      <li><b>KDE Plasma is the only recommended desktop</b>: terminal, system settings, updates, and configuration entries are verified there; defects on other desktops (including COSMIC) are fixed gradually across build cycles — do not use them for daily work in the meantime</li>
+      <li><b>KDE Plasma reaches daily-driver status</b>: terminal, system settings, updates and configuration entries are verified there; <b>COSMIC is the second first-class desktop</b> and ships offline; other desktops are outside the maintenance scope — check upstream documentation first</li>
       <li>Welcome 1.2.1 adds a System page driven by <code>capabilities.json</code></li>
       <li>config-hub 2.6.1: <code>linxira-config capabilities --json</code> plus the linxira-config skill</li>
       <li>crash-watch 0.1.2 copyable prompts; hooks 1.1.3 fixes the os-release symlink</li>
@@ -52,6 +52,7 @@ import { releases } from "../../../data/releases";
   <table class="hist-table">
     <thead><tr><th>Version</th><th>Date</th><th>Size</th><th>SHA256</th><th>Status</th></tr></thead>
     <tbody>
+      <tr><td>linxira-2026.10.26</td><td>2026-10-26</td><td>5.33 GB</td><td><code>6dff5dc7…</code></td><td>Deleted</td></tr>
       <tr><td>{releases.wsl.filename.replace('-x86_64.tar.gz', '')}</td><td>{releases.wsl.date}</td><td>{releases.wsl.sizeHuman}</td><td><code>{releases.wsl.sha256Short}</code></td><td class="cur">Latest (kept)</td></tr>
       <tr><td>linxira-2026.09.30-r17</td><td>2026-09-30</td><td>5.14 GB</td><td><code>9162b270…</code></td><td>Deleted</td></tr>
       <tr><td>linxira-2026.09.29-r14</td><td>2026-09-29</td><td>5.15 GB</td><td><code>f9413317…</code></td><td>Deleted</td></tr>

@@ -1,6 +1,7 @@
 ---
 import Navbar from "../../components/Navbar.astro";
 import { getAllPosts } from "../../data/allPosts";
+import { releases } from "../../data/releases";
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -353,9 +354,9 @@ const blogPosts = await getAllPosts();
         </a>
       </div>
       <div class="badges">
-        <span class="badge">November image batch complete</span>
+        <span class="badge">Latest image batch complete</span>
         <span class="badge">Signed [linxira] repository</span>
-        <span class="badge badge-coral">Latest image · 2026-10-26</span>
+        <span class="badge badge-coral">Latest image · {releases.iso.label}</span>
       </div>
     </div>
   </section>
@@ -363,13 +364,13 @@ const blogPosts = await getAllPosts();
   <!-- Update ticker (auto-scroll · pause on hover) -->
   <div class="ticker-wrap">
     <div class="ticker">
-      <span class="ticker-item"><span class="tdot"></span><b>November image batch</b> complete (ISO 2026.10.26 + WSL 10.25)</span>
+      <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
       <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
       <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
       <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
       <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
       <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
-      <span class="ticker-item"><span class="tdot"></span><b>November image batch</b> complete (ISO 2026.10.26 + WSL 10.25)</span>
+      <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
       <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
       <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
       <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
@@ -469,7 +470,7 @@ const blogPosts = await getAllPosts();
         <div class="wsl-cmd glass reveal reveal-d2">
           <div class="wsl-cmd-title">Import into WSL2</div>
           <pre><code>wsl --import linxira C:\wsldata ^
-  linxira-wsl-2026.10.25-x86_64.tar.gz ^
+  {releases.wsl.filename} ^
   --version 2
 wsl -d linxira</code></pre>
           <p class="wsl-note">SHA256 in the Release attachments <code>*.sha256</code>; after first entry run <code>linxira-config stack</code> to complete the toolchain.</p>
@@ -710,15 +711,15 @@ wsl -d linxira</code></pre>
     <div class="section">
       <div class="release-card reveal">
         <h3>Release Status</h3>
-        <p>The <b>November image batch</b> is complete: <b>linxira-2026.10.26</b> ships crash watch with the <code>diagnose-crash</code> skill, desktops are narrowed to <b>Plasma + COSMIC</b>, headless comes in two sizes (full toolset / minimal), and Zeta is preinstalled on desktop installs and upgraded through <code>update</code>. The <b>WSL image</b> (2026-10-25) is published alongside. Arch is a rolling release: old images are not retained or offered.</p>
+        <p>The <b>latest image batch</b> is complete: <b>{releases.iso.filename}</b> ({releases.iso.sizeHuman}) brings KDE to daily-driver status — terminal dispatch no longer crashes and updates heal a missing sync; COSMIC ships offline as the second first-class desktop, and the installer offers four profiles (Plasma / COSMIC / headless full / headless minimal). Zeta is preinstalled on desktop installs and upgraded through <code>update</code>. The <b>WSL image</b> ({releases.wsl.date}) is published alongside. Arch is a rolling release: old images are not retained or offered.</p>
         <a href="/en/roadmap/" class="cta-ghost" style="padding:0.8rem 1.8rem;">View Roadmap →</a>
         <a href="/en/releases/" class="cta-ghost" style="padding:0.8rem 1.8rem;">Release Log</a>
         <a href="/en/gallery/" class="cta-ghost" style="padding:0.8rem 1.8rem;">Gallery</a>
         <a href="/en/security/" class="cta-ghost" style="padding:0.8rem 1.8rem;">Security</a>
         <div class="release-status-line">
-          <span class="release-item">✅ November image batch complete (ISO 2026.10.26 + WSL 10.25)</span>
+          <span class="release-item">✅ Latest image batch complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
           <span class="release-item">🛠️ Future releases from source (<a href="/en/docs/building/" style="color:#20B8B0;">build guide</a>)</span>
-          <span class="release-item">📦 2026.10.26 ISO live on GitCode (LFS)</span>
+          <span class="release-item">📦 {releases.iso.label} ISO live on GitCode (LFS)</span>
         </div>
       </div>
     </div>
