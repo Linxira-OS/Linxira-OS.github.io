@@ -1275,7 +1275,7 @@ function openReportPreview(type) {
   if (type === 'html') {
     content = `<div class="rp-page" style="${paper}">
       <h3>${isZh ? 'WES 变异分析报告' : 'WES Variant Analysis Report'}</h3>
-      <div class="rp-sub">Homo sapiens · GRCh38 · ${isZh ? '样本' : 'sample'} reads.fastq.gz · linxira-bio v0.1.0</div>
+      <div class="rp-sub">Homo sapiens · GRCh38 · ${isZh ? '样本' : 'sample'} reads.fastq.gz · linxira-bio v1.1.0</div>
       ${hbStat}
       ${figCap(0, '图 1 · 变异类型分布')}
       ${figBox('rp-pie')}
@@ -1287,7 +1287,7 @@ function openReportPreview(type) {
   } else if (type === 'pdf') {
     content = `<div class="rp-page" style="max-width:600px;${paper}">
       <h3 style="text-align:center">${isZh ? '全外显子组测序变异分析报告' : 'Whole-Exome Sequencing Variant Report'}</h3>
-      <div class="rp-sub" style="text-align:center">${isZh ? '样本' : 'Sample'}: WES-01 · Homo sapiens (GRCh38) · linxira-bio v0.1.0</div>
+      <div class="rp-sub" style="text-align:center">${isZh ? '样本' : 'Sample'}: WES-01 · Homo sapiens (GRCh38) · linxira-bio v1.1.0</div>
       <p><b>${isZh ? '摘要' : 'Abstract'}:</b> ${isZh ? '本报告基于 2,481,532 条双端读段，比对率 97.2%，平均深度 32.4×。共检出 128,450 个变异位点（108,231 SNP / 20,219 InDel），ts/tv 1.99。' : '2,481,532 paired-end reads, 97.2% mapped, 32.4× mean depth. 128,450 variants called (108,231 SNPs / 20,219 InDels), ts/tv 1.99.'}</p>
       ${hbStat}
       ${hbTable}
@@ -1696,7 +1696,7 @@ function tagGallery() {
 
 // ===== Simulated Run Log（模拟运行日志动画） =====
 const runLogSteps = [
-  { zh: '启动本地分析运行时 (linxira-bio v0.1.0)', en: 'Starting local analysis runtime (linxira-bio v0.1.0)' },
+  { zh: '启动本地分析运行时 (linxira-bio v1.1.0)', en: 'Starting local analysis runtime (linxira-bio v1.1.0)' },
   { zh: '检测工具链：rustc 1.97.1 · Python 3.10 · R 4.6.1 · Java 21', en: 'Detecting toolchain: rustc 1.97.1 · Python 3.10 · R 4.6.1 · Java 21' },
   { zh: '读取 WES 样本 reads.fastq.gz（Homo sapiens · 2,481,532 条读段）', en: 'Reading WES sample reads.fastq.gz (Homo sapiens · 2,481,532 reads)' },
   { zh: 'fastq.qc.v1 质控完成 — Q30 93.7% · GC 48.2%', en: 'fastq.qc.v1 QC done — Q30 93.7% · GC 48.2%' },

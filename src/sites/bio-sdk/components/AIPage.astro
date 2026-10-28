@@ -5,7 +5,7 @@ const { zh } = Astro.props;
     <div class="page" id="page-ai">
       <div class="card">
         <div class="card-title">🤖 {zh ? "AI 分析助手（模拟演示）" : "AI Analysis Assistant (Simulated)"}</div>
-        <div class="card-desc">{zh ? "SDK 内置 Agent 规划即将上线：通过自然语言对话调用 50+ 分析能力，并支持三种外部工具调用通道——MCP 工具、Python SDK、命令行 CLI。以下为交互模拟。" : "Built-in Agent (planned): conversational access to 50+ capabilities via three external tool channels — MCP tools, Python SDK, and CLI. Interactive simulation below."}</div>
+        <div class="card-desc">{zh ? "SDK 内置 Agent 规划即将上线：通过自然语言对话调用 120 种分析能力（117 可用）。现有两条外部通道——MCP 工具与命令行 CLI；Python SDK 仍在规划中。以下为交互模拟。" : "Built-in Agent (planned): conversational access to 120 capabilities (117 available). Two external channels exist today — MCP tools and the CLI; the Python SDK is still planned. Interactive simulation below."}</div>
       </div>
       <div class="card">
         <div id="ai-chat" class="ai-chat"></div>
