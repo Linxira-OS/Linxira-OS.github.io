@@ -5,12 +5,12 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-06-27 · 公告</div>
     <h1>Linxira OS 介绍</h1>
-    <p class="superseded"><strong>已由新信息取代：</strong>本文作为历史发布文章保留，正文描述的是早期基于 Linux Mint/Ubuntu 的方案。Linxira OS 现正直接基于 Arch Linux 开发，目前尚无公开的直基 Arch ISO。项目现状请以当前首页和文档为准。</p>
+    <p class="superseded"><strong>历史文章（2026-06-27）：</strong>本文记录的是早期基于 Linux Mint/Ubuntu 的方案，该基础已于 2026-08 放弃。Linxira OS 现直接基于 Arch Linux，公开镜像已发布并可日常使用（当前 <code>2026.10.27-r4</code>）：现状请以<a href="/zh/blog/kde-daily-2026-10-27/" style="color:#20B8B0;">最新发布说明</a>、首页与文档为准。</p>
 
     <p><strong>Linxira OS</strong> 是一个独立的 Linux 发行版，专为科学计算和 AI 开发而构建。</p>
 
     <h2>Linxira OS 是什么？</h2>
-    <p>Linxira OS 是一个基于 Linux Mint（Ubuntu LTS 生态）的桌面 Linux 发行版。它预装了 KDE Plasma 桌面环境和一套精心挑选的开发与科学工具。</p>
+    <p>按当时的规划，Linxira OS 将基于 Linux Mint（Ubuntu LTS 生态），预装 KDE Plasma 与一套精选的开发与科学工具。该基础后来被放弃，项目改为直接基于 Arch Linux 构建。</p>
     <p>"Linxira" 这个名字结合了 "Linux" 和一个独特的标识符——它与任何现有的 Linux 发行版或硬件项目都没有关联。</p>
 
     <h2>为谁而建？</h2>
@@ -36,7 +36,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
     </ul>
 
     <h2>设计理念</h2>
-    <h3>分层架构</h3>
+    <h3>分层架构（当时的规划）</h3>
     <p>我们相信关注点分离：</p>
     <ul>
       <li><strong>基础层</strong>：Linux Mint 提供稳定性和硬件兼容性</li>
@@ -62,8 +62,8 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <h2>当前品牌标识</h2>
     <p>当前 Scale L 已取代早期棱镜光谱方案：仪器青绿 <code>#20B8B0</code> 构成主标识，珊瑚红 <code>#F36F5D</code> 标记测量终点，深墨色 <code>#0E1417</code> 定义参考轴，浅水色 <code>#E8F7F6</code> 绘制科学刻度。</p>
 
-    <h2>下一步</h2>
-    <p>我们目前正在开发 v1.0 发布、工作流模板和配置中心。在 <a href="https://github.com/Linxira-OS" style="color:#20B8B0;">GitHub</a> 关注我们的进展。</p>
+    <h2>当时的下一步</h2>
+    <p>按当时的路线图，下一步是 v1.0、工作流模板与配置中心。其中配置中心已作为 <code>config-hub</code> 上线，v1.0 的说法被滚动发布取代：项目现在按 Arch 节奏更新，具体版本见 <a href="/zh/releases/" style="color:#20B8B0;">发布日志</a>。</p>
 <style>
     .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
     .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }

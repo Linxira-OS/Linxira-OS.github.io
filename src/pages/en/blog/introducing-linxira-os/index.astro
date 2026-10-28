@@ -5,12 +5,12 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <a href="/en/blog/" class="back">← Back to Blog</a>
     <div class="meta">2026-06-27 · Announcement</div>
     <h1>Introducing Linxira OS</h1>
-    <p class="superseded"><strong>Superseded notice:</strong> This article is retained as a historical launch post and describes an earlier Linux Mint/Ubuntu-based concept. Linxira OS is now being developed directly on Arch Linux; no public direct-Arch ISO is available yet. Refer to the current home page and documentation for project status.</p>
+    <p class="superseded"><strong>Historical post (2026-06-27):</strong> This article describes an earlier Linux Mint/Ubuntu-based plan that was abandoned in August 2026. Linxira OS is now built directly on Arch Linux, and public images have shipped and are usable for daily work (currently <code>2026.10.27-r4</code>). See the <a href="/en/blog/kde-daily-2026-10-27/" style="color:#20B8B0;">latest release notes</a>, home page and documentation for current status.</p>
 
     <p><strong>Linxira OS</strong> is an independent Linux distribution built for scientific computing and AI development.</p>
 
     <h2>What is Linxira OS?</h2>
-    <p>Linxira OS is a desktop Linux distribution based on Linux Mint (Ubuntu LTS ecosystem). It comes with KDE Plasma desktop and a carefully curated set of development and scientific tools pre-installed.</p>
+    <p>As originally planned, Linxira OS was to be based on Linux Mint (Ubuntu LTS ecosystem), shipping KDE Plasma and a curated set of development and scientific tools. That base was later abandoned in favour of building directly on Arch Linux.</p>
     <p>The name "Linxira" combines "Linux" with a unique identifier — it is not affiliated with any existing Linux distribution or hardware project.</p>
 
     <h2>Who is it for?</h2>
@@ -36,7 +36,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
     </ul>
 
     <h2>Design Philosophy</h2>
-    <h3>Layered Architecture</h3>
+    <h3>Layered Architecture (as planned then)</h3>
     <p>We believe in separating concerns:</p>
     <ul>
       <li><strong>Base Layer</strong>: Linux Mint provides stability and hardware compatibility</li>
@@ -62,8 +62,8 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <h2>Current Brand Identity</h2>
     <p>The current Scale L identity supersedes the earlier prism-spectrum branding: Instrument Teal <code>#20B8B0</code> forms the mark, Coral <code>#F36F5D</code> marks the measurement endpoint, Ink <code>#0E1417</code> defines the reference axis, and Pale Aqua <code>#E8F7F6</code> draws the graduations.</p>
 
-    <h2>What's Next?</h2>
-    <p>We are currently working on v1.0 release, workflow templates, and Config Hub. Follow our progress on <a href="https://github.com/Linxira-OS" style="color:#20B8B0;">GitHub</a>.</p>
+    <h2>What was next</h2>
+    <p>At the time, the roadmap listed a v1.0 release, workflow templates and Config Hub. Config Hub has since shipped as <code>config-hub</code>, and the v1.0 framing was replaced by rolling releases on the Arch cadence — see the <a href="/en/releases/" style="color:#20B8B0;">release log</a> for current versions.</p>
 <style>
     .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
     .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
