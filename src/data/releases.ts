@@ -6,7 +6,7 @@
 //   WSL  <- GitHub Releases API 的 latest + .sha256 附件
 // 部署时构建前会刷新;取不到就沿用仓库里的快照,页面永远有值。
 //
-// 大小按十进制(1 GB = 10^9 字节),与发布页脚注一致;二进制值(如历史表的 GiB)按原记录保留。
+// 大小统一按十进制(1 GB = 10^9 字节、1 MB = 10^6 字节),与页面口径一致。
 import snapshot from './releases.json';
 
 export type IsoFacts = {

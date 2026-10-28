@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
+import { releases } from "../../../../data/releases";
 ---
 <DocsLayout lang="en" active="docs" title="Installation Guide — Linxira OS">
   <aside slot="sidebar">
@@ -40,7 +41,7 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
       <p>The <strong>first Experimental Stable (2026-08-14)</strong> passed full installation testing (all first-party software installs with zero errors, signed repository usable) and is the current available build. See <a href="https://github.com/Linxira-OS/linxira-iso/releases" target="_blank">linxira-iso GitHub Releases</a> for download and distribution details. Full installation steps follow.</p>
 
       <h2>Download the ISO</h2>
-      <p>Current ISO filename <code>linxira-2026.10.26-x86_64.iso</code> (~5.0 GB, SHA-256 <code>4111d82b033293c85f7a11c609fc777a367799488e576771d4d39bfcbe43d09e</code>). Verify the SHA-256 before installing.</p>
+      <p>Current ISO filename <code>{releases.iso.filename}</code> ({releases.iso.sizeHuman}, SHA-256 <code>{releases.iso.sha256}</code>). Verify the SHA-256 before installing.</p>
 
       <h2>Creating Bootable Media</h2>
       <h3>Windows</h3>

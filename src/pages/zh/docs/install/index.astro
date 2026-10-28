@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
+import { releases } from "../../../../data/releases";
 ---
 <DocsLayout lang="zh" active="docs" title="安装指南 — Linxira OS">
   <aside slot="sidebar">
@@ -34,10 +35,10 @@ import DocsLayout from "../../../../components/DocsLayout.astro";
 
       <h1>安装指南</h1>
 
-      <p><strong>当前镜像（2026.10.26）</strong>随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC，另有「无桌面（完整工具集 / 超精简）」两档。下载与校验见 <a href="/zh/download/" style="color:#20B8B0;">下载页</a>。以下为完整安装流程。</p>
+      <p><strong>当前镜像（{releases.iso.label}）</strong>随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC，另有「无桌面（完整工具集 / 超精简）」两档。下载与校验见 <a href="/zh/download/" style="color:#20B8B0;">下载页</a>。以下为完整安装流程。</p>
 
       <h2>下载 ISO</h2>
-      <p>当前 ISO 文件名 <code>linxira-2026.10.26-x86_64.iso</code>（约 5.0 GB，SHA-256 <code>4111d82b033293c85f7a11c609fc777a367799488e576771d4d39bfcbe43d09e</code>）。安装前请校验 SHA-256。</p>
+      <p>当前 ISO 文件名 <code>{releases.iso.filename}</code>（{releases.iso.sizeHuman}，SHA-256 <code>{releases.iso.sha256}</code>）。安装前请校验 SHA-256。</p>
 
       <h2>启动盘制作流程</h2>
       <h3>Windows</h3>
