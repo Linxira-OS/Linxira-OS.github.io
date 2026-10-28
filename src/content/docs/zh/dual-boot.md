@@ -41,16 +41,36 @@ efi     /EFI/Microsoft/Boot/bootmgfw.efi
 
 - **rEFInd**：自动扫描，装上就能看到 Windows。
 
-## 时间差 8 小时
+## 双系统时间差 8 小时
 
-Windows 用本地时间，Linux 默认 UTC。二选一：
+CMOS 里只有一份时间，两个系统对它的解释不同：Windows 默认把 RTC 当**本地时间**，Linux 默认当 **UTC**。每切换一次启动，先起的那边按自己的解释改写 RTC，后起的那边再按另一种解释读，于是两边系统的显示时间和 BIOS 里的值都来回漂 8 小时。Windows 的「快速启动」还会从休眠镜像恢复旧时间，让漂移更明显。
 
-```bash
-sudo timedatectl set-local-rtc 1 --adjust-system-clock
+推荐做法：让两边统一按 UTC 解释 RTC。
+
+Windows（管理员 CMD 或 PowerShell）：
+
+```
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /t REG_DWORD /d 1 /f
+w32tm /resync
 ```
 
+- 时区仍保持 `(UTC+08:00) 北京，重庆，香港特别行政区，乌鲁木齐`
+- 关闭快速启动，避免休眠恢复带回旧时间：`powercfg /h off`
 
-或在 Windows 注册表里把 `RealTimeIsUniversal` 设为 1（推荐，保持 UTC）。
+Linux（Arch / Linxira）：
+
+```
+timedatectl set-ntp true
+sudo hwclock --systohc --utc
+timedatectl
+```
+
+- 期望输出含 `RTC in local TZ: no`，`RTC time` 是 UTC，`Local time` 比它大 8 小时
+- 两边都开 NTP 后，切换系统会各自同步一次，不再累积漂移
+
+不建议 `sudo timedatectl set-local-rtc 1 --adjust-system-clock`：它让 Linux 也按本地时间解释 RTC，跨时区或夏令时会错，`timedatectl` 也会持续告警。
+
+只有「关机断电后时间归零」才是主板 CMOS 电池没电；切换系统才漂属于解释不一致，按上面改即可。
 
 ## 装完之后
 

@@ -40,14 +40,36 @@ GRUB is the installer default precisely so it coexists with a 100 MB Windows ESP
 
 - **rEFInd**: detects Windows on its own.
 
-## Clock skew
+## Clock skew across dual boot
 
-```bash
-sudo timedatectl set-local-rtc 1 --adjust-system-clock
+CMOS holds exactly one timestamp, and the two systems interpret it differently: Windows treats the RTC as **local time**, Linux treats it as **UTC**. Every switch flips it — whichever OS boots first rewrites the RTC under its own assumption, the next one reads it under the other assumption, so both operating systems and the BIOS value drift by the offset (8 hours in CST). Windows Fast Startup makes it worse by restoring a stale time from the hibernation image.
+
+Recommended fix: make both systems treat the RTC as UTC.
+
+Windows (administrator CMD or PowerShell):
+
+```
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /t REG_DWORD /d 1 /f
+w32tm /resync
 ```
 
+- Keep the Windows time zone as `(UTC+08:00) Beijing, Chongqing, Hong Kong SAR, Urumqi`
+- Disable Fast Startup so hibernation does not restore an old clock: `powercfg /h off`
 
-Or set `RealTimeIsUniversal` to 1 in the Windows registry (recommended; keeps UTC).
+Linux (Arch / Linxira):
+
+```
+timedatectl set-ntp true
+sudo hwclock --systohc --utc
+timedatectl
+```
+
+- Expect `RTC in local TZ: no`, with `RTC time` in UTC and `Local time` eight hours ahead
+- With NTP enabled on both sides, each boot resynchronizes and drift no longer accumulates
+
+Avoid `sudo timedatectl set-local-rtc 1 --adjust-system-clock`: it makes Linux read the RTC as local time too, which breaks across time zones and DST, and `timedatectl` keeps warning about it.
+
+Only a clock that resets after full power loss points to a dead CMOS battery. Drift caused by switching operating systems is purely a convention mismatch — apply the steps above.
 
 ## After install
 
