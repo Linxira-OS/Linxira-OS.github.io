@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Linxira Origin Frame mark (for dark backgrounds)">
+  <path d="M215 72H440V440H72V215" fill="none" stroke="#E9EFF0" stroke-width="36" stroke-linejoin="miter"/>
+  <path d="M72 215V72H215" fill="none" stroke="#20B8B0" stroke-width="76" stroke-linejoin="miter"/>
+  <circle fill="#F36F5D" cx="164" cy="164" r="41"/>
+</svg>
