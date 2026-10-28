@@ -20,6 +20,10 @@ order: 5
 
 <h2>COSMIC 桌面</h2>
 <p>COSMIC 是 System76 用 Rust 编写的 Wayland 原生桌面，与 Plasma 同为<strong>一等桌面</strong>：桌面包随镜像离线附带，安装时无需联网即可勾选安装，包集合与 catalog 的 <code>desktop-cosmic</code> 条目一致。</p>
+<p>COSMIC 的扩展模型是 <b>applet 进程</b>：每个面板部件都是独立程序，桌面项里带 <code>X-CosmicApplet=true</code>，面板作为合成器按配置启动它们，并把弹窗转发给宿主合成器。与 KDE 的 QML 插件相比，进程隔离更安全，但生态规模小得多。</p>
+<div class="note">
+<p><b>已知问题（指针加速）</b>：COSMIC 设置里的「鼠标加速」开关目前不会真正切换 libinput 的加速配置（cosmic-comp 议题 #1939，仍开放），表现是指针发飘、容易多滑出一小段。临时缓解是在「输入 → 鼠标」里降低指针速度；需要精确指针定位时优先用 Plasma。</p>
+</div>
 <p>终端组件为 <code>cosmic-term</code>。自 config-hub 2.6.2、linxira-update 0.1.10、crash-watch 0.1.3 起，Linxira 的终端派发链已兼容 <code>cosmic-term</code>，不再因 <code>-e</code> 参数不兼容而闪退。</p>
 
 <h2>无桌面的两个档位</h2>

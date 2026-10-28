@@ -20,6 +20,10 @@ order: 5
 
 <h2>COSMIC</h2>
 <p>COSMIC is System76's Wayland-native desktop written in Rust and ships as a <strong>first-class desktop</strong>, on par with Plasma. Its packages are included on the ISO, so selecting it during installation needs no network; the package set matches catalog's <code>desktop-cosmic</code> entry.</p>
+<p>COSMIC's extension model is the <b>applet process</b>: every panel widget is a standalone program whose desktop entry carries <code>X-CosmicApplet=true</code>. The panel is itself a compositor, launches them from its config, and forwards their popups to the host compositor. Compared with KDE's QML plugins this process isolation is safer, but the ecosystem is far smaller.</p>
+<div class="note">
+<p><b>Known issue (pointer acceleration)</b>: the "mouse acceleration" toggle in COSMIC Settings does not currently switch libinput's acceleration profile (cosmic-comp issue #1939, still open), which shows up as a floaty pointer that overshoots slightly. As a workaround, lower the pointer speed under Input → Mouse; use Plasma when you need precise pointer placement.</p>
+</div>
 <p>Its terminal is <code>cosmic-term</code>. Since config-hub 2.6.2, linxira-update 0.1.10 and crash-watch 0.1.3, Linxira's terminal dispatch chain is compatible with <code>cosmic-term</code> and no longer crashes on the unsupported <code>-e</code> flag.</p>
 
 <h2>The two headless profiles</h2>
