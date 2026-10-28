@@ -1,7 +1,7 @@
 ---
 title: "远程访问"
 section: guide
-order: 6
+order: 7
 ---
 
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>

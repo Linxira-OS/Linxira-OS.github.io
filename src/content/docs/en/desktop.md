@@ -1,7 +1,7 @@
 ---
 title: "Desktop"
 section: guide
-order: 4
+order: 5
 ---
 
   <h1>Desktop &amp; Server Mode</h1>

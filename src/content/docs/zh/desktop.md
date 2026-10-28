@@ -1,7 +1,7 @@
 ---
 title: "桌面环境"
 section: guide
-order: 4
+order: 5
 ---
 
   <h1>桌面与服务器模式</h1>

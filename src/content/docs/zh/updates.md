@@ -1,7 +1,7 @@
 ---
 title: "更新与快照回滚"
 section: guide
-order: 5
+order: 6
 ---
 
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
