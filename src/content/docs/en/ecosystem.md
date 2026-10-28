@@ -1,0 +1,609 @@
+---
+title: "Ecosystem"
+section: guide
+order: 1
+---
+
+<a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回Docs</a>
+<h1>Ecosystem</h1>
+<p>Linxira OS 的Ecosystem由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是官方推荐的常用应用，<span class="tag prop">专有</span> 标记表示专有软件（安装时需接受其许可License）。</p>
+<h2>Web and browsers <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Firefox</h3>
+    <div class="pkg">firefox</div>
+    <p>Privacy-respecting general-purpose web browser.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Chromium</h3>
+    <div class="pkg">chromium</div>
+    <p>Open-source Chromium web browser.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Brave</h3>
+    <div class="pkg">brave-bin</div>
+    <p>Third-party Chromium-based browser candidate.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Nyxt</h3>
+    <div class="pkg">nyxt</div>
+    <p>Programmable power-browser.</p>
+
+  </div>
+</div>
+<h2>Mail and communication <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Thunderbird</h3>
+    <div class="pkg">thunderbird</div>
+    <p>Mail, calendar and contacts client.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Element</h3>
+    <div class="pkg">element-desktop</div>
+    <p>Matrix communication client.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Telegram Desktop</h3>
+    <div class="pkg">telegram-desktop</div>
+    <p>Desktop client for Telegram messaging.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Signal Desktop</h3>
+    <div class="pkg">signal-desktop</div>
+    <p>Signal encrypted messenger desktop client.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>NeoChat</h3>
+    <div class="pkg">neochat</div>
+    <p>Matrix protocol chat client.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Fractal</h3>
+    <div class="pkg">fractal</div>
+    <p>GNOME Matrix chat client.</p>
+
+  </div>
+</div>
+<h2>Office <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>LibreOffice</h3>
+    <div class="pkg">libreoffice-fresh</div>
+    <p>Open office suite for documents, sheets and presentations.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Calligra Suite</h3>
+    <div class="pkg">calligra</div>
+    <p>KDE office and graphics suite.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>ONLYOFFICE Desktop Editors</h3>
+    <div class="pkg">onlyoffice-bin</div>
+    <p>Third-party office suite candidate.</p>
+    <span class="tag rec">Recommended</span><span class="tag prop">Proprietary</span>
+  </div>
+  <div class="app-card">
+    <h3>LibreOffice (Still)</h3>
+    <div class="pkg">libreoffice-still</div>
+    <p>Stable maintenance office suite.</p>
+
+  </div>
+</div>
+<h2>Documents and reading <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(7)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Okular</h3>
+    <div class="pkg">okular</div>
+    <p>KDE document and PDF viewer.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Foliate</h3>
+    <div class="pkg">foliate</div>
+    <p>Ebook reader for common open formats.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Calibre</h3>
+    <div class="pkg">calibre</div>
+    <p>Ebook library, conversion and reading suite.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Pandoc</h3>
+    <div class="pkg">pandoc</div>
+    <p>Universal document converter.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Evince</h3>
+    <div class="pkg">evince</div>
+    <p>GNOME document viewer.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Zathura</h3>
+    <div class="pkg">zathura</div>
+    <p>Minimal keyboard-driven PDF viewer.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Ghostwriter</h3>
+    <div class="pkg">ghostwriter</div>
+    <p>Distraction-free Markdown editor.</p>
+
+  </div>
+</div>
+<h2>Passwords and personal data <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>KeePassXC</h3>
+    <div class="pkg">keepassxc</div>
+    <p>Local encrypted password manager.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Seahorse</h3>
+    <div class="pkg">seahorse</div>
+    <p>GNOME password and encryption-key manager.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Bitwarden</h3>
+    <div class="pkg">bitwarden</div>
+    <p>Open-source password manager.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>VeraCrypt</h3>
+    <div class="pkg">veracrypt</div>
+    <p>Disk encryption tool.</p>
+
+  </div>
+</div>
+<h2>Graphics, photo and CAD <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(10)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Krita</h3>
+    <div class="pkg">krita</div>
+    <p>Digital painting and illustration application.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>GIMP</h3>
+    <div class="pkg">gimp</div>
+    <p>Raster image editor and processing toolkit.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Inkscape</h3>
+    <div class="pkg">inkscape</div>
+    <p>Vector illustration and SVG editor.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Darktable</h3>
+    <div class="pkg">darktable</div>
+    <p>Photography workflow and RAW developer.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Blender</h3>
+    <div class="pkg">blender</div>
+    <p>3D modeling, animation and rendering suite.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>FreeCAD</h3>
+    <div class="pkg">freecad</div>
+    <p>Parametric 3D CAD application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Scribus</h3>
+    <div class="pkg">scribus</div>
+    <p>Desktop publishing and page-layout application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>digiKam</h3>
+    <div class="pkg">digikam</div>
+    <p>Professional photo management.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Shotwell</h3>
+    <div class="pkg">shotwell</div>
+    <p>GNOME photo manager.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Nomacs</h3>
+    <div class="pkg">nomacs</div>
+    <p>Lightweight image viewer.</p>
+
+  </div>
+</div>
+<h2>Video and audio creation <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(4)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Kdenlive</h3>
+    <div class="pkg">kdenlive</div>
+    <p>Non-linear video editor.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>OBS Studio</h3>
+    <div class="pkg">obs-studio</div>
+    <p>Screen recording and live streaming studio.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Audacity</h3>
+    <div class="pkg">audacity</div>
+    <p>Multi-track audio editor and recorder.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>HandBrake</h3>
+    <div class="pkg">handbrake</div>
+    <p>Video transcoding tool.</p>
+
+  </div>
+</div>
+<h2>Media playback <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>VLC</h3>
+    <div class="pkg">vlc</div>
+    <p>Cross-platform media player.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Haruna</h3>
+    <div class="pkg">haruna</div>
+    <p>KDE media player built on mpv.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>MPV</h3>
+    <div class="pkg">mpv</div>
+    <p>Minimal keyboard-driven media player.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Celluloid</h3>
+    <div class="pkg">celluloid</div>
+    <p>GNOME video player (mpv frontend).</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Totem</h3>
+    <div class="pkg">totem</div>
+    <p>GNOME default video player.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>GNOME Music</h3>
+    <div class="pkg">gnome-music</div>
+    <p>GNOME music player.</p>
+
+  </div>
+</div>
+<h2>File and sync tools <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(7)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Syncthing</h3>
+    <div class="pkg">syncthing</div>
+    <p>Peer-to-peer file synchronization.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Nextcloud Desktop</h3>
+    <div class="pkg">nextcloud-client</div>
+    <p>Desktop synchronization client for Nextcloud.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>LocalSend</h3>
+    <div class="pkg">localsend</div>
+    <p>Local-network file sharing application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>FileZilla</h3>
+    <div class="pkg">filezilla</div>
+    <p>Graphical FTP/SFTP client.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Nautilus</h3>
+    <div class="pkg">nautilus</div>
+    <p>GNOME file manager.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Thunar</h3>
+    <div class="pkg">thunar</div>
+    <p>Lightweight Xfce file manager.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Syncthing GTK</h3>
+    <div class="pkg">syncthing-gtk</div>
+    <p>Syncthing GUI.</p>
+
+  </div>
+</div>
+<h2>Development applications <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(10)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Kate</h3>
+    <div class="pkg">kate</div>
+    <p>Advanced text and code editor.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Code - OSS</h3>
+    <div class="pkg">code</div>
+    <p>Open-source build of the Visual Studio Code editor.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Geany</h3>
+    <div class="pkg">geany</div>
+    <p>Lightweight programmer's editor.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Meld</h3>
+    <div class="pkg">meld</div>
+    <p>Visual file and version-control comparison tool.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>DBeaver Community</h3>
+    <div class="pkg">dbeaver</div>
+    <p>Cross-database administration and query tool.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>DB Browser for SQLite</h3>
+    <div class="pkg">sqlitebrowser</div>
+    <p>Graphical SQLite database browser.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Docker</h3>
+    <div class="pkg">docker</div>
+    <p>Container runtime and tooling.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Docker Compose</h3>
+    <div class="pkg">docker-compose</div>
+    <p>Multi-container orchestration.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>gitg</h3>
+    <div class="pkg">gitg</div>
+    <p>GNOME Git GUI client.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>KDiff3</h3>
+    <div class="pkg">kdiff3</div>
+    <p>File and directory diff/merge tool.</p>
+
+  </div>
+</div>
+<h2>Education and geography <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Stellarium</h3>
+    <div class="pkg">stellarium</div>
+    <p>Interactive desktop planetarium.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Marble</h3>
+    <div class="pkg">marble</div>
+    <p>KDE virtual globe and map application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>QGIS</h3>
+    <div class="pkg">qgis</div>
+    <p>Desktop geographic information system.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Stellarium Web</h3>
+    <div class="pkg">stellarium-web</div>
+    <p>Online planetarium.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>GCompris</h3>
+    <div class="pkg">gcompris</div>
+    <p>Educational software suite for children.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>KWordQuiz</h3>
+    <div class="pkg">kwordquiz</div>
+    <p>KDE vocabulary learning tool.</p>
+
+  </div>
+</div>
+<h2>Scientific desktop applications <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(8)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>GNU Octave</h3>
+    <div class="pkg">octave</div>
+    <p>Interactive numerical computing environment.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>ParaView</h3>
+    <div class="pkg">paraview</div>
+    <p>Scientific data analysis and visualization application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Veusz</h3>
+    <div class="pkg">veusz</div>
+    <p>Scientific plotting and graphing application.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>LabPlot</h3>
+    <div class="pkg">labplot</div>
+    <p>KDE application for scientific data plotting and analysis.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Cantor</h3>
+    <div class="pkg">cantor</div>
+    <p>KDE worksheet frontend for mathematical and scientific engines.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>RKWard</h3>
+    <div class="pkg">rkward</div>
+    <p>R statistics IDE with a graphical analysis workflow.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Spyder</h3>
+    <div class="pkg">spyder</div>
+    <p>Scientific Python IDE for interactive analysis.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>SageMath</h3>
+    <div class="pkg">sagemath</div>
+    <p>Large integrated mathematics system for algebra and number theory.</p>
+
+  </div>
+</div>
+<h2>Gaming <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(6)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>Steam</h3>
+    <div class="pkg">steam</div>
+    <p>Valve game store and launcher installed only after explicit Steam terms confirmation.</p>
+    <span class="tag prop">Proprietary</span>
+  </div>
+  <div class="app-card">
+    <h3>Lutris</h3>
+    <div class="pkg">lutris</div>
+    <p>Open game-library and compatibility frontend.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Heroic Games Launcher</h3>
+    <div class="pkg">com.heroicgameslauncher.hgl</div>
+    <p>Third-party game-store frontend delivered through an opt-in source.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Bottles</h3>
+    <div class="pkg">com.usebottles.bottles</div>
+    <p>User-scoped Wine environment manager from an opt-in source.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Wine</h3>
+    <div class="pkg">wine</div>
+    <p>Windows applications compatibility layer.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>GameHub</h3>
+    <div class="pkg">gamehub</div>
+    <p>Unified game launcher.</p>
+
+  </div>
+</div>
+<h2>System utilities <span style="font-size:0.9rem;color:#64748b;font-weight:400;">(11)</span></h2>
+<div class="app-grid">
+  <div class="app-card">
+    <h3>GParted</h3>
+    <div class="pkg">gparted</div>
+    <p>Graphical disk partition editor.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>KDE Partition Manager</h3>
+    <div class="pkg">partitionmanager</div>
+    <p>KDE disk partition editor for storage maintenance.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>GNOME Disks</h3>
+    <div class="pkg">gnome-disk-utility</div>
+    <p>Disk inspection, formatting and SMART utility.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>Filelight</h3>
+    <div class="pkg">filelight</div>
+    <p>KDE disk-usage visualizer for finding large files.</p>
+    <span class="tag rec">Recommended</span>
+  </div>
+  <div class="app-card">
+    <h3>KDE Connect</h3>
+    <div class="pkg">kdeconnect</div>
+    <p>Phone and desktop integration over the local network.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Timeshift</h3>
+    <div class="pkg">timeshift</div>
+    <p>System snapshot management utility.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>BleachBit</h3>
+    <div class="pkg">bleachbit</div>
+    <p>Cleanup utility for caches, temporary files and application traces.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>Flatseal</h3>
+    <div class="pkg">com.github.tchx84.Flatseal</div>
+    <p>Flatpak permission inspection and editing tool.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>htop</h3>
+    <div class="pkg">htop</div>
+    <p>Interactive process viewer.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>fastfetch</h3>
+    <div class="pkg">fastfetch</div>
+    <p>System information display.</p>
+
+  </div>
+  <div class="app-card">
+    <h3>btop</h3>
+    <div class="pkg">btop</div>
+    <p>Resource monitor and task manager with CPU/GPU power (RAPL) display.</p>
+
+  </div>
+</div>

@@ -1,0 +1,53 @@
+---
+title: "Quick Start"
+section: start
+order: 3
+---
+
+  <h1>Quick Start</h1>
+  <p class="note">First time using Linux? Start with the <a href="/en/docs/newbie/">Beginner's Guide</a> — terminal basics, looking things up, and the Chinese environment.</p>
+  <p>First steps after installation: enable the signed repository, install software, and start working.</p>
+
+  <h2>1. Enable the official signed repository [linxira]</h2>
+  <p>First-party software is hosted on the signed repository <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>. It is configured automatically on install; to add it manually, append to <code>/etc/pacman.conf</code>:</p>
+<pre><code>[linxira]
+Server = https://linxira-os.github.io/linxira-packages/x86_64
+SigLevel = Required DatabaseOptional</code></pre>
+
+  <h3>Import and trust the signing key</h3>
+  <p>Installing the <code>linxira-keyring</code> package imports and locally signs the release key automatically:</p>
+<pre><code>sudo pacman-key --init
+sudo pacman -Sy linxira-keyring</code></pre>
+  <p>Installing <code>linxira-keyring</code> makes pacman import and trust the release key automatically; fingerprints are not published on this site.</p>
+
+  <h2>2. Update the system</h2>
+<pre><code>sudo pacman -Syu</code></pre>
+  <p>Checking and updating are handled by <code>linxira-update</code> (hourly automatic checks, a snapshot before every pacman transaction, optional fully-automatic updates); for manual methods, snapshots and GRUB rollback see <a href="/en/docs/updates/">Updates &amp; Rollback</a>.</p>
+
+  <h2>3. Install software</h2>
+  <p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (92 curated applications) or install directly with pacman:</p>
+<pre><code>sudo pacman -S firefox libreoffice-fresh vlc</code></pre>
+
+  <h2>4. Configure mirrors (optional)</h2>
+  <p>Use <code>linxira-config</code> to manage mirrors for each language ecosystem, with auto speed-testing:</p>
+<pre><code>linxira-config mirror pip auto   # auto-pick fastest PyPI mirror
+linxira-config mirror arch list  # list Arch mirrors
+linxira-config mirror npm auto   # auto-pick fastest npm mirror (run this if npmjs.org is slow)</code></pre>
+
+  <h2>5. Enable remote access (optional)</h2>
+  <p>Turn the machine into a server:</p>
+<pre><code>linxira-config ssh on
+linxira-config ssh key add</code></pre>
+  <p>See <a href="/en/docs/remote-access/">Remote Access (SSH)</a>.</p>
+
+  <h2>6. One-click AI CLI tools (optional)</h2>
+  <p>Switch the npm mirror first for faster installs:</p>
+<pre><code>linxira-config mirror npm auto</code></pre>
+  <p>Then install the coding agents you need (all official npm packages):</p>
+<pre><code>npm i -g @anthropic-ai/claude-code@latest   # Claude Code
+npm i -g @openai/codex@latest                # Codex
+npm i -g @google/gemini-cli@latest           # Gemini CLI
+npm i -g @xai-official/grok@latest           # Grok Build
+npm i -g opencode-ai@latest                  # OpenCode
+npm i -g openclaw@latest                     # OpenClaw</code></pre>
+  <p>Other terminal agents: Hermes via <code>curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash</code> (CN mirror <code>res1.hermesagent.org.cn</code>); Pi / OMP via <code>curl -fsSL https://omp.sh/install | sh</code>.</p>

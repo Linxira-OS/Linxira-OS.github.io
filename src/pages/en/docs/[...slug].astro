@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from "astro:content";
+import DocsLayout from "../../../components/DocsLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("docs");
+  return entries.flatMap((entry) => {
+    const id = entry.id;
+    if (id !== "en" && !id.startsWith("en/")) return [];
+    const rest = id === "en" ? "" : id.slice(2 + 1);
+    const slug = rest.replace(/\.(md|mdx)$/i, "").replace(/(^|\/)index$/, "");
+    return slug ? [{ params: { slug }, props: { entry } }] : [];
+  });
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+<DocsLayout lang="en" active="docs" title={`${entry.data.title} — Linxira OS`}>
+  <Content />
+</DocsLayout>

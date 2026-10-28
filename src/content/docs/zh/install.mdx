@@ -1,0 +1,60 @@
+---
+title: "安装指南"
+section: start
+order: 2
+---
+
+import { releases } from "../../../data/releases";
+
+<h1>安装指南</h1>
+
+<p><strong>当前镜像（{releases.iso.label}）</strong>随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC，另有「无桌面（完整工具集 / 超精简）」两档。下载与校验见 <a href="/zh/download/" style="color:#20B8B0;">下载页</a>。以下为完整安装流程。</p>
+
+<h2>下载 ISO</h2>
+<p>当前 ISO 文件名 <code>{releases.iso.filename}</code>（{releases.iso.sizeHuman}，SHA-256 <code>{releases.iso.sha256}</code>）。安装前请校验 SHA-256。</p>
+
+<h2>启动盘制作流程</h2>
+<h3>Windows</h3>
+<p>使用 <a href="https://rufus.ie/" target="_blank">Rufus</a> 或 <a href="https://etcher.balena.io/" target="_blank">balenaEtcher</a>：</p>
+<ul>
+  <li>插入 USB（至少 8GB）</li>
+  <li>打开 Rufus</li>
+  <li>选择下载的 ISO 文件</li>
+  <li>选择你的 USB 设备</li>
+  <li>点击"开始"</li>
+</ul>
+
+<h3>Linux</h3>
+<p><code>sudo dd if=linxira-*.iso of=/dev/sdX bs=4M status=progress</code></p>
+
+<h2>计划中的安装器</h2>
+<p>Direct Arch Live 镜像会进入完整 Plasma 桌面并自动打开 Linxira Welcome。Calamares 不会自动启动；准备好后从 Welcome 或应用菜单手动打开。预期流程如下：</p>
+<ol style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
+  <li>从 USB 启动</li>
+  <li>在 Welcome 或应用菜单中打开“安装 Linxira OS”</li>
+  <li>选择语言和键盘布局</li>
+  <li>选择分区方案（推荐 btrfs + Timeshift）</li>
+  <li>从 catalog v3 选择可选的审核配置，并创建用户账户</li>
+  <li>等待安装完成</li>
+  <li>重启并移除 USB</li>
+</ol>
+<p>首次进入安装后的系统后，使用 Package Center 进行图形软件管理。</p>
+
+<h2>双系统（与 Windows 共存）</h2>
+<p>安装器提供「与 Windows 共存」，但需要先在 Windows 侧准备好：</p>
+<ul style="color:#94a3b8; margin: 0.5rem 0 1rem 1.5rem;">
+  <li>关闭 Windows「快速启动」，并完整关机（不要用休眠）</li>
+  <li>若启用了 BitLocker，先<strong>暂停保护</strong>，装完再恢复</li>
+  <li>关闭 Secure Boot（本镜像不提供签名引导链）</li>
+  <li>若主板启用了 Intel RST / RAID，先切到 AHCI</li>
+</ul>
+<p>安装时选择「与 Windows 共存」，安装器会缩小 NTFS 分区并新建 btrfs。装完后 GRUB 通过 <code>os-prober</code> 自动列出 Windows（目标系统已默认安装该包）。</p>
+
+<h2>系统要求</h2>
+<table>
+  <tr><th>组件</th><th>最低要求</th><th>推荐配置</th></tr>
+  <tr><td>CPU</td><td>64-bit x86</td><td>4+ 核心</td></tr>
+  <tr><td>内存</td><td>4 GB</td><td>8+ GB</td></tr>
+  <tr><td>存储</td><td>20 GB</td><td>50+ GB</td></tr>
+  <tr><td>显卡</td><td>支持 OpenGL 2.0</td><td>NVIDIA/AMD 独显</td></tr>
+</table>
