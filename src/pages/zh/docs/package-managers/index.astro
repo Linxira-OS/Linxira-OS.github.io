@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="软件管理 — Linxira OS" maxWidth="720px">
-  <a href="/zh/docs/" class="back">← 返回文档</a>
+<DocsLayout docKey="package-managers" lang="zh" active="docs" title="软件管理 — Linxira OS">
   <h1>软件管理</h1>
   <p>Linxira 直接基于 Arch Linux 构建。原生软件包使用 <code>pacman</code>、Arch 官方仓库以及独立签名的 Linxira 仓库。</p>
   <h2>Shelly</h2>
@@ -13,4 +12,4 @@ import PageLayout from "../../../../components/PageLayout.astro";
   <style>
     h2 { color: #e2e8f0; font-size: 1.25rem; margin: 2rem 0 0.5rem; }
   </style>
-</PageLayout>
+</DocsLayout>

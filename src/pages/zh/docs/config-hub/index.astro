@@ -1,37 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="zh" active="docs" title="Config Hub CLI — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/">软件生态</a>
-        <a href="/zh/docs/apps/">官方软件</a>
-        <a href="/zh/docs/workflows/">工作流模板</a>
-        <a href="/zh/docs/config-hub/" class="active">配置中心</a>
-        <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="config-hub" lang="zh" active="docs" title="Config Hub CLI — Linxira OS">
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
       <h1>Config Hub CLI（linxira-config）</h1>
       <p><code>linxira-config</code> 是系统配置中心 <b>config-hub</b> 的命令行入口：SSH、镜像源、诊断日志、环境变量、软件栈、工作区守护、安全态势，一条命令一个动作。直接输入 <code>linxira-config</code> 回车可进入纯 bash 的数字菜单（TUI），所有菜单项与命令行子命令一一对应。</p>

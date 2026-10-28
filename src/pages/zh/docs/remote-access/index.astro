@@ -1,38 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="zh" active="docs" title="远程访问（SSH）— Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/">软件生态</a>
-        <a href="/zh/docs/apps/">官方软件</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/remote-access/" class="active">远程访问（SSH）</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="remote-access" lang="zh" active="docs" title="远程访问（SSH）— Linxira OS">
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
       <h1>远程访问：SSH</h1>
       <p>Linxira OS 内置 OpenSSH 服务端与 <code>linxira-config</code> SSH 管理工具。本文介绍如何快速把 Linxira 电脑变成可远程连接的服务器，以及如何从其他设备安全地连入。</p>

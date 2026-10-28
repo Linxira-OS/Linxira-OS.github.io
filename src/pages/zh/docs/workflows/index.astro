@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="工作站配置 — Linxira OS" maxWidth="720px">
-  <a href="/zh/docs/" class="back">← 返回文档</a>
+<DocsLayout docKey="workflows" lang="zh" active="docs" title="工作站配置 — Linxira OS">
   <h1>工作站配置</h1>
   <p>Linxira catalog v2 是 Welcome、Calamares 与 Config Hub 配置选项以及 Shelly 推荐链接的共同来源。可通过 <code>linxira-config workflow help</code> 查看当前版本提供的配置。</p>
   <h2>科学计算</h2>
@@ -25,4 +24,4 @@ linxira-config workflow containers</code></pre>
     h2 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
     pre { padding: 0.8rem 1rem; margin: 0.75rem 0 1rem; background: #111827; border-left: 3px solid #20B8B0; overflow-x: auto; }
   </style>
-</PageLayout>
+</DocsLayout>

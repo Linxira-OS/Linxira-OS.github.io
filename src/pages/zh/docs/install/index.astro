@@ -2,37 +2,7 @@
 import DocsLayout from "../../../../components/DocsLayout.astro";
 import { releases } from "../../../../data/releases";
 ---
-<DocsLayout lang="zh" active="docs" title="安装指南 — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/" class="active">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/">软件生态</a>
-        <a href="/zh/docs/workflows/">工作流模板</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="install" lang="zh" active="docs" title="安装指南 — Linxira OS">
       <h1>安装指南</h1>
 
       <p><strong>当前镜像（{releases.iso.label}）</strong>随盘带崩溃监视与 <code>diagnose-crash</code> 技能，桌面只提供 Plasma 与 COSMIC，另有「无桌面（完整工具集 / 超精简）」两档。下载与校验见 <a href="/zh/download/" style="color:#20B8B0;">下载页</a>。以下为完整安装流程。</p>

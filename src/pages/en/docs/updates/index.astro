@@ -1,38 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="en" active="docs" title="System Updates &amp; Snapshot Rollback — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">Getting Started</div>
-        <a href="/en/docs/">Overview</a>
-        <a href="/en/docs/install/">Installation</a>
-        <a href="/en/docs/quick-start/">Quick Start</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">User Guide</div>
-        <a href="/en/docs/package-managers/">Package Managers</a>
-        <a href="/en/docs/ecosystem/">Ecosystem</a>
-        <a href="/en/docs/apps/">Official Apps</a>
-        <a href="/en/docs/config-hub/">Config Hub</a>
-        <a href="/en/docs/remote-access/">Remote Access (SSH)</a>
-        <a href="/en/docs/desktop/">Desktop</a>
-        <a href="/en/docs/updates/" class="active">Updates &amp; Rollback</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">Developers</div>
-        <a href="/en/docs/contributing/">Contributing</a>
-        <a href="/en/docs/building/">Building ISO</a>
-        <a href="/en/docs/repository-structure/">Repository Structure</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">Reference</div>
-        <a href="/en/legal/license/">License</a>
-        <a href="/en/docs/glossary/">Glossary</a>
-        <a href="/en/docs/faq/">FAQ</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="updates" lang="en" active="docs" title="System Updates &amp; Snapshot Rollback — Linxira OS">
       <a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← Back to Docs</a>
       <h1>System Updates &amp; Snapshot Rollback</h1>
       <p>Linxira OS is a rolling release: security patches become available as soon as upstream publishes them, with no release cycle to wait for. The safety net is automatic too — the system quietly checks for updates every hour, <strong>a Timeshift snapshot is created before every pacman transaction</strong>, and if anything breaks, picking the snapshot entry in the GRUB menu at reboot rolls you back. This page covers everyday use of that machinery, plus the optional fully-automatic update switch <code>EnableAutoApply</code>.</p>

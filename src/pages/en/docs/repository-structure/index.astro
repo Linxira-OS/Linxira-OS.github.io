@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="Repository Structure — Linxira OS" maxWidth="900px">
-  <a href="/en/docs/" class="back">← Back to Docs</a>
+<DocsLayout docKey="repository-structure" lang="en" active="docs" title="Repository Structure — Linxira OS">
   <h1>Repository Structure</h1>
   <p>All source code and artifacts of Linxira OS live under the <code>Linxira-OS</code> GitHub organization, organized into four groups: core repositories, first-party system tools, adopted upstream projects, and documentation. This page lists the responsibility of each repository and how they relate, from source to ISO delivery.</p>
 
@@ -107,4 +106,4 @@ enable the signed [linxira] repository (SigLevel = Required DatabaseOptional)</c
     pre { background: #111827; border: 1px solid rgba(51,65,85,0.4); border-left: 3px solid #20B8B0; border-radius: 6px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0 1.5rem; }
     pre code { background: none; padding: 0; color: #e5e7eb; font-size: 0.85rem; line-height: 1.6; }
   </style>
-</PageLayout>
+</DocsLayout>

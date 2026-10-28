@@ -1,38 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="zh" active="docs" title="系统更新与快照回滚 — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/">软件生态</a>
-        <a href="/zh/docs/apps/">官方软件</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/" class="active">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="updates" lang="zh" active="docs" title="系统更新与快照回滚 — Linxira OS">
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
       <h1>系统更新与快照回滚</h1>
       <p>Linxira OS 是滚动发行：安全补丁上游一发布即可获得，不用等版本周期。配套的安全网也是自动的——系统每小时静默检查更新，<strong>每个 pacman 事务前自动创建 Timeshift 快照</strong>，真出问题时重启在 GRUB 菜单里选一下快照就能回滚。本文覆盖这套机制的日常用法，以及可选的「全自动更新」开关 <code>EnableAutoApply</code>。</p>

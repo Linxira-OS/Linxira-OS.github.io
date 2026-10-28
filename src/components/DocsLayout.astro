@@ -1,11 +1,12 @@
 ---
 /**
- * DocsLayout.astro — 文档类子页面布局（左侧固定 sidebar + 主内容）
- * 用法：页面 <DocsLayout lang="zh" active="docs" title="…"> 
- *         <aside slot="sidebar">…侧栏链接…</aside>
- *         …主内容…
- *       </DocsLayout>
- * 侧栏内容由各页面提供（保留各自 active 标记）；footer 由本布局生成。
+ * DocsLayout.astro — 所有 /docs/ 子页面的唯一外壳。
+ *
+ * 维护约定（给后续维护者 / agent）：
+ *  1. 侧栏在下面 docsNav 里定义，页面【不要】再自己写 <aside slot="sidebar">。
+ *     曾经每个页面手抄一份侧栏，漏项、顺序不一致、active 标错都由此而来。
+ *  2. 新增文档页：在这里加一条，然后页面传 docKey="<key>" 即可高亮。
+ *  3. active 仍是给顶部导航用的（一般传 "docs"）；docKey 只管左侧栏。
  */
 import Navbar from "./Navbar.astro";
 import SiteShared from "./SiteShared.astro";
@@ -13,10 +14,65 @@ import SiteShared from "./SiteShared.astro";
 interface Props {
   lang: "zh" | "en";
   active?: string;
+  /** 左侧栏当前项，取值见 docsNav 里的 key。 */
+  docKey?: string;
   title: string;
 }
-const { lang, active = "docs", title } = Astro.props;
+const { lang, active = "docs", docKey = "", title } = Astro.props;
 const zh = lang === "zh";
+const base = `/${lang}`;
+
+type NavItem = { key: string; href: string; label: string };
+type NavSection = { title: string; items: NavItem[] };
+
+const docsNav: NavSection[] = [
+  {
+    title: zh ? "开始" : "Getting Started",
+    items: [
+      { key: "overview", href: `${base}/docs/`, label: zh ? "概述" : "Overview" },
+      { key: "newbie", href: `${base}/docs/newbie/`, label: zh ? "新手向导" : "Beginner Guide" },
+      { key: "install", href: `${base}/docs/install/`, label: zh ? "安装指南" : "Installation" },
+      { key: "quick-start", href: `${base}/docs/quick-start/`, label: zh ? "快速开始" : "Quick Start" },
+    ],
+  },
+  {
+    title: zh ? "用户指南" : "User Guide",
+    items: [
+      { key: "package-managers", href: `${base}/docs/package-managers/`, label: zh ? "包管理器" : "Package Managers" },
+      { key: "ecosystem", href: `${base}/docs/ecosystem/`, label: zh ? "软件生态" : "Ecosystem" },
+      { key: "workflows", href: `${base}/docs/workflows/`, label: zh ? "工作流模板" : "Workflow Templates" },
+      { key: "config-hub", href: `${base}/docs/config-hub/`, label: zh ? "配置中心" : "Config Hub" },
+      { key: "desktop", href: `${base}/docs/desktop/`, label: zh ? "桌面环境" : "Desktop" },
+      { key: "updates", href: `${base}/docs/updates/`, label: zh ? "更新与快照回滚" : "Updates & Snapshots" },
+      { key: "remote-access", href: `${base}/docs/remote-access/`, label: zh ? "远程访问" : "Remote Access" },
+    ],
+  },
+  {
+    title: zh ? "应用与硬件" : "Apps & Hardware",
+    items: [
+      { key: "apps", href: `${base}/docs/apps/`, label: zh ? "应用清单" : "Applications" },
+      { key: "drivers", href: `${base}/docs/drivers/`, label: zh ? "驱动管理" : "Drivers" },
+    ],
+  },
+  {
+    title: zh ? "开发者" : "Developer",
+    items: [
+      { key: "contributing", href: `${base}/docs/contributing/`, label: zh ? "参与贡献" : "Contributing" },
+      { key: "building", href: `${base}/docs/building/`, label: zh ? "构建 ISO" : "Building the ISO" },
+      { key: "repository-structure", href: `${base}/docs/repository-structure/`, label: zh ? "仓库结构" : "Repository Layout" },
+    ],
+  },
+  {
+    title: zh ? "参考" : "Reference",
+    items: [
+      { key: "glossary", href: `${base}/docs/glossary/`, label: zh ? "术语表" : "Glossary" },
+      { key: "faq", href: `${base}/docs/faq/`, label: zh ? "常见问题" : "FAQ" },
+      { key: "brand-assets", href: `${base}/docs/brand-assets/`, label: zh ? "品牌资产" : "Brand Assets" },
+      { key: "license", href: `${base}/legal/license/`, label: zh ? "开源协议" : "License" },
+    ],
+  },
+];
+
 const footer = zh
   ? "Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。"
   : "Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux.";
@@ -30,7 +86,23 @@ const footLinks = zh
   <SiteShared title={title} />
   <style is:global>
     .layout { display: flex; padding-top: 60px; min-height: 100vh; }
-    .sidebar { width: 260px; background: #0c1322; border-right: 1px solid var(--line); padding: 2rem 0; position: fixed; top: 60px; bottom: 0; overflow-y: auto; }
+    .sidebar {
+      width: 260px; background: #0c1322; border-right: 1px solid var(--line);
+      padding: 2rem 0; position: fixed; top: 60px; bottom: 0; overflow-y: auto;
+      /* 细滚动条，颜色跟随品牌青色；Firefox 用标准属性，Chromium/WebKit 走伪元素 */
+      scrollbar-width: thin; scrollbar-color: rgba(32,184,176,0.35) transparent;
+      overscroll-behavior: contain;
+    }
+    .sidebar::-webkit-scrollbar { width: 10px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(32,184,176,0.25); border-radius: 8px;
+      border: 3px solid transparent; background-clip: content-box;
+    }
+    .sidebar:hover::-webkit-scrollbar-thumb {
+      background: rgba(32,184,176,0.5); background-clip: content-box;
+    }
+    .sidebar::-webkit-scrollbar-thumb:hover { background: rgba(32,184,176,0.7); background-clip: content-box; }
     .sidebar-title { color: var(--faint); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem; margin-bottom: 0.5rem; }
     .sidebar a { display: block; padding: 0.5rem 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: all 0.2s; border-left: 3px solid transparent; }
     .sidebar a:hover { color: var(--teal); background: rgba(32,184,176,0.05); }
@@ -50,7 +122,14 @@ const footLinks = zh
   <Navbar lang={lang} active={active} />
   <div class="layout">
     <aside class="sidebar">
-      <slot name="sidebar" />
+      {docsNav.map((section) => (
+        <div class="section">
+          <div class="sidebar-title">{section.title}</div>
+          {section.items.map((item) => (
+            <a href={item.href} class:list={[{ active: item.key === docKey }]}>{item.label}</a>
+          ))}
+        </div>
+      ))}
     </aside>
     <main class="main">
       <slot />

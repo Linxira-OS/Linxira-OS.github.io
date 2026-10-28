@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="常见问题 — Linxira OS" maxWidth="720px">
-  <a href="/zh/docs/" class="back">← 返回文档</a>
+<DocsLayout docKey="faq" lang="zh" active="docs" title="常见问题 — Linxira OS">
   <h1>常见问题</h1>
 
   <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Linxira OS 是什么？</h2>
@@ -46,4 +45,4 @@ import PageLayout from "../../../../components/PageLayout.astro";
     h2.open::before { transform: rotate(90deg); }
     .answer { color: #94a3b8; margin-bottom: 1.5rem; padding-left: 1.4rem; border-left: 2px solid rgba(32,184,176,0.3); }
   </style>
-</PageLayout>
+</DocsLayout>

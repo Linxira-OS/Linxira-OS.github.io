@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="Workstation Profiles — Linxira OS" maxWidth="720px">
-  <a href="/en/docs/" class="back">← Back to Docs</a>
+<DocsLayout docKey="workflows" lang="en" active="docs" title="Workstation Profiles — Linxira OS">
   <h1>Workstation Profiles</h1>
   <p>Linxira catalog v2 is the shared source for profile choices in Welcome, Calamares, and Config Hub, and for Shelly recommendation links. List the profiles available on your installed release with <code>linxira-config workflow help</code>.</p>
   <h2>Scientific computing</h2>
@@ -25,4 +24,4 @@ linxira-config workflow containers</code></pre>
     h2 { margin: 2rem 0 0.5rem; font-size: 1.25rem; }
     pre { padding: 0.8rem 1rem; margin: 0.75rem 0 1rem; background: #111827; border-left: 3px solid #20B8B0; overflow-x: auto; }
   </style>
-</PageLayout>
+</DocsLayout>

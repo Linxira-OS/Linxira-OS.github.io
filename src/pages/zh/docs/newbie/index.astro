@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="zh" active="docs" title="新手向导 — Linxira OS" maxWidth="760px">
-  <a href="/zh/docs/" class="back">← 返回文档</a>
+<DocsLayout docKey="newbie" lang="zh" active="docs" title="新手向导 — Linxira OS">
   <h1>新手向导</h1>
   <p>第一次用 Linux？从这里开始——终端基础、查资料、中文环境、桌面选择。</p>
 
@@ -84,4 +83,4 @@ export XMODIFIERS=@im=fcitx</code></pre>
     .keylist td { color: #cbd5e1; line-height: 1.6; }
     .keylist code { color: #e5e7eb; }
   </style>
-</PageLayout>
+</DocsLayout>

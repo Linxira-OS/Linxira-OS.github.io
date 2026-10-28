@@ -1,39 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="zh" active="docs" title="驱动配置（lhwd） — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/">软件生态</a>
-        <a href="/zh/docs/apps/">官方软件</a>
-        <a href="/zh/docs/drivers/" class="active">驱动配置</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="drivers" lang="zh" active="docs" title="驱动配置（lhwd） — Linxira OS">
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
       <h1>驱动与硬件配置（lhwd）</h1>
       <p><code>lhwd</code>（Linxira Hardware Detection）是 Linxira OS 的硬件检测与驱动配置工具，自动识别 GPU / 网卡 / 虚拟机等硬件并匹配最佳驱动配置。它由 <code>linxira-hwd-detector</code> 包提供，基于 CHWD 1.23.0 完整移植。</p>

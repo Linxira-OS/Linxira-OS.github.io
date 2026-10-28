@@ -1,41 +1,7 @@
 ---
 import DocsLayout from "../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="en" active="docs" title="Documentation — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">Getting Started</div>
-        <a href="/en/docs/newbie/">Beginner's Guide</a>
-        <a href="/en/docs/" class="active">Overview</a>
-        <a href="/en/docs/install/">Installation</a>
-        <a href="/en/docs/quick-start/">Quick Start</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">User Guide</div>
-        <a href="/en/docs/package-managers/">Package Managers</a>
-        <a href="/en/docs/apps/">Official Apps</a>
-        <a href="/en/docs/workflows/">Workflow Templates</a>
-        <a href="/en/docs/config-hub/">Config Hub</a>
-        <a href="/en/docs/remote-access/">Remote Access (SSH)</a>
-        <a href="/en/docs/desktop/">Desktop Environment</a>
-        <a href="/en/docs/updates/">Updates &amp; Rollback</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">Developers</div>
-        <a href="/en/docs/contributing/">Contributing</a>
-        <a href="/en/docs/building/">Building ISO</a>
-        <a href="/en/docs/repository-structure/">Repository Structure</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">Reference</div>
-        <a href="/en/legal/license/">Licenses</a>
-        <a href="/en/docs/brand-assets/">Brand Assets</a>
-        <a href="/en/docs/glossary/">Glossary</a>
-        <a href="/en/docs/faq/">FAQ</a>
-        <a href="/en/security/">Security</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="overview" lang="en" active="docs" title="Documentation — Linxira OS">
       <h1>Linxira OS Documentation</h1>
       <p>Welcome to the official Linxira OS documentation. Linxira is a Direct Arch workstation: it uses <code>pacman</code> and the official Arch repositories, with Linxira-owned packages delivered through a separate signed repository. For general Arch Linux questions, refer to the <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>.</p>
       <p>On the Live desktop, Linxira Welcome opens automatically and provides the manual Calamares launch entry. Welcome, Calamares, Config Hub, and Shelly recommendation links read the same reviewed catalog v2. Shelly handles graphical software management after installation, not installer transactions.</p>

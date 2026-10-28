@@ -1,38 +1,7 @@
 ---
 import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<DocsLayout lang="zh" active="docs" title="软件生态 — Linxira OS">
-  <aside slot="sidebar">
-      <div class="section">
-        <div class="sidebar-title">开始</div>
-        <a href="/zh/docs/">概述</a>
-        <a href="/zh/docs/install/">安装指南</a>
-        <a href="/zh/docs/quick-start/">快速开始</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">用户指南</div>
-        <a href="/zh/docs/package-managers/">包管理器</a>
-        <a href="/zh/docs/ecosystem/" class="active">软件生态</a>
-        <a href="/zh/docs/apps/">官方软件</a>
-        <a href="/zh/docs/config-hub/">配置中心</a>
-        <a href="/zh/docs/remote-access/">远程访问（SSH）</a>
-        <a href="/zh/docs/desktop/">桌面环境</a>
-        <a href="/zh/docs/updates/">更新与快照回滚</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">开发者</div>
-        <a href="/zh/docs/contributing/">参与贡献</a>
-        <a href="/zh/docs/building/">构建 ISO</a>
-        <a href="/zh/docs/repository-structure/">仓库结构</a>
-      </div>
-      <div class="section">
-        <div class="sidebar-title">参考</div>
-        <a href="/zh/legal/license/">开源协议</a>
-        <a href="/zh/docs/glossary/">术语表</a>
-        <a href="/zh/docs/faq/">常见问题</a>
-      </div>
-  </aside>
-
+<DocsLayout docKey="ecosystem" lang="zh" active="docs" title="软件生态 — Linxira OS">
       <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
       <h1>软件生态</h1>
       <p>Linxira OS 的软件生态由 <strong>93 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是官方推荐的常用应用，<span class="tag prop">专有</span> 标记表示专有软件（安装时需接受其许可协议）。</p>

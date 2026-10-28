@@ -1,8 +1,7 @@
 ---
-import PageLayout from "../../../../components/PageLayout.astro";
+import DocsLayout from "../../../../components/DocsLayout.astro";
 ---
-<PageLayout lang="en" active="docs" title="Software Management — Linxira OS" maxWidth="720px">
-  <a href="/en/docs/" class="back">← Back to Docs</a>
+<DocsLayout docKey="package-managers" lang="en" active="docs" title="Software Management — Linxira OS">
   <h1>Software Management</h1>
   <p>Linxira is built directly on Arch Linux. Native packages use <code>pacman</code>, the official Arch repositories, and the separate signed Linxira repository.</p>
   <h2>Shelly</h2>
@@ -13,4 +12,4 @@ import PageLayout from "../../../../components/PageLayout.astro";
   <style>
     h2 { color: #e2e8f0; font-size: 1.25rem; margin: 2rem 0 0.5rem; }
   </style>
-</PageLayout>
+</DocsLayout>
