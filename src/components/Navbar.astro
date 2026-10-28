@@ -58,6 +58,7 @@ const langHref = langPathMatch
 /* ---------- 文案（中英） ---------- */
 const copy = {
 	docs: zh ? "文档" : "Docs",
+	wiki: zh ? "手册" : "Wiki",
 	ecosystem: zh ? "软件生态" : "Ecosystem",
 	products: zh ? "产品" : "Products",
 	brand: zh ? "品牌资产" : "Brand",
@@ -72,6 +73,7 @@ const copy = {
 /* ---------- 顶部导航项（数据驱动） ---------- */
 const navItems = [
 	{ key: "docs", label: copy.docs, href: `${base}/docs/` },
+	{ key: "wiki", label: copy.wiki, href: "/wiki/" },
 	{ key: "ecosystem", label: copy.ecosystem, href: `${base}/docs/ecosystem/` },
 	{
 		key: "products",
