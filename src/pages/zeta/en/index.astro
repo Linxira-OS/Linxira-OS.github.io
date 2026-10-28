@@ -4,21 +4,21 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 
 <ZetaLayoutV2
 	lang="en"
-	title="Zeta — The Terminal Workbench Suite"
-	description="Zeta is a terminal workbench suite: one workspace that tiles real terminals, plus the tools that live inside it — a coding agent, an editor, a terminal IDE, and a file manager. Linux-first, Windows supported, mouse-first."
+	title="Zeta — The Agentic Development Environment"
+	description="Zeta is an ADE (Agentic Development Environment): one workspace that tiles real terminals, plus the tools that live inside it — a coding agent, an editor, a terminal IDE, a local web workbench, and a file manager. Linux-first, Windows supported, mouse-first."
 	active="home"
 >
 	<section class="hero">
 		<div class="container hero-grid">
 			<div class="hero-copy">
-				<div class="kicker">Terminal Workbench Suite · by Linxira-OS</div>
+				<div class="kicker">Agentic Development Environment · by Linxira-OS</div>
 				<h1>One terminal.<br>The <span class="accent">whole workbench.</span></h1>
 				<p class="lede">
-					<strong>Zeta</strong> is more than a coding agent. It is <strong>a workspace</strong>: tabs,
-					tilable real-terminal panes, and a fully clickable menu bar — with the
-					<strong>coding agent</strong> (zetacode) and the <strong>terminal IDE</strong>
-					(zetaide) alongside it. Three commands, nothing else.
-					Linux is the primary platform; Windows is supported.
+					<strong>Zeta</strong> is an <strong>ADE</strong> (Agentic Development Environment), not just a coding
+					agent. It is also <strong>a workspace</strong>: tabs, tilable real-terminal panes, and a fully
+					clickable menu bar — with four entry points: <strong>zetawork</strong> (workbench, GUI + terminal),
+					<strong>zetacode</strong> (coding agent), <strong>zetaide</strong> (terminal IDE) and
+					<strong>zeta serve</strong> (local web workbench). Linux is the primary platform; Windows is supported.
 				</p>
 				<div class="cta-row">
 					<a class="cta primary" href="#install">Get started</a>
@@ -70,13 +70,31 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 		</div>
 	</section>
 
+	<section class="block" id="ade">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">00</div>
+				<div>
+					<h2>An ADE, not an IDE</h2>
+					<div class="sub">Zeta is an <b>ADE</b> (Agentic Development Environment). A classic IDE is built around a human writing code — editor, completion, debugger. An ADE is built around <b>agents doing the work</b>: the workspace, terminals and editor are the agent's surface, and you set goals, review, and take over when it matters.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Agent-first</h3><p><code>zetacode</code> reads and writes files, runs commands and tests, and spawns sub-agents right inside the workspace — not a chat box bolted onto an IDE.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>You still get an IDE</h3><p>When you want to edit by hand, open <code>zetaide</code> (a terminal IDE): editor, LSP and project views in the same workspace, no second editor needed.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Runs a local server</h3><p><code>zeta serve</code> starts the web workbench on your own machine (Next.js + REST gateway); the browser and the desktop shell share one workspace. Nothing goes through the cloud.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>One workspace, four entry points</h3><p>GUI (<code>zetawork</code>), coding agent (<code>zetacode</code>), terminal IDE (<code>zetaide</code>) and web workbench (<code>zeta serve</code>) share one pane tree and one persistent session store.</p></div>
+			</div>
+		</div>
+	</section>
+
 	<section class="block" id="suite">
 		<div class="container">
 			<div class="section-head">
 				<div class="num">01</div>
 				<div>
-					<h2>One suite, three commands</h2>
-					<div class="sub">Every tool runs standalone with its own --help; the workspace puts them under one roof.</div>
+					<h2>One suite, three commands, one local server</h2>
+					<div class="sub">Every tool runs standalone with its own --help; the workspace puts them under one roof. <code>zeta serve</code> additionally starts a local web workbench from the same package.</div>
 				</div>
 			</div>
 			<div class="suite">
