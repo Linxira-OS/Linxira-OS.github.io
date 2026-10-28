@@ -28,14 +28,84 @@ const footLinks = zh
   <SiteShared title={title} />
   <style is:global>
     .container { margin: 0 auto; padding: 8rem 2rem 4rem; }
+    .page-body { min-width: 0; }
+    .toc { display: none; }
+    .toc-title { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.9rem; }
+    .toc nav { display: flex; flex-direction: column; border-left: 1px solid var(--line); }
+    .toc a { display: block; padding: 0.35rem 0 0.35rem 0.9rem; margin-left: -1px; border-left: 2px solid transparent; color: var(--muted); font-size: 0.85rem; line-height: 1.45; text-decoration: none; transition: color 0.15s, border-color 0.15s; }
+    .toc a:hover { color: var(--fg); }
+    .toc a.active { color: #20B8B0; border-left-color: #20B8B0; }
+    .toc a.toc-sub { padding-left: 1.5rem; font-size: 0.8rem; }
+    .page-body h2, .page-body h3 { scroll-margin-top: 6.5rem; }
+    @media (min-width: 1100px) {
+      .container.with-toc { display: grid; grid-template-columns: 220px minmax(0, 760px); justify-content: center; gap: 3.5rem; max-width: 1120px !important; }
+      .container.with-toc > .page-body { grid-column: 2; grid-row: 1; }
+      .container.with-toc > .toc { display: block; grid-column: 1; grid-row: 1; position: sticky; top: 6.5rem; align-self: start; max-height: calc(100vh - 8rem); overflow-y: auto; padding-right: 0.5rem; }
+    }
     footer { text-align: center; padding: 3rem 2rem; color: var(--faint); font-size: 0.85rem; border-top: 1px solid var(--line); background: var(--bg-deep); }
   </style>
 </head>
 <body>
   <Navbar lang={lang} active={active} />
   <div class="container" style={maxWidth ? `max-width:${maxWidth}` : undefined}>
-    <slot />
+    <div class="page-body" data-blog={active === "blog" ? "" : undefined}>
+      <slot />
+    </div>
   </div>
+  <script>
+    const body = document.querySelector<HTMLElement>(".page-body[data-blog]");
+    if (body && !/\/blog\/?$/.test(location.pathname)) {
+      const heads = Array.from(body.querySelectorAll<HTMLElement>("h2, h3"));
+      if (heads.length >= 3) {
+        const slugify = (s: string) =>
+          s.trim().toLowerCase().replace(/[^\w\u4e00-\u9fa5]+/g, "-").replace(/^-+|-+$/g, "");
+        const items = heads.map((h) => {
+          let id = h.id;
+          if (!id) {
+            const base = slugify(h.textContent || "section") || "section";
+            id = base;
+            let n = 2;
+            while (document.getElementById(id)) id = `${base}-${n++}`;
+            h.id = id;
+          }
+          return { el: h, id, depth: h.tagName === "H3" ? 3 : 2, text: (h.textContent || "").trim() };
+        });
+        const zh = document.documentElement.lang.startsWith("zh");
+        const toc = document.createElement("aside");
+        toc.className = "toc";
+        toc.setAttribute("aria-label", zh ? "目录" : "Table of contents");
+        const title = document.createElement("div");
+        title.className = "toc-title";
+        title.textContent = zh ? "目录" : "Contents";
+        const nav = document.createElement("nav");
+        items.forEach((it) => {
+          const a = document.createElement("a");
+          a.href = `#${it.id}`;
+          a.dataset.target = it.id;
+          a.textContent = it.text;
+          if (it.depth === 3) a.className = "toc-sub";
+          nav.appendChild(a);
+        });
+        toc.append(title, nav);
+        body.parentElement?.classList.add("with-toc");
+        body.before(toc);
+        const links = Array.from(nav.querySelectorAll("a"));
+        links[0]?.classList.add("active");
+        const io = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            if (visible[0]) {
+              links.forEach((a) => a.classList.toggle("active", a.dataset.target === visible[0].target.id));
+            }
+          },
+          { rootMargin: "-15% 0px -70% 0px", threshold: [0, 1] }
+        );
+        items.forEach((it) => io.observe(it.el));
+      }
+    }
+  </script>
   <footer>
     <div style="margin-bottom:0.8rem; display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;">
       {footLinks.map(([href, label]) => (
