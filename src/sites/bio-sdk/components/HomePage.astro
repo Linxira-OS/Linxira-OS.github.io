@@ -1,11 +1,12 @@
 ---
+import { bioSdk } from "../../../data/bio-sdk";
 const { zh, lang } = Astro.props;
 ---
     <!-- ===== HOME ===== -->
     <div class="page active" id="page-home">
       <div class="hero animate-in">
         <h1>Linxira Bio SDK</h1>
-        <p class="hero-subtitle">{zh ? "本地优先的生物信息学分析引擎：数据不出你的机器。Rust 确定性内核，120 项能力已编目、117 项可用，关键实现与 Python/R 参考实现做一致性比对——结果可复现、可审计。" : "A local-first bioinformatics engine: your data never leaves your machine. A deterministic Rust core with 120 catalogued capabilities (117 available) and parity checks against Python/R reference implementations — reproducible and auditable."}</p>
+        <p class="hero-subtitle">{zh ? `本地优先的生物信息学分析引擎：数据不出你的机器。Rust 确定性内核，${bioSdk.capabilities.total} 项能力已编目、${bioSdk.capabilities.available} 项可用，关键实现与 Python/R 参考实现做一致性比对——结果可复现、可审计。` : `A local-first bioinformatics engine: your data never leaves your machine. A deterministic Rust core with ${bioSdk.capabilities.total} catalogued capabilities (${bioSdk.capabilities.available} available) and parity checks against Python/R reference implementations — reproducible and auditable.`}</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -67,7 +68,7 @@ const { zh, lang } = Astro.props;
         <div class="step animate-in">
           <div class="step-num">3</div>
           <div class="step-title">{zh ? "选择分析" : "Analyze"}</div>
-          <div class="step-desc">{zh ? "从 120 种分析能力（117 可用）中选择，自动匹配数据格式" : "Choose from 120 capabilities (117 available), auto-matched to your data format"}</div>
+          <div class="step-desc">{zh ? `从 ${bioSdk.capabilities.total} 种分析能力（${bioSdk.capabilities.available} 可用）中选择，自动匹配数据格式` : `Choose from ${bioSdk.capabilities.total} capabilities (${bioSdk.capabilities.available} available), auto-matched to your data format`}</div>
         </div>
         <div class="step animate-in">
           <div class="step-num">4</div>
@@ -156,8 +157,8 @@ const { zh, lang } = Astro.props;
       <!-- Key Stats -->
       <h2 class="section-title">{zh ? "平台数据" : "Platform Stats"}</h2>
       <div class="stat-row">
-        <div class="stat-card animate-in"><div class="stat-value">120</div><div class="stat-label">{zh ? "分析能力" : "Capabilities"}</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">117</div><div class="stat-label">{zh ? "中英文文档" : "Bilingual Docs"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">{bioSdk.capabilities.total}</div><div class="stat-label">{zh ? "分析能力" : "Capabilities"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">{bioSdk.docs}</div><div class="stat-label">{zh ? "中英文文档" : "Bilingual Docs"}</div></div>
         <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "支持平台" : "Platforms"}</div><div class="stat-unit">Windows · Debian · Arch</div></div>
         <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "托管运行时" : "Managed runtimes"}</div><div class="stat-unit">Python · R · Java</div></div>
         <div class="stat-card animate-in"><div class="stat-value">AGPL</div><div class="stat-label">{zh ? "开源协议" : "License"}</div><div class="stat-unit">v3.0-or-later</div></div>
@@ -532,7 +533,7 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-purple)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
           <div class="cap-name">{zh ? "能力文档" : "Capability Docs"}</div>
-          <div class="cap-desc">{zh ? "117 个中英文能力文档" : "117 bilingual capability docs"}</div>
+          <div class="cap-desc">{zh ? `${bioSdk.docs} 个中英文能力文档` : `${bioSdk.docs} bilingual capability docs`}</div>
         </a>
         <a class="cap-card animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/blob/main/THIRD_PARTY.md" target="_blank" style="text-decoration:none;color:inherit">
           <div class="cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>

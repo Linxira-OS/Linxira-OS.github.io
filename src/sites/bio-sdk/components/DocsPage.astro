@@ -1,4 +1,5 @@
 ---
+import { bioSdk } from "../../../data/bio-sdk";
 const { zh } = Astro.props;
 ---
     <!-- ===== DOCS ===== -->
@@ -8,9 +9,9 @@ const { zh } = Astro.props;
         <p class="hero-subtitle">{zh ? "完整的中英文文档，每个能力都有详细的参数说明和示例" : "Full bilingual documentation with detailed parameters and examples for each capability"}</p>
       </div>
       <div class="stat-row">
-        <div class="stat-card animate-in"><div class="stat-value">117</div><div class="stat-label">{zh ? "能力文档（中/英）" : "Capability docs (zh/en)"}</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">32</div><div class="stat-label">{zh ? "分析领域" : "Analysis domains"}</div></div>
-        <div class="stat-card animate-in"><div class="stat-value">40</div><div class="stat-label">{zh ? "分析技能 Skills" : "Skills"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">{bioSdk.docs}</div><div class="stat-label">{zh ? "能力文档（中/英）" : "Capability docs (zh/en)"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">{bioSdk.capabilities.categories}</div><div class="stat-label">{zh ? "分析领域" : "Analysis domains"}</div></div>
+        <div class="stat-card animate-in"><div class="stat-value">{bioSdk.skills}</div><div class="stat-label">{zh ? "分析技能 Skills" : "Skills"}</div></div>
         <div class="stat-card animate-in"><div class="stat-value">3</div><div class="stat-label">{zh ? "接入方式" : "Integration paths"}</div><div class="stat-unit">CLI · MCP · Rust</div></div>
       </div>
 
@@ -26,7 +27,7 @@ const { zh } = Astro.props;
         <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/docs/capabilities" target="_blank" style="text-decoration:none;color:inherit">
           <div class="step-num" style="background:var(--accent-purple)">D</div>
           <div class="step-title">{zh ? "能力文档" : "Capability Docs"}</div>
-          <div class="step-desc">{zh ? "每种分析能力的中英文参考文档（117 个能力）" : "Bilingual reference for each capability (117 capabilities)"}</div>
+          <div class="step-desc">{zh ? `每种分析能力的中英文参考文档（${bioSdk.docs} 个能力）` : `Bilingual reference for each capability (${bioSdk.docs} capabilities)`}</div>
         </a>
         <a class="step animate-in" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none;color:inherit">
           <div class="step-num" style="background:var(--accent-green)">G</div>

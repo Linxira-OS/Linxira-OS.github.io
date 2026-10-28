@@ -40,8 +40,10 @@ jobs:
         run: npm ci
 
       # 取不到就沿用仓库里的 src/data/releases.json 快照,构建不会因此失败。
-      - name: Refresh release data (ISO + WSL)
+      - name: Refresh release data (ISO + WSL) and Bio SDK facts
         run: npm run fetch:data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build site
         run: npm run build

@@ -23,6 +23,7 @@ import BioSDKEnv from "./components/EnvironmentPage.astro";
 import BioSDKDocs from "./components/DocsPage.astro";
 import BioSDKLicenses from "./components/LicensesPage.astro";
 import BioSDKModals from "./components/Modals.astro";
+import { bioSdk } from "../../data/bio-sdk";
 
 interface Props {
 	lang: "zh" | "en";
@@ -57,7 +58,7 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
     <span class="topbar-title">Linxira Bio SDK</span>
     <div class="topbar-right">
       <span class="badge badge-ready">AGPL-3.0</span>
-      <span class="badge badge-version">v1.1.0</span>
+      <span class="badge badge-version">v{bioSdk.version}</span>
       <a class="badge badge-version" href="https://github.com/Linxira-OS/linxira-bio-sdk" target="_blank" style="text-decoration:none">GitHub</a>
     </div>
   </div>
