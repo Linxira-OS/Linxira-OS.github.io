@@ -18,6 +18,7 @@ import { releases } from "../../../data/releases";
       <li>Welcome 新增 System 页（1.2.1），读 <code>capabilities.json</code> 渲染入口</li>
       <li>config-hub 2.6.1：<code>linxira-config capabilities --json</code> 与 linxira-config 技能</li>
       <li>crash-watch 0.1.2 通知可复制提示词；hooks 1.1.3 修复 os-release 符号链接</li>
+      <li>linxira-update 0.1.12：GitHub 下载按实测速度选源、断点续传，按 Enter 正常退出；首次升级见下方命令</li>
       <li>安装器引导/ESP 门禁与 GRUB 多字号主题；Zeta 1.4.4-1 / catalog 3.6.0 随盘</li>
     </ul>
     <div class="rel-note">
@@ -29,6 +30,13 @@ import { releases } from "../../../data/releases";
         <li>开关机时耳机/音箱可能轻微爆音，属上电瞬间电平噪声，暂不处理</li>
       </ul>
     </div>
+  </div>
+
+  <div class="rel-note" style="margin:1.2rem 0;border-left-color:var(--teal);">
+    <p><b>先更新更新器，再做大更新</b></p>
+    <p>从 0.1.10 或更早版本升级时，先单独更新 <code>linxira-update</code>，避免 zeta 大包卡住整个事务：</p>
+    <pre><code>sudo pacman -Sy linxira-update</code></pre>
+    <p>然后运行 <code>linxira-update</code>。如果它已经是最新版本，可跳过这一步。</p>
   </div>
 
   <h2>发布节奏与更新频次</h2>
