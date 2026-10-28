@@ -1,0 +1,255 @@
+---
+interface Props {
+  lang: "zh" | "en";
+}
+const { lang } = Astro.props;
+const zh = lang === "zh";
+---
+<div class="doc-search" data-lang={lang}>
+  <button class="trigger" type="button" aria-haspopup="dialog" aria-label={zh ? "搜索文档" : "Search docs"}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+    <span>{zh ? "搜索文档" : "Search docs"}</span>
+    <kbd>Ctrl K</kbd>
+  </button>
+
+  <dialog class="panel docs-search-panel" aria-label={zh ? "搜索文档" : "Search docs"}>
+    <input
+      class="q"
+      type="search"
+      autocomplete="off"
+      spellcheck="false"
+      placeholder={zh ? "搜索标题、命令、术语…" : "Search titles, commands, terms…"}
+    />
+    <div class="results" role="listbox"></div>
+    <div class="hint">
+      <span>↑↓ {zh ? "选择" : "select"}</span>
+      <span>Enter {zh ? "打开" : "open"}</span>
+      <span>Esc {zh ? "关闭" : "close"}</span>
+    </div>
+  </dialog>
+
+  <button class="docs-search-fab" type="button" aria-label={zh ? "搜索文档" : "Search docs"}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.6-3.6"></path></svg>
+  </button>
+</div>
+
+<style is:global>
+  .doc-search .trigger {
+    display: flex; align-items: center; gap: 0.5rem; width: calc(100% - 2rem); margin: 0 1rem 1.5rem;
+    padding: 0.55rem 0.75rem; background: rgba(15,23,42,0.65); border: 1px solid var(--line);
+    border-radius: 8px; color: var(--muted); font-size: 0.85rem; cursor: pointer; text-align: left;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .doc-search .trigger:hover { border-color: rgba(32,184,176,0.5); color: var(--fg); }
+  .doc-search .trigger svg, .docs-search-fab svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; }
+  .doc-search .trigger kbd {
+    margin-left: auto; font-family: inherit; font-size: 0.7rem; color: var(--faint);
+    border: 1px solid var(--line); border-radius: 4px; padding: 0.05rem 0.35rem;
+  }
+  .docs-search-fab { display: none; }
+  .docs-search-panel {
+    position: fixed; inset: 12vh 0 auto; margin: 0 auto; width: min(92vw, 640px); max-height: 70vh;
+    padding: 0; border: 1px solid var(--line); border-radius: 12px; background: #0c1322; color: var(--fg);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55); overflow: hidden;
+  }
+  .docs-search-panel::backdrop { background: rgba(2,6,12,0.65); }
+  .docs-search-panel .q {
+    width: 100%; box-sizing: border-box; padding: 1rem 1.2rem; border: 0; border-bottom: 1px solid var(--line);
+    background: transparent; color: var(--fg); font-size: 1rem; outline: none;
+  }
+  .docs-search-panel .results { max-height: 52vh; overflow-y: auto; }
+  .docs-search-panel .r { display: block; padding: 0.7rem 1.2rem; text-decoration: none; border-left: 2px solid transparent; }
+  .docs-search-panel .r:hover, .docs-search-panel .r.sel { background: rgba(32,184,176,0.08); border-left-color: var(--teal, #20B8B0); }
+  .docs-search-panel .rt { color: var(--fg); font-size: 0.92rem; font-weight: 600; display: flex; gap: 0.6rem; align-items: baseline; }
+  .docs-search-panel .rs { color: var(--faint); font-size: 0.72rem; font-weight: 400; margin-left: auto; white-space: nowrap; }
+  .docs-search-panel .rx { color: var(--muted); font-size: 0.82rem; line-height: 1.5; margin-top: 0.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .docs-search-panel .rx mark { background: rgba(32,184,176,0.25); color: #d7fffb; border-radius: 2px; }
+  .docs-search-panel .empty { padding: 1.4rem 1.2rem; color: var(--faint); font-size: 0.85rem; }
+  .docs-search-panel .hint { display: flex; gap: 1rem; padding: 0.5rem 1.2rem; border-top: 1px solid var(--line); color: var(--faint); font-size: 0.72rem; }
+  @media (max-width: 768px) {
+    .doc-search .trigger { display: none; }
+    .docs-search-fab {
+      display: flex; position: fixed; right: 1rem; bottom: 1rem; z-index: 40;
+      width: 44px; height: 44px; align-items: center; justify-content: center;
+      border-radius: 50%; border: 1px solid var(--line); background: #0c1322; color: var(--teal, #20B8B0);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4); cursor: pointer;
+    }
+  }
+</style>
+
+<script>
+  type Item = { u: string; l: "zh" | "en"; t: string; s: string; h: string[]; x: string };
+  type Hit = { item: Item; score: number; snippet: string };
+
+  const root = document.querySelector<HTMLElement>(".doc-search");
+  if (root) {
+    const lang = root.dataset.lang;
+    const dialog = root.querySelector<HTMLDialogElement>(".panel")!;
+    const input = root.querySelector<HTMLInputElement>(".q")!;
+    const list = root.querySelector<HTMLElement>(".results")!;
+    const trigger = root.querySelector<HTMLButtonElement>(".trigger")!;
+    const fab = root.querySelector<HTMLButtonElement>(".docs-search-fab")!;
+    document.body.append(fab);
+    document.body.append(dialog);
+
+    let index: Item[] | null = null;
+    let loading: Promise<void> | null = null;
+    let hits: Hit[] = [];
+    let selected = 0;
+
+    const load = () => {
+      loading ??= fetch("/search-index.json")
+        .then((r) => r.json())
+        .then((data: Item[]) => {
+          index = data;
+        })
+        .catch(() => {
+          loading = null;
+        });
+      return loading;
+    };
+
+    const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const buildSnippet = (item: Item, terms: string[]) => {
+      const text = item.x;
+      const lower = text.toLowerCase();
+      let at = -1;
+      for (const term of terms) {
+        const i = lower.indexOf(term);
+        if (i >= 0 && (at < 0 || i < at)) at = i;
+      }
+      if (at < 0) return text.slice(0, 140);
+      const start = Math.max(0, at - 50);
+      return (start > 0 ? "…" : "") + text.slice(start, start + 150).trim();
+    };
+
+    const search = (query: string): Hit[] => {
+      const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      if (!terms.length || !index) return [];
+      const out: Hit[] = [];
+      for (const item of index) {
+        if (item.l !== lang) continue;
+        const title = item.t.toLowerCase();
+        const heads = item.h.join(" ").toLowerCase();
+        const text = item.x.toLowerCase();
+        let score = 0;
+        let matchedAll = true;
+        for (const term of terms) {
+          const inTitle = title.includes(term);
+          const inHeads = heads.includes(term);
+          const count = text.split(term).length - 1;
+          if (!inTitle && !inHeads && count === 0) {
+            matchedAll = false;
+            break;
+          }
+          score += (inTitle ? 120 : 0) + (inHeads ? 30 : 0) + Math.min(count, 8);
+        }
+        if (matchedAll) out.push({ item, score, snippet: buildSnippet(item, terms) });
+      }
+      return out.sort((a, b) => b.score - a.score).slice(0, 12);
+    };
+
+    const highlight = (text: string, terms: string[]) => {
+      const frag = document.createDocumentFragment();
+      const re = new RegExp(`(${terms.map(escapeRe).join("|")})`, "gi");
+      let last = 0;
+      for (const m of text.matchAll(re)) {
+        const at = m.index ?? 0;
+        if (at > last) frag.append(text.slice(last, at));
+        const mark = document.createElement("mark");
+        mark.textContent = m[0];
+        frag.append(mark);
+        last = at + m[0].length;
+      }
+      frag.append(text.slice(last));
+      return frag;
+    };
+
+    const render = () => {
+      list.textContent = "";
+      selected = 0;
+      if (!input.value.trim()) {
+        const tip = document.createElement("div");
+        tip.className = "empty";
+        tip.textContent = lang === "zh" ? "输入关键词开始搜索" : "Type to start searching";
+        list.append(tip);
+        return;
+      }
+      if (!hits.length) {
+        const tip = document.createElement("div");
+        tip.className = "empty";
+        tip.textContent = lang === "zh" ? "没有匹配的文档" : "No matching documents";
+        list.append(tip);
+        return;
+      }
+      const terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      hits.forEach((hit, i) => {
+        const a = document.createElement("a");
+        a.className = i === 0 ? "r sel" : "r";
+        a.href = hit.item.u;
+        a.setAttribute("role", "option");
+        const titleRow = document.createElement("div");
+        titleRow.className = "rt";
+        titleRow.append(document.createTextNode(hit.item.t));
+        const sec = document.createElement("span");
+        sec.className = "rs";
+        sec.textContent = hit.item.s;
+        titleRow.append(sec);
+        const snip = document.createElement("div");
+        snip.className = "rx";
+        snip.append(highlight(hit.snippet, terms));
+        a.append(titleRow, snip);
+        list.append(a);
+      });
+    };
+
+    const move = (delta: number) => {
+      const nodes = Array.from(list.querySelectorAll<HTMLAnchorElement>(".r"));
+      if (!nodes.length) return;
+      selected = (selected + delta + nodes.length) % nodes.length;
+      nodes.forEach((n, i) => n.classList.toggle("sel", i === selected));
+      nodes[selected].scrollIntoView({ block: "nearest" });
+    };
+
+    const open = () => {
+      if (!dialog.open) dialog.showModal();
+      load()?.then(() => {
+        hits = search(input.value);
+        render();
+      });
+      input.focus();
+    };
+
+    trigger.addEventListener("click", open);
+    fab.addEventListener("click", open);
+    input.addEventListener("input", () => {
+      hits = search(input.value);
+      render();
+    });
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        move(1);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        move(-1);
+      } else if (e.key === "Enter") {
+        const target = list.querySelectorAll<HTMLAnchorElement>(".r")[selected];
+        if (target) {
+          e.preventDefault();
+          window.location.href = target.href;
+        }
+      }
+    });
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        open();
+      }
+    });
+  }
+</script>

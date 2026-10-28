@@ -8,6 +8,7 @@
  */
 import { getCollection } from "astro:content";
 import Navbar from "./Navbar.astro";
+import DocsSearch from "./DocsSearch.astro";
 import SiteShared from "./SiteShared.astro";
 
 interface Props {
@@ -148,6 +149,7 @@ const footLinks = zh
   <Navbar lang={lang} active={active} />
   <div class="layout">
     <aside class="sidebar">
+      <DocsSearch lang={lang} />
       {nav.map((group) => (
         <div class="section">
           <div class="sidebar-title">{group.title}</div>
