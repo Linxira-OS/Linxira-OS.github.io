@@ -73,7 +73,7 @@ Only a clock that resets after full power loss points to a dead CMOS battery. Dr
 
 ## Filesystem for a shared disk
 
-- **NTFS**: Linux ships the in-kernel `ntfs3` driver (5.15+), fully read/write — the best choice for a shared data partition. Make sure Windows is fully shut down and Fast Startup is off.
+- **NTFS**: Linux ships the in-kernel `ntfs3` driver (5.15+), and 7.1 added a second NTFS driver alongside it; both give full read/write — the best choice for a shared data partition. Make sure Windows is fully shut down and Fast Startup is off.
 - **exFAT**: external drives and USB sticks, natively supported on both sides.
 - **ReFS**: Windows-proprietary (Dev Drive, Storage Spaces). Linux has **no driver and cannot mount it**.
 - Never mount Windows' own `C:` volume from Linux; hibernation makes filesystem damage much more likely.

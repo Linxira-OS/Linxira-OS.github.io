@@ -48,5 +48,5 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">Can Linux read Windows NTFS / ReFS partitions?</h2>
 <div class="answer" style="display:none;">
-<p>NTFS: yes. The in-kernel <code>ntfs3</code> driver (5.15+) reads and writes it, which makes it the usual choice for a shared dual-boot disk. ReFS: no. It is Windows-proprietary and Linux has no usable driver, so it cannot be mounted. Shut Windows down completely (Fast Startup off) before mounting a shared disk.</p>
+<p>NTFS: yes. The in-kernel <code>ntfs3</code> driver (5.15+) reads and writes it, and Linux 7.1 merged an additional NTFS driver alongside it, which makes NTFS the usual choice for a shared dual-boot disk. ReFS: no. It is Windows-proprietary and Linux has no usable driver, so it cannot be mounted. Shut Windows down completely (Fast Startup off) before mounting a shared disk.</p>
 </div>

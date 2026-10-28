@@ -58,7 +58,7 @@ order: 3
 <h2>文件系统兼容性</h2>
 <table>
 <tr><th>文件系统</th><th>Linux 支持</th><th>说明</th></tr>
-<tr><td>NTFS</td><td>内核 <code>ntfs3</code>（5.15+），读写</td><td>双系统共享数据盘的首选；挂载前确保 Windows 已完全关机（关闭快速启动）</td></tr>
+<tr><td>NTFS</td><td>读写；<code>ntfs3</code>（5.15+）与 7.1 起主线合入的新 NTFS 驱动并存</td><td>双系统共享数据盘的首选；挂载前确保 Windows 已完全关机（关闭快速启动）</td></tr>
 <tr><td>exFAT</td><td>内核驱动，读写</td><td>U 盘、移动硬盘，跨系统无权限困扰</td></tr>
 <tr><td>FAT32</td><td>内核驱动，读写</td><td>单文件上限 4 GB，仅适合 EFI 分区与小容量盘</td></tr>
 <tr><td>ReFS</td><td><strong>不支持</strong></td><td>Windows 专有（含 Dev Drive、存储空间），Linux 无可用驱动，无法挂载</td></tr>

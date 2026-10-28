@@ -48,5 +48,5 @@ order: 1
 
 <h2 onclick="this.classList.toggle('open'); this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none';">能读 Windows 的 NTFS / ReFS 分区吗？</h2>
 <div class="answer" style="display:none;">
-<p>NTFS 可以：内核自带 <code>ntfs3</code>（5.15+）支持读写，适合做双系统共享盘。ReFS 不行：它是 Windows 专有文件系统，Linux 没有可用驱动，无法挂载。挂载共享盘前请确保 Windows 已完全关机并关闭快速启动。</p>
+<p>NTFS 可以：内核自带 <code>ntfs3</code>（5.15+）支持读写，7.1 起主线又合入了新 NTFS 驱动（与 ntfs3 并存），适合做双系统共享盘。ReFS 不行：它是 Windows 专有文件系统，Linux 没有可用驱动，无法挂载。挂载共享盘前请确保 Windows 已完全关机并关闭快速启动。</p>
 </div>

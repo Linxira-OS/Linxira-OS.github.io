@@ -58,7 +58,7 @@ order: 3
 <h2>Filesystem compatibility</h2>
 <table>
 <tr><th>Filesystem</th><th>Linux support</th><th>Notes</th></tr>
-<tr><td>NTFS</td><td>In-kernel <code>ntfs3</code> (5.15+), read/write</td><td>Best choice for a shared data disk; make sure Windows is fully shut down (Fast Startup off) before mounting</td></tr>
+<tr><td>NTFS</td><td>Read/write; <code>ntfs3</code> (5.15+) coexists with the new NTFS driver merged in Linux 7.1</td><td>Best choice for a shared data disk; make sure Windows is fully shut down (Fast Startup off) before mounting</td></tr>
 <tr><td>exFAT</td><td>In-kernel driver, read/write</td><td>USB sticks and external drives, no permission headaches across systems</td></tr>
 <tr><td>FAT32</td><td>In-kernel driver, read/write</td><td>4 GB per-file limit; fine for the EFI partition and small drives</td></tr>
 <tr><td>ReFS</td><td><strong>Not supported</strong></td><td>Windows-proprietary (Dev Drive, Storage Spaces); there is no usable Linux driver, so it cannot be mounted</td></tr>
