@@ -1,5 +1,6 @@
 ---
 import PageLayout from "../../../components/PageLayout.astro";
+import { releases } from "../../../data/releases";
 ---
 <PageLayout lang="en" active="download" title="Download — Linxira OS">
     <a href="/en/" class="back">← Back to Home</a>
@@ -11,28 +12,29 @@ import PageLayout from "../../../components/PageLayout.astro";
     </div>
 
     <div class="dl-card">
-      <h3>linxira-2026.10.27-r4-x86_64.iso</h3>
-      <div class="meta">5.0 GB · Desktop / headless installer · x86_64</div>
+      <h3>{releases.iso.filename}</h3>
+      <div class="meta">{releases.iso.sizeHuman} · Desktop / headless installer · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">Open GitCode Repository →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.27-r4-x86_64.iso" target="_blank" rel="noopener">ISO File Page</a>
+      <a class="dl-btn ghost" href={`https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/${releases.iso.filename}`} target="_blank" rel="noopener">ISO File Page</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">In the GitCode repository, click the ISO file → Download button (large file served via Git LFS).</p>
     </div>
 
     <div class="dl-card">
-      <h3>linxira-wsl-2026.10.25-x86_64.tar.gz</h3>
-      <div class="meta">~566 MB · WSL2 distro (CLI-first toolchain + WSLg-capable GUI tools) · x86_64</div>
+      <h3>{releases.wsl.filename}</h3>
+      <div class="meta">{releases.wsl.sizeHuman} · WSL2 distro (CLI-first toolchain + WSLg-capable GUI tools) · x86_64</div>
       <p style="font-size:0.9rem;color:#94a3b8;margin-bottom:0.9rem;">Linxira WSL puts the whole Linxira toolchain inside Windows' WSL2: <strong>systemd</strong> enabled, the signed [linxira] repository tracks updates directly, and <code>linxira-config stack</code> completes Python / Java / LaTeX / containers in one command — CLI, TUI, and GUI (WSLg) forms, a full Linxira environment without reinstalling.</p>
       <a class="dl-btn" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">GitHub Releases →</a>
-      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">Import with <code>wsl --import linxira C:\wsldata linxira-wsl-2026.10.25-x86_64.tar.gz --version 2</code>, then <code>wsl -d linxira</code>. systemd is enabled; see the Release assets for the SHA256 file.</p>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">Import with <code>wsl --import linxira C:\wsldata {releases.wsl.filename} --version 2</code>, then <code>wsl -d linxira</code>. systemd is enabled; see the Release assets for the SHA256 file.</p>
     </div>
 
     <h2>Checksums</h2>
-    <pre><code>sha256sum -c SHA256SUMS
+    <pre><code>{`sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.10.27-r4-x86_64.iso):
-9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70  linxira-2026.10.27-r4-x86_64.iso
+# SHA256 (${releases.iso.filename}):
+${releases.iso.sha256}  ${releases.iso.filename}
 
-# WSL image: see *.sha256 assets on the GitHub Release</code></pre>
+# WSL image (${releases.wsl.filename}): see *.sha256 assets on the GitHub Release`}</code></pre>
+    <p style="font-size:0.8rem;color:var(--faint);">Sizes use decimal units (1 GB = 10⁹ bytes); rows marked GiB keep their original binary values.</p>
 
     <h2>Installation</h2>
     <p>See the <a href="/en/docs/install/" style="color:#20B8B0;">installation guide</a>: write the ISO to a USB drive, then choose <strong>KDE Plasma</strong> (recommended), <strong>Headless (full toolset)</strong> or <strong>Headless (minimal)</strong> at the desktop step. COSMIC is still listed but should be treated as experimental.</p>

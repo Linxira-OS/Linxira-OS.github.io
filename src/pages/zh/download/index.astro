@@ -1,5 +1,6 @@
 ---
 import PageLayout from "../../../components/PageLayout.astro";
+import { releases } from "../../../data/releases";
 ---
 <PageLayout lang="zh" active="download" title="下载 — Linxira OS">
     <a href="/zh/" class="back">← 返回首页</a>
@@ -11,28 +12,29 @@ import PageLayout from "../../../components/PageLayout.astro";
     </div>
 
     <div class="dl-card">
-      <h3>linxira-2026.10.27-r4-x86_64.iso</h3>
-      <div class="meta">5.0 GB · 桌面/无桌面安装镜像 · x86_64</div>
+      <h3>{releases.iso.filename}</h3>
+      <div class="meta">{releases.iso.sizeHuman} · 桌面/无桌面安装镜像 · x86_64</div>
       <a class="dl-btn" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os" target="_blank" rel="noopener">打开 GitCode 仓库下载 →</a>
-      <a class="dl-btn ghost" href="https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/linxira-2026.10.27-r4-x86_64.iso" target="_blank" rel="noopener">直达 ISO 文件页</a>
+      <a class="dl-btn ghost" href={`https://gitcode.com/BOHUYESHAN-APB/Linxira-os/src/main/${releases.iso.filename}`} target="_blank" rel="noopener">直达 ISO 文件页</a>
       <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">GitCode 仓库内点击 ISO 文件 → 下载按钮（大文件走 Git LFS，国内访问快）。</p>
     </div>
 
     <div class="dl-card">
-      <h3>linxira-wsl-2026.10.25-x86_64.tar.gz</h3>
-      <div class="meta">约 566 MB · WSL2 发行版（纯 CLI 工具链 + WSLg 图形工具）· x86_64</div>
+      <h3>{releases.wsl.filename}</h3>
+      <div class="meta">{releases.wsl.sizeHuman} · WSL2 发行版（纯 CLI 工具链 + WSLg 图形工具）· x86_64</div>
       <p style="font-size:0.9rem;color:#94a3b8;margin-bottom:0.9rem;">Linxira WSL 把整条 Linxira 工具链装进 Windows 的 WSL2：<strong>systemd</strong> 就绪、签名软件仓库 [linxira] 可直接追踪更新，<code>linxira-config stack</code> 一条命令补齐 Python / Java / LaTeX / 容器，CLI、TUI、GUI（WSLg）三形态——不重装系统即可获得完整 Linxira 环境。</p>
       <a class="dl-btn" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">GitHub Releases 下载 →</a>
-      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">导入方式：<code>wsl --import linxira C:\wsldata linxira-wsl-2026.10.25-x86_64.tar.gz --version 2</code>，随后 <code>wsl -d linxira</code>。systemd 已启用；SHA256 见 Release 附件。</p>
+      <p style="margin-top:0.8rem;font-size:0.85rem;color:#64748b;">导入方式：<code>wsl --import linxira C:\wsldata {releases.wsl.filename} --version 2</code>，随后 <code>wsl -d linxira</code>。systemd 已启用；SHA256 见 Release 附件。</p>
     </div>
 
     <h2>校验和</h2>
-    <pre><code>sha256sum -c SHA256SUMS
+    <pre><code>{`sha256sum -c SHA256SUMS
 
-# SHA256 (linxira-2026.10.27-r4-x86_64.iso):
-9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70  linxira-2026.10.27-r4-x86_64.iso
+# SHA256 (${releases.iso.filename}):
+${releases.iso.sha256}  ${releases.iso.filename}
 
-# WSL 镜像校验和见 GitHub Release 附件 *.sha256</code></pre>
+# WSL 镜像校验和（${releases.wsl.filename}）见 GitHub Release 附件 *.sha256`}</code></pre>
+    <p style="font-size:0.8rem;color:var(--faint);">大小按十进制换算（1 GB = 10⁹ 字节）；历史记录中标 GiB 的保留原始二进制值。</p>
 
     <h2>安装</h2>
     <p>参考 <a href="/zh/docs/install/" style="color:#20B8B0;">安装指南</a>：制作启动盘、安装时在「桌面环境」一步选择 <strong>KDE Plasma</strong>（推荐）、<strong>无桌面（完整工具集）</strong>或<strong>无桌面（超精简）</strong>。COSMIC 选项仍在，但仅作尝鲜。</p>

@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+  # 每天重建一次:镜像大小 / SHA256 / WSL 版本在构建时从 GitCode 与 GitHub 现取,
+  # 所以发新版镜像后即使没人改源码,站点数字也会自己跟上。
+  schedule:
+    - cron: "0 3 * * *" # UTC 03:00 = 北京时间 11:00
   workflow_dispatch:
 
 permissions:
@@ -34,6 +38,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # 取不到就沿用仓库里的 src/data/releases.json 快照,构建不会因此失败。
+      - name: Refresh release data (ISO + WSL)
+        run: npm run fetch:data
 
       - name: Build site
         run: npm run build
