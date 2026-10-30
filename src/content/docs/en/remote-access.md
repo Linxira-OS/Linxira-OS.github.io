@@ -176,7 +176,9 @@ linxira-config ssh key remove work-laptop --yes
 <table>
 <tr><th>Command</th><th>Purpose</th><th>sudo</th></tr>
 <tr><td><code>linxira-config ssh status</code></td><td>Service state, port, connection hint</td><td>No</td></tr>
-<tr><td><code>linxira-config ssh on</code></td><td>Install and enable sshd</td><td>Yes</td></tr>
+<tr><td><code>linxira-config ssh on</code></td><td>Install and enable sshd (first enable allows passwords)</td><td>Yes</td></tr>
+<tr><td><code>linxira-config ssh harden</code></td><td>Disable password login after a key is verified</td><td>Yes</td></tr>
+<tr><td><code>linxira-config ssh password on --yes</code></td><td>Explicitly re-enable password login</td><td>Yes</td></tr>
 <tr><td><code>linxira-config ssh off</code></td><td>Stop and disable sshd</td><td>Yes</td></tr>
 <tr><td><code>linxira-config ssh port &lt;n&gt;</code></td><td>Change the listening port</td><td>Yes</td></tr>
 <tr><td><code>linxira-config ssh key generate [name]</code></td><td>Generate an Ed25519 pair</td><td>No</td></tr>

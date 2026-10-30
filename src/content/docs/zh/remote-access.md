@@ -176,7 +176,9 @@ linxira-config ssh key remove work-laptop --yes
 <table>
 <tr><th>命令</th><th>作用</th><th>sudo</th></tr>
 <tr><td><code>linxira-config ssh status</code></td><td>服务状态、端口、连接方式</td><td>否</td></tr>
-<tr><td><code>linxira-config ssh on</code></td><td>安装并启用 sshd</td><td>是</td></tr>
+<tr><td><code>linxira-config ssh on</code></td><td>安装并启用 sshd（首次允许密码登录）</td><td>是</td></tr>
+<tr><td><code>linxira-config ssh harden</code></td><td>确认密钥可用后关闭密码登录</td><td>是</td></tr>
+<tr><td><code>linxira-config ssh password on --yes</code></td><td>显式重新允许密码登录</td><td>是</td></tr>
 <tr><td><code>linxira-config ssh off</code></td><td>停止并禁用 sshd</td><td>是</td></tr>
 <tr><td><code>linxira-config ssh port &lt;n&gt;</code></td><td>修改监听端口</td><td>是</td></tr>
 <tr><td><code>linxira-config ssh key generate [name]</code></td><td>生成 Ed25519 密钥对</td><td>否</td></tr>

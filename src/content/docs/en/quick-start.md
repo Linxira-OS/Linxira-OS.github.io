@@ -62,8 +62,11 @@ linxira-config mirror npm auto
 <p>Turn the machine into a server:</p>
 
 ```
-linxira-config ssh on
-linxira-config ssh key add
+sudo linxira-config ssh on
+linxira-config ssh key generate
+linxira-config ssh key show
+# after the key is authorized and key-only login works:
+sudo linxira-config ssh harden
 ```
 
 <p>See <a href="/en/docs/remote-access/">Remote Access (SSH)</a>.</p>

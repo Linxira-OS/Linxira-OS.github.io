@@ -32,7 +32,7 @@ linxira-config ssh status
 sudo linxira-config ssh off
 ```
 
-<p><code>on</code> installs openssh, writes <code>PasswordAuthentication yes</code>, enables and starts sshd, and opens the current port if UFW is already enabled.</p>
+<p><code>on</code> installs openssh, writes <code>10-linxira.conf</code> with <code>PasswordAuthentication yes</code> on first enable, starts sshd, and opens the current port when UFW is active. Re-running <code>on</code> on a system already switched to key-only does not reopen password login.</p>
 
 ## Change the port
 
@@ -76,18 +76,17 @@ linxira-config ssh authorized remove SHA256:xxxx --yes
 sudo sshd -T | grep -E '^(port|permitrootlogin|passwordauthentication)'
 ```
 
-<p>To disable password logins entirely, first add your key to <code>authorized_keys</code> and prove it works, then drop a config fragment:</p>
+<p>To disable password logins entirely, first add your key to <code>authorized_keys</code> and prove key-only login works from another terminal, then run on the server:</p>
 
 ```
-sudo tee /etc/ssh/sshd_config.d/99-linxira-hardening.conf > /dev/null <<'EOF'
-PasswordAuthentication no
-KbdInteractiveAuthentication no
-PermitRootLogin no
-EOF
-sudo systemctl restart sshd
+sudo linxira-config ssh harden
 ```
 
-<p><strong>Keep your current session open</strong> after the restart, verify a new connection from another terminal, and only then log out.</p>
+<p><code>harden</code> requires at least one usable <code>authorized_keys</code> entry for the invoking user, rewrites <code>10-linxira.conf</code> with <code>PasswordAuthentication no</code> and <code>KbdInteractiveAuthentication no</code>, validates with <code>sshd -t</code>, then reloads sshd. It refuses without a usable key; add <code>--yes</code> for non-interactive use.</p>
+
+<p>To allow passwords again: <code>sudo linxira-config ssh password on --yes</code>. Do not use <code>99-linxira-hardening.conf</code>: <code>sshd_config</code> reads drop-ins first and the first value wins, so <code>10-linxira.conf</code>'s <code>yes</code> silently overrides a later <code>no</code>.</p>
+
+<p><strong>Keep your current session open</strong>, verify a new connection from another terminal, and only then log out.</p>
 
 <div class="note">
 <p>Account password strength still matters: sudo, local login, and any SSH path where password auth is still on depend on it. Optional hardening: <code>sudo pacman -S fail2ban</code> and enable <code>fail2ban.service</code> to cut down brute-force attempts.</p>

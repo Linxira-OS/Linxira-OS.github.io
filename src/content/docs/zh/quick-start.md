@@ -62,8 +62,11 @@ linxira-config mirror npm auto
 <p>把系统变成服务器：</p>
 
 ```
-linxira-config ssh on
-linxira-config ssh key add
+sudo linxira-config ssh on
+linxira-config ssh key generate
+linxira-config ssh key show
+# 确认公钥已加入服务器并验证可用后：
+sudo linxira-config ssh harden
 ```
 
 <p>详见 <a href="/zh/docs/remote-access/">远程访问（SSH）</a>。</p>

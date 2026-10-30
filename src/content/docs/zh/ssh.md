@@ -32,7 +32,7 @@ linxira-config ssh status
 sudo linxira-config ssh off
 ```
 
-<p><code>on</code> 会安装 openssh、写入 <code>PasswordAuthentication yes</code>、启用并启动 sshd；如果 UFW 已启用，同时放行当前端口。</p>
+<p><code>on</code> 会安装 openssh、首次写入 <code>10-linxira.conf</code>（<code>PasswordAuthentication yes</code>）、启用并启动 sshd；如果 UFW 已启用，同时放行当前端口。已经切换为 key-only 的系统再次执行 <code>on</code> 不会重新打开密码登录。</p>
 
 ## 改端口
 
@@ -76,18 +76,17 @@ linxira-config ssh authorized remove SHA256:xxxx --yes
 sudo sshd -T | grep -E '^(port|permitrootlogin|passwordauthentication)'
 ```
 
-<p>要彻底关闭密码登录，只保留密钥：先把公钥加入 <code>authorized_keys</code> 并验证能登录，再创建配置片段：</p>
+<p>要彻底关闭密码登录，只保留密钥：先把公钥加入 <code>authorized_keys</code>，另开一个终端确认只靠密钥能登录，然后在服务端执行：</p>
 
 ```
-sudo tee /etc/ssh/sshd_config.d/99-linxira-hardening.conf > /dev/null <<'EOF'
-PasswordAuthentication no
-KbdInteractiveAuthentication no
-PermitRootLogin no
-EOF
-sudo systemctl restart sshd
+sudo linxira-config ssh harden
 ```
 
-<p>重启后<strong>不要关闭当前会话</strong>，另开一个终端验证新连接成功，再决定是否退出。</p>
+<p><code>harden</code> 会检查当前用户至少有一把可用的 <code>authorized_keys</code>，把 <code>10-linxira.conf</code> 改为 <code>PasswordAuthentication no</code> 与 <code>KbdInteractiveAuthentication no</code>，先运行 <code>sshd -t</code> 验证，再 reload。没有可用密钥会直接拒绝；非交互脚本加 <code>--yes</code>。</p>
+
+<p>要重新允许密码登录：<code>sudo linxira-config ssh password on --yes</code>。不要使用 <code>99-linxira-hardening.conf</code>：<code>sshd_config</code> 先读 drop-in，且同一个配置项取第一个值，<code>10-linxira.conf</code> 里的 <code>yes</code> 会让后面的 <code>no</code> 静默失效。</p>
+
+<p><strong>不要关闭当前会话</strong>，先另开一个终端验证新连接成功，再决定是否退出。</p>
 
 <div class="note">
 <p>账户密码强度仍然重要：sudo、本地登录、以及尚未关闭密码认证的 SSH 都依赖它。可选加固：<code>sudo pacman -S fail2ban</code> 后启用 <code>fail2ban.service</code>，减少暴力破解尝试。</p>
