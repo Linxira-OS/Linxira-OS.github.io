@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-28T03:26:30.544Z",
+  "generatedAt": "2026-11-01T00:00:00.000Z",
   "sources": {
     "iso": "https://gitcode.com/BOHUYESHAN-APB/Linxira-os.git",
     "wsl": "https://api.github.com/repos/Linxira-OS/linxira-wsl/releases/latest"
   },
   "iso": {
-    "filename": "linxira-2026.10.27-r4-x86_64.iso",
-    "label": "2026.10.27-r4",
-    "date": "2026-10-27",
-    "sizeBytes": 5336342528,
-    "sizeHuman": "5.34 GB",
-    "sha256": "9f62b11fa595051103dd24878a0fe81702010b6942ac3128eb64a81d2d93ce70",
-    "sha256Short": "9f62b11f…"
+    "filename": "linxira-2026.10.31-r2-x86_64.iso",
+    "label": "2026.10.31-r2",
+    "date": "2026-10-31",
+    "sizeBytes": 5352212480,
+    "sizeHuman": "5.35 GB",
+    "sha256": "e638c14713d0a105e7e261426e6a834abc31635fce4a010d015a35f016605c2b",
+    "sha256Short": "e638c147…"
   },
   "wsl": {
     "filename": "linxira-wsl-2026.10.25-x86_64.tar.gz",
