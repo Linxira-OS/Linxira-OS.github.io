@@ -37,6 +37,13 @@ import { releases } from "../../../data/releases";
     <p>Then run <code>linxira-update</code>. Skip this if it is already current.</p>
   </div>
 
+  <div class="rel-note" style="margin:1.2rem 0;border-left-color:var(--coral);">
+    <p><b>COSMIC desktop: upgrade Welcome and Update manually first</b></p>
+    <p>Older Welcome builds gate the Config CLI button on Konsole, so it is grayed out on a COSMIC install that only has <code>cosmic-term</code>; the older <code>linxira-update</code> launcher may also do nothing. Open a terminal (<code>cosmic-term</code>) after first boot and run:</p>
+    <pre><code>sudo pacman -Syu --needed linxira-welcome linxira-update</code></pre>
+    <p>This refreshes the repositories and upgrades both system tools (targets: Welcome <code>1.2.5</code>, Update <code>0.1.13</code>). Close and reopen Welcome afterwards. Other non-Linxira system tools do not need this update to remain usable, but keeping the system updated is still recommended.</p>
+  </div>
+
   <h2>Cadence and update frequency</h2>
   <p>Only images actually uploaded to the cloud count as released; internal builds are not part of the release record. <b>Images are built roughly every 25–45 days</b>, depending on schedule and capacity — not a hard commitment. Because Arch is a rolling release, an ISO only reflects its build day, so <b>old images are not retained or offered; only each version's SHA256 is recorded</b>. Packages roll with Arch, so the signed <code>[linxira]</code> repository can be updated at any time — day-to-day fixes ship as package updates and need no image rebuild; the WSL image follows each batch.</p>
   <table class="hist-table">

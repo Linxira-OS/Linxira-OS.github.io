@@ -37,6 +37,13 @@ import { releases } from "../../../data/releases";
     <p>然后运行 <code>linxira-update</code>。如果它已经是最新版本，可跳过这一步。</p>
   </div>
 
+  <div class="rel-note" style="margin:1.2rem 0;border-left-color:var(--coral);">
+    <p><b>COSMIC 桌面：先手动升级 Welcome 和 Update</b></p>
+    <p>旧版 Welcome 的 Config CLI 按钮会检查 Konsole，在只有 <code>cosmic-term</code> 的 COSMIC 安装上会置灰；旧版 <code>linxira-update</code> 的启动按钮也可能没有反应。进入系统后先打开一个终端（<code>cosmic-term</code>），执行：</p>
+    <pre><code>sudo pacman -Syu --needed linxira-welcome linxira-update</code></pre>
+    <p>这会刷新仓库并升级这两个系统工具（目标版本：Welcome <code>1.2.5</code>、Update <code>0.1.13</code>），完成后关闭并重新打开 Welcome。其他非 Linxira 系统工具是否更新不影响日常使用，但仍建议保持系统更新。</p>
+  </div>
+
   <h2>发布节奏与更新频次</h2>
   <p>只有已上传云端的镜像才算发布，内部构建不计入发布记录。<b>镜像约每 25–45 天构建一版</b>，取决于排期与余力，不做硬性承诺；基于 Arch 的滚动特性，ISO 只反映构建当日的仓库状态，因此<b>旧版本镜像不保留、不提供下载，仅保留各版本的 SHA256 记录</b>。软件包随 Arch 滚动，签名仓库 <code>[linxira]</code> 随时可更新，日常修复走软件包热更新而不必重做镜像；WSL 镜像随批次同步。</p>
   <table class="hist-table">
