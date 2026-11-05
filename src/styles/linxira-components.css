@@ -32,6 +32,23 @@
 .lx-code__name { flex: 1; text-align: center; margin-right: 38px; font-family: var(--t-font-mono); font-size: 11.5px; letter-spacing: .06em; color: var(--t-text-muted); }
 .lx-code pre { margin: 0; padding: 18px 20px; overflow-x: auto; font-family: var(--t-font-mono); font-size: 12.6px; line-height: 1.85; color: var(--t-text-secondary); }
 
+/* ---------- Shiki 代码块：浅/深两套 token 颜色随主题切换 ----------
+   astro.config.mjs 里配了 themes{light,dark}，每个 pre 带
+   --shiki-light/--shiki-dark 与 --shiki-light-bg/--shiki-dark-bg。
+   单主题时浅色主题会出现深底深字，这里统一挂到 --t-* 上。 */
+.astro-code,
+pre.astro-code {
+  background-color: var(--t-code-bg) !important;
+  color: var(--t-text-secondary) !important;
+  border: 1px solid var(--t-border-subtle);
+  border-radius: var(--t-radius-s);
+  padding: 0.95rem 1.1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+[data-theme="dark"] .astro-code span { color: var(--shiki-dark); }
+[data-theme="light"] .astro-code span { color: var(--shiki-light); }
+
 .lx-stat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--t-radius); overflow: hidden; box-shadow: 0 0 0 1px var(--t-border-subtle); background: var(--t-surface); }
 .lx-stat > div { padding: 22px 20px; min-width: 0; }
 .lx-stat > div + div { border-left: 1px solid var(--t-border-subtle); }

@@ -16,7 +16,7 @@ interface Props {
   active?: string;
   title: string;
 }
-const { lang, active = "docs", title } = Astro.props;
+const { lang, active = "docs", title, description } = Astro.props;
 const zh = lang === "zh";
 const base = `/${lang}`;
 
@@ -70,7 +70,7 @@ const footLinks = zh
 <!DOCTYPE html>
 <html lang={zh ? "zh-CN" : "en-US"}>
 <head>
-  <SiteShared title={title} />
+  <SiteShared title={title} description={description} lang={lang} canonical={`https://linxira-os.github.io${Astro.url.pathname}`} />
   <style is:global>
     .layout { display: flex; padding-top: 60px; min-height: 100vh; }
     .sidebar {

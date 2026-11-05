@@ -1,11 +1,13 @@
 ---
 import Navbar from "../../components/Navbar.astro";
 import "../../styles/linxira-theme.css";
+import "../../styles/linxira-fonts.css";
 import "../../styles/linxira-components.css";
 import { getAllPosts } from "../../data/allPosts";
 import { releases } from "../../data/releases";
 import { ecosystem } from "../../data/ecosystem";
 import HeroFx from "../../components/HeroFx.astro";
+const pageDescription = `Linxira OS — 面向科学计算的 Arch Linux 发行版：KDE Plasma 桌面、${ecosystem.catalogTotal} 款审核软件、签名仓库 [linxira]、双内核兜底。最新镜像 ${releases.iso.label}（${releases.iso.sizeHuman}）。`;
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -15,8 +17,16 @@ const blogPosts = await getAllPosts();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Linxira OS — 面向科学计算的 Arch Linux 发行版</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <meta name="description" content={pageDescription}>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Linxira OS">
+  <meta property="og:title" content="Linxira OS — 面向科学计算的 Arch Linux 发行版" />
+  <meta property="og:description" content={pageDescription}>
+  <meta property="og:locale" content="zh_CN">
+  <link rel="canonical" href={`https://linxira-os.github.io/zh/`}>
   <meta name="theme-color" content="#0E1417" media="(prefers-color-scheme: dark)">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     /* ==========================================================================
        Linxira 官网首页 — 科技感 + 苹果液态玻璃
@@ -38,7 +48,7 @@ const blogPosts = await getAllPosts();
       --glow-teal: color-mix(in oklab, var(--t-brand) 12%, transparent); --glow-coral: color-mix(in oklab, var(--t-signal) 10%, transparent);
       --term-bg: rgba(2,6,10,0.55); --term-bar: rgba(0,0,0,0.35);
     }
-    body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
+    body { font-family: var(--t-font-sans); background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
 
     /* ==========================================================================
        液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
@@ -130,8 +140,8 @@ const blogPosts = await getAllPosts();
     .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: var(--term-bar); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .term-dot { width: 11px; height: 11px; border-radius: 50%; }
     .term-dot.red { background: var(--t-danger); } .term-dot.yellow { background: var(--t-warning); } .term-dot.green { background: var(--t-success); }
-    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: var(--t-text-muted); font-family: ui-monospace, 'Cascadia Mono', monospace; }
-    .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: var(--term-bg); }
+    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: var(--t-text-muted); font-family: var(--t-font-mono); }
+    .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: var(--t-font-mono); font-size: 0.92rem; overflow-y: auto; background: var(--term-bg); }
     .term-line { color: var(--t-text-secondary); margin-bottom: 0.35rem; white-space: pre-wrap; }
     .term-prompt { color: var(--t-brand); font-weight: 700; }
     .term-out { color: var(--t-text-muted); margin-bottom: 0.95rem; }

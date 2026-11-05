@@ -13,7 +13,7 @@ interface Props {
   title: string;
   maxWidth?: string;
 }
-const { lang, active = "docs", title, maxWidth = "760px" } = Astro.props;
+const { lang, active = "docs", title, maxWidth = "760px", description } = Astro.props;
 const zh = lang === "zh";
 const footer = zh
   ? "Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。"
@@ -25,7 +25,7 @@ const footLinks = zh
 <!DOCTYPE html>
 <html lang={zh ? "zh-CN" : "en-US"}>
 <head>
-  <SiteShared title={title} />
+  <SiteShared title={title} description={description} lang={lang} canonical={`https://linxira-os.github.io${Astro.url.pathname}`} />
   <style is:global>
     .container { margin: 0 auto; padding: 8rem 2rem 4rem; }
     .page-body { min-width: 0; }
