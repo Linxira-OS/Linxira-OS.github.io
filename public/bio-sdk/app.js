@@ -36,7 +36,10 @@ const capabilities = [
 let currentLang = window.BIOSDK_LANG || 'zh';
 
 // ===== Page Navigation =====
-function switchPage(page) {
+const PAGE_IDS = ['home', 'demo', 'workbench', 'ai', 'structure', 'environment', 'docs', 'licenses'];
+
+function switchPage(page, opts) {
+  const push = !opts || opts.push !== false;
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   const navEl = document.querySelector(`[data-page="${page}"]`);
   if (navEl) navEl.classList.add('active');
@@ -51,6 +54,10 @@ function switchPage(page) {
       if (!mdlInitDone) { mdlInitDone = true; initMdl(); }
       else if (mdlViewer) { setTimeout(() => { mdlViewer.resize(); mdlViewer.render(); }, 60); }
     }
+  }
+  // 让面板可分享 / 可前进后退：地址栏带上 #page
+  if (push && PAGE_IDS.includes(page)) {
+    if (location.hash.slice(1) !== page) history.pushState({ page }, '', '#' + page);
   }
 }
 
@@ -1765,4 +1772,20 @@ document.addEventListener('DOMContentLoaded', () => {
     entries.forEach(e => { if (e.isIntersecting) e.target.style.opacity = '1'; });
   }, {threshold:0.1});
   document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+  restorePageFromHash();
 });
+
+/* 面板 hash 路由：进入时按地址栏还原，浏览器前进/后退跟着切面板。
+   放在 init 之后调用，确保后面声明的 mdlViewer 等变量已初始化。 */
+function restorePageFromHash() {
+  const initial = location.hash.slice(1);
+  if (PAGE_IDS.includes(initial)) switchPage(initial, { push: false });
+  window.addEventListener('popstate', () => {
+    const page = location.hash.slice(1);
+    switchPage(PAGE_IDS.includes(page) ? page : 'home', { push: false });
+  });
+  window.addEventListener('hashchange', () => {
+    const page = location.hash.slice(1);
+    if (PAGE_IDS.includes(page)) switchPage(page, { push: false });
+  });
+}

@@ -9,7 +9,7 @@ order: 3
 <p>First steps after installation: enable the signed repository, install software, and start working.</p>
 
 <h2>1. Enable the official signed repository [linxira]</h2>
-<p>First-party software is hosted on the signed repository <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>. It is configured automatically on install; to add it manually, append to <code>/etc/pacman.conf</code>:</p>
+<p>First-party software is hosted on the signed repository <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a>. It is configured automatically on install; to add it manually, append to <code>/etc/pacman.conf</code>:</p>
 
 ```
 [linxira]

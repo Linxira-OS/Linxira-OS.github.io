@@ -6,7 +6,7 @@ order: 0
 
 <a href="/en/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← Back to Docs</a>
 <h1>Official Linxira Apps</h1>
-<p>Linxira OS ships with a first-party toolchain built around a <strong>reviewed catalog metadata + deterministic transaction backend + read-only/planning security model</strong>: GUI tools only present and plan; real system mutations are executed by a controlled backend. All packages are hosted on the official signed repository <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> and installed via <code>pacman</code>.</p>
+<p>Linxira OS ships with a first-party toolchain built around a <strong>reviewed catalog metadata + deterministic transaction backend + read-only/planning security model</strong>: GUI tools only present and plan; real system mutations are executed by a controlled backend. All packages are hosted on the official signed repository <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a> and installed via <code>pacman</code>.</p>
 
 <h2>Daily tools</h2>
 <div class="app-grid">

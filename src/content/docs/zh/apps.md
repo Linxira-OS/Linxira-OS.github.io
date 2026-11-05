@@ -6,7 +6,7 @@ order: 0
 
 <a href="/zh/docs/" style="color:#20B8B0; text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
 <h1>Linxira 官方软件</h1>
-<p>Linxira OS 自带一套自研工具链，围绕「<strong>经过审核的 catalog 元数据 + 确定性事务后端 + 只读/规划式安全模型</strong>」构建：GUI 只负责展示与规划，真正的系统修改由受控后端执行。所有软件包托管在 Linxira 官方签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>，通过 <code>pacman</code> 安装。</p>
+<p>Linxira OS 自带一套自研工具链，围绕「<strong>经过审核的 catalog 元数据 + 确定性事务后端 + 只读/规划式安全模型</strong>」构建：GUI 只负责展示与规划，真正的系统修改由受控后端执行。所有软件包托管在 Linxira 官方签名仓库 <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a>，通过 <code>pacman</code> 安装。</p>
 
 <h2>日常工具</h2>
 <div class="app-grid">

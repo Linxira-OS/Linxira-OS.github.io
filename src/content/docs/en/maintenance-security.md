@@ -19,7 +19,7 @@ order: 3
 <h2>Software sources at a glance</h2>
 <table>
 <tr><th>Source</th><th>Signed</th><th>Maintained by</th><th>Risk</th></tr>
-<tr><td><a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> first-party repo</td><td>Yes</td><td>This project's CI</td><td>Low, build is inspectable</td></tr>
+<tr><td><a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a> first-party repo</td><td>Yes</td><td>This project's CI</td><td>Low, build is inspectable</td></tr>
 <tr><td>Arch official core / extra / multilib</td><td>Yes</td><td>Arch packagers</td><td>Low, officially maintained</td></tr>
 <tr><td>AUR</td><td>No (built locally)</td><td>Any registered user</td><td><strong>High</strong> — review it yourself</td></tr>
 </table>

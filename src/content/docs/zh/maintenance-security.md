@@ -19,7 +19,7 @@ order: 3
 <h2>软件来源分级</h2>
 <table>
 <tr><th>来源</th><th>签名</th><th>谁维护</th><th>风险</th></tr>
-<tr><td><a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a> 自研仓库</td><td>是</td><td>本项目 CI</td><td>低，构建过程可查</td></tr>
+<tr><td><a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a> 自研仓库</td><td>是</td><td>本项目 CI</td><td>低，构建过程可查</td></tr>
 <tr><td>Arch 官方 core / extra / multilib</td><td>是</td><td>Arch 打包者</td><td>低，官方维护</td></tr>
 <tr><td>AUR</td><td>否（本机构建）</td><td>任意注册用户</td><td><strong>高</strong>，必须自行审阅</td></tr>
 </table>

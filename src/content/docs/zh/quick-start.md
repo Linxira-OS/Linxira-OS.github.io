@@ -9,7 +9,7 @@ order: 3
 <p>安装完成后的第一步：启用签名仓库、安装常用软件、开始使用。</p>
 
 <h2>1. 启用官方签名仓库 [linxira]</h2>
-<p>Linxira 官方自研软件托管在签名仓库 <a href="https://linxira-os.github.io/linxira-packages/x86_64" target="_blank">[linxira]</a>。安装系统后会自动配置；若需手动添加，编辑 <code>/etc/pacman.conf</code> 追加：</p>
+<p>Linxira 官方自研软件托管在签名仓库 <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a>。安装系统后会自动配置；若需手动添加，编辑 <code>/etc/pacman.conf</code> 追加：</p>
 
 ```
 [linxira]

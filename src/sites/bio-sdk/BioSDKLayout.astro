@@ -30,7 +30,13 @@ interface Props {
 	lang: "zh" | "en";
 }
 const { lang } = Astro.props;
-const zh = lang === "zh";
+const zh = lang === 'zh';
+const pageTitle = zh
+  ? 'Linxira Bio SDK — 本地优先生物信息学分析平台'
+  : 'Linxira Bio SDK — Local-first bioinformatics platform';
+const pageDescription = zh
+  ? '本地优先生物信息学分析平台：数据、工具链与流程全部在本地运行，支持 Python / R / Java 托管运行时。'
+  : 'A local-first bioinformatics workbench: data, toolchains and pipelines all run on-device, with managed Python / R / Java runtimes.';
 const base = `/bio-sdk/${lang}`;
 const otherLang = zh ? "en" : "zh";
 const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\/|$)/, `/$1${otherLang}$2`);
@@ -41,7 +47,8 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Linxira Bio SDK — 本地优先生物信息学分析平台</title>
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription}>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='2' width='8' height='30' rx='2' fill='%2320B8B0'/><rect x='2' y='24' width='26' height='8' rx='2' fill='%2320B8B0'/><rect x='22' y='2' width='8' height='8' rx='2' fill='%23F36F5D'/></svg>">
 <script is:inline>
 	window.BIOSDK_LANG = location.pathname.startsWith('/bio-sdk/zh') ? 'zh' : 'en';

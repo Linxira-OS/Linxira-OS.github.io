@@ -7,7 +7,7 @@ order: 1
 <h1>Building the ISO</h1>
 <p>Linxira OS installation images are built by <a href="https://github.com/Linxira-OS/linxira-iso-direct" target="_blank">linxira-iso-direct</a> (Direct-Arch ISO Profile): Arch packages plus pinned local artifacts for Calamares, Shelly, artwork, and Linxira system software produce a development installer ISO that installs fully offline. This page covers fetching the signed packages, running the build, and verifying the artifacts.</p>
 
-<h2>1. Prerequisites</h2>
+<h2 id="prerequisites">1. Prerequisites</h2>
 <h3>Install dependencies</h3>
 <p>Build dependencies come from the Quick Start of the legacy repository (linxira-iso, deprecated — see <a href="#history">History</a>):</p>
 
