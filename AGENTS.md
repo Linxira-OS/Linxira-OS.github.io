@@ -93,7 +93,51 @@ public/                      静态资源（`public/bio-sdk/`、`public/packages
 
 ---
 
-## 8. 构建与验证门禁
+## 8. 数据与时间戳（强制写作规范）
+
+**凡是有数字的地方，必须能回答「这个数是什么口径、什么时候的」。** 违反这条的文案一律不上线。
+
+### 8.1 口径只能有一个来源
+
+| 口径名 | 字段（`src/data/ecosystem.json` / `releases.json`） | 含义 |
+|---|---|---|
+| 软件目录 | `catalogTotal` | catalog v3 的 applications 条目总数（含审核中） |
+| 已审核 | `catalogReviewed` | 其中 `review.status === "reviewed"` |
+| 分类 | `catalogCategories` | catalog 实际用到的 primaryCategory 数 |
+| 自研包 | `packageTotal` | `packages` 仓里 `linxira-*` 包目录 |
+| 入组包 | `groupTotal` | 其中声明 pacman 组 `linxira` 的包数 |
+| 镜像 | `releases.iso.label / sizeHuman / date` | 最新 ISO 批次、体积、日期 |
+
+- 页面里**禁止手写**这些数字，必须 `import { ecosystem } / { releases }` 取值。
+- 这些 JSON 由 `scripts/fetch-*.mjs` 在构建前刷新（`npm run fetch:data`），失败时保留旧快照。
+- 用词固定：软件目录 / 已审核 / 分类 / 自研包 / 入组包。不要混用「审核软件」「精选应用」「自研工具」当同义词。
+
+### 8.2 展示数字就必须展示时间戳
+
+任何显示上述数字的页面（首页、gallery、roadmap、下载页、文档页…）都必须渲染 `<DataStamp lang="zh|en" />`，
+它输出「数据截至 YYYY-MM-DD（构建时自动生成）」。
+
+### 8.3 历史文章：旧值 + 新值，两边都要时间戳
+
+带发布日期的文章保留当时的数值，**不允许**改写成现在的值，也**不允许**只留旧值：
+
+```astro
+<DataStamp lang="zh" publishedAt="2026-08-15"
+  publishedFacts={[{ label: '已审核软件目录', value: '93 条' }, { label: '自研工具', value: '17 个' }]} />
+```
+
+渲染成两行：「发布时 2026-08-15：…」+「当前 2026-11-05：…（来自 catalog v3）」。
+
+### 8.4 命令与截图里的内容也必须真实
+
+- 终端示例只允许出现仓库里真实存在的命令（`linxira-config` 的子命令以 `cli/linxira-config` 的 `show_help` 为准，
+  包/二进制以 `packages/packages/*/PKGBUILD` 为准）。**禁止编造包名、子命令或输出文本。**
+- 拿不准就先查：`grep -n "Usage: linxira-config" linxira-config-hub/cli/linxira-config`、
+  `ls packages/packages`、`grep -l "groups=('linxira')" packages/packages/*/PKGBUILD`。
+- 界面示意图（SVG mock）里的样例文案可以存在，但不得与真实口径冲突。
+
+
+## 9. 构建与验证门禁
 
 ```bash
 npm ci             # 安装依赖
@@ -107,13 +151,13 @@ npx astro build    # 生产构建，产物在 dist/
 
 ---
 
-## 9. 提交信息
+## 10. 提交信息
 
 沿用现有风格：`<type>(<scope>): <中文简述>`，type ∈ `feat | fix | docs | refactor | chore`，scope 如 `blog | site | bio-sdk | zeta | nav`。一次提交只做一类事（文章、重构、文档分开提交）。
 
 ---
 
-## 10. 禁止事项
+## 11. 禁止事项
 
 - 不为产品另开 Pages 站点/子域名；不把网站文件放进产品仓库
 - 不在子站放长文；不在主站页面 import 子站组件
@@ -125,6 +169,8 @@ npx astro build    # 生产构建，产物在 dist/
 ---
 
 ## English summary
+- **Every number needs a timestamp.** Metrics come from `src/data/*.json` (refreshed at build); pages that show them must render `<DataStamp>` / `<DataStampLine>`. Dated articles keep their original figures but must show both "at publication (date)" and "now (date)". Never invent package names, CLI subcommands or command output.
+
 
 - **One repo, one site, one domain.** All Linxira web presence lives here; products are **path-based sub-sites** (`/bio-sdk/`, `/zeta/`) under `src/sites/<product>/`. Never create separate Pages sites or subdomains; never put website files in product repos (they must stay clean for forks/clones).
 - **Every article goes to the blog here**, regardless of product. Sub-sites are product landing pages only and link back to blog posts for long-form content.

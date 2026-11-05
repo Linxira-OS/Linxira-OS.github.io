@@ -1,0 +1,30 @@
+---
+/**
+ * DataStampLine.astro — 页脚用的一行数据时间戳。
+ * 规范见 AGENTS.md「数据与时间戳」：展示数字的页面必须给出数据截至日期。
+ */
+import { ecosystem } from '../data/ecosystem';
+interface Props { lang: 'zh' | 'en' }
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+const asOf = (ecosystem.generatedAt || '').slice(0, 10) || '—';
+---
+<p class="data-asof">
+  {zh ? '数据截至' : 'Data as of'} <b>{asOf}</b> ·
+  {zh
+    ? `软件目录 ${ecosystem.catalogTotal} 条（已审核 ${ecosystem.catalogReviewed}）· 自研包 ${ecosystem.packageTotal} 个（${ecosystem.groupTotal} 个在 pacman 组 linxira）`
+    : `catalog ${ecosystem.catalogTotal} entries (${ecosystem.catalogReviewed} reviewed) · ${ecosystem.packageTotal} first-party packages (${ecosystem.groupTotal} in pacman group linxira)`}
+</p>
+
+<style is:global>
+  .data-asof {
+    margin: .75rem auto 0;
+    max-width: none;
+    text-align: center;
+    font-family: var(--t-font-mono);
+    font-size: .68rem;
+    line-height: 1.7;
+    color: var(--t-text-muted);
+  }
+  .data-asof b { color: var(--t-text-secondary); font-weight: 600; }
+</style>

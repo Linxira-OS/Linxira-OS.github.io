@@ -1,9 +1,11 @@
 ---
+import DataStamp from "../../../../components/DataStamp.astro";
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
 <PageLayout lang="en" active="blog" title="One Reviewed Catalog Driving the Whole Software Ecosystem: catalog v2/v3 — Blog">
     <a href="/en/blog/" class="back">← Back to Blog</a>
     <div class="meta">2026-08-15 · Technical</div>
+    <DataStamp lang="en" publishedAt="2026-08-15" publishedFacts={[{ label: 'catalog entries', value: '93' }, { label: 'categories', value: '14' }]} />
     <h1>One Reviewed Catalog Driving the Whole Software Ecosystem: catalog v2/v3</h1>
 
     <p>Linxira's software ecosystem has several entry points: the installer's software selection, the Welcome screen's recommendations, and graphical package management. If each entry point maintained its own software list, drift would be inevitable — something in the installer but missing from Welcome; something recommended by Welcome but absent from the software manager. The catalog is the architecture that answers this: every entry point consumes the same reviewed metadata. This article covers the relationship between catalog v2 and v3, and the "GUI plans, backend executes" design.</p>

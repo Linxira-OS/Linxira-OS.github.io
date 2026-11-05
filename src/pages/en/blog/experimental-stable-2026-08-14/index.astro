@@ -1,9 +1,11 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
+import DataStamp from "../../../../components/DataStamp.astro";
 ---
 <PageLayout lang="en" active="blog" title="First Experimental Stable: 2026.08.14 Release Notes — Blog">
     <a href="/en/blog/" class="back">← Back to Blog</a>
     <div class="meta">2026-08-15 · Announcement</div>
+    <DataStamp lang="en" publishedAt="2026-08-15" publishedFacts={[{ label: 'reviewed catalog entries', value: '93' }, { label: 'first-party tools', value: '17' }, { label: 'ISO size', value: '4.79 GB' }]} />
     <h1>First Experimental Stable: 2026.08.14 Release Notes</h1>
 
     <p>On August 14, 2026, Linxira OS shipped its <strong>first experimental stable release</strong>. It is the first public version where the entire chain — from source build, to install, to daily use — has been walked end to end, and the first ISO under the Direct Arch route that can be downloaded, installed, and used as a daily system. This post is the release note: version information, release highlights, install-test results, and what changed since the betas. It is written for two audiences: people deciding whether to download it, and people who have already installed it and want to know exactly what they are running.</p>

@@ -1,9 +1,11 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
+import DataStamp from "../../../../components/DataStamp.astro";
 ---
 <PageLayout lang="zh" active="blog" title="Linxira OS 现状：从 Mint 原型到 Direct Arch — 博客">
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-08-15 · 公告</div>
+    <DataStamp lang="zh" publishedAt="2026-08-15" publishedFacts={[{ label: '软件目录', value: '93 条' }, { label: '分类', value: '14 个' }, { label: '自研工具', value: '17 个' }]} />
     <h1>Linxira OS 现状：从 Mint 原型到 Direct Arch</h1>
 
     <p>2026 年 6 月 27 日，我们发布了 Linxira OS 的介绍文章。那篇文章描述的还是一个基于 Linux Mint 的方案原型——今天的情况已经完全不同：Linxira 现在是直接基于 Arch Linux 构建的 Direct Arch 工作站，并且发布了首个实验性正式版。本文取代那篇文章的现状描述，代表 2026 年 8 月的项目状态；旧文作为历史发布记录保留。最新状态见 <a href="/zh/releases/">发布日志</a> 与 <a href="/zh/blog/kde-daily-2026-10-27/">r4 发布说明</a>。</p>

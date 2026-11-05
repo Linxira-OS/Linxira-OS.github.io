@@ -1,9 +1,11 @@
 ---
 import PageLayout from "../../../../components/PageLayout.astro";
+import DataStamp from "../../../../components/DataStamp.astro";
 ---
 <PageLayout lang="zh" active="blog" title="首个实验性正式版：2026.08.14 发布说明 — 博客">
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-08-15 · 公告</div>
+    <DataStamp lang="zh" publishedAt="2026-08-15" publishedFacts={[{ label: '已审核软件目录', value: '93 条' }, { label: '自研工具', value: '17 个' }, { label: 'ISO 体积', value: '4.79 GB' }]} />
     <h1>首个实验性正式版：2026.08.14 发布说明</h1>
 
     <p>2026 年 8 月 14 日，Linxira OS 发布了<strong>首个实验性正式版</strong>。这是从源码构建到安装使用全链路走通的第一个公开版本，也是 Direct Arch 路线下第一个「可以下载、可以安装、可以日常使用」的 ISO。本文是这份发布的说明：版本信息、发布要点、安装测试结果，以及从测试版以来的演进。它写给两类读者：正在决定要不要下载的人，以及已经装好、想弄清楚自己装的是什么的人。</p>

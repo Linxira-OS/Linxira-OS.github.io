@@ -1,0 +1,99 @@
+---
+/**
+ * DataStamp.astro — 数字的时间戳。
+ *
+ * 规范（见 AGENTS.md「数据与时间戳」）：
+ *   1. 页面上任何数字都必须来自 src/data/*（构建期生成，带 generatedAt）；
+ *   2. 展示数字的页面必须同时给出数据时间戳；
+ *   3. 历史文章保留发布时的值，但必须同时给出「发布时（日期）」与「当前（日期）」两组，
+ *      不允许只留旧值，也不允许把旧值改成现在的值。
+ *
+ * 用法：
+ *   <DataStamp lang="zh" />                        实时页：数据截至 <构建日期>
+ *   <DataStamp lang="zh" publishedAt="2026-08-14"
+ *              publishedFacts={[{ label: '软件目录', value: '93 条' }]} />
+ */
+import { ecosystem } from '../data/ecosystem';
+
+interface Fact {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  lang: 'zh' | 'en';
+  /** 历史文章：发布时的日期（YYYY-MM-DD）。给了就渲染「发布时 / 当前」两行。 */
+  publishedAt?: string;
+  /** 历史文章：发布时的数值（照抄文章里的原始记录，不要改成现在的值）。 */
+  publishedFacts?: Fact[];
+}
+
+const { lang, publishedAt, publishedFacts = [] } = Astro.props;
+const zh = lang === 'zh';
+
+/** 构建时写入的 ISO 时间，取日期部分。 */
+const asOf = (ecosystem.generatedAt || '').slice(0, 10) || '—';
+
+const currentFacts: Fact[] = [
+  { label: zh ? '软件目录' : 'Catalog entries', value: String(ecosystem.catalogTotal) },
+  { label: zh ? '已审核' : 'Reviewed', value: String(ecosystem.catalogReviewed) },
+  { label: zh ? '自研包' : 'First-party packages', value: String(ecosystem.packageTotal) }
+];
+
+const source = zh
+  ? `来自 catalog v${ecosystem.catalogVersion ?? 3}（${ecosystem.catalogRelease ?? '—'}）与 packages 仓，构建时自动统计`
+  : `computed at build time from catalog v${ecosystem.catalogVersion ?? 3} (${ecosystem.catalogRelease ?? '—'}) and the packages repo`;
+---
+
+<aside class="data-stamp" data-as-of={asOf}>
+  {publishedAt ? (
+    <>
+      <div class="data-stamp__row">
+        <span class="data-stamp__key">{zh ? '发布时' : 'At publication'}</span>
+        <span class="data-stamp__when">{publishedAt}</span>
+        <span class="data-stamp__facts">
+          {publishedFacts.map((f) => (
+            <span class="data-stamp__fact">{f.label} <b>{f.value}</b></span>
+          ))}
+        </span>
+      </div>
+      <div class="data-stamp__row data-stamp__row--now">
+        <span class="data-stamp__key">{zh ? '当前' : 'Now'}</span>
+        <span class="data-stamp__when">{asOf}</span>
+        <span class="data-stamp__facts">
+          {currentFacts.map((f) => (
+            <span class="data-stamp__fact">{f.label} <b>{f.value}</b></span>
+          ))}
+        </span>
+      </div>
+    </>
+  ) : (
+    <div class="data-stamp__row">
+      <span class="data-stamp__key">{zh ? '数据截至' : 'Data as of'}</span>
+      <span class="data-stamp__when">{asOf}</span>
+      <span class="data-stamp__facts"><span class="data-stamp__fact data-stamp__fact--muted">{source}</span></span>
+    </div>
+  )}
+</aside>
+
+<style is:global>
+  .data-stamp {
+    margin: 1.6rem 0 2rem;
+    padding: 0.7rem 0.9rem;
+    border-left: 2px solid var(--t-border-strong);
+    background: var(--t-surface-2);
+    border-radius: 0 var(--t-radius-s) var(--t-radius-s) 0;
+    font-family: var(--t-font-mono);
+    font-size: 0.7rem;
+    line-height: 1.7;
+    color: var(--t-text-muted);
+  }
+  .data-stamp__row { display: flex; flex-wrap: wrap; gap: 0.45rem 0.75rem; align-items: baseline; }
+  .data-stamp__row + .data-stamp__row { margin-top: 0.35rem; padding-top: 0.35rem; border-top: 1px dashed var(--t-border-subtle); }
+  .data-stamp__key { color: var(--t-brand); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.66rem; }
+  .data-stamp__when { color: var(--t-text-secondary); }
+  .data-stamp__facts { display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; }
+  .data-stamp__fact b { color: var(--t-text); font-weight: 600; }
+  .data-stamp__fact--muted { color: var(--t-text-muted); }
+  .data-stamp__row--now .data-stamp__key { color: var(--t-signal); }
+</style>

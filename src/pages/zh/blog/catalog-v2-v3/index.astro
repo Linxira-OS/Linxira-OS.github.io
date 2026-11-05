@@ -1,9 +1,11 @@
 ---
+import DataStamp from "../../../../components/DataStamp.astro";
 import PageLayout from "../../../../components/PageLayout.astro";
 ---
 <PageLayout lang="zh" active="blog" title="一份审核目录驱动整个软件生态：catalog v2/v3 — 博客">
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-08-15 · 技术</div>
+    <DataStamp lang="zh" publishedAt="2026-08-15" publishedFacts={[{ label: '软件目录', value: '93 条' }, { label: '分类', value: '14 个' }]} />
     <h1>一份审核目录驱动整个软件生态：catalog v2/v3</h1>
 
     <p>Linxira 的软件生态有多个入口：安装器的软件选择、Welcome 的推荐链接、图形化的软件管理。这些入口如果各维护一份软件清单，必然走向漂移——安装器里有的，欢迎页没有；欢迎页推荐的，软件管理器不显示。catalog 就是回答这个问题的架构：所有入口共享同一份经过审核的元数据。本文讲清楚 catalog v2 与 v3 的关系，以及「GUI 只规划、后端执行」的设计。</p>

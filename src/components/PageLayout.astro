@@ -6,6 +6,7 @@
  */
 import Navbar from "./Navbar.astro";
 import SiteShared from "./SiteShared.astro";
+import DataStampLine from "./DataStampLine.astro";
 
 interface Props {
   lang: "zh" | "en";
@@ -113,6 +114,7 @@ const footLinks = zh
       ))}
     </div>
     <p>{footer}</p>
+    <DataStampLine lang={lang} />
   </footer>
 </body>
 </html>
