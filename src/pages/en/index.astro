@@ -357,11 +357,11 @@ const blogPosts = await getAllPosts();
     .hero--split { padding-bottom: 5.5rem; }
     .hero-kicker { margin-bottom: 1rem; }
     .hero h1.hero-title {
-      font-size: clamp(36px, 5.2vw, 76px); line-height: 1.05; letter-spacing: -.035em;
+      font-size: clamp(34px, 5vw, 72px); line-height: 1.06; letter-spacing: -.03em;
       font-weight: 700; margin: 0 0 1.4rem;
       background: none; -webkit-text-fill-color: currentColor; color: var(--t-text); animation: none;
     }
-    .hero-title .ln { display: block; white-space: nowrap; }
+    .hero-title .ln { display: block; }
     .hero-title .grad {
       background: linear-gradient(92deg in oklab, var(--t-brand) 0%,
         color-mix(in oklab, var(--t-brand) 55%, var(--t-signal)) 45%, var(--t-signal) 100%);
@@ -410,6 +410,12 @@ const blogPosts = await getAllPosts();
     @media (max-width: 760px) {
       /* 手机上终端窗口按内容高度，别留一大片空 */
       .hero-term__body { min-height: 0; }
+    }
+
+    /* 英文标题字长比中文长：压到 54px 才能保持两行，不顶到右侧终端卡片 */
+    .hero--split h1.hero-title { font-size: clamp(30px, 4.1vw, 54px); letter-spacing: -.02em; }
+    @media (max-width: 1000px) {
+      .hero--split h1.hero-title { font-size: clamp(30px, 7vw, 48px); }
     }
 
   </style>
