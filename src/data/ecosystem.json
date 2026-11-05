@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-11-05T11:22:16.451Z",
+  "sources": {
+    "catalog": "https://raw.githubusercontent.com/Linxira-OS/linxira-catalog/main/catalog/catalog-v3.json",
+    "packages": "https://github.com/Linxira-OS/packages"
+  },
+  "catalogTotal": 107,
+  "catalogCategories": 14,
+  "catalogReviewed": 77,
+  "catalogVersion": 3,
+  "catalogRelease": "2026.10",
+  "packageTotal": 22,
+  "packageNames": [
+    "linxira-artwork",
+    "linxira-bio-sdk",
+    "linxira-catalog",
+    "linxira-completion-agent",
+    "linxira-component-manager",
+    "linxira-components",
+    "linxira-config-hub",
+    "linxira-crash-watch",
+    "linxira-gaming-manager",
+    "linxira-hardware-driver-manager",
+    "linxira-hooks",
+    "linxira-hwd-detector",
+    "linxira-kernel-manager",
+    "linxira-keyring",
+    "linxira-package-center",
+    "linxira-recovery-diagnostics",
+    "linxira-update",
+    "linxira-welcome",
+    "linxira-wiki",
+    "linxira-zeta",
+    "linxira-zeta-c-bin",
+    "linxira-zeta-ide"
+  ]
+}

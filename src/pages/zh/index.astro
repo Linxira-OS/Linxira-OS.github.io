@@ -1,7 +1,11 @@
 ---
 import Navbar from "../../components/Navbar.astro";
+import "../../styles/linxira-theme.css";
+import "../../styles/linxira-components.css";
 import { getAllPosts } from "../../data/allPosts";
 import { releases } from "../../data/releases";
+import { ecosystem } from "../../data/ecosystem";
+import HeroFx from "../../components/HeroFx.astro";
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -16,22 +20,22 @@ const blogPosts = await getAllPosts();
   <style>
     /* ==========================================================================
        Linxira 官网首页 — 科技感 + 苹果液态玻璃
-       配色沿用品牌色系（teal #20B8B0 / coral #F36F5D / 深底 #0E1417）保持不变。
+       配色沿用品牌色系（teal var(--t-brand) / coral var(--t-signal) / 深底 var(--t-bg-deep)）保持不变。
        新增：粒子网络背景、产品平级双卡、滚动揭示、统计数字动画、液态玻璃卡片。
        ========================================================================== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #0E1417; --bg-deep: #0a0f1a; --bg-alt: #141a26;
-      --ink: #e5e7eb; --ink-strong: #f1f5f9;
-      --muted: #94a3b8; --faint: #64748b; --soft: #cbd5e1;
-      --line: rgba(51, 65, 85, 0.5);
-      --teal: #20B8B0; --coral: #F36F5D;
-      --grid-line: rgba(32,184,176,0.04);
+      --bg: var(--t-bg); --bg-deep: var(--t-bg-deep); --bg-alt: var(--t-surface);
+      --ink: var(--t-text); --ink-strong: var(--t-text);
+      --muted: var(--t-text-muted); --faint: var(--t-text-muted); --soft: var(--t-text-secondary);
+      --line: var(--t-border-subtle);
+      --teal: var(--t-brand); --coral: var(--t-signal);
+      --grid-line: color-mix(in oklab, var(--t-brand) 4%, transparent);
       --glass-a: rgba(255,255,255,0.06); --glass-b: rgba(255,255,255,0.02); --glass-c: rgba(14,20,23,0.12);
       --glass-border: rgba(255,255,255,0.08);
       --glass-hi: rgba(255,255,255,0.18); --glass-hi2: rgba(255,255,255,0.06);
       --glass-sheen: rgba(255,255,255,0.10); --glass-glow: rgba(255,255,255,0.07);
-      --glow-teal: rgba(32,184,176,0.12); --glow-coral: rgba(243,111,93,0.10);
+      --glow-teal: color-mix(in oklab, var(--t-brand) 12%, transparent); --glow-coral: color-mix(in oklab, var(--t-signal) 10%, transparent);
       --term-bg: rgba(2,6,10,0.55); --term-bar: rgba(0,0,0,0.35);
     }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
@@ -80,28 +84,33 @@ const blogPosts = await getAllPosts();
     #particles { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.7; pointer-events: none; }
     .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid var(--grid-line); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
     .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid var(--grid-line); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
-    .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(32,184,176,0.15), rgba(243,111,93,0.15), transparent); pointer-events: none; }
+    .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--t-brand) 15%, transparent), color-mix(in oklab, var(--t-signal) 15%, transparent), transparent); pointer-events: none; }
     .beam-1 { top: 30%; left: 0; width: 100%; transform: rotate(-5deg); }
     .beam-2 { top: 60%; left: 0; width: 100%; transform: rotate(3deg); }
     .beam-3 { top: 45%; left: 0; width: 100%; transform: rotate(-2deg); opacity: 0.5; }
 
     .hero-content { position: relative; z-index: 1; max-width: 1000px; }
-    .hero-logo { width: 130px; height: 130px; margin-bottom: 1.8rem; filter: drop-shadow(0 0 40px rgba(32,184,176,0.35)); animation: floaty 6s ease-in-out infinite; }
+    .hero-logo { width: 130px; height: 130px; margin-bottom: 1.8rem; filter: drop-shadow(0 0 40px color-mix(in oklab, var(--t-brand) 35%, transparent)); animation: floaty 6s ease-in-out infinite; }
+    /* 浅色主题用官方深墨版 mark（同一图形的两版资产），不重绘 */
+    .hero-logo.logo-light { display: none; }
+    html[data-theme="light"] .hero-logo.logo-dark { display: none; }
+    html[data-theme="light"] .hero-logo.logo-light { display: block; }
     @keyframes floaty { 0%,100%{ transform: translateY(0);} 50%{ transform: translateY(-8px);} }
     .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, var(--teal), var(--ink), var(--coral)); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
     @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
     .tagline { font-size: 1.3rem; color: var(--muted); margin-bottom: 0.3rem; }
-    .tagline .caret-ty { display: inline-block; width: 2px; height: 1.3em; margin-left: 2px; vertical-align: text-bottom; background: #20B8B0; animation: blink-ty 1s step-end infinite; }
+    .tagline .caret-ty { display: inline-block; width: 2px; height: 1.3em; margin-left: 2px; vertical-align: text-bottom; background: var(--t-brand); animation: blink-ty 1s step-end infinite; }
     @keyframes blink-ty { 0%,49%{opacity:1} 50%,100%{opacity:0} }
     .en-tagline { font-size: 1rem; color: var(--faint); margin-bottom: 2rem; letter-spacing: 3px; text-transform: uppercase; }
     .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: var(--soft); font-size: 1.02rem; }
-    .hero-desc strong { color: #20B8B0; }
+    .hero-desc strong { color: var(--t-brand); }
     .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.8rem; }
-    .cta { display: inline-block; position: relative; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 12px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
+    .cta { display: inline-flex; align-items: center; justify-content: center; position: relative; height: 42px; padding: 0 24px; background: var(--t-brand); color: var(--t-brand-ink); font-weight: 560; font-size: .94rem; border-radius: 999px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; box-shadow: 0 4px 20px -12px var(--t-brand); }
+    .cta:hover { background: var(--t-brand-hover); }
     /* 旋转渐变描边（hover 亮起 · DeepSeek 同款：conic-gradient + mask exclude） */
     .cta::before {
       content: ''; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; pointer-events: none;
-      background: conic-gradient(from var(--border-angle, 0deg), rgba(32,184,176,0.20) 0%, rgba(32,184,176,0.75) 25%, rgba(243,111,93,0.20) 50%, rgba(32,184,176,0.75) 75%, rgba(32,184,176,0.20) 100%);
+      background: conic-gradient(from var(--border-angle, 0deg), color-mix(in oklab, var(--t-brand) 20%, transparent) 0%, color-mix(in oklab, var(--t-brand) 75%, transparent) 25%, color-mix(in oklab, var(--t-signal) 20%, transparent) 50%, color-mix(in oklab, var(--t-brand) 75%, transparent) 75%, color-mix(in oklab, var(--t-brand) 20%, transparent) 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -110,9 +119,9 @@ const blogPosts = await getAllPosts();
       animation: rotating-border 6s linear infinite;
     }
     .cta:hover::before { opacity: 1; }
-    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(32,184,176,0.4); text-decoration: none; }
-    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: var(--ink-strong); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
-    .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px color-mix(in oklab, var(--t-brand) 40%, transparent); text-decoration: none; }
+    .cta-ghost { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; color: var(--t-text); border: 1px solid var(--t-border-strong); border-radius: 999px; text-decoration: none; font-weight: 500; font-size: .92rem; transition: all 0.2s; }
+    .cta-ghost:hover { border-color: var(--t-signal); color: var(--t-text); text-decoration: none; }
 
     /* ---------- 终端演示（一行命令，掌控一切） ---------- */
     .terminal-section { position: relative; overflow: hidden; }
@@ -120,33 +129,33 @@ const blogPosts = await getAllPosts();
     .terminal { max-width: 740px; margin: 0 auto; border-radius: 14px; overflow: hidden; text-align: left; }
     .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: var(--term-bar); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .term-dot { width: 11px; height: 11px; border-radius: 50%; }
-    .term-dot.red { background: #ff5f57; } .term-dot.yellow { background: #febc2e; } .term-dot.green { background: #28c840; }
-    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: #64748b; font-family: ui-monospace, 'Cascadia Mono', monospace; }
+    .term-dot.red { background: var(--t-danger); } .term-dot.yellow { background: var(--t-warning); } .term-dot.green { background: var(--t-success); }
+    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: var(--t-text-muted); font-family: ui-monospace, 'Cascadia Mono', monospace; }
     .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: var(--term-bg); }
-    .term-line { color: #cbd5e1; margin-bottom: 0.35rem; white-space: pre-wrap; }
-    .term-prompt { color: #20B8B0; font-weight: 700; }
-    .term-out { color: #64748b; margin-bottom: 0.95rem; }
-    .term-typing::after { content: '▍'; color: #20B8B0; animation: blink-ty 1s step-end infinite; }
+    .term-line { color: var(--t-text-secondary); margin-bottom: 0.35rem; white-space: pre-wrap; }
+    .term-prompt { color: var(--t-brand); font-weight: 700; }
+    .term-out { color: var(--t-text-muted); margin-bottom: 0.95rem; }
+    .term-typing::after { content: '▍'; color: var(--t-brand); animation: blink-ty 1s step-end infinite; }
 
     /* ---------- 产品平级双卡（Zeta + Bio SDK） ---------- */
     .product-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 860px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
     .pcard { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.6rem 1.7rem; border-radius: 20px; text-decoration: none; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; will-change: transform; }
-    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, var(--t-brand) 12%, transparent), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .pcard.zeta::after { background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
     .pcard:hover { border-color: rgba(255,255,255,0.18); box-shadow: 0 22px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12); }
     .pcard:hover::after { opacity: 1; }
     .pcard .pmark { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 10px; font-weight: 800; font-size: 1.1rem; }
-    .pcard.zeta .pmark { color: #E20613; background: rgba(226,6,19,0.12); }
-    .pcard.sdk .pmark { color: #20B8B0; background: rgba(32,184,176,0.14); }
+    .pcard.zeta .pmark { color: var(--t-danger); background: rgba(226,6,19,0.12); }
+    .pcard.sdk .pmark { color: var(--t-brand); background: color-mix(in oklab, var(--t-brand) 14%, transparent); }
     .pcard h3 { color: var(--ink-strong); font-size: 1.18rem; font-weight: 600; }
     .pcard p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; flex: 1; }
     .pcard .pgo { font-size: 0.85rem; font-weight: 600; }
-    .pcard.zeta .pgo { color: #E20613; }
-    .pcard.sdk .pgo { color: #20B8B0; }
+    .pcard.zeta .pgo { color: var(--t-danger); }
+    .pcard.sdk .pgo { color: var(--t-brand); }
 
     .badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-    .badge { font-size: 0.8rem; background: rgba(32,184,176,0.12); color: #20B8B0; padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid rgba(32,184,176,0.25); }
-    .badge-coral { background: rgba(243,111,93,0.12); color: #F36F5D; border-color: rgba(243,111,93,0.25); }
+    .badge { font-size: 0.8rem; background: color-mix(in oklab, var(--t-brand) 12%, transparent); color: var(--t-brand); padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--t-brand) 25%, transparent); }
+    .badge-coral { background: color-mix(in oklab, var(--t-signal) 12%, transparent); color: var(--t-signal); border-color: color-mix(in oklab, var(--t-signal) 25%, transparent); }
 
     /* ---------- Hero 主打卡（开始使用下方 · 单张 Zeta） ---------- */
         .product-feature { max-width: 560px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
@@ -159,10 +168,10 @@ const blogPosts = await getAllPosts();
     .wsl-text li { color: var(--soft); margin-bottom: 0.5rem; line-height: 1.6; }
     .wsl-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
     .wsl-cmd-title { font-weight: 700; margin-bottom: 0.8rem; color: var(--ink); }
-    .wsl-cmd pre { background: rgba(2,6,12,0.65); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; }
-    .wsl-cmd pre code { background: none; color: #a7f3d0; font-size: 0.86rem; }
-    .wsl-note { margin-top: 0.8rem; font-size: 0.82rem; color: #64748b; line-height: 1.7; }
-    .wsl-note code { color: #cbd5e1; }
+    .wsl-cmd pre { background: rgba(2,6,12,0.65); border: 1px solid var(--t-border-subtle); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; }
+    .wsl-cmd pre code { background: none; color: var(--t-brand-soft); font-size: 0.86rem; }
+    .wsl-note { margin-top: 0.8rem; font-size: 0.82rem; color: var(--t-text-muted); line-height: 1.7; }
+    .wsl-note code { color: var(--t-text-secondary); }
     @media (max-width: 900px) { .wsl-grid { grid-template-columns: 1fr; } }
 
 
@@ -179,7 +188,7 @@ const blogPosts = await getAllPosts();
       pointer-events: none;
     }
     .scanline { position: absolute; left: 0; right: 0; height: 240px; top: -240px; pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(32,184,176,0.07), transparent);
+      background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--t-brand) 7%, transparent), transparent);
       animation: scan 8s linear infinite; mix-blend-mode: screen; }
     @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(calc(100vh + 240px)); } }
     .product-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; perspective: 1400px; }
@@ -187,21 +196,21 @@ const blogPosts = await getAllPosts();
     .show-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.2rem; }
     .show-mark { display: inline-flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border-radius: 14px; font-weight: 800; font-size: 1.3rem; }
     .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
-    .show-card.zeta .show-mark { color: #E20613; background: rgba(226,6,19,0.14); }
-    .show-card.sdk .show-mark { color: #20B8B0; background: rgba(32,184,176,0.16); }
+    .show-card.zeta .show-mark { color: var(--t-danger); background: rgba(226,6,19,0.14); }
+    .show-card.sdk .show-mark { color: var(--t-brand); background: color-mix(in oklab, var(--t-brand) 16%, transparent); }
     .show-card h3 { font-size: 1.9rem; font-weight: 700; color: var(--ink-strong); }
     .show-sub { font-size: 0.86rem; color: var(--faint); letter-spacing: 1px; text-transform: uppercase; }
     .show-card .show-desc { color: var(--muted); font-size: 0.97rem; line-height: 1.6; flex: 1; }
     .show-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .show-chips span { font-size: 0.78rem; color: var(--soft); background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
+    .show-chips span { font-size: 0.78rem; color: var(--soft); background: color-mix(in oklab, var(--t-brand) 10%, transparent); border: 1px solid color-mix(in oklab, var(--t-brand) 22%, transparent); padding: 0.3rem 0.85rem; border-radius: 999px; }
     .show-card.zeta .show-chips span { background: rgba(226,6,19,0.10); border-color: rgba(226,6,19,0.24); }
     .show-stats { display: flex; gap: 1.6rem; margin-top: 0.2rem; }
     .show-stats .num { font-size: 1.5rem; font-weight: 700; color: var(--ink-strong); }
     .show-stats .lbl { font-size: 0.76rem; color: var(--faint); }
     .show-cta { font-weight: 600; font-size: 0.95rem; margin-top: 0.4rem; }
-    .show-card.zeta .show-cta { color: #E20613; }
-    .show-card.sdk .show-cta { color: #20B8B0; }
-    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .show-card.zeta .show-cta { color: var(--t-danger); }
+    .show-card.sdk .show-cta { color: var(--t-brand); }
+    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, var(--t-brand) 12%, transparent), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .show-card.zeta::after { background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
     .show-card:hover::after { opacity: 1; }
     .show-card:hover { border-color: rgba(255,255,255,0.24); }
@@ -212,23 +221,23 @@ const blogPosts = await getAllPosts();
     .section-block-alt2 { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); }
     .section { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
     .section-header { text-align: center; margin-bottom: 3rem; }
-    .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--t-brand), var(--t-signal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .section-subtitle { color: var(--faint); font-size: 1rem; }
-    .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, #20B8B0, #F36F5D); border-radius: 2px; }
+    .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, var(--t-brand), var(--t-signal)); border-radius: 2px; }
 
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
     .feature { padding: 1.4rem 1.5rem; border-radius: 18px; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
-    .feature:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
+    .feature:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 40%, transparent); }
     .feature .feature-icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
-    .feature h3 { color: #20B8B0; margin-bottom: 0.5rem; font-size: 1.08rem; }
+    .feature h3 { color: var(--t-brand); margin-bottom: 0.5rem; font-size: 1.08rem; }
     .feature p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
 
     .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
     .about-text h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 1rem; }
     .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
-    .about-text strong { color: #20B8B0; }
+    .about-text strong { color: var(--t-brand); }
     .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--t-brand), var(--t-signal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
     .stat-card { padding: 1.2rem 0.8rem; border-radius: 16px; text-align: center; }
 
@@ -236,20 +245,20 @@ const blogPosts = await getAllPosts();
     .blog-card { display: block; padding: 1.5rem; border-radius: 16px; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
 
     .ecosystem-link { display: block; text-align: center; padding: 2.4rem 2rem; border-radius: 20px; text-decoration: none; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
-    .ecosystem-link:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
-    .ecosystem-link h3 { color: #20B8B0; font-size: 1.3rem; margin-bottom: 0.6rem; }
+    .ecosystem-link:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 50%, transparent); }
+    .ecosystem-link h3 { color: var(--t-brand); font-size: 1.3rem; margin-bottom: 0.6rem; }
     .ecosystem-link p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
-    .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
+    .eco-tag { font-size: 0.78rem; background: color-mix(in oklab, var(--t-brand) 10%, transparent); color: var(--t-brand); border: 1px solid color-mix(in oklab, var(--t-brand) 20%, transparent); padding: 0.25rem 0.8rem; border-radius: 999px; }
 
     .blog-section { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-    .blog-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
+    .blog-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 40%, transparent); }
     .blog-date { font-size: 0.8rem; color: var(--faint); margin-bottom: 0.5rem; }
     .blog-title { font-size: 1.2rem; font-weight: 600; color: var(--ink-strong); margin-bottom: 0.5rem; }
     .blog-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-    .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
-    .blog-tag.tech { background: rgba(139,92,246,0.15); color: #a78bfa; }
+    .blog-tag { display: inline-block; font-size: 0.7rem; background: color-mix(in oklab, var(--t-brand) 15%, transparent); color: var(--t-brand); padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+    .blog-tag.tech { background: rgba(139,92,246,0.15); color: var(--t-signal); }
 
     .release-section { padding: 4rem 0; }
     .release-card h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 0.8rem; }
@@ -274,8 +283,8 @@ const blogPosts = await getAllPosts();
     .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
     .ticker-wrap:hover .ticker { animation-play-state: paused; }
     .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
-    .ticker-item b { color: #20B8B0; font-weight: 600; }
-    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: #20B8B0; box-shadow: 0 0 10px rgba(32,184,176,0.8); flex: none; }
+    .ticker-item b { color: var(--t-brand); font-weight: 600; }
+    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--t-brand); box-shadow: 0 0 10px color-mix(in oklab, var(--t-brand) 80%, transparent); flex: none; }
     @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     /* ---------- 实机亮点轮播（模拟界面 · 自动播放） ---------- */
@@ -288,11 +297,11 @@ const blogPosts = await getAllPosts();
     .slide-caption .c-t { font-size: 1.2rem; font-weight: 700; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,0.65); }
     .slide-caption .c-s { font-size: 0.85rem; color: rgba(255,255,255,0.88); text-shadow: 0 1px 8px rgba(0,0,0,0.65); }
     .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(10,15,26,0.55); color: var(--ink-strong); cursor: pointer; font-size: 1.05rem; line-height: 1; transition: all 0.2s; }
-    .nav-btn:hover { border-color: #20B8B0; color: #20B8B0; background: rgba(10,15,26,0.8); }
+    .nav-btn:hover { border-color: var(--t-brand); color: var(--t-brand); background: rgba(10,15,26,0.8); }
     .nav-prev { left: 1.1rem; } .nav-next { right: 1.1rem; }
     .slide-dots { position: absolute; bottom: 1.1rem; right: 1.5rem; z-index: 3; display: flex; gap: 0.45rem; }
     .slide-dots button { width: 9px; height: 9px; border-radius: 999px; border: none; background: rgba(255,255,255,0.4); cursor: pointer; padding: 0; transition: all 0.3s; }
-    .slide-dots button.active { width: 26px; background: #20B8B0; }
+    .slide-dots button.active { width: 26px; background: var(--t-brand); }
 
     /* ---------- 生态分类 / 软件双行滚动 ---------- */
     .eco-marquee { position: relative; overflow: hidden; margin-top: 1.7rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
@@ -300,8 +309,8 @@ const blogPosts = await getAllPosts();
     .eco-track { display: flex; width: max-content; gap: 0.7rem; animation: eco-scroll 44s linear infinite; }
     .eco-track.rev { animation-direction: reverse; animation-duration: 54s; }
     .eco-marquee:hover .eco-track { animation-play-state: paused; }
-    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.2); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
-    .eco-track.rev span { background: rgba(243,111,93,0.07); border-color: rgba(243,111,93,0.2); }
+    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: color-mix(in oklab, var(--t-brand) 8%, transparent); border: 1px solid color-mix(in oklab, var(--t-brand) 20%, transparent); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
+    .eco-track.rev span { background: color-mix(in oklab, var(--t-signal) 7%, transparent); border-color: color-mix(in oklab, var(--t-signal) 20%, transparent); }
     @keyframes eco-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     @media (prefers-reduced-motion: reduce) {
@@ -313,14 +322,14 @@ const blogPosts = await getAllPosts();
 
     /* ---------- 现代化动效增强 ---------- */
     /* 顶部滚动进度条 */
-    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; z-index: 1200; background: linear-gradient(90deg, #20B8B0, #F36F5D); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; z-index: 1200; background: linear-gradient(90deg, var(--t-brand), var(--t-signal)); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
     /* 返回顶部按钮 */
     .back-top { position: fixed; right: 1.6rem; bottom: 1.6rem; z-index: 900; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: rgba(10,15,26,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ink-strong); font-size: 1.1rem; line-height: 1; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .3s, transform .3s, visibility .3s, border-color .2s, color .2s, box-shadow .3s; }
     .back-top.show { opacity: 1; visibility: visible; transform: none; }
-    .back-top:hover { border-color: #20B8B0; color: #20B8B0; box-shadow: 0 8px 24px rgba(32,184,176,0.25); }
+    .back-top:hover { border-color: var(--t-brand); color: var(--t-brand); box-shadow: 0 8px 24px color-mix(in oklab, var(--t-brand) 25%, transparent); }
     /* feature 卡片光标追光 */
     .feature { position: relative; overflow: hidden; }
-    .feature::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--fx,50%) var(--fy,50%), rgba(32,184,176,0.10), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .feature::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--fx,50%) var(--fy,50%), color-mix(in oklab, var(--t-brand) 10%, transparent), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
     .feature:hover::after { opacity: 1; }
     /* 区块分隔线生长动画 */
     .section-divider { transform: scaleX(0); transform-origin: center; transition: transform .8s cubic-bezier(.22,.61,.36,1) .25s; }
@@ -351,16 +360,19 @@ const blogPosts = await getAllPosts();
     <div class="beam beam-2"></div>
     <div class="beam beam-3"></div>
     <div class="hero-content">
-      <img src="/assets/linxira-l-on-dark.svg" alt="Linxira OS" class="hero-logo reveal in">
+      <img src="/assets/linxira-l-on-dark.svg" alt="Linxira OS" class="hero-logo logo-dark reveal in">
+      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo logo-light reveal in">
+      <p class="lx-kicker hero-kicker reveal in">Linxira OS · Arch Linux · 面向科学计算</p>
       <h1 class="reveal in">Linxira OS</h1>
       <p class="tagline reveal in reveal-d1">为科学计算而生的 Arch Linux 桌面</p>
       <p class="en-tagline reveal in reveal-d1">Desktop Supercomputer · Direct Arch · 面向研究者</p>
-      <p class="hero-desc reveal in reveal-d2">基于 <strong>Arch Linux</strong> 构建的个人科学工作站发行版——开箱即用的 <strong>KDE Plasma</strong> 桌面、<strong>93 款精选软件</strong> 的审核目录、<strong>双内核 + 快照</strong> 的滚动更新安全网、紧跟上游的 <strong>安全补丁</strong>，以及 <strong>容器化复现</strong> 的科研工作流。面向理科生、研究人员、开发者与个人用户：高性能、可定制、随时更新，既是一台可以日常使用的电脑，也是一台随时候命的计算设备。</p>
+      <p class="hero-desc reveal in reveal-d2">基于 <strong>Arch Linux</strong> 构建的个人科学工作站发行版——开箱即用的 <strong>KDE Plasma</strong> 桌面、<strong>{ecosystem.catalogTotal} 款精选软件</strong> 的审核目录、<strong>双内核 + 快照</strong> 的滚动更新安全网、紧跟上游的 <strong>安全补丁</strong>，以及 <strong>容器化复现</strong> 的科研工作流。面向理科生、研究人员、开发者与个人用户：高性能、可定制、随时更新，既是一台可以日常使用的电脑，也是一台随时候命的计算设备。</p>
       <div class="hero-ctas reveal in reveal-d3">
         <a href="/zh/docs/" class="cta">开始使用</a>
         <a href="/zh/download/" class="cta-ghost">下载 ISO →</a>
         <a href="/zh/docs/ecosystem/" class="cta-ghost">浏览软件生态</a>
       </div>
+      <HeroFx lang="zh" />
       <div class="product-feature reveal in reveal-d3">
         <a href="/zeta/zh/" class="pcard zeta glass">
           <span class="pmark">Z</span>
@@ -368,11 +380,6 @@ const blogPosts = await getAllPosts();
           <p>一个终端工作区装下整套工具：标签页与可分裂的真实终端窗格，编码 Agent（zetacode）、编辑器与终端 IDE 随叫随到。Rust 编写，鼠标优先。</p>
           <span class="pgo">探索 Zeta →</span>
         </a>
-      </div>
-      <div class="badges reveal in reveal-d4">
-        <span class="badge">最新镜像批次已完成</span>
-        <span class="badge">签名软件仓库 [linxira]</span>
-        <span class="badge badge-coral">最新镜像 · {releases.iso.label}</span>
       </div>
     </div>
   </section>
@@ -382,14 +389,14 @@ const blogPosts = await getAllPosts();
     <div class="ticker">
       <span class="ticker-item"><span class="tdot"></span><b>最新镜像批次</b> 已完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
       <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
-      <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
-      <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> 款审核软件 · <b>{ecosystem.catalogCategories}</b> 个分类</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> 官方镜像 · 离线仓库随盘分发</span>
       <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
       <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
       <span class="ticker-item"><span class="tdot"></span><b>最新镜像批次</b> 已完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
       <span class="ticker-item"><span class="tdot"></span>签名软件仓库 <b>[linxira]</b> · pacman 可追踪更新</span>
-      <span class="ticker-item"><span class="tdot"></span><b>93</b> 款审核软件 · <b>14</b> 个分类</span>
-      <span class="ticker-item"><span class="tdot"></span><b>804</b> 个离线包随 ISO 分发</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> 款审核软件 · <b>{ecosystem.catalogCategories}</b> 个分类</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> 官方镜像 · 离线仓库随盘分发</span>
       <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
       <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
     </div>
@@ -664,8 +671,8 @@ wsl -d linxira</code></pre>
       </div>
       <div class="features">
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch 桌面</h3><p>KDE Plasma 桌面直接基于 Arch 官方仓库构建，软件最新、性能最优。双内核（linux + linux-lts）作为滚动更新的兜底。</p></div>
-        <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>93 款审核软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
-        <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>17 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} 款审核软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
+        <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>{ecosystem.packageTotal} 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>严谨的软件来源</h3><p>以官方仓库与审核目录为准。野生 AUR 包未经审核、由用户个人维护，常存在质量问题与安全隐患，请勿随意启用。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🛡️</span><h3>滚动更新 · 紧跟安全补丁</h3><p>上游一发布补丁，滚动更新即可跟进修复高危 CVE，无需等待发行版统一调度。配合 Timeshift 快照 + grub-btrfs 回滚 + 双内核，安全与稳定兼得。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🐳</span><h3>容器化科研复现</h3><p>Podman、Distrobox、Apptainer 开箱即用——拉取别人的环境、复现实验结果、发布自己的镜像，无损且低开销。</p></div>
@@ -687,9 +694,9 @@ wsl -d linxira</code></pre>
           <p><strong>离线开箱即用，联网更完整</strong>：ISO 附带 Plasma 桌面与预装软件，无网也能进入可用系统；但绝大多数额外应用与第三方桌面仍需<strong>联网安装</strong>。校园网、内网环境请先确认网络可达。</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card glass reveal reveal-d1"><div class="stat-num" data-count="93">0</div><div class="stat-label">审核软件</div></div>
-          <div class="stat-card glass reveal reveal-d2"><div class="stat-num" data-count="17">0</div><div class="stat-label">自研工具</div></div>
-          <div class="stat-card glass reveal reveal-d3"><div class="stat-num" data-count="804">0</div><div class="stat-label">离线包</div></div>
+          <div class="stat-card glass reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">审核软件</div></div>
+          <div class="stat-card glass reveal reveal-d2"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">自研工具</div></div>
+          <div class="stat-card glass reveal reveal-d3"><div class="stat-num" data-count={ecosystem.catalogCategories}>0</div><div class="stat-label">应用分类</div></div>
         </div>
       </div>
     </div>
@@ -705,7 +712,7 @@ wsl -d linxira</code></pre>
       </div>
       <a href="/zh/docs/ecosystem/" class="ecosystem-link glass reveal">
         <h3>浏览完整软件目录 →</h3>
-        <p>93 款精选软件，14 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
+        <p>{ecosystem.catalogTotal} 款精选软件，{ecosystem.catalogCategories} 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">容器</span><span class="eco-tag">开发工具</span><span class="eco-tag">生信工作流</span><span class="eco-tag">科学计算</span><span class="eco-tag">AI 编码</span><span class="eco-tag">办公</span><span class="eco-tag">游戏</span>
         </div>
@@ -737,7 +744,7 @@ wsl -d linxira</code></pre>
         <a href="/zh/security/" class="cta-ghost" style="padding:0.8rem 1.8rem;">安全中心</a>
         <div class="release-status-line">
           <span class="release-item">✅ 最新镜像批次完成（ISO {releases.iso.label} + WSL {releases.wsl.date}）</span>
-          <span class="release-item">🛠️ 后续版本由源码自建（<a href="/zh/docs/building/" style="color:#20B8B0;">构建指南</a>）</span>
+          <span class="release-item">🛠️ 后续版本由源码自建（<a href="/zh/docs/building/" style="color:var(--t-brand);">构建指南</a>）</span>
           <span class="release-item">📦 {releases.iso.label} ISO 已上架 GitCode（LFS 直传）</span>
         </div>
       </div>
@@ -765,7 +772,7 @@ wsl -d linxira</code></pre>
     </div>
   </section>
 
-  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。品牌资产见 <a href="/zh/docs/brand-assets/" style="color:#64748b;">品牌资产政策</a>。</p></footer>
+  <footer><p>Linxira OS 直接基于 Arch Linux 构建，是与 Arch Linux 无隶属关系且未经其官方认可的独立项目。品牌资产见 <a href="/zh/docs/brand-assets/" style="color:var(--t-text-muted);">品牌资产政策</a>。</p></footer>
 
   <button class="back-top" id="backTop" type="button" aria-label="返回顶部">↑</button>
 

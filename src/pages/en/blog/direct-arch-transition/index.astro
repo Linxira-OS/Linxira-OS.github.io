@@ -43,15 +43,15 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <p>This post is the "state of the union" — it answers "what is it now." The "why it is designed this way" questions are covered one by one by the technical articles in this series: signed repositories and supply-chain security, the reviewed catalog, btrfs snapshot rollback, headless mode, the AI toolchain, and the beginner's guide design. If you only care about downloading, head straight to the <a href="/en/download/">download page</a>.</p>
     <p>One usage suggestion to close with: after installation, walk through the <a href="/en/docs/quick-start/">quick start guide</a> to enable the signed repository and update the system, then install software as needed; when something goes wrong, start with the <a href="/en/docs/faq/">FAQ</a>. The system update model is rolling, and paired with btrfs snapshot rollback, daily maintenance is no heavier than on a fixed-release distribution — which is one of the most worth-experiencing parts of the current state.</p>
 <style>
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    strong { color: #e2e8f0; }
+    .meta { color: var(--t-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: var(--t-text); margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+    h3 { font-size: 1.15rem; color: var(--t-text); margin: 1.5rem 0 0.5rem; }
+    strong { color: var(--t-text); }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
-    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
-    pre code { background: none; color: #cbd5e1; padding: 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--t-border-subtle); color: var(--t-text); font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid var(--t-border-subtle); color: var(--t-text-muted); font-size: 0.9rem; }
+    pre { background: var(--t-bg-deep); border: 1px solid var(--t-border-subtle); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: var(--t-text-secondary); padding: 0; }
   </style>
 </PageLayout>

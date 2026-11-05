@@ -54,15 +54,15 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <p>演练的意义不在于「恢复」本身，而在于确认：当坏更新真的发生时，你只需要重启、选快照、继续工作——而不是在坏掉的系统上查文档。</p>
     <p>还有一点心理层面的价值：知道「随时能回退」会改变你对待更新的态度。滚动更新的使用者常有两种极端——要么长期不更新怕出问题，要么盲目更新赌运气。快照回滚把第三种可能变成现实：放心更新，出问题就回来。系统自愈不是保证永不失败，而是保证失败有退路，而退路是事先铺好的。</p>
 <style>
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    strong { color: #e2e8f0; }
+    .meta { color: var(--t-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: var(--t-text); margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+    h3 { font-size: 1.15rem; color: var(--t-text); margin: 1.5rem 0 0.5rem; }
+    strong { color: var(--t-text); }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
-    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
-    pre code { background: none; color: #cbd5e1; padding: 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--t-border-subtle); color: var(--t-text); font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid var(--t-border-subtle); color: var(--t-text-muted); font-size: 0.9rem; }
+    pre { background: var(--t-bg-deep); border: 1px solid var(--t-border-subtle); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: var(--t-text-secondary); padding: 0; }
   </style>
 </PageLayout>

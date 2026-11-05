@@ -5,7 +5,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <a href="/zh/blog/" class="back">← 返回博客</a>
     <div class="meta">2026-06-27 · 公告</div>
     <h1>Linxira OS 介绍</h1>
-    <p class="superseded"><strong>历史文章（2026-06-27）：</strong>本文记录的是早期基于 Linux Mint/Ubuntu 的方案，该基础已于 2026-08 放弃。Linxira OS 现直接基于 Arch Linux，公开镜像已发布并可日常使用（当前 <code>2026.10.27-r4</code>）：现状请以<a href="/zh/blog/kde-daily-2026-10-27/" style="color:#20B8B0;">最新发布说明</a>、首页与文档为准。</p>
+    <p class="superseded"><strong>历史文章（2026-06-27）：</strong>本文记录的是早期基于 Linux Mint/Ubuntu 的方案，该基础已于 2026-08 放弃。Linxira OS 现直接基于 Arch Linux，公开镜像已发布并可日常使用（当前 <code>2026.10.27-r4</code>）：现状请以<a href="/zh/blog/kde-daily-2026-10-27/" style="color:var(--t-brand);">最新发布说明</a>、首页与文档为准。</p>
 
     <p><strong>Linxira OS</strong> 是一个独立的 Linux 发行版，专为科学计算和 AI 开发而构建。</p>
 
@@ -63,16 +63,16 @@ import PageLayout from "../../../../components/PageLayout.astro";
     <p>当前 Scale L 已取代早期棱镜光谱方案：仪器青绿 <code>#20B8B0</code> 构成主标识，珊瑚红 <code>#F36F5D</code> 标记测量终点，深墨色 <code>#0E1417</code> 定义参考轴，浅水色 <code>#E8F7F6</code> 绘制科学刻度。</p>
 
     <h2>当时的下一步</h2>
-    <p>按当时的路线图，下一步是 v1.0、工作流模板与配置中心。其中配置中心已作为 <code>config-hub</code> 上线，v1.0 的说法被滚动发布取代：项目现在按 Arch 节奏更新，具体版本见 <a href="/zh/releases/" style="color:#20B8B0;">发布日志</a>。</p>
+    <p>按当时的路线图，下一步是 v1.0、工作流模板与配置中心。其中配置中心已作为 <code>config-hub</code> 上线，v1.0 的说法被滚动发布取代：项目现在按 Arch 节奏更新，具体版本见 <a href="/zh/releases/" style="color:var(--t-brand);">发布日志</a>。</p>
 <style>
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    .superseded { padding: 1rem; margin-bottom: 2rem; color: #fde68a; background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    strong { color: #e2e8f0; }
+    .meta { color: var(--t-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    .superseded { padding: 1rem; margin-bottom: 2rem; color: var(--t-warning); background: rgba(120,53,15,0.3); border: 1px solid rgba(245,158,11,0.5); border-radius: 6px; }
+    h2 { font-size: 1.4rem; color: var(--t-text); margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+    h3 { font-size: 1.15rem; color: var(--t-text); margin: 1.5rem 0 0.5rem; }
+    strong { color: var(--t-text); }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--t-border-subtle); color: var(--t-text); font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid var(--t-border-subtle); color: var(--t-text-muted); font-size: 0.9rem; }
   </style>
 </PageLayout>

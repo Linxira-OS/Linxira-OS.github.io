@@ -39,8 +39,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 取不到就沿用仓库里的 src/data/releases.json 快照,构建不会因此失败。
-      - name: Refresh release data (ISO + WSL) and Bio SDK facts
+      # token 唯一真相源在 linxira-artwork 仓；这里校验三份副本没有漂移。
+      - name: Check theme tokens are in sync
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/Linxira-OS/linxira-artwork/master/tokens/linxira-theme.css -o /tmp/linxira-theme.css
+          diff -u /tmp/linxira-theme.css src/styles/linxira-theme.css
+
+      # 取不到就沿用仓库里的 src/data/*.json 快照,构建不会因此失败。
+      - name: Refresh release / Bio SDK / ecosystem data
         run: npm run fetch:data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

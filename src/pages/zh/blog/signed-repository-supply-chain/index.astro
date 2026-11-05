@@ -55,15 +55,15 @@ SigLevel = Required DatabaseOptional</code></pre>
     <p>如果你想验证这套体系，或者自己构建、复现这些包，参见 <a href="/zh/docs/building/">构建 ISO</a> 文档——构建指南会用到与发布相同的仓库与签名机制。供应链安全不是一次配置，而是一条从 PKGBUILD 到 pacman 的完整链路，每一环都可审计、可复现。</p>
     <p>最后回到开头的威胁模型做个总结：数据库被替换——被数据库签名拦截；包被篡改——被包签名拦截；包来自不可控源头——被 check-boundaries.sh 在构建前拦截。三层各守一个攻击面，用户侧不需要为任何一层做额外操作，全部在安装与更新时自动生效。</p>
 <style>
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    strong { color: #e2e8f0; }
+    .meta { color: var(--t-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: var(--t-text); margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+    h3 { font-size: 1.15rem; color: var(--t-text); margin: 1.5rem 0 0.5rem; }
+    strong { color: var(--t-text); }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
-    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
-    pre code { background: none; color: #cbd5e1; padding: 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--t-border-subtle); color: var(--t-text); font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid var(--t-border-subtle); color: var(--t-text-muted); font-size: 0.9rem; }
+    pre { background: var(--t-bg-deep); border: 1px solid var(--t-border-subtle); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: var(--t-text-secondary); padding: 0; }
   </style>
 </PageLayout>

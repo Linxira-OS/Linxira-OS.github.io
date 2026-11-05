@@ -54,15 +54,15 @@ linxira-config headless status    # 查看当前模式</code></pre>
     <p>一句话：桌面 / 无桌面是「你想要什么形态」，无头模式是「现在要临时变成什么样」。两者不冲突，也没有必要互相替代。完整的桌面与服务器模式说明见 <a href="/zh/docs/desktop/">桌面与服务器模式</a> 文档。</p>
     <p>用安装场景举例会更直观：如果目标就是一台长期跑任务的纯服务器，安装时直接选「服务器（无桌面）」最合适，系统从第一天起就是纯终端；如果目标是桌面工作站但偶尔有长任务，选 KDE Plasma，需要时用无头模式临时关掉桌面。前者省掉了「装了个用不上的桌面」，后者省掉了「临时想要桌面却要重装系统」。两种选择由安装时的一步决定，之后随时可以用 <code>linxira-config</code> 或自行安装桌面来调整。</p>
 <style>
-    .meta { color: #64748b; font-size: 0.85rem; margin-bottom: 2rem; }
-    h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid rgba(51,65,85,0.3); }
-    h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-    strong { color: #e2e8f0; }
+    .meta { color: var(--t-text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    h2 { font-size: 1.4rem; color: var(--t-text); margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+    h3 { font-size: 1.15rem; color: var(--t-text); margin: 1.5rem 0 0.5rem; }
+    strong { color: var(--t-text); }
     li { margin-bottom: 0.3rem; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid rgba(51,65,85,0.5); color: #e2e8f0; font-size: 0.9rem; }
-    td { padding: 0.6rem; border-bottom: 1px solid rgba(51,65,85,0.3); color: #94a3b8; font-size: 0.9rem; }
-    pre { background: #0a0f1a; border: 1px solid rgba(51,65,85,0.5); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
-    pre code { background: none; color: #cbd5e1; padding: 0; }
+    th { text-align: left; padding: 0.6rem; border-bottom: 2px solid var(--t-border-subtle); color: var(--t-text); font-size: 0.9rem; }
+    td { padding: 0.6rem; border-bottom: 1px solid var(--t-border-subtle); color: var(--t-text-muted); font-size: 0.9rem; }
+    pre { background: var(--t-bg-deep); border: 1px solid var(--t-border-subtle); border-radius: 10px; padding: 1rem 1.2rem; overflow-x: auto; margin: 1rem 0; }
+    pre code { background: none; color: var(--t-text-secondary); padding: 0; }
   </style>
 </PageLayout>

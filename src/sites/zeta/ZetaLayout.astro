@@ -1,5 +1,6 @@
 ---
 import Navbar from "../../components/Navbar.astro";
+import "../../styles/linxira-theme.css";
 interface Props {
 	lang: "zh" | "en";
 	title: string;
@@ -53,24 +54,24 @@ const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 	</script>
 	<style is:global>
 		:root {
-			--teal: #20B8B0;
-			--coral: #F36F5D;
-			--bg: #0E1417;
-			--ink: #E8F7F6;
-			--muted: #94a3b8;
-			--faint: #64748b;
-			--line: rgba(51, 65, 85, 0.5);
-			--panel: rgba(30, 41, 59, 0.6);
-			--panel-solid: #131b2e;
+			--teal: var(--t-brand);
+			--coral: var(--t-signal);
+			--bg: var(--t-bg-deep);
+			--ink: var(--t-brand-soft);
+			--muted: var(--t-text-muted);
+			--faint: var(--t-text-muted);
+			--line: var(--t-border-subtle);
+			--panel: var(--t-surface-2);
+			--panel-solid: var(--t-surface);
 			--font: "Helvetica Neue", Helvetica, "Inter", "Noto Sans", system-ui,
 				"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 			--mono: "SF Mono", "Cascadia Mono", "JetBrains Mono", ui-monospace, monospace;
 		}
 		[data-theme="light"] {
-			--bg: #E8F7F6;
-			--ink: #0E1417;
-			--muted: #475569;
-			--faint: #64748b;
+			--bg: var(--t-brand-soft);
+			--ink: var(--t-bg-deep);
+			--muted: var(--t-text-muted);
+			--faint: var(--t-text-muted);
 			--line: rgba(14, 20, 23, 0.18);
 			--panel: rgba(255, 255, 255, 0.7);
 			--panel-solid: #ffffff;
@@ -149,12 +150,12 @@ const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 		.hero { padding: 6.5rem 0 4rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
 		.hero::before {
 			content: ''; position: absolute; top: -45%; left: -15%; width: 65vw; height: 65vw;
-			background: radial-gradient(circle, rgba(32,184,176,0.10) 0%, transparent 70%); pointer-events: none;
+			background: radial-gradient(circle, color-mix(in oklab, var(--t-brand) 10%, transparent) 0%, transparent 70%); pointer-events: none;
 			animation: breathe 9s ease-in-out infinite alternate;
 		}
 		.hero::after {
 			content: ''; position: absolute; bottom: -35%; right: -12%; width: 55vw; height: 55vw;
-			background: radial-gradient(circle, rgba(243,111,93,0.08) 0%, transparent 70%); pointer-events: none;
+			background: radial-gradient(circle, color-mix(in oklab, var(--t-signal) 8%, transparent) 0%, transparent 70%); pointer-events: none;
 			animation: breathe 11s ease-in-out infinite alternate-reverse;
 		}
 		@keyframes breathe {
@@ -276,16 +277,16 @@ const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 		.grid-item, .mode, .source { position: relative; }
 		.grid-item::after, .mode::after, .source::after {
 			content: ''; position: absolute; inset: 0; pointer-events: none;
-			background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(32,184,176,0.10), transparent 55%);
+			background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), color-mix(in oklab, var(--t-brand) 10%, transparent), transparent 55%);
 			opacity: 0; transition: opacity .25s ease;
 		}
 		.grid-item:hover::after, .mode:hover::after, .source:hover::after { opacity: 1; }
 		.grid-item { transition: background .15s, box-shadow .25s; }
-		.grid-item:hover { background: var(--panel); box-shadow: inset 0 0 0 1px rgba(32,184,176,0.32); }
+		.grid-item:hover { background: var(--panel); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--t-brand) 32%, transparent); }
 		.grid-item .idx { transition: color .25s; }
 		.grid-item:hover .idx { color: var(--coral); }
 		.mode { transition: background .2s, box-shadow .25s; }
-		.mode:hover { background: var(--panel); box-shadow: inset 0 0 0 1px rgba(32,184,176,0.25); }
+		.mode:hover { background: var(--panel); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--t-brand) 25%, transparent); }
 		/* 标签 hover 弹性 */
 		.tag { transition: transform .18s ease, border-color .18s ease, color .18s ease; }
 		.tag:hover { transform: translateY(-2px); border-color: var(--teal); color: var(--teal); }
@@ -319,7 +320,7 @@ const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 		.page-hero { padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
 		.page-hero::before {
 			content: ''; position: absolute; top: -80%; left: 25%; width: 70vw; height: 70vw;
-			background: radial-gradient(circle, rgba(32,184,176,0.08) 0%, transparent 70%); pointer-events: none;
+			background: radial-gradient(circle, color-mix(in oklab, var(--t-brand) 8%, transparent) 0%, transparent 70%); pointer-events: none;
 		}
 		.page-hero > * { position: relative; z-index: 1; }
 		.page-hero .kicker { margin-bottom: 1.5rem; }
@@ -417,9 +418,9 @@ const latest = zh ? "/zeta/zh/" : "/zeta/en/";
 			.install-note { font-size: .78rem; }
 			.shot { width: min(300px, 82vw); }
 		}
-		.zeta-archive-banner { position: relative; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; padding: .55rem 1rem; border-bottom: 1px solid #2f6f78; background: #0b1a1d; color: #cfe3e2; font-size: .85rem; }
-		.zeta-archive-tag { padding: .05rem .4rem; border: 1px solid #2f6f78; border-radius: 4px; font-weight: 600; letter-spacing: .04em; }
-		.zeta-archive-banner a { color: #7fd6cf; text-decoration: underline; }
+		.zeta-archive-banner { position: relative; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; padding: .55rem 1rem; border-bottom: 1px solid var(--t-brand-dim); background: var(--t-surface); color: #cfe3e2; font-size: .85rem; }
+		.zeta-archive-tag { padding: .05rem .4rem; border: 1px solid var(--t-brand-dim); border-radius: 4px; font-weight: 600; letter-spacing: .04em; }
+		.zeta-archive-banner a { color: var(--t-brand-hover); text-decoration: underline; }
 	</style>
 </head>
 <body>

@@ -27,7 +27,7 @@ order: 0
 
 <a href="/zh/docs/ecosystem/" class="doc-card">
 <h3>软件生态</h3>
-<p>93 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
+<p>107 个精选应用按 14 个分类组织，全部经 catalog v3 审查，通过官方签名仓库安装。</p>
 </a>
 
 <a href="/zh/docs/package-managers/" class="doc-card">
@@ -42,7 +42,7 @@ order: 0
 
 <a href="/zh/docs/apps/" class="doc-card">
 <h3>官方软件</h3>
-<p>全部 17 个自研工具：Welcome、Config Hub、Shelly、Package Center、Component Manager、硬件与恢复工具、系统组件。</p>
+<p>全部 22 个自研工具（截至 catalog 2026.10 与 packages 仓现有条目）：Welcome、Config Hub、Shelly、Package Center、Component Manager、硬件与恢复工具、系统组件。</p>
 </a>
 
 <a href="/zh/docs/remote-access/" class="doc-card">

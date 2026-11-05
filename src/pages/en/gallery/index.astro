@@ -1,5 +1,6 @@
 ---
 import PageLayout from "../../../components/PageLayout.astro";
+import { ecosystem } from "../../../data/ecosystem";
 ---
 <PageLayout lang="en" active="home" title="Gallery — Linxira OS" maxWidth="1000px">
   <h1>Highlights Gallery</h1>
@@ -96,7 +97,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     </figure>
 
     <!-- 4 Ecosystem -->
-    <figure class="gal-card glass reveal reveal-d1" data-cap="Signed [linxira] repository · 93 curated apps in 14 categories, pacman-tracked updates">
+    <figure class="gal-card glass reveal reveal-d1" data-cap={`Signed [linxira] repository · ${ecosystem.catalogTotal} curated apps in ${ecosystem.catalogCategories} categories, pacman-tracked updates`}>
       <svg viewBox="0 0 960 540">
         <rect width="960" height="540" fill="#0a1119"/>
         <text x="48" y="50" fill="#20B8B0" font-size="15" font-weight="700">[linxira] signed repo · catalog v3</text>
@@ -114,15 +115,15 @@ import PageLayout from "../../../components/PageLayout.astro";
         <rect x="48" y="280" width="700" height="1" fill="#1f2937"/>
         <text x="48" y="316" fill="#94a3b8" font-size="13">Audited categories:</text>
         <text x="48" y="344" fill="#cbd5e1" font-size="13">Scientific Desktop · Development · Bioinformatics · Containers · AI Coding · Gaming</text>
-        <text x="48" y="376" fill="#94a3b8" font-size="13">14 categories · 93 curated apps · license / source / availability reviewed</text>
+        <text x="48" y="376" fill="#94a3b8" font-size="13">{ecosystem.catalogCategories} categories · {ecosystem.catalogTotal} curated apps · license / source / availability reviewed</text>
         <rect x="48" y="410" width="260" height="52" rx="10" fill="#20B8B0" opacity="0.14"/>
-        <text x="68" y="432" fill="#a7f3d0" font-size="13" font-weight="600">17 first-party tools</text>
+        <text x="68" y="432" fill="#a7f3d0" font-size="13" font-weight="600">{ecosystem.packageTotal} first-party tools</text>
         <text x="68" y="450" fill="#94a3b8" font-size="12">Welcome → Config Hub → Components</text>
         <rect x="330" y="410" width="260" height="52" rx="10" fill="#F36F5D" opacity="0.12"/>
         <text x="350" y="432" fill="#fecaca" font-size="13" font-weight="600">Signature checks</text>
         <text x="350" y="450" fill="#94a3b8" font-size="12">pacman enforces package signatures</text>
       </svg>
-      <figcaption><b>Software Ecosystem</b><span>Signed [linxira] repo · 93 curated apps · pacman-tracked updates</span></figcaption>
+      <figcaption><b>Software Ecosystem</b><span>Signed [linxira] repo · {ecosystem.catalogTotal} curated apps · pacman-tracked updates</span></figcaption>
     </figure>
 
     <!-- 5 Gaming -->
@@ -180,7 +181,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     .subtitle { color: var(--muted); margin-bottom: 0.3rem; }
     .gal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.5rem; }
     .gal-card { border-radius: 18px; overflow: hidden; cursor: zoom-in; transition: transform 0.3s, border-color 0.3s; margin: 0; }
-    .gal-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.45); }
+    .gal-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 45%, transparent); }
     .gal-card svg { display: block; width: 100%; height: auto; }
     .gal-card figcaption { padding: 0.9rem 1.1rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.06); }
     .gal-card figcaption b { color: var(--ink-strong); font-size: 0.98rem; }

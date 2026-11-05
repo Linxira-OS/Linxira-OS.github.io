@@ -1,0 +1,79 @@
+/* Linxira .lx-* 原子类 —— 主站首页 / 子站 / 文档页共用同一份定义。
+   由 SiteShared.astro 与首页入口 import；不要在页面里再复制一遍。 */
+
+.lx-kicker {
+  font-family: var(--t-font-mono); font-size: 11.5px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--t-brand); margin-bottom: 18px;
+}
+.lx-kicker::before { content: "// "; color: var(--t-brand-dim); }
+
+.lx-rule { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.lx-rule::before { content: ""; width: 6px; height: 6px; flex: none; background: var(--t-brand); transform: rotate(45deg); }
+.lx-rule > * { font-size: clamp(17px, 2vw, 19px); font-weight: 600; letter-spacing: -.02em; white-space: nowrap; }
+.lx-rule::after { content: ""; height: 1px; flex: 1; background: var(--t-border-subtle); }
+
+.lx-card {
+  position: relative; padding: 24px 22px 22px; min-width: 0;
+  background: var(--t-surface); border-radius: var(--t-radius);
+  box-shadow: 0 0 0 1px var(--t-border-subtle);
+}
+.lx-card::before {
+  content: ""; position: absolute; top: 0; left: 0; width: 12px; height: 12px;
+  border-top: 1px solid var(--t-border-strong); border-left: 1px solid var(--t-border-strong);
+  border-top-left-radius: var(--t-radius);
+}
+
+.lx-code { border-radius: var(--t-radius); background: var(--t-code-bg); box-shadow: 0 0 0 1px var(--t-border-subtle); overflow: hidden; }
+.lx-code__bar { display: flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px; border-bottom: 1px solid var(--t-border-subtle); background: var(--t-surface); }
+.lx-code__bar i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+.lx-code__bar i:nth-child(1) { background: var(--t-danger); }
+.lx-code__bar i:nth-child(2) { background: var(--t-warning); }
+.lx-code__bar i:nth-child(3) { background: var(--t-success); }
+.lx-code__name { flex: 1; text-align: center; margin-right: 38px; font-family: var(--t-font-mono); font-size: 11.5px; letter-spacing: .06em; color: var(--t-text-muted); }
+.lx-code pre { margin: 0; padding: 18px 20px; overflow-x: auto; font-family: var(--t-font-mono); font-size: 12.6px; line-height: 1.85; color: var(--t-text-secondary); }
+
+.lx-stat { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--t-radius); overflow: hidden; box-shadow: 0 0 0 1px var(--t-border-subtle); background: var(--t-surface); }
+.lx-stat > div { padding: 22px 20px; min-width: 0; }
+.lx-stat > div + div { border-left: 1px solid var(--t-border-subtle); }
+.lx-stat strong { display: block; font-family: var(--t-font-mono); font-size: clamp(22px, 2.8vw, 30px); font-weight: 500; letter-spacing: -.03em; color: var(--t-text); }
+.lx-stat small { display: block; margin-top: 4px; font-family: var(--t-font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--t-text-muted); }
+
+.lx-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; border-top: 1px solid var(--t-border-subtle); border-bottom: 1px solid var(--t-border-subtle); }
+.lx-metrics > div { padding: 16px 14px 15px 0; min-width: 0; }
+.lx-metrics > div + div { padding-left: 20px; border-left: 1px solid var(--t-border-subtle); }
+.lx-metrics b { display: block; font-family: var(--t-font-mono); font-size: clamp(20px, 2.4vw, 26px); font-weight: 500; line-height: 1.15; letter-spacing: -.02em; color: var(--t-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lx-metrics span { display: block; margin-top: 6px; font-family: var(--t-font-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--t-text-muted); }
+
+.lx-notice {
+  display: flex; gap: 12px; align-items: flex-start; padding: 15px 18px;
+  border-radius: var(--t-radius); background: var(--t-surface-2);
+  box-shadow: inset 3px 0 0 var(--t-signal), 0 0 0 1px var(--t-border-subtle);
+  font-size: 13.5px; color: var(--t-text-secondary);
+}
+
+.lx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 42px; padding: 0 20px; border-radius: 999px;
+  font-size: 14px; font-weight: 560; letter-spacing: -.005em; text-decoration: none;
+}
+.lx-btn--primary { background: var(--t-brand); color: var(--t-brand-ink); }
+.lx-btn--ghost { border: 1px solid var(--t-border-strong); color: var(--t-text); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .lx-card, .lx-btn { transition: 160ms ease; }
+  .lx-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px var(--t-brand), 0 18px 40px -28px var(--t-brand); }
+  .lx-card:hover::before { border-color: var(--t-brand); }
+  .lx-btn--primary:hover { background: var(--t-brand-hover); }
+  .lx-btn--ghost:hover { border-color: var(--t-signal); }
+}
+
+@media (max-width: 760px) {
+  .lx-kicker { font-size: 10px; letter-spacing: .1em; }
+  .lx-metrics { grid-template-columns: 1fr 1fr; }
+  .lx-metrics > div:nth-child(3) { border-left: 0; padding-left: 0; }
+  .lx-metrics > div:nth-child(3), .lx-metrics > div:nth-child(4) { border-top: 1px solid var(--t-border-subtle); }
+  .lx-metrics > div:nth-child(4) { padding-left: 20px; }
+  .lx-stat { grid-template-columns: 1fr 1fr; }
+  .lx-stat > div:nth-child(3) { border-left: 0; }
+  .lx-stat > div:nth-child(3), .lx-stat > div:nth-child(4) { border-top: 1px solid var(--t-border-subtle); }
+}

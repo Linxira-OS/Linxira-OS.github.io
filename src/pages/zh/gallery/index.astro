@@ -1,5 +1,6 @@
 ---
 import PageLayout from "../../../components/PageLayout.astro";
+import { ecosystem } from "../../../data/ecosystem";
 ---
 <PageLayout lang="zh" active="home" title="亮点画廊 — Linxira OS" maxWidth="1000px">
   <h1>亮点画廊</h1>
@@ -96,7 +97,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     </figure>
 
     <!-- 4 Ecosystem -->
-    <figure class="gal-card glass reveal reveal-d1" data-cap="签名仓库 [linxira] · 93 款审核软件，14 个分类，pacman 可追踪更新">
+    <figure class="gal-card glass reveal reveal-d1" data-cap={`签名仓库 [linxira] · ${ecosystem.catalogTotal} 款审核软件，${ecosystem.catalogCategories} 个分类，pacman 可追踪更新`}>
       <svg viewBox="0 0 960 540">
         <rect width="960" height="540" fill="#0a1119"/>
         <text x="48" y="50" fill="#20B8B0" font-size="15" font-weight="700">[linxira] 签名仓库 · catalog v3</text>
@@ -114,15 +115,15 @@ import PageLayout from "../../../components/PageLayout.astro";
         <rect x="48" y="280" width="700" height="1" fill="#1f2937"/>
         <text x="48" y="316" fill="#94a3b8" font-size="13">审核分类：</text>
         <text x="48" y="344" fill="#cbd5e1" font-size="13">科学桌面应用 · 开发应用 · 生信工作流 · 容器 · AI 编码 · 游戏</text>
-        <text x="48" y="376" fill="#94a3b8" font-size="13">14 个分类 · 93 款精选应用 · 全部通过许可证 / 来源 / 可用性审查</text>
+        <text x="48" y="376" fill="#94a3b8" font-size="13">{ecosystem.catalogCategories} 个分类 · {ecosystem.catalogTotal} 款精选应用 · 全部通过许可证 / 来源 / 可用性审查</text>
         <rect x="48" y="410" width="260" height="52" rx="10" fill="#20B8B0" opacity="0.14"/>
-        <text x="68" y="432" fill="#a7f3d0" font-size="13" font-weight="600">17 个自研工具</text>
+        <text x="68" y="432" fill="#a7f3d0" font-size="13" font-weight="600">{ecosystem.packageTotal} 个自研工具</text>
         <text x="68" y="450" fill="#94a3b8" font-size="12">Welcome → Config Hub → 组件管理</text>
         <rect x="330" y="410" width="260" height="52" rx="10" fill="#F36F5D" opacity="0.12"/>
         <text x="350" y="432" fill="#fecaca" font-size="13" font-weight="600">签名验证</text>
         <text x="350" y="450" fill="#94a3b8" font-size="12">pacman 强制校验包签名</text>
       </svg>
-      <figcaption><b>软件生态</b><span>签名仓库 [linxira] · 93 款审核软件 · pacman 可追踪更新</span></figcaption>
+      <figcaption><b>软件生态</b><span>签名仓库 [linxira] · {ecosystem.catalogTotal} 款审核软件 · pacman 可追踪更新</span></figcaption>
     </figure>
 
     <!-- 5 Gaming -->
@@ -181,7 +182,7 @@ import PageLayout from "../../../components/PageLayout.astro";
     .subtitle { color: var(--muted); margin-bottom: 0.3rem; }
     .gal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 1.5rem; }
     .gal-card { border-radius: 18px; overflow: hidden; cursor: zoom-in; transition: transform 0.3s, border-color 0.3s; margin: 0; }
-    .gal-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.45); }
+    .gal-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 45%, transparent); }
     .gal-card svg { display: block; width: 100%; height: auto; }
     .gal-card figcaption { padding: 0.9rem 1.1rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; border-top: 1px solid rgba(255,255,255,0.06); }
     .gal-card figcaption b { color: var(--ink-strong); font-size: 0.98rem; }

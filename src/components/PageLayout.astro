@@ -34,7 +34,7 @@ const footLinks = zh
     .toc nav { display: flex; flex-direction: column; border-left: 1px solid var(--line); }
     .toc a { display: block; padding: 0.35rem 0 0.35rem 0.9rem; margin-left: -1px; border-left: 2px solid transparent; color: var(--muted); font-size: 0.85rem; line-height: 1.45; text-decoration: none; transition: color 0.15s, border-color 0.15s; }
     .toc a:hover { color: var(--fg); }
-    .toc a.active { color: #20B8B0; border-left-color: #20B8B0; }
+    .toc a.active { color: var(--t-brand); border-left-color: var(--t-brand); }
     .toc a.toc-sub { padding-left: 1.5rem; font-size: 0.8rem; }
     .page-body h2, .page-body h3 { scroll-margin-top: 6.5rem; }
     @media (min-width: 1100px) {
@@ -46,7 +46,7 @@ const footLinks = zh
   </style>
 </head>
 <body>
-  <Navbar lang={lang} active={active} />
+  <Navbar lang={lang} active={active} themeToggle />
   <div class="container" style={maxWidth ? `max-width:${maxWidth}` : undefined}>
     <div class="page-body" data-blog={active === "blog" ? "" : undefined}>
       <slot />
@@ -109,7 +109,7 @@ const footLinks = zh
   <footer>
     <div style="margin-bottom:0.8rem; display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap;">
       {footLinks.map(([href, label]) => (
-        <a href={href} style="color:#20B8B0; text-decoration:none; font-size:0.85rem;">{label}</a>
+        <a href={href} style="color:var(--t-brand); text-decoration:none; font-size:0.85rem;">{label}</a>
       ))}
     </div>
     <p>{footer}</p>

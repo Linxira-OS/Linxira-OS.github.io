@@ -24,6 +24,7 @@ import BioSDKDocs from "./components/DocsPage.astro";
 import BioSDKLicenses from "./components/LicensesPage.astro";
 import BioSDKModals from "./components/Modals.astro";
 import { bioSdk } from "../../data/bio-sdk";
+import "../../styles/linxira-theme.css";
 
 interface Props {
 	lang: "zh" | "en";
@@ -44,6 +45,17 @@ const langHref = Astro.url.pathname.replace(/^\/((?:zeta|bio-sdk)\/)?(?:zh|en)(\
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='2' width='8' height='30' rx='2' fill='%2320B8B0'/><rect x='2' y='24' width='26' height='8' rx='2' fill='%2320B8B0'/><rect x='22' y='2' width='8' height='8' rx='2' fill='%23F36F5D'/></svg>">
 <script is:inline>
 	window.BIOSDK_LANG = location.pathname.startsWith('/bio-sdk/zh') ? 'zh' : 'en';
+	/* 与主站共用主题：html[data-theme] 驱动 token，body 的 light/dark 类同步给它自己的样式 */
+	(function () {
+		var saved = null;
+		try { saved = localStorage.getItem('linxira-theme'); } catch (e) {}
+		var theme = saved === 'light' ? 'light' : 'dark';
+		document.documentElement.dataset.theme = theme;
+		document.addEventListener('DOMContentLoaded', function () {
+			document.body.classList.remove('light', 'dark');
+			document.body.classList.add(theme);
+		});
+	})();
 </script>
 <BioSDKStyles />
 </head>

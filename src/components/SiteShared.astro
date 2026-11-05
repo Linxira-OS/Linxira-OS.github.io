@@ -1,50 +1,82 @@
 ---
 /**
- * SiteShared.astro — 官网子页面共享 head：字体、品牌变量、玻璃卡、reveal 动效、正文排版
+ * SiteShared.astro — 官网子页面共享 head：主题 token、字体、玻璃卡、reveal 动效、正文排版、.lx-* 原子类
  * 供 DocsLayout / PageLayout 使用（子页面不再各自硬编码重复 CSS）
  * 注意：Astro 组件内 <style is:global> 避免 scoped；reveal 脚本 is:inline 全站生效
  */
 interface Props {
   title: string;
 }
+import "../styles/linxira-theme.css";
+import "../styles/linxira-components.css";
 const { title } = Astro.props;
 ---
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<script is:inline>
+  /* 首帧前应用主题，避免刷新闪白。默认深色；用户手动切换后记住选择。 */
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem('linxira-theme'); } catch (e) {}
+    document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style is:global>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --teal: #20B8B0; --coral: #F36F5D;
-    --bg: #0E1417; --bg-deep: #0a0f1a; --bg-alt: #141a26;
-    --ink: #e5e7eb; --ink-strong: #f1f5f9;
-    --muted: #94a3b8; --faint: #64748b; --soft: #cbd5e1;
-    --line: rgba(51, 65, 85, 0.5);
-    --glass-a: rgba(255,255,255,0.06); --glass-b: rgba(255,255,255,0.02); --glass-c: rgba(14,20,23,0.12);
-    --glass-border: rgba(255,255,255,0.08);
-    --glass-hi: rgba(255,255,255,0.18); --glass-hi2: rgba(255,255,255,0.06);
-    --glass-sheen: rgba(255,255,255,0.10); --glass-glow: rgba(255,255,255,0.07);
+    /* 旧变量名 → token 的兼容别名，页面里存量的 var(--teal) 等继续可用 */
+    --teal: var(--t-brand); --coral: var(--t-signal);
+    --bg: var(--t-bg-deep); --bg-deep: var(--t-bg-deep); --bg-alt: var(--t-surface);
+    --ink: var(--t-text); --ink-strong: var(--t-text);
+    --muted: var(--t-text-muted); --faint: var(--t-text-muted); --soft: var(--t-text-secondary);
+    --line: var(--t-border-subtle);
+    --glass-a: color-mix(in oklab, var(--t-surface) 82%, transparent);
+    --glass-b: color-mix(in oklab, var(--t-surface) 64%, transparent);
+    --glass-c: color-mix(in oklab, var(--t-bg) 72%, transparent);
+    --glass-border: var(--t-border-subtle);
+    --glass-hi: color-mix(in oklab, var(--t-text) 8%, transparent);
+    --glass-hi2: color-mix(in oklab, var(--t-text) 4%, transparent);
+    --glass-sheen: color-mix(in oklab, var(--t-text) 6%, transparent);
+    --glass-glow: color-mix(in oklab, var(--t-brand) 10%, transparent);
   }
-  body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.8; overflow-x: hidden; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--t-font-sans);
+    background: var(--t-bg);
+    color: var(--t-text);
+    line-height: 1.8;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: color-mix(in oklab, var(--t-brand) 35%, transparent); }
+  :focus-visible { outline: 2px solid var(--t-brand); outline-offset: 2px; border-radius: 4px; }
 
-  /* ---------- 液态玻璃卡（与首页一致） ---------- */
+  /* ---------- 液态玻璃 / 卡片面（深色玻璃，浅色纯面 + ring） ---------- */
   .glass {
     position: relative;
     background: linear-gradient(135deg, var(--glass-a), var(--glass-b) 35%, var(--glass-c));
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid var(--glass-border);
-    box-shadow: inset 0 1px 0 var(--glass-hi), inset 1px 0 0 var(--glass-hi2), 0 20px 60px rgba(0,0,0,0.45);
+    box-shadow: inset 0 1px 0 var(--glass-hi), inset 1px 0 0 var(--glass-hi2), 0 20px 60px -40px rgba(0,0,0,0.45);
   }
   .glass::before {
     content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-    background: linear-gradient(115deg, var(--glass-sheen) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
+    background: linear-gradient(115deg, var(--glass-sheen) 0%, transparent 40%),
       radial-gradient(120% 70% at 18% 0%, var(--glass-glow), transparent 55%);
   }
+  [data-theme="light"] .glass {
+    background: var(--t-surface);
+    border-color: var(--t-border-subtle);
+    box-shadow: 0 0 0 1px var(--t-border-subtle), 0 18px 40px -34px rgba(11, 17, 19, .22);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  [data-theme="light"] .glass::before { display: none; }
 
-  /* ---------- 滚动揭示（与首页一致） ---------- */
+  /* ---------- 滚动揭示 ---------- */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: none; }
   .reveal-d1 { transition-delay: 0.08s; }
@@ -52,20 +84,27 @@ const { title } = Astro.props;
   .reveal-d3 { transition-delay: 0.24s; }
 
   /* ---------- 正文排版（容器型页面共用） ---------- */
-  h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, var(--teal), var(--coral)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  h2 { font-size: 1.4rem; color: #e2e8f0; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--line); }
-  h3 { font-size: 1.15rem; color: #e2e8f0; margin: 1.5rem 0 0.5rem; }
-  p { color: var(--muted); margin-bottom: 1rem; }
-  strong { color: #e2e8f0; }
-  a { color: var(--teal); }
-  ul { color: var(--muted); margin: 0.5rem 0 1rem 1.5rem; }
+  h1 { font-size: clamp(1.9rem, 4vw, 2.2rem); font-weight: 700; letter-spacing: -.025em; margin-bottom: 1rem; background: linear-gradient(100deg in oklab, var(--t-brand) 0%, var(--t-brand) 58%, var(--t-signal) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  h2 { font-size: 1.4rem; color: var(--t-text); letter-spacing: -.02em; margin: 2rem 0 0.8rem; padding-top: 1rem; border-top: 1px solid var(--t-border-subtle); }
+  h3 { font-size: 1.15rem; color: var(--t-text); letter-spacing: -.015em; margin: 1.5rem 0 0.5rem; }
+  p { color: var(--t-text-secondary); margin-bottom: 1rem; }
+  strong { color: var(--t-text); }
+  a { color: var(--t-brand); }
+  ul { color: var(--t-text-secondary); margin: 0.5rem 0 1rem 1.5rem; }
   li { margin-bottom: 0.3rem; }
-  code { background: rgba(30,41,59,0.8); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; color: var(--teal); }
+  code {
+    background: var(--t-surface-2); padding: 0.15rem 0.4rem; border-radius: 4px;
+    font-family: var(--t-font-mono); font-size: 0.85em; color: var(--t-brand);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
   .container { max-width: 760px; margin: 0 auto; padding: 8rem 2rem 4rem; }
-  .back { color: var(--teal); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
+  .back { color: var(--t-brand); text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 2rem; }
   .back:hover { text-decoration: underline; }
-  .section-divider { width: 60px; height: 3px; margin: 0.4rem 0 1.5rem; background: linear-gradient(90deg, var(--teal), var(--coral)); border-radius: 2px; }
+  .section-divider { width: 60px; height: 3px; margin: 0.4rem 0 1.5rem; background: linear-gradient(90deg, var(--t-brand), var(--t-signal)); border-radius: 2px; }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .glass { transition: 160ms ease; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
   }

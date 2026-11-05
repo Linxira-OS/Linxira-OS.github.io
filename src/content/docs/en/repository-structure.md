@@ -22,7 +22,7 @@ order: 2
 </table>
 
 <h2>First-party System Tools</h2>
-<p>17 tool repositories maintained by Linxira (<code>shelly</code> is a source-built packaging exception):</p>
+<p>22 tool repositories maintained by Linxira (as of the 2026.10 catalog and current packages-repo entries; <code>shelly</code> is a source-built packaging exception):</p>
 <table>
 <thead><tr><th>Repository</th><th>Purpose</th></tr></thead>
 <tbody>

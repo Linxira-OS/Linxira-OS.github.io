@@ -549,17 +549,17 @@ linxira-bio phylogeny tree-plot tree.nwk tree.svg --json</code></pre>
     </div>
 <style>
     .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
-    .trust-card { background: rgba(30,41,59,0.6); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 0.9rem 1rem; }
+    .trust-card { background: var(--t-surface); border: 1px solid var(--t-border-subtle); border-radius: 12px; padding: 0.9rem 1rem; }
     .trust-icon { font-size: 1.1rem; margin-bottom: 0.4rem; }
     .trust-name { font-weight: 600; color: var(--text); font-size: 0.875rem; margin-bottom: 0.25rem; }
     .trust-desc { color: var(--text-dim); font-size: 0.75rem; line-height: 1.45; }
-    .bench-strip { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; background: linear-gradient(135deg, rgba(32,184,176,0.12), rgba(139,92,246,0.10)); border: 1px solid rgba(32,184,176,0.35); border-radius: 14px; padding: 1rem 1.25rem; margin: 1.25rem 0 1.5rem; }
+    .bench-strip { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; background: linear-gradient(135deg, color-mix(in oklab, var(--t-brand) 12%, transparent), color-mix(in oklab, var(--t-signal) 10%, transparent)); border: 1px solid color-mix(in oklab, var(--t-brand) 35%, transparent); border-radius: 14px; padding: 1rem 1.25rem; margin: 1.25rem 0 1.5rem; }
     .bench-title { font-weight: 700; color: var(--text); font-size: 0.9rem; }
     .bench-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; flex: 1; }
     .bench-stat { display: flex; flex-direction: column; }
     .bench-num { font-weight: 700; color: var(--brand-teal); font-size: 1rem; }
     .bench-cap { color: var(--text-dim); font-size: 0.7rem; }
-    .bench-link { color: #20B8B0; font-size: 0.8125rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .bench-link { color: var(--t-brand); font-size: 0.8125rem; font-weight: 600; text-decoration: none; white-space: nowrap; }
     .bench-link:hover { text-decoration: underline; }
     @media (max-width: 720px) { .trust-grid { grid-template-columns: 1fr; } }
   </style>

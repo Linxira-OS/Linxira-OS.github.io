@@ -6,8 +6,8 @@ import ZetaLayout from "../../../../sites/zeta/ZetaLayout.astro";
 	.shot-track { display: flex; gap: 0; width: max-content; animation: zeta-marquee 28s linear infinite; }
 	.shot-strip:hover .shot-track { animation-play-state: paused; }
 	.shot-group { display: flex; gap: 1rem; padding-right: 1rem; }
-	.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid #1d2a2e; border-radius: 12px; overflow: hidden; background: #0b1114; appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
-	.shot:hover { border-color: #2f6f78; transform: translateY(-2px); }
+	.shot { flex: 0 0 auto; width: min(340px, 78vw); margin: 0; padding: 0; border: 1px solid var(--t-surface); border-radius: 12px; overflow: hidden; background: var(--t-bg-deep); appearance: none; cursor: pointer; transition: border-color .15s ease, transform .15s ease; }
+	.shot:hover { border-color: var(--t-brand-dim); transform: translateY(-2px); }
 	.shot img { display: block; width: 100%; height: auto; }
 	.lightbox { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 5vh 5vw; background: rgba(2, 6, 8, .86); cursor: zoom-out; }
 	.lightbox[hidden] { display: none; }

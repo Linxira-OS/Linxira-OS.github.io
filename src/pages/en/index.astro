@@ -1,7 +1,11 @@
 ---
 import Navbar from "../../components/Navbar.astro";
+import "../../styles/linxira-theme.css";
+import "../../styles/linxira-components.css";
 import { getAllPosts } from "../../data/allPosts";
 import { releases } from "../../data/releases";
+import { ecosystem } from "../../data/ecosystem";
+import HeroFx from "../../components/HeroFx.astro";
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -16,17 +20,17 @@ const blogPosts = await getAllPosts();
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #0E1417; --bg-deep: #0a0f1a; --bg-alt: #141a26;
-      --ink: #e5e7eb; --ink-strong: #f1f5f9;
-      --muted: #94a3b8; --faint: #64748b; --soft: #cbd5e1;
-      --line: rgba(51, 65, 85, 0.5);
-      --teal: #20B8B0; --coral: #F36F5D;
-      --grid-line: rgba(32,184,176,0.04);
+      --bg: var(--t-bg); --bg-deep: var(--t-bg-deep); --bg-alt: var(--t-surface);
+      --ink: var(--t-text); --ink-strong: var(--t-text);
+      --muted: var(--t-text-muted); --faint: var(--t-text-muted); --soft: var(--t-text-secondary);
+      --line: var(--t-border-subtle);
+      --teal: var(--t-brand); --coral: var(--t-signal);
+      --grid-line: color-mix(in oklab, var(--t-brand) 4%, transparent);
       --glass-a: rgba(255,255,255,0.06); --glass-b: rgba(255,255,255,0.02); --glass-c: rgba(14,20,23,0.12);
       --glass-border: rgba(255,255,255,0.08);
       --glass-hi: rgba(255,255,255,0.18); --glass-hi2: rgba(255,255,255,0.06);
       --glass-sheen: rgba(255,255,255,0.10); --glass-glow: rgba(255,255,255,0.07);
-      --glow-teal: rgba(32,184,176,0.12); --glow-coral: rgba(243,111,93,0.10);
+      --glow-teal: color-mix(in oklab, var(--t-brand) 12%, transparent); --glow-coral: color-mix(in oklab, var(--t-signal) 10%, transparent);
       --term-bg: rgba(2,6,10,0.55); --term-bar: rgba(0,0,0,0.35);
     }
     body { font-family: 'Noto Sans', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; overflow-x: hidden; }
@@ -75,25 +79,29 @@ const blogPosts = await getAllPosts();
     .grid-bg { position: absolute; inset: 0; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 60px 60px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); mask-image: linear-gradient(90deg, transparent 0, #000 15%, #000 85%, transparent), linear-gradient(180deg, transparent 0, #000 15%, #000 85%, transparent); -webkit-mask-composite: source-in, xor; mask-composite: intersect; pointer-events: none; }
     .prism-deco { position: absolute; width: 0; height: 0; border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 140px solid var(--grid-line); top: 15%; left: 8%; transform: rotate(15deg); pointer-events: none; }
     .prism-deco-2 { position: absolute; width: 0; height: 0; border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 100px solid var(--grid-line); bottom: 20%; right: 10%; transform: rotate(-20deg); pointer-events: none; }
-    .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, rgba(32,184,176,0.15), rgba(243,111,93,0.15), transparent); pointer-events: none; }
+    .beam { position: absolute; height: 2px; background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--t-brand) 15%, transparent), color-mix(in oklab, var(--t-signal) 15%, transparent), transparent); pointer-events: none; }
     .beam-1 { top: 30%; left: 0; width: 100%; transform: rotate(-5deg); }
     .beam-2 { top: 60%; left: 0; width: 100%; transform: rotate(3deg); }
     .beam-3 { top: 45%; left: 0; width: 100%; transform: rotate(-2deg); opacity: 0.5; }
 
     .hero-content { position: relative; z-index: 1; max-width: 1000px; }
-    .hero-logo { width: 140px; height: 140px; margin-bottom: 2rem; filter: drop-shadow(0 0 40px rgba(32,184,176,0.3)); }
+    .hero-logo { width: 140px; height: 140px; margin-bottom: 2rem; filter: drop-shadow(0 0 40px color-mix(in oklab, var(--t-brand) 30%, transparent)); }
+    .hero-logo.logo-light { display: none; }
+    html[data-theme="light"] .hero-logo.logo-dark { display: none; }
+    html[data-theme="light"] .hero-logo.logo-light { display: block; }
     .hero h1 { font-size: 3.5rem; font-weight: 700; background: linear-gradient(135deg, var(--teal), var(--ink), var(--coral)); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
     @keyframes gradient-shift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
     .tagline { font-size: 1.3rem; color: var(--muted); margin-bottom: 0.3rem; }
     .en-tagline { font-size: 1rem; color: var(--faint); margin-bottom: 2rem; letter-spacing: 3px; text-transform: uppercase; }
     .hero-desc { max-width: 760px; margin: 0 auto 2.5rem; color: var(--soft); font-size: 1.02rem; }
-    .hero-desc strong { color: #20B8B0; }
+    .hero-desc strong { color: var(--t-brand); }
     .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
-    .cta { display: inline-block; position: relative; padding: 1rem 2.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); color: white; font-weight: 600; border-radius: 10px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(32,184,176,0.3); }
+    .cta { display: inline-flex; align-items: center; justify-content: center; position: relative; height: 42px; padding: 0 24px; background: var(--t-brand); color: var(--t-brand-ink); font-weight: 560; font-size: .94rem; border-radius: 999px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s, background 0.2s; box-shadow: 0 4px 20px -12px var(--t-brand); }
+    .cta:hover { background: var(--t-brand-hover); }
     /* rotating gradient border (DeepSeek-style: conic-gradient + mask exclude) */
     .cta::before {
       content: ''; position: absolute; inset: -2px; border-radius: inherit; padding: 2px; pointer-events: none;
-      background: conic-gradient(from var(--border-angle, 0deg), rgba(32,184,176,0.20) 0%, rgba(32,184,176,0.75) 25%, rgba(243,111,93,0.20) 50%, rgba(32,184,176,0.75) 75%, rgba(32,184,176,0.20) 100%);
+      background: conic-gradient(from var(--border-angle, 0deg), color-mix(in oklab, var(--t-brand) 20%, transparent) 0%, color-mix(in oklab, var(--t-brand) 75%, transparent) 25%, color-mix(in oklab, var(--t-signal) 20%, transparent) 50%, color-mix(in oklab, var(--t-brand) 75%, transparent) 75%, color-mix(in oklab, var(--t-brand) 20%, transparent) 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -102,9 +110,9 @@ const blogPosts = await getAllPosts();
       animation: rotating-border 6s linear infinite;
     }
     .cta:hover::before { opacity: 1; }
-    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(32,184,176,0.4); text-decoration: none; }
-    .cta-ghost { display: inline-block; padding: 1rem 2rem; color: var(--ink-strong); border: 1px solid var(--line); border-radius: 10px; text-decoration: none; font-weight: 500; transition: all 0.2s; }
-    .cta-ghost:hover { border-color: #20B8B0; color: #20B8B0; text-decoration: none; }
+    .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 30px color-mix(in oklab, var(--t-brand) 40%, transparent); text-decoration: none; }
+    .cta-ghost { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 20px; color: var(--t-text); border: 1px solid var(--t-border-strong); border-radius: 999px; text-decoration: none; font-weight: 500; font-size: .92rem; transition: all 0.2s; }
+    .cta-ghost:hover { border-color: var(--t-signal); color: var(--t-text); text-decoration: none; }
 
     /* ---------- 终端演示（One command, full control） ---------- */
     .terminal-section { position: relative; overflow: hidden; }
@@ -112,32 +120,32 @@ const blogPosts = await getAllPosts();
     .terminal { max-width: 740px; margin: 0 auto; border-radius: 14px; overflow: hidden; text-align: left; }
     .term-bar { display: flex; align-items: center; gap: 0.45rem; padding: 0.7rem 1rem; background: var(--term-bar); border-bottom: 1px solid rgba(255,255,255,0.06); }
     .term-dot { width: 11px; height: 11px; border-radius: 50%; }
-    .term-dot.red { background: #ff5f57; } .term-dot.yellow { background: #febc2e; } .term-dot.green { background: #28c840; }
-    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: #64748b; font-family: ui-monospace, 'Cascadia Mono', monospace; }
+    .term-dot.red { background: var(--t-danger); } .term-dot.yellow { background: var(--t-warning); } .term-dot.green { background: var(--t-success); }
+    .term-title { margin-left: 0.5rem; font-size: 0.8rem; color: var(--t-text-muted); font-family: ui-monospace, 'Cascadia Mono', monospace; }
     .term-body { padding: 1.1rem 1.2rem; min-height: 250px; font-family: ui-monospace, 'Cascadia Mono', monospace; font-size: 0.92rem; overflow-y: auto; background: var(--term-bg); }
-    .term-line { color: #cbd5e1; margin-bottom: 0.35rem; white-space: pre-wrap; }
-    .term-prompt { color: #20B8B0; font-weight: 700; }
-    .term-out { color: #64748b; margin-bottom: 0.95rem; }
-    .term-typing::after { content: '▍'; color: #20B8B0; animation: blink-ty 1s step-end infinite; }
+    .term-line { color: var(--t-text-secondary); margin-bottom: 0.35rem; white-space: pre-wrap; }
+    .term-prompt { color: var(--t-brand); font-weight: 700; }
+    .term-out { color: var(--t-text-muted); margin-bottom: 0.95rem; }
+    .term-typing::after { content: '▍'; color: var(--t-brand); animation: blink-ty 1s step-end infinite; }
 
     /* ---------- 产品平级双卡（Zeta + Bio SDK） ---------- */
     .product-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 860px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
     .pcard { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.6rem 1.7rem; border-radius: 20px; text-decoration: none; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; transform-style: preserve-3d; will-change: transform; }
-    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, var(--t-brand) 12%, transparent), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .pcard.zeta::after { background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
     .pcard:hover { border-color: rgba(255,255,255,0.18); box-shadow: 0 22px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12); }
     .pcard:hover::after { opacity: 1; }
     .pcard .pmark { display: inline-flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 10px; font-weight: 800; font-size: 1.1rem; }
-    .pcard.zeta .pmark { color: #E20613; background: rgba(226,6,19,0.12); }
-    .pcard.sdk .pmark { color: #20B8B0; background: rgba(32,184,176,0.14); }
+    .pcard.zeta .pmark { color: var(--t-danger); background: rgba(226,6,19,0.12); }
+    .pcard.sdk .pmark { color: var(--t-brand); background: color-mix(in oklab, var(--t-brand) 14%, transparent); }
     .pcard h3 { color: var(--ink-strong); font-size: 1.18rem; font-weight: 600; }
     .pcard p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; flex: 1; }
     .pcard .pgo { font-size: 0.85rem; font-weight: 600; }
-    .pcard.zeta .pgo { color: #E20613; }
-    .pcard.sdk .pgo { color: #20B8B0; }
+    .pcard.zeta .pgo { color: var(--t-danger); }
+    .pcard.sdk .pgo { color: var(--t-brand); }
 
-    .badge { font-size: 0.8rem; background: rgba(32,184,176,0.12); color: #20B8B0; padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid rgba(32,184,176,0.25); }
-    .badge-coral { background: rgba(243,111,93,0.12); color: #F36F5D; border-color: rgba(243,111,93,0.25); }
+    .badge { font-size: 0.8rem; background: color-mix(in oklab, var(--t-brand) 12%, transparent); color: var(--t-brand); padding: 0.35rem 1rem; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--t-brand) 25%, transparent); }
+    .badge-coral { background: color-mix(in oklab, var(--t-signal) 12%, transparent); color: var(--t-signal); border-color: color-mix(in oklab, var(--t-signal) 25%, transparent); }
 
     /* ---------- Hero 主打卡（Get Started 下方 · 单张 Zeta） ---------- */
     .product-feature { max-width: 560px; margin: 0 auto 2.6rem; text-align: left; perspective: 1200px; }
@@ -149,10 +157,10 @@ const blogPosts = await getAllPosts();
     .wsl-text li { color: var(--soft); margin-bottom: 0.5rem; line-height: 1.6; }
     .wsl-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
     .wsl-cmd-title { font-weight: 700; margin-bottom: 0.8rem; color: var(--ink); }
-    .wsl-cmd pre { background: rgba(2,6,12,0.65); border: 1px solid rgba(51,65,85,0.5); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; }
-    .wsl-cmd pre code { background: none; color: #a7f3d0; font-size: 0.86rem; }
-    .wsl-note { margin-top: 0.8rem; font-size: 0.82rem; color: #64748b; line-height: 1.7; }
-    .wsl-note code { color: #cbd5e1; }
+    .wsl-cmd pre { background: rgba(2,6,12,0.65); border: 1px solid var(--t-border-subtle); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; }
+    .wsl-cmd pre code { background: none; color: var(--t-brand-soft); font-size: 0.86rem; }
+    .wsl-note { margin-top: 0.8rem; font-size: 0.82rem; color: var(--t-text-muted); line-height: 1.7; }
+    .wsl-note code { color: var(--t-text-secondary); }
     @media (max-width: 900px) { .wsl-grid { grid-template-columns: 1fr; } }
 
 
@@ -169,7 +177,7 @@ const blogPosts = await getAllPosts();
       pointer-events: none;
     }
     .scanline { position: absolute; left: 0; right: 0; height: 240px; top: -240px; pointer-events: none;
-      background: linear-gradient(180deg, transparent, rgba(32,184,176,0.07), transparent);
+      background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--t-brand) 7%, transparent), transparent);
       animation: scan 8s linear infinite; mix-blend-mode: screen; }
     @keyframes scan { 0% { transform: translateY(0); } 100% { transform: translateY(calc(100vh + 240px)); } }
     .product-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; perspective: 1400px; }
@@ -177,18 +185,18 @@ const blogPosts = await getAllPosts();
     .show-top { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.2rem; }
     .show-mark { display: inline-flex; align-items: center; justify-content: center; width: 3.2rem; height: 3.2rem; border-radius: 14px; font-weight: 800; font-size: 1.3rem; }
     .show-tag { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); border: 1px solid rgba(255,255,255,0.14); padding: 0.28rem 0.85rem; border-radius: 999px; }
-    .show-card.zeta .show-mark { color: #E20613; background: rgba(226,6,19,0.14); }
-    .show-card.sdk .show-mark { color: #20B8B0; background: rgba(32,184,176,0.16); }
+    .show-card.zeta .show-mark { color: var(--t-danger); background: rgba(226,6,19,0.14); }
+    .show-card.sdk .show-mark { color: var(--t-brand); background: color-mix(in oklab, var(--t-brand) 16%, transparent); }
     .show-card h3 { font-size: 1.9rem; font-weight: 700; color: var(--ink-strong); }
     .show-sub { font-size: 0.86rem; color: var(--faint); letter-spacing: 1px; text-transform: uppercase; }
     .show-card .show-desc { color: var(--muted); font-size: 0.97rem; line-height: 1.6; flex: 1; }
     .show-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .show-chips span { font-size: 0.78rem; color: var(--soft); background: rgba(32,184,176,0.10); border: 1px solid rgba(32,184,176,0.22); padding: 0.3rem 0.85rem; border-radius: 999px; }
+    .show-chips span { font-size: 0.78rem; color: var(--soft); background: color-mix(in oklab, var(--t-brand) 10%, transparent); border: 1px solid color-mix(in oklab, var(--t-brand) 22%, transparent); padding: 0.3rem 0.85rem; border-radius: 999px; }
     .show-card.zeta .show-chips span { background: rgba(226,6,19,0.10); border-color: rgba(226,6,19,0.24); }
     .show-cta { font-weight: 600; font-size: 0.95rem; margin-top: 0.4rem; }
-    .show-card.zeta .show-cta { color: #E20613; }
-    .show-card.sdk .show-cta { color: #20B8B0; }
-    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(32,184,176,0.12), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .show-card.zeta .show-cta { color: var(--t-danger); }
+    .show-card.sdk .show-cta { color: var(--t-brand); }
+    .show-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), color-mix(in oklab, var(--t-brand) 12%, transparent), transparent 45%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .show-card.zeta::after { background: radial-gradient(620px circle at var(--mx,50%) var(--my,50%), rgba(226,6,19,0.14), transparent 45%); }
     .show-card:hover::after { opacity: 1; }
     .show-card:hover { border-color: rgba(255,255,255,0.24); }
@@ -198,44 +206,44 @@ const blogPosts = await getAllPosts();
     .section-block-alt2 { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); }
     .section { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
     .section-header { text-align: center; margin-bottom: 3rem; }
-    .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .section-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--t-brand), var(--t-signal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .section-subtitle { color: var(--faint); font-size: 1rem; }
-    .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, #20B8B0, #F36F5D); border-radius: 2px; }
+    .section-divider { width: 60px; height: 3px; margin: 1rem auto 0; background: linear-gradient(90deg, var(--t-brand), var(--t-signal)); border-radius: 2px; }
 
     .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
-    .feature { background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.6rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
-    .feature:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
+    .feature { background: linear-gradient(135deg, var(--t-surface-2), rgba(14,20,23,0.9)); border: 1px solid var(--t-border-subtle); border-radius: 16px; padding: 1.6rem; text-align: left; backdrop-filter: blur(10px); transition: transform 0.3s, border-color 0.3s; }
+    .feature:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 40%, transparent); }
     .feature .feature-icon { font-size: 1.6rem; margin-bottom: 0.7rem; display: block; }
-    .feature h3 { color: #20B8B0; margin-bottom: 0.5rem; font-size: 1.08rem; }
+    .feature h3 { color: var(--t-brand); margin-bottom: 0.5rem; font-size: 1.08rem; }
     .feature p { color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
 
     .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
     .about-text h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 1rem; }
     .about-text p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
-    .about-text strong { color: #20B8B0; }
+    .about-text strong { color: var(--t-brand); }
     .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .stat-card { background: linear-gradient(135deg, rgba(30,41,59,0.7), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 14px; padding: 1.4rem; text-align: center; }
-    .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #20B8B0, #F36F5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-card { background: linear-gradient(135deg, var(--t-surface-2), rgba(14,20,23,0.9)); border: 1px solid var(--t-border-subtle); border-radius: 14px; padding: 1.4rem; text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--t-brand), var(--t-signal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
 
-    .ecosystem-link { display: block; background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2rem; text-align: center; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
-    .ecosystem-link:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.5); }
-    .ecosystem-link h3 { color: #20B8B0; font-size: 1.3rem; margin-bottom: 0.6rem; }
+    .ecosystem-link { display: block; background: linear-gradient(135deg, var(--t-surface-2), rgba(14,20,23,0.9)); border: 1px solid var(--t-border-subtle); border-radius: 16px; padding: 2rem; text-align: center; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+    .ecosystem-link:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 50%, transparent); }
+    .ecosystem-link h3 { color: var(--t-brand); font-size: 1.3rem; margin-bottom: 0.6rem; }
     .ecosystem-link p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.8rem; }
     .ecosystem-tags { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
-    .eco-tag { font-size: 0.78rem; background: rgba(32,184,176,0.1); color: #20B8B0; border: 1px solid rgba(32,184,176,0.2); padding: 0.25rem 0.8rem; border-radius: 999px; }
+    .eco-tag { font-size: 0.78rem; background: color-mix(in oklab, var(--t-brand) 10%, transparent); color: var(--t-brand); border: 1px solid color-mix(in oklab, var(--t-brand) 20%, transparent); padding: 0.25rem 0.8rem; border-radius: 999px; }
     .blog-section { background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%); padding: 5rem 0; }
     .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-    .blog-card { background: linear-gradient(135deg, rgba(30,41,59,0.6), rgba(14,20,23,0.8)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 1.5rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
-    .blog-card:hover { transform: translateY(-4px); border-color: rgba(32,184,176,0.4); }
+    .blog-card { background: linear-gradient(135deg, var(--t-surface-2), rgba(14,20,23,0.8)); border: 1px solid var(--t-border-subtle); border-radius: 16px; padding: 1.5rem; text-decoration: none; transition: transform 0.3s, border-color 0.3s; }
+    .blog-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--t-brand) 40%, transparent); }
     .blog-date { font-size: 0.8rem; color: var(--faint); margin-bottom: 0.5rem; }
     .blog-title { font-size: 1.2rem; font-weight: 600; color: var(--ink-strong); margin-bottom: 0.5rem; }
     .blog-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
-    .blog-tag { display: inline-block; font-size: 0.7rem; background: rgba(32,184,176,0.15); color: #20B8B0; padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
-    .blog-tag.tech { background: rgba(139,92,246,0.15); color: #a78bfa; }
+    .blog-tag { display: inline-block; font-size: 0.7rem; background: color-mix(in oklab, var(--t-brand) 15%, transparent); color: var(--t-brand); padding: 0.2rem 0.6rem; border-radius: 4px; margin-top: 0.75rem; }
+    .blog-tag.tech { background: rgba(139,92,246,0.15); color: var(--t-signal); }
 
     .release-section { padding: 4rem 0; }
-    .release-card { background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(14,20,23,0.9)); border: 1px solid rgba(51,65,85,0.5); border-radius: 16px; padding: 2.5rem; text-align: center; max-width: 800px; margin: 0 auto; }
+    .release-card { background: linear-gradient(135deg, var(--t-surface-2), rgba(14,20,23,0.9)); border: 1px solid var(--t-border-subtle); border-radius: 16px; padding: 2.5rem; text-align: center; max-width: 800px; margin: 0 auto; }
     .release-card h3 { color: var(--ink-strong); font-size: 1.4rem; margin-bottom: 0.8rem; }
     .release-card p { color: var(--muted); margin-bottom: 1.2rem; font-size: 0.95rem; }
     .release-status-line { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.2rem; }
@@ -258,8 +266,8 @@ const blogPosts = await getAllPosts();
     .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
     .ticker-wrap:hover .ticker { animation-play-state: paused; }
     .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
-    .ticker-item b { color: #20B8B0; font-weight: 600; }
-    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: #20B8B0; box-shadow: 0 0 10px rgba(32,184,176,0.8); flex: none; }
+    .ticker-item b { color: var(--t-brand); font-weight: 600; }
+    .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--t-brand); box-shadow: 0 0 10px color-mix(in oklab, var(--t-brand) 80%, transparent); flex: none; }
     @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     /* ---------- Highlight slideshow (auto-play) ---------- */
@@ -272,11 +280,11 @@ const blogPosts = await getAllPosts();
     .slide-caption .c-t { font-size: 1.2rem; font-weight: 700; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,0.65); }
     .slide-caption .c-s { font-size: 0.85rem; color: rgba(255,255,255,0.88); text-shadow: 0 1px 8px rgba(0,0,0,0.65); }
     .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: rgba(10,15,26,0.55); color: var(--ink-strong); cursor: pointer; font-size: 1.05rem; line-height: 1; transition: all 0.2s; }
-    .nav-btn:hover { border-color: #20B8B0; color: #20B8B0; background: rgba(10,15,26,0.8); }
+    .nav-btn:hover { border-color: var(--t-brand); color: var(--t-brand); background: rgba(10,15,26,0.8); }
     .nav-prev { left: 1.1rem; } .nav-next { right: 1.1rem; }
     .slide-dots { position: absolute; bottom: 1.1rem; right: 1.5rem; z-index: 3; display: flex; gap: 0.45rem; }
     .slide-dots button { width: 9px; height: 9px; border-radius: 999px; border: none; background: rgba(255,255,255,0.4); cursor: pointer; padding: 0; transition: all 0.3s; }
-    .slide-dots button.active { width: 26px; background: #20B8B0; }
+    .slide-dots button.active { width: 26px; background: var(--t-brand); }
 
     /* ---------- Ecosystem dual marquee ---------- */
     .eco-marquee { position: relative; overflow: hidden; margin-top: 1.7rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
@@ -284,8 +292,8 @@ const blogPosts = await getAllPosts();
     .eco-track { display: flex; width: max-content; gap: 0.7rem; animation: eco-scroll 44s linear infinite; }
     .eco-track.rev { animation-direction: reverse; animation-duration: 54s; }
     .eco-marquee:hover .eco-track { animation-play-state: paused; }
-    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: rgba(32,184,176,0.08); border: 1px solid rgba(32,184,176,0.2); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
-    .eco-track.rev span { background: rgba(243,111,93,0.07); border-color: rgba(243,111,93,0.2); }
+    .eco-track span { flex: none; font-size: 0.82rem; color: var(--soft); background: color-mix(in oklab, var(--t-brand) 8%, transparent); border: 1px solid color-mix(in oklab, var(--t-brand) 20%, transparent); padding: 0.45rem 1.15rem; border-radius: 999px; white-space: nowrap; }
+    .eco-track.rev span { background: color-mix(in oklab, var(--t-signal) 7%, transparent); border-color: color-mix(in oklab, var(--t-signal) 20%, transparent); }
     @keyframes eco-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     @media (prefers-reduced-motion: reduce) {
@@ -297,14 +305,14 @@ const blogPosts = await getAllPosts();
 
     /* ---------- Modern motion enhancements ---------- */
     /* Top scroll progress bar */
-    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; z-index: 1200; background: linear-gradient(90deg, #20B8B0, #F36F5D); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+    .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 2px; z-index: 1200; background: linear-gradient(90deg, var(--t-brand), var(--t-signal)); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
     /* Back-to-top button */
     .back-top { position: fixed; right: 1.6rem; bottom: 1.6rem; z-index: 900; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: rgba(10,15,26,0.72); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: var(--ink-strong); font-size: 1.1rem; line-height: 1; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .3s, transform .3s, visibility .3s, border-color .2s, color .2s, box-shadow .3s; }
     .back-top.show { opacity: 1; visibility: visible; transform: none; }
-    .back-top:hover { border-color: #20B8B0; color: #20B8B0; box-shadow: 0 8px 24px rgba(32,184,176,0.25); }
+    .back-top:hover { border-color: var(--t-brand); color: var(--t-brand); box-shadow: 0 8px 24px color-mix(in oklab, var(--t-brand) 25%, transparent); }
     /* Feature card cursor spotlight */
     .feature { position: relative; overflow: hidden; }
-    .feature::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--fx,50%) var(--fy,50%), rgba(32,184,176,0.10), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .feature::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(420px circle at var(--fx,50%) var(--fy,50%), color-mix(in oklab, var(--t-brand) 10%, transparent), transparent 45%); opacity: 0; transition: opacity .3s; pointer-events: none; }
     .feature:hover::after { opacity: 1; }
     /* Section divider grow animation */
     .section-divider { transform: scaleX(0); transform-origin: center; transition: transform .8s cubic-bezier(.22,.61,.36,1) .25s; }
@@ -335,16 +343,19 @@ const blogPosts = await getAllPosts();
     <div class="beam beam-2"></div>
     <div class="beam beam-3"></div>
     <div class="hero-content">
-      <img src="/assets/linxira-l-on-dark.svg" alt="Linxira OS" class="hero-logo">
+      <img src="/assets/linxira-l-on-dark.svg" alt="Linxira OS" class="hero-logo logo-dark">
+      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo logo-light">
+      <p class="lx-kicker hero-kicker">Linxira OS · Arch Linux · Scientific Computing</p>
       <h1>Linxira OS</h1>
       <p class="tagline">Arch Linux for scientific computing</p>
       <p class="en-tagline">Desktop Supercomputer · Direct Arch · Built for researchers</p>
-      <p class="hero-desc">A personal scientific workstation distribution built on <strong>Arch Linux</strong> — a ready-to-use <strong>KDE Plasma</strong> desktop, <strong>93 curated applications</strong>, <strong>dual-kernel + snapshot</strong> safety for rolling updates, <strong>upstream security patches</strong>, and <strong>containerized reproducibility</strong> for research workflows. Built for science students, researchers, developers and everyday power users who value high performance, deep customizability and always-current security updates.</p>
+      <p class="hero-desc">A personal scientific workstation distribution built on <strong>Arch Linux</strong> — a ready-to-use <strong>KDE Plasma</strong> desktop, <strong>{ecosystem.catalogTotal} reviewed applications</strong>, <strong>dual-kernel + snapshot</strong> safety for rolling updates, <strong>upstream security patches</strong>, and <strong>containerized reproducibility</strong> for research workflows. Built for science students, researchers, developers and everyday power users who value high performance, deep customizability and always-current security updates.</p>
       <div class="hero-ctas">
         <a href="/en/docs/" class="cta">Get Started</a>
         <a href="/en/download/" class="cta-ghost">Download ISO →</a>
         <a href="/en/docs/ecosystem/" class="cta-ghost">Browse Ecosystem</a>
       </div>
+      <HeroFx lang="en" />
       <div class="product-feature">
         <a href="/zeta/en/" class="pcard zeta glass">
           <span class="pmark">Z</span>
@@ -352,11 +363,6 @@ const blogPosts = await getAllPosts();
           <p>One terminal workspace, the whole toolkit: tabs and tilable real-terminal panes, with the coding agent (zetacode), editor, and terminal IDE one command away. Rust-written, mouse-first.</p>
           <span class="pgo">Explore Zeta →</span>
         </a>
-      </div>
-      <div class="badges">
-        <span class="badge">Latest image batch complete</span>
-        <span class="badge">Signed [linxira] repository</span>
-        <span class="badge badge-coral">Latest image · {releases.iso.label}</span>
       </div>
     </div>
   </section>
@@ -366,14 +372,14 @@ const blogPosts = await getAllPosts();
     <div class="ticker">
       <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
       <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
-      <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
-      <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> curated apps · <b>{ecosystem.catalogCategories}</b> categories</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> official image · offline repo ships with it</span>
       <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
       <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
       <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
       <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
-      <span class="ticker-item"><span class="tdot"></span><b>93</b> curated apps · <b>14</b> categories</span>
-      <span class="ticker-item"><span class="tdot"></span><b>804</b> offline packages shipped with the ISO</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> curated apps · <b>{ecosystem.catalogCategories}</b> categories</span>
+      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> official image · offline repo ships with it</span>
       <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
       <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
     </div>
@@ -645,8 +651,8 @@ wsl -d linxira</code></pre>
       </div>
       <div class="features">
         <div class="feature reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch Desktop</h3><p>KDE Plasma built directly on the Arch official repositories — always current, always fast. Dual kernels (linux + linux-lts) as the rolling-update safety net.</p></div>
-        <div class="feature reveal reveal-d2"><span class="feature-icon">📦</span><h3>93 Curated Apps</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
-        <div class="feature reveal reveal-d3"><span class="feature-icon">🔐</span><h3>Signed [linxira] Repo</h3><p>All 17 first-party tools ship through our own signing key, tracked by pacman — from Welcome to Config Hub, one chain of trust.</p></div>
+        <div class="feature reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} Curated Apps</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
+        <div class="feature reveal reveal-d3"><span class="feature-icon">🔐</span><h3>Signed [linxira] Repo</h3><p>All {ecosystem.packageTotal} first-party tools ship through our own signing key, tracked by pacman — from Welcome to Config Hub, one chain of trust.</p></div>
         <div class="feature reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>Careful Software Sources</h3><p>Rely on official repositories and the curated catalog. Wild AUR packages are user-maintained and not audited — they often carry quality and security issues. Use them with caution.</p></div>
         <div class="feature reveal reveal-d1"><span class="feature-icon">🛡️</span><h3>Rolling Updates · Timely Security</h3><p>Rolling updates pick up upstream security patches as soon as they land — no waiting for a distro release cycle. Paired with Timeshift snapshots, grub-btrfs rollback and dual kernels for both safety and stability.</p></div>
         <div class="feature reveal reveal-d2"><span class="feature-icon">🐳</span><h3>Container Reproducibility</h3><p>Podman, Distrobox and Apptainer out of the box — pull others' environments, reproduce results, publish your own images. Near-zero overhead.</p></div>
@@ -668,9 +674,9 @@ wsl -d linxira</code></pre>
           <p><strong>Offline-ready, more complete online</strong>: the ISO bundles KDE Plasma and the preinstalled software, so a usable system installs with no network. But most additional applications and third-party desktops require an <strong>internet connection</strong>. Confirm network access in campus or intranet environments.</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card reveal reveal-d1"><div class="stat-num" data-count="93">0</div><div class="stat-label">Curated apps</div></div>
-          <div class="stat-card reveal reveal-d2"><div class="stat-num" data-count="17">0</div><div class="stat-label">First-party tools</div></div>
-          <div class="stat-card reveal reveal-d3"><div class="stat-num" data-count="804">0</div><div class="stat-label">Offline packages</div></div>
+          <div class="stat-card reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">Curated apps</div></div>
+          <div class="stat-card reveal reveal-d2"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">First-party tools</div></div>
+          <div class="stat-card reveal reveal-d3"><div class="stat-num" data-count={ecosystem.catalogCategories}>0</div><div class="stat-label">Categories</div></div>
         </div>
       </div>
     </div>
@@ -686,7 +692,7 @@ wsl -d linxira</code></pre>
       </div>
       <a href="/en/docs/ecosystem/" class="ecosystem-link reveal">
         <h3>Browse the full catalog →</h3>
-        <p>93 curated applications in 14 categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
+        <p>{ecosystem.catalogTotal} curated applications in {ecosystem.catalogCategories} categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">Containers</span><span class="eco-tag">Dev Tools</span><span class="eco-tag">Bioinformatics</span><span class="eco-tag">Scientific Computing</span><span class="eco-tag">AI Coding</span><span class="eco-tag">Office</span><span class="eco-tag">Gaming</span>
         </div>
@@ -718,7 +724,7 @@ wsl -d linxira</code></pre>
         <a href="/en/security/" class="cta-ghost" style="padding:0.8rem 1.8rem;">Security</a>
         <div class="release-status-line">
           <span class="release-item">✅ Latest image batch complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
-          <span class="release-item">🛠️ Future releases from source (<a href="/en/docs/building/" style="color:#20B8B0;">build guide</a>)</span>
+          <span class="release-item">🛠️ Future releases from source (<a href="/en/docs/building/" style="color:var(--t-brand);">build guide</a>)</span>
           <span class="release-item">📦 {releases.iso.label} ISO live on GitCode (LFS)</span>
         </div>
       </div>
@@ -746,7 +752,7 @@ wsl -d linxira</code></pre>
     </div>
   </section>
 
-  <footer><p>Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux. Brand assets: <a href="/en/docs/brand-assets/" style="color:#64748b;">Brand Asset Policy</a>.</p></footer>
+  <footer><p>Linxira OS is built directly on Arch Linux; an independent project with no affiliation to or endorsement by Arch Linux. Brand assets: <a href="/en/docs/brand-assets/" style="color:var(--t-text-muted);">Brand Asset Policy</a>.</p></footer>
 
   <button class="back-top" id="backTop" type="button" aria-label="Back to top">↑</button>
 
