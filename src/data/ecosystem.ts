@@ -18,6 +18,8 @@ export type EcosystemFacts = {
   catalogReviewed: number;
   catalogVersion: number | null;
   catalogRelease: string | null;
+  /** 其中真正并入 pacman 组 linxira 的包数（groups=('linxira')） */
+  groupTotal: number;
   /** packages 仓里 linxira-* 子目录数（自研包） */
   packageTotal: number;
   packageNames: string[];

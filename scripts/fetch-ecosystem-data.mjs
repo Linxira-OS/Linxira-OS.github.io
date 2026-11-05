@@ -24,12 +24,27 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const OUT = join(HERE, '..', 'src', 'data', 'ecosystem.json');
 const STRICT = process.argv.includes('--strict');
 
+const PKGBUILD_RAW = 'https://raw.githubusercontent.com/Linxira-OS/packages/main/packages';
 const CATALOG_URL =
   'https://raw.githubusercontent.com/Linxira-OS/linxira-catalog/main/catalog/catalog-v3.json';
 const PACKAGES_API = 'https://api.github.com/repos/Linxira-OS/packages/contents/packages';
 const packagesRepoUrl = 'https://github.com/Linxira-OS/packages';
 
 const warnings = [];
+
+async function getText(url) {
+  const headers = {
+    'user-agent': 'linxira-site-data-fetcher',
+    accept: 'text/plain, */*'
+  };
+  try {
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.text();
+  } catch (err) {
+    return execFileSync('curl', ['-sSL', '--max-time', '20', url], { encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 });
+  }
+}
 
 async function getJson(url) {
   const headers = {
@@ -88,6 +103,26 @@ async function fetchPackages() {
   };
 }
 
+/**
+ * 自研包里有几个真正并入 pacman 组 `linxira`（groups=('linxira')）。
+ * 首页终端会跑 `pacman -Sg linxira | wc -l`，这个数字必须来自真实 PKGBUILD，
+ * 不能手写——之前手写的 "linxira-meta"、假包数都被指出来了。
+ */
+async function fetchGroupCount(names) {
+  let total = 0;
+  for (const name of names) {
+    let src = await getText(`${PKGBUILD_RAW}/${name}/PKGBUILD`);
+    if (!src || src.trim().length < 20) {
+      // 单次抓取失败会让计数偏小——重试一次，仍失败就整步失败、保留旧快照
+      src = await getText(`${PKGBUILD_RAW}/${name}/PKGBUILD`);
+    }
+    if (!src || src.trim().length < 20) throw new Error(`PKGBUILD 拉取失败: ${name}`);
+    if (/groups=\(\s*'linxira'\s*\)/.test(src)) total++;
+  }
+  if (total === 0) throw new Error('未在 PKGBUILD 里找到任何 groups=(linxira)');
+  return { groupTotal: total };
+}
+
 const previous = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 
 const next = {
@@ -99,7 +134,8 @@ const next = {
 let ok = true;
 for (const [name, fn] of [
   ['catalog', fetchCatalog],
-  ['packages', fetchPackages]
+  ['packages', fetchPackages],
+  ['group', async () => fetchGroupCount(next.packageNames ?? previous.packageNames ?? [])]
 ]) {
   try {
     Object.assign(next, await fn());

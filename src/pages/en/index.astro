@@ -874,11 +874,15 @@ wsl -d linxira</code></pre>
     // dataset guards against duplicate loops on HMR/script re-runs
     if (termBody && !termBody.dataset.started && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       termBody.dataset.started = '1';
+      // Only commands that actually exist (linxira-config comes from the
+      // linxira-config-hub package; headless/ssh/timeshift are real subcommands).
+      // No invented output text here.
       const termScript = [
-        { cmd: 'linxira-config headless on now', out: 'Switched to headless: desktop stopped, RAM freed for compute ✓' },
-        { cmd: 'linxira-config ssh on', out: 'SSH enabled: ssh user@192.168.1.42 ✓' },
-        { cmd: 'linxira-update', out: 'Up to date: 0 upstream patches pending ✓' },
-        { cmd: 'linxira-config timeshift status', out: 'Snapshots: daily 3 · boot 3 · auto-snapshot before updates ✓' },
+        { cmd: 'sudo pacman -Syu', out: '' },
+        { cmd: 'linxira-config status', out: '' },
+        { cmd: 'linxira-config headless on now', out: '' },
+        { cmd: 'linxira-config ssh on', out: '' },
+        { cmd: 'linxira-config timeshift status', out: '' },
       ];
       const typeSpeed = 26, holdMs = 1300, gapMs = 350, fullShowMs = 4500;
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

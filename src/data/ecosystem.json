@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05T11:22:16.451Z",
+  "generatedAt": "2026-11-05T13:30:22.833Z",
   "sources": {
     "catalog": "https://raw.githubusercontent.com/Linxira-OS/linxira-catalog/main/catalog/catalog-v3.json",
     "packages": "https://github.com/Linxira-OS/packages"
@@ -33,5 +33,6 @@
     "linxira-zeta",
     "linxira-zeta-c-bin",
     "linxira-zeta-ide"
-  ]
+  ],
+  "groupTotal": 19
 }

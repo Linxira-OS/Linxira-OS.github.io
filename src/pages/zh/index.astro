@@ -909,11 +909,14 @@ wsl -d linxira</code></pre>
     // dataset 防重入: HMR/脚本重载不会叠加多个循环实例
     if (termBody && !termBody.dataset.started && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       termBody.dataset.started = '1';
+      // 只列真实存在的命令（linxira-config 由 linxira-config-hub 包提供，
+      // headless/ssh/timeshift 都是它的真实子命令）。这里不伪造输出文本。
       const termScript = [
-        { cmd: 'linxira-config headless on now', out: '已切换到无头模式：桌面已停止，内存全给计算 ✓' },
-        { cmd: 'linxira-config ssh on', out: 'SSH 已开启：ssh user@192.168.1.42 ✓' },
-        { cmd: 'linxira-update', out: '已是最新：上游补丁 0 个待装 ✓' },
-        { cmd: 'linxira-config timeshift status', out: '快照：每日 3 份 · 启动 3 份 · 更新前自动快照 ✓' },
+        { cmd: 'sudo pacman -Syu', out: '' },
+        { cmd: 'linxira-config status', out: '' },
+        { cmd: 'linxira-config headless on now', out: '' },
+        { cmd: 'linxira-config ssh on', out: '' },
+        { cmd: 'linxira-config timeshift status', out: '' },
       ];
       const typeSpeed = 26, holdMs = 1300, gapMs = 350, fullShowMs = 4500;
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

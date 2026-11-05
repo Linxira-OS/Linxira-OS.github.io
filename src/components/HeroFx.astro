@@ -28,14 +28,11 @@ const metrics = [
 ];
 
 const lines = [
-  '$ linxira-meta --status',
-  '  kernel    linux + linux-lts  ok',
-  '  desktop   KDE Plasma 6',
-  '  repo      [linxira] signature verified',
-  `$ catalog --count`,
-  `  ${ecosystem.catalogTotal} entries · ${ecosystem.catalogCategories} categories`,
-  '$ sudo pacman -Syu linxira-meta',
-  `:: ${ecosystem.packageTotal} packages · signature verified`
+  '$ sudo pacman -Syu',
+  '$ sudo pacman -S --needed linxira',
+  '$ pacman -Sg linxira | wc -l',
+  String(ecosystem.groupTotal),
+  '$ linxira-welcome'
 ];
 
 const showHero = variant !== 'metrics';
