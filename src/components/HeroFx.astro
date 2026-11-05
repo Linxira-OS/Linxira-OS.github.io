@@ -1,12 +1,13 @@
 ---
 /**
- * HeroFx.astro — 首页 hero 的动效与实时指标。
+ * HeroFx.astro — 首页 hero 的终端窗口 / 指标条 / 字符动效。
  *
- * 只做三件事，都受 prefers-reduced-motion 约束：
- *   1. h1 字符解码（进页面时逐字落定，不改变最终文本）
- *   2. 一行终端状态：三条命令循环打字，带光标
- *   3. 指标数字从 0 计数到真实值，数字全部来自 data 层，不写死
+ * 三种用法：
+ *   <HeroFx variant="hero" />    右侧终端窗口（逐字打印，带光标）
+ *   <HeroFx variant="metrics" /> 四格指标（数字从 0 计数到真实值）
+ *   <HeroFx />                   终端 + 指标竖排（移动端 / 单列封面）
  *
+ * 动效都受 prefers-reduced-motion 约束：reduce 时直接呈现最终文本。
  * 数字来源：releases（ISO 批次/体积）+ ecosystem（catalog 与 packages 计数）。
  */
 import { releases } from '../data/releases';
@@ -14,8 +15,9 @@ import { ecosystem } from '../data/ecosystem';
 
 interface Props {
   lang: 'zh' | 'en';
+  variant?: 'hero' | 'metrics' | 'both';
 }
-const { lang } = Astro.props;
+const { lang, variant = 'both' } = Astro.props;
 const zh = lang === 'zh';
 
 const metrics = [
@@ -25,134 +27,181 @@ const metrics = [
   { value: String(ecosystem.packageTotal), key: zh ? '自研包' : 'First-party pkgs', count: true }
 ];
 
-const commands = [
+const lines = [
   '$ linxira-meta --status',
-  `✓ kernel linux + linux-lts · repo [linxira] verified`,
-  `✓ catalog ${ecosystem.catalogTotal} apps / ${ecosystem.catalogCategories} categories`,
-  `$ pacman -Syu linxira-meta   # ${ecosystem.packageTotal} packages`
+  '  kernel    linux + linux-lts  ok',
+  '  desktop   KDE Plasma 6',
+  '  repo      [linxira] signature verified',
+  `$ catalog --count`,
+  `  ${ecosystem.catalogTotal} entries · ${ecosystem.catalogCategories} categories`,
+  '$ sudo pacman -Syu linxira-meta',
+  `:: ${ecosystem.packageTotal} packages · signature verified`
 ];
+
+const showHero = variant !== 'metrics';
+const showMetrics = variant !== 'hero';
 ---
 
-<div class="hero-fx" data-hero-fx data-lines={JSON.stringify(commands)}>
-  <div class="hero-fx__term" aria-hidden="true">
-    <span class="hero-fx__screen" data-hero-typed></span><span class="hero-fx__caret"></span>
-  </div>
-  <div class="hero-fx__metrics">
-    {metrics.map((m) => (
-      <div class="hero-fx__metric">
-        <b data-count-target={m.count ? m.value : undefined}>{m.value}</b>
-        <span>{m.key}</span>
+<div class:list={["hero-fx", `hero-fx--${variant}`]} data-hero-fx data-lines={JSON.stringify(lines)}>
+  {showHero && (
+    <div class="hero-term" aria-label={zh ? "安装演示终端" : "Install demo terminal"}>
+      <div class="hero-term__bar">
+        <i></i><i></i><i></i>
+        <span class="hero-term__name">linxira@workstation — zsh</span>
       </div>
-    ))}
-  </div>
+      <pre class="hero-term__body" data-hero-typed></pre>
+    </div>
+  )}
+  {showMetrics && (
+    <div class="hero-fx__metrics">
+      {metrics.map((m) => (
+        <div class="hero-fx__metric">
+          <b data-count-target={m.count ? m.value : undefined}>{m.value}</b>
+          <span>{m.key}</span>
+        </div>
+      ))}
+    </div>
+  )}
 </div>
 
 <style is:global>
-  .hero-fx { position: relative; z-index: 2; margin: 2.2rem auto 0; max-width: 780px; }
+  .hero-fx { position: relative; z-index: 2; }
+  .hero-fx--both { margin: 2.2rem auto 0; max-width: 780px; }
 
-  .hero-fx__term {
-    display: flex; align-items: center; justify-content: center; gap: 2px;
-    min-height: 1.9em;
-    font-family: var(--t-font-mono); font-size: .82rem; letter-spacing: .01em;
-    color: var(--t-text-secondary);
-    padding: .5rem .9rem; border-radius: 999px;
-    background: color-mix(in oklab, var(--t-surface) 72%, transparent);
-    box-shadow: inset 0 0 0 1px var(--t-border-subtle);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  /* ---------- 终端窗口 ---------- */
+  .hero-term {
+    border-radius: var(--t-radius); background: var(--t-code-bg);
+    box-shadow: 0 0 0 1px var(--t-border-strong), 0 30px 70px -50px var(--t-brand);
+    overflow: hidden; text-align: left;
   }
-  .hero-fx__screen { color: var(--t-text-secondary); overflow: hidden; text-overflow: ellipsis; }
-  .hero-fx__term:has(.hero-fx__screen:empty) { visibility: hidden; }
-  .hero-fx__caret {
-    display: inline-block; width: .5em; height: 1em; vertical-align: -.15em;
-    background: var(--t-brand);
+  .hero-term__bar {
+    display: flex; align-items: center; gap: 6px; height: 38px; padding: 0 14px;
+    border-bottom: 1px solid var(--t-border-subtle); background: var(--t-surface);
+  }
+  .hero-term__bar i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+  .hero-term__bar i:nth-child(1) { background: var(--t-danger); }
+  .hero-term__bar i:nth-child(2) { background: var(--t-warning); }
+  .hero-term__bar i:nth-child(3) { background: var(--t-success); }
+  .hero-term__name {
+    flex: 1; text-align: center; margin-right: 38px;
+    font-family: var(--t-font-mono); font-size: 11.5px; letter-spacing: .06em;
+    color: var(--t-text-muted);
+  }
+  .hero-term__body {
+    margin: 0; padding: 18px 20px 22px; min-height: 232px;
+    font-family: var(--t-font-mono); font-size: 12.6px; line-height: 1.95;
+    color: var(--t-text-secondary); white-space: pre-wrap; word-break: break-word;
+  }
+  .hero-term__caret {
+    display: inline-block; width: 7px; height: 1em; vertical-align: -2px; background: var(--t-brand);
   }
   @media (prefers-reduced-motion: no-preference) {
-    .hero-fx__caret { animation: heroBlink 1.05s steps(1) infinite; }
+    .hero-term__caret { animation: heroBlink 1.05s steps(1) infinite; }
   }
   @keyframes heroBlink { 0%, 49% { opacity: 1 } 50%, 100% { opacity: 0 } }
 
+  /* ---------- 指标条 ---------- */
   .hero-fx__metrics {
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-    margin-top: 1.9rem;
     border-top: 1px solid var(--t-border-subtle);
     border-bottom: 1px solid var(--t-border-subtle);
     text-align: left;
   }
-  .hero-fx__metric { padding: .85rem .9rem .8rem 0; min-width: 0; }
-  .hero-fx__metric + .hero-fx__metric { padding-left: 1.1rem; border-left: 1px solid var(--t-border-subtle); }
+  .hero-fx--metrics { margin-top: clamp(2rem, 4vw, 3rem); }
+  .hero-fx__metric { padding: .9rem .9rem .85rem 0; min-width: 0; }
+  .hero-fx__metric + .hero-fx__metric { padding-left: 1.2rem; border-left: 1px solid var(--t-border-subtle); }
   .hero-fx__metric b {
     display: block; font-family: var(--t-font-mono); font-weight: 500;
-    font-size: clamp(.95rem, 1.5vw, 1.15rem); line-height: 1.25; letter-spacing: -.02em;
+    font-size: clamp(1rem, 1.6vw, 1.3rem); line-height: 1.25; letter-spacing: -.02em;
     color: var(--t-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .hero-fx__metric span {
-    display: block; margin-top: .3rem;
-    font-family: var(--t-font-mono); font-size: .6rem; letter-spacing: .12em;
+    display: block; margin-top: .32rem;
+    font-family: var(--t-font-mono); font-size: .62rem; letter-spacing: .12em;
     text-transform: uppercase; color: var(--t-text-muted);
   }
   @media (max-width: 760px) {
-    .hero-fx { margin-top: 1.8rem; }
+    /* 手机上终端窗口不要留一大片空白等打字 */
+    .hero-term__body { min-height: 150px; padding: 14px 16px 18px; font-size: 12px; }
     .hero-fx__metrics { grid-template-columns: 1fr 1fr; }
     .hero-fx__metric:nth-child(3) { border-left: 0; padding-left: 0; }
     .hero-fx__metric:nth-child(3), .hero-fx__metric:nth-child(4) { border-top: 1px solid var(--t-border-subtle); }
-    .hero-fx__metric:nth-child(4) { padding-left: 1.1rem; }
+    .hero-fx__metric:nth-child(4) { padding-left: 1.2rem; }
   }
 </style>
 
 <script is:inline>
   (function () {
     var root = document.querySelector('[data-hero-fx]');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!root || root.dataset.fxReady) return;
     root.dataset.fxReady = '1';
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var h1 = document.querySelector('.hero h1');
+    /* ---------- 字符解码：只作用于 [data-hero-scramble]，不动渐变字 ---------- */
     var GLYPHS = '▓▒░<>/#%&*+=0123456789ABCDEF';
-    if (h1 && !reduce) {
-      var final = h1.textContent;
-      var chars = Array.from(final);
-      if (!h1.dataset.scrambled) {
-        h1.dataset.scrambled = '1';
-        h1.textContent = '';
+    var targets = document.querySelectorAll('[data-hero-scramble]');
+    if (!reduce) {
+      targets.forEach(function (el, idx) {
+        if (el.dataset.scrambled) return;
+        el.dataset.scrambled = '1';
+        var final = el.textContent;
+        var chars = Array.from(final);
+        el.textContent = '';
         var spans = chars.map(function (ch) {
           var s = document.createElement('span');
           s.textContent = ch === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
-          h1.appendChild(s);
+          el.appendChild(s);
           return s;
         });
         var t0 = performance.now();
+        var settle = 200 + idx * 80;
         (function frame(now) {
           var t = now - t0;
-          var settled = true;
+          var done = true;
           for (var i = 0; i < spans.length; i++) {
-            if (t > 180 + i * 45) { if (spans[i].textContent !== chars[i]) spans[i].textContent = chars[i]; }
-            else { settled = false; spans[i].textContent = GLYPHS[(Math.random() * GLYPHS.length) | 0]; }
+            if (t > settle + i * 42) { if (spans[i].textContent !== chars[i]) spans[i].textContent = chars[i]; }
+            else { done = false; spans[i].textContent = GLYPHS[(Math.random() * GLYPHS.length) | 0]; }
           }
-          if (!settled) requestAnimationFrame(frame);
-          else h1.textContent = final;
+          if (!done) requestAnimationFrame(frame);
+          else el.textContent = final;
         })(t0);
-      }
+      });
     }
 
+    /* ---------- 终端逐字打印 ---------- */
     var lines = [];
     try { lines = JSON.parse(root.dataset.lines || '[]'); } catch (e) {}
     var screen = root.querySelector('[data-hero-typed]');
     if (screen && lines.length) {
       if (reduce) {
-        screen.textContent = lines[1] || lines[0];
+        screen.textContent = lines.join('\n');
       } else {
-        var li = 0, ci = 0, erase = false;
-        (function step() {
+        var caret = document.createElement('span');
+        caret.className = 'hero-term__caret';
+        screen.appendChild(caret);
+        var li = 0, ci = 0, cur = null;
+        function step() {
+          if (li >= lines.length) { screen.appendChild(document.createTextNode('\n')); return; }
           var line = lines[li];
-          if (!erase && ci <= line.length) { screen.textContent = line.slice(0, ci++); setTimeout(step, 26); }
-          else if (!erase) { erase = true; setTimeout(step, 2200); }
-          else if (ci > 0) { screen.textContent = line.slice(0, --ci); setTimeout(step, 10); }
-          else { erase = false; li = (li + 1) % lines.length; setTimeout(step, 260); }
-        })();
+          if (!cur) {
+            cur = document.createElement('span');
+            screen.insertBefore(cur, caret);
+            if (li > 0) screen.insertBefore(document.createTextNode('\n'), cur);
+          }
+          if (ci < line.length) {
+            cur.textContent += line.charAt(ci++);
+            setTimeout(step, 16);
+          } else {
+            ci = 0; cur = null; li++;
+            setTimeout(step, 240);
+          }
+        }
+        setTimeout(step, 420);
       }
     }
 
-    var counters = root.querySelectorAll('[data-count-target]');
+    /* ---------- 指标计数 ---------- */
+    var counters = document.querySelectorAll('[data-count-target]');
     if (counters.length && !reduce) {
       var run = function (el) {
         var target = Number(el.dataset.countTarget);
@@ -170,9 +219,7 @@ const commands = [
           es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); run(e.target); } });
         }, { threshold: .5 });
         counters.forEach(function (c) { io.observe(c); });
-      } else {
-        counters.forEach(run);
-      }
+      } else counters.forEach(run);
     }
   })();
 </script>

@@ -41,6 +41,7 @@ const description = Astro.props.description?.trim() || siteDefault;
     var saved = null;
     try { saved = localStorage.getItem('linxira-theme'); } catch (e) {}
     document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+    document.documentElement.classList.add('js');
   })();
 </script>
 <link rel="preload" href="/fonts/Geist-Regular.woff2" as="font" type="font/woff2" crossorigin>
@@ -70,7 +71,9 @@ const description = Astro.props.description?.trim() || siteDefault;
     color: var(--t-text);
     line-height: 1.8;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
+    /* 不要写 -webkit-font-smoothing: antialiased：
+       Windows/Chrome 上它会关掉亚像素渲染，小字号直接发虚。
+       保持浏览器默认（auto）才是清晰的。 */
   }
   ::selection { background: color-mix(in oklab, var(--t-brand) 35%, transparent); }
   :focus-visible { outline: 2px solid var(--t-brand); outline-offset: 2px; border-radius: 4px; }
@@ -98,7 +101,8 @@ const description = Astro.props.description?.trim() || siteDefault;
   [data-theme="light"] .glass::before { display: none; }
 
   /* ---------- 滚动揭示 ---------- */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+  /* 内容始终可见；入场动画会让"过渡没跑起来"时整块发灰。 */
+  .reveal { opacity: 1; transform: none; transition: none; }
   .reveal.in { opacity: 1; transform: none; }
   .reveal-d1 { transition-delay: 0.08s; }
   .reveal-d2 { transition-delay: 0.16s; }

@@ -15,6 +15,7 @@ const blogPosts = await getAllPosts();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script is:inline>document.documentElement.classList.add('js');</script>
   <title>Linxira OS — Arch Linux for Scientific Computing</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <meta name="description" content={pageDescription}>
@@ -49,28 +50,25 @@ const blogPosts = await getAllPosts();
        液态玻璃（Apple Liquid Glass）基元 —— 区别于毛玻璃：
        高度透明，背景动效从中透出；顶部/左侧高光描边 + 对角光泽 + 内部辉光。
        ========================================================================== */
+    /* 卡片改成实心面 + 1px 描边：不再用 backdrop-filter 液态玻璃。
+       backdrop-filter: blur()/saturate() 在 1080p 下会让卡片内文字发虚，
+       而且性能开销大；实心面在深浅两套主题下都更清晰。 */
     .glass {
       position: relative;
-      background: linear-gradient(135deg, var(--glass-a), var(--glass-b) 35%, var(--glass-c));
-      -webkit-backdrop-filter: blur(12px) saturate(180%);
-      backdrop-filter: blur(12px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      box-shadow:
-        inset 0 1px 0 var(--glass-hi),
-        inset 1px 0 0 var(--glass-hi2),
-        0 20px 60px rgba(0,0,0,0.45);
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      background: var(--t-surface);
+      border: 1px solid var(--t-border-subtle);
+      box-shadow: 0 0 0 1px var(--t-border-subtle), 0 18px 40px -34px rgba(0,0,0,.35);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
     }
-    /* 对角光泽 + 顶部辉光（液态玻璃的 specular 高光） */
-    .glass::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-      background:
-        linear-gradient(115deg, var(--glass-sheen) 0%, rgba(255,255,255,0.03) 26%, transparent 42%),
-        radial-gradient(120% 70% at 18% 0%, var(--glass-glow), transparent 55%);
-    }
+    .glass::before { display: none; }
 
     /* ---------- 滚动揭示动画 ---------- */
-    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    /* 滚动揭示已移除：内容一律直接可见。
+       原因：依赖 IntersectionObserver + opacity 过渡时，一旦脚本被拦、
+       过渡不触发或合成层没刷新，整块内容就是"看得见轮廓、读不清字"。
+       版面清晰优先于入场动画。 */
+    .reveal { opacity: 1; transform: none; transition: none; }
     .reveal.in { opacity: 1; transform: none; }
     .reveal-d1 { transition-delay: 0.08s; }
     .reveal-d2 { transition-delay: 0.16s; }
@@ -338,13 +336,69 @@ const blogPosts = await getAllPosts();
       .feature::after { display: none; }
       .terminal:hover { transform: none; }
     }
+    /* ==========================================================================
+       Hero（两栏：文案 + 终端窗口），替换原先的居中单列封面
+       ========================================================================== */
+    .hero--split { min-height: auto; display: block; text-align: left; padding: 8.5rem 0 4.5rem; }
+    .hero-inner { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 24px); }
+    .hero-shell { display: grid; grid-template-columns: 1.06fr .94fr; gap: clamp(24px, 4vw, 56px); align-items: center; }
+    .hero-copy { min-width: 0; }
+    /* 指标条与上方两栏拉开呼吸，别贴着 */
+    .hero-fx--metrics { margin-top: clamp(2.6rem, 5vw, 3.8rem); }
+    .hero--split { padding-bottom: 5.5rem; }
+    .hero-kicker { margin-bottom: 1rem; }
+    .hero-title {
+      font-size: clamp(36px, 5.2vw, 76px); line-height: 1.05; letter-spacing: -.035em;
+      font-weight: 700; margin: 0 0 1.4rem;
+      background: none; -webkit-text-fill-color: currentColor; color: var(--t-text); animation: none;
+    }
+    .hero-title .ln { display: block; white-space: nowrap; }
+    .hero-title .grad {
+      background: linear-gradient(92deg in oklab, var(--t-brand) 0%,
+        color-mix(in oklab, var(--t-brand) 55%, var(--t-signal)) 45%, var(--t-signal) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-lede { max-width: 52ch; margin: 0 0 2rem; color: var(--t-text-secondary); font-size: clamp(.98rem, 1.5vw, 1.08rem); }
+    .hero-lede strong { color: var(--t-text); }
+    .hero-lede code { font-family: var(--t-font-mono); font-size: .9em; color: var(--t-brand); }
+    .hero--split .hero-ctas { margin-bottom: 0; justify-content: flex-start; }
+    .hero-aside { min-width: 0; }
+    @media (max-width: 1000px) {
+      .hero-shell { grid-template-columns: 1fr; }
+      .hero--split { padding-top: 7rem; }
+      .hero-lede { max-width: none; }
+      .hero-title .ln { white-space: normal; }
+    }
+
+    /* ==========================================================================
+       区块标题：与 hero 左对齐语言统一——实心标题 + 品牌菱形 + 左侧短线
+       （渐变字在中文大字上会发虚，标题改实色，渐变只留给 hero 的一个词）
+       ========================================================================== */
+    .section-header { text-align: left; margin-bottom: 2.6rem; }
+    .section-title {
+      position: relative; display: flex; align-items: center; gap: .7rem;
+      font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 700; letter-spacing: -.02em;
+      margin-bottom: .55rem; color: var(--t-text);
+      background: none; -webkit-text-fill-color: currentColor; animation: none;
+    }
+    .section-title::before {
+      content: ""; width: 7px; height: 7px; flex: none;
+      background: var(--t-brand); transform: rotate(45deg);
+    }
+    .section-subtitle { color: var(--t-text-secondary); font-size: .98rem; max-width: 60ch; }
+    .section-divider { width: 56px; height: 2px; margin: .9rem 0 0; background: var(--t-brand); border-radius: 2px; }
+    /* 卡片内的居中排版保持居中（统计卡 / 发布卡），只在区块头上左对齐 */
+    .section-block { padding: clamp(3.5rem, 6vw, 5rem) 0; }
+    .section { max-width: 1120px; padding: 0 clamp(16px, 4vw, 24px); }
+
   </style>
 </head>
 <body>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <Navbar lang="en" active="home" />
 
-  <section class="hero">
+  <section class="hero hero--split">
     <div class="grid-bg"></div>
     <canvas id="particles"></canvas>
     <div class="prism-deco"></div>
@@ -352,73 +406,26 @@ const blogPosts = await getAllPosts();
     <div class="beam beam-1"></div>
     <div class="beam beam-2"></div>
     <div class="beam beam-3"></div>
-    <div class="hero-content">
-      <img src="/assets/linxira-l-on-dark.svg" alt="Linxira OS" class="hero-logo logo-dark">
-      <img src="/assets/linxira-l.svg" alt="Linxira OS" class="hero-logo logo-light">
-      <p class="lx-kicker hero-kicker">Linxira OS · Arch Linux · Scientific Computing</p>
-      <h1>Linxira OS</h1>
-      <p class="tagline">Arch Linux for scientific computing</p>
-      <p class="en-tagline">Desktop Supercomputer · Direct Arch · Built for researchers</p>
-      <p class="hero-desc">A personal scientific workstation distribution built on <strong>Arch Linux</strong> — a ready-to-use <strong>KDE Plasma</strong> desktop, <strong>{ecosystem.catalogTotal} reviewed applications</strong>, <strong>dual-kernel + snapshot</strong> safety for rolling updates, <strong>upstream security patches</strong>, and <strong>containerized reproducibility</strong> for research workflows. Built for science students, researchers, developers and everyday power users who value high performance, deep customizability and always-current security updates.</p>
-      <div class="hero-ctas">
-        <a href="/en/docs/" class="cta">Get Started</a>
-        <a href="/en/download/" class="cta-ghost">Download ISO →</a>
-        <a href="/en/docs/ecosystem/" class="cta-ghost">Browse Ecosystem</a>
-      </div>
-      <HeroFx lang="en" />
-      <div class="product-feature">
-        <a href="/zeta/en/" class="pcard zeta glass">
-          <span class="pmark">Z</span>
-          <h3>Zeta — The Terminal Workbench Suite</h3>
-          <p>One terminal workspace, the whole toolkit: tabs and tilable real-terminal panes, with the coding agent (zetacode), editor, and terminal IDE one command away. Rust-written, mouse-first.</p>
-          <span class="pgo">Explore Zeta →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Update ticker (auto-scroll · pause on hover) -->
-  <div class="ticker-wrap">
-    <div class="ticker">
-      <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
-      <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
-      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> curated apps · <b>{ecosystem.catalogCategories}</b> categories</span>
-      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> official image · offline repo ships with it</span>
-      <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
-      <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
-      <span class="ticker-item"><span class="tdot"></span><b>Latest image batch</b> complete (ISO {releases.iso.label} + WSL {releases.wsl.date})</span>
-      <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · pacman-tracked updates</span>
-      <span class="ticker-item"><span class="tdot"></span><b>{ecosystem.catalogTotal}</b> curated apps · <b>{ecosystem.catalogCategories}</b> categories</span>
-      <span class="ticker-item"><span class="tdot"></span><b>{releases.iso.sizeHuman}</b> official image · offline repo ships with it</span>
-      <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
-      <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
-    </div>
-  </div>
-
-  <!-- Terminal demo (one command, full control · DeepSeek Harness-style terminal story) -->
-  <section class="section-block terminal-section">
-    <div class="section">
-      <div class="section-header reveal">
-        <h2 class="section-title">One Command, Full Control</h2>
-        <p class="section-subtitle">Headless switching, SSH, rolling updates, snapshot rollback — all in the terminal</p>
-        <div class="section-divider"></div>
-      </div>
-      <div class="terminal glass reveal" id="terminal">
-        <div class="term-bar">
-          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
-          <span class="term-title">linxira — zsh</span>
+    <div class="hero-inner">
+      <div class="hero-shell">
+        <div class="hero-copy">
+          <p class="lx-kicker hero-kicker">Linxira OS · Arch Linux · Scientific Computing</p>
+          <h1 class="hero-title">
+            <span class="ln" data-hero-scramble>From kernel to pixels,</span>
+            <span class="ln">all of it <span class="grad">yours</span></span>
+          </h1>
+          <p class="hero-lede">A personal scientific workstation on Arch Linux: a ready-to-use KDE Plasma desktop, <strong>{ecosystem.catalogTotal} reviewed applications</strong>, the signed <code>[linxira]</code> repository, and a dual-kernel safety net. Check what you need in the installer — no AUR gambling.</p>
+          <div class="hero-ctas">
+            <a href="/en/download/" class="cta">Download ISO</a>
+            <a href="/en/docs/" class="cta-ghost">Read the docs →</a>
+            <a href="/en/docs/ecosystem/" class="cta-ghost">Browse ecosystem</a>
+          </div>
         </div>
-        <div class="term-body" id="termBody">
-          <div class="term-line"><span class="term-prompt">$</span> linxira-config headless on now</div>
-          <div class="term-out">Switched to headless: desktop stopped, RAM freed for compute ✓</div>
-          <div class="term-line"><span class="term-prompt">$</span> linxira-config ssh on</div>
-          <div class="term-out">SSH enabled: ssh user@192.168.1.42 ✓</div>
-          <div class="term-line"><span class="term-prompt">$</span> linxira-update</div>
-          <div class="term-out">Up to date: 0 upstream patches pending ✓</div>
-          <div class="term-line"><span class="term-prompt">$</span> linxira-config timeshift status</div>
-          <div class="term-out">Snapshots: daily 3 · boot 3 · auto-snapshot before updates ✓</div>
+        <div class="hero-aside">
+          <HeroFx lang="en" variant="hero" />
         </div>
       </div>
+      <HeroFx lang="en" variant="metrics" />
     </div>
   </section>
 
@@ -778,6 +785,14 @@ wsl -d linxira</code></pre>
       } else {
         revealEls.forEach((el) => el.classList.add('in'));
       }
+
+      // 兜底：观察器没触发时，2.5s 后把视口内仍未显示的元素直接显示
+      setTimeout(() => {
+        document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+        });
+      }, 2500);
     }
 
     // ---------- 粒子网络背景（+鼠标引力交互） ----------
