@@ -365,7 +365,7 @@ const blogPosts = await getAllPosts();
     .hero-fx--metrics { margin-top: clamp(2.6rem, 5vw, 3.8rem); }
     .hero--split { padding-bottom: 5.5rem; }
     .hero-kicker { margin-bottom: 1rem; }
-    .hero-title {
+    .hero h1.hero-title {
       font-size: clamp(36px, 5.2vw, 76px); line-height: 1.05; letter-spacing: -.035em;
       font-weight: 700; margin: 0 0 1.4rem;
       background: none; -webkit-text-fill-color: currentColor; color: var(--t-text); animation: none;
@@ -409,6 +409,16 @@ const blogPosts = await getAllPosts();
     /* 卡片内的居中排版保持居中（统计卡 / 发布卡），只在区块头上左对齐 */
     .section-block { padding: clamp(3.5rem, 6vw, 5rem) 0; }
     .section { max-width: 1120px; padding: 0 clamp(16px, 4vw, 24px); }
+
+    /* 浅色主题下光束/棱镜会变成靠白的污渍，隐藏掉，只留网格与渐变 */
+    [data-theme="light"] .beam,
+    [data-theme="light"] .prism-deco,
+    [data-theme="light"] .prism-deco-2 { display: none; }
+    [data-theme="light"] .hero::after { display: none; }
+    @media (max-width: 760px) {
+      /* 手机上终端窗口按内容高度，别留一大片空 */
+      .hero-term__body { min-height: 0; }
+    }
 
   </style>
 </head>
