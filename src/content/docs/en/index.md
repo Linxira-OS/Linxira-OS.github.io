@@ -12,10 +12,10 @@ order: 0
 <a href="/en/docs/newbie/" class="doc-card"><h3>Beginner's Guide</h3><p>First time using Linux? Terminal basics, looking things up, the Chinese input method, and choosing a desktop.</p></a>
 <a href="/en/docs/install/" class="doc-card"><h3>Installation Guide</h3><p>The current image (2026-10-31) ships crash watch and its diagnostic skill; boot the Live session and run Calamares, choosing Plasma, COSMIC, or headless.</p></a>
 <a href="/en/docs/quick-start/" class="doc-card"><h3>Quick Start</h3><p>First steps after installation: configure sources, install tools, start working.</p></a>
-<a href="/en/docs/ecosystem/" class="doc-card"><h3>Software Ecosystem</h3><p>107 curated applications across 14 categories, all passing catalog v3 review and installed from the official signed repository.</p></a>
+<a href="/en/docs/ecosystem/" class="doc-card"><h3>Software Ecosystem</h3><p>107 catalog entries (77 fully reviewed) across 14 categories, installed from the official signed repository.</p></a>
 <a href="/en/docs/package-managers/" class="doc-card"><h3>Software Management</h3><p>pacman and signed repositories underneath, Shelly as the post-install graphical manager.</p></a>
 <a href="/en/docs/updates/" class="doc-card"><h3>Updates &amp; Snapshot Rollback</h3><p>Hourly automatic checks, a snapshot before every pacman transaction, one-click GRUB rollback; optional fully-automatic updates via EnableAutoApply (off by default).</p></a>
-<a href="/en/docs/apps/" class="doc-card"><h3>Official Apps</h3><p>All 22 first-party tools (as of the 2026.10 catalog and current packages-repo entries): Welcome, Config Hub, Shelly, Package Center, Component Manager, hardware &amp; recovery tools, and system components.</p></a>
+<a href="/en/docs/apps/" class="doc-card"><h3>Official Apps</h3><p>All 22 first-party packages (19 of them join the pacman group <code>linxira</code>): Welcome, Config Hub, Shelly, Package Center, Component Manager, hardware &amp; recovery tools, and system components.</p></a>
 <a href="/en/docs/remote-access/" class="doc-card"><h3>Remote Access (SSH)</h3><p>Turn your Linxira machine into a server: enable sshd, generate &amp; authorize keys, connect remotely, and harden the setup.</p></a>
 <a href="/en/docs/workflows/" class="doc-card"><h3>Catalog v2 Profiles</h3><p>Reviewed productivity, creative, development, container, AI, science, and bioinformatics profiles.</p></a>
 <a href="/en/docs/config-hub/" class="doc-card"><h3>Config Hub CLI</h3><p>Inspect and request allowlisted catalog v2 profiles after installation.</p></a>

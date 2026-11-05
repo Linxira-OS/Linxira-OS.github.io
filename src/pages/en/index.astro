@@ -279,10 +279,10 @@ const blogPosts = await getAllPosts();
     }
 
     /* ---------- Update ticker (auto-scroll) ---------- */
-    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(2,6,10,0.4); }
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--t-border-subtle); border-bottom: 1px solid var(--t-border-subtle); background: var(--t-surface-2); }
     .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
     .ticker-wrap:hover .ticker { animation-play-state: paused; }
-    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
+    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--t-text-secondary); }
     .ticker-item b { color: var(--t-brand); font-weight: 600; }
     .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--t-brand); box-shadow: 0 0 10px color-mix(in oklab, var(--t-brand) 80%, transparent); flex: none; }
     @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -434,7 +434,7 @@ const blogPosts = await getAllPosts();
             <span class="ln" data-hero-scramble>From kernel to pixels,</span>
             <span class="ln">all of it <span class="grad">yours</span></span>
           </h1>
-          <p class="hero-lede">A personal scientific workstation on Arch Linux: a ready-to-use KDE Plasma desktop, <strong>{ecosystem.catalogTotal} reviewed applications</strong>, the signed <code>[linxira]</code> repository, and a dual-kernel safety net. Check what you need in the installer — no AUR gambling.</p>
+          <p class="hero-lede">A personal scientific workstation on Arch Linux: a ready-to-use KDE Plasma desktop, <strong>{ecosystem.catalogTotal} catalog entries</strong>, the signed <code>[linxira]</code> repository, and a dual-kernel safety net. Check what you need in the installer — no AUR gambling.</p>
           <div class="hero-ctas">
             <a href="/en/download/" class="cta">Download ISO</a>
             <a href="/en/docs/" class="cta-ghost">Read the docs →</a>
@@ -446,6 +446,42 @@ const blogPosts = await getAllPosts();
         </div>
       </div>
       <HeroFx lang="en" variant="metrics" />
+    </div>
+  </section>
+
+  <!-- Data ticker (auto-scroll · pause on hover) -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="tdot"></span><b>Latest image</b> {releases.iso.label} · {releases.iso.sizeHuman}</span>
+      <span class="ticker-item"><span class="tdot"></span>Catalog <b>{ecosystem.catalogTotal}</b> entries · <b>{ecosystem.catalogReviewed}</b> reviewed · <b>{ecosystem.catalogCategories}</b> categories</span>
+      <span class="ticker-item"><span class="tdot"></span>First-party packages <b>{ecosystem.packageTotal}</b>, of which <b>{ecosystem.groupTotal}</b> join the pacman group <b>linxira</b></span>
+      <span class="ticker-item"><span class="tdot"></span>Signed repo <b>[linxira]</b> · SigLevel = Required DatabaseOptional</span>
+      <span class="ticker-item"><span class="tdot"></span>Dual kernel + Timeshift snapshot rollback</span>
+      <span class="ticker-item"><span class="tdot"></span>Docs in EN / 中文 / 繁體</span>
+    </div>
+  </div>
+
+  <!-- Terminal demo: real commands only, no invented output -->
+  <section class="section-block terminal-section">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">One Command, Full Control</h2>
+        <p class="section-subtitle">Headless switching, SSH, updates and snapshots — all real linxira-config subcommands</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="terminal glass" id="terminal">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="term-title">linxira — zsh</span>
+        </div>
+        <div class="term-body" id="termBody">
+          <div class="term-line"><span class="term-prompt">$</span> sudo pacman -Syu</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config status</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config headless on now</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config ssh on</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config timeshift status</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -688,7 +724,7 @@ wsl -d linxira</code></pre>
       </div>
       <div class="features">
         <div class="feature reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch Desktop</h3><p>KDE Plasma built directly on the Arch official repositories — always current, always fast. Dual kernels (linux + linux-lts) as the rolling-update safety net.</p></div>
-        <div class="feature reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} Curated Apps</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
+        <div class="feature reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} Catalog Entries</h3><p>An audited software catalog: containers, dev tools, scientific apps, AI tooling… check boxes in the installer, no hunting through repositories.</p></div>
         <div class="feature reveal reveal-d3"><span class="feature-icon">🔐</span><h3>Signed [linxira] Repo</h3><p>All {ecosystem.packageTotal} first-party tools ship through our own signing key, tracked by pacman — from Welcome to Config Hub, one chain of trust.</p></div>
         <div class="feature reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>Careful Software Sources</h3><p>Rely on official repositories and the curated catalog. Wild AUR packages are user-maintained and not audited — they often carry quality and security issues. Use them with caution.</p></div>
         <div class="feature reveal reveal-d1"><span class="feature-icon">🛡️</span><h3>Rolling Updates · Timely Security</h3><p>Rolling updates pick up upstream security patches as soon as they land — no waiting for a distro release cycle. Paired with Timeshift snapshots, grub-btrfs rollback and dual kernels for both safety and stability.</p></div>
@@ -711,9 +747,9 @@ wsl -d linxira</code></pre>
           <p><strong>Offline-ready, more complete online</strong>: the ISO bundles KDE Plasma and the preinstalled software, so a usable system installs with no network. But most additional applications and third-party desktops require an <strong>internet connection</strong>. Confirm network access in campus or intranet environments.</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">Curated apps</div></div>
-          <div class="stat-card reveal reveal-d2"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">First-party tools</div></div>
-          <div class="stat-card reveal reveal-d3"><div class="stat-num" data-count={ecosystem.catalogCategories}>0</div><div class="stat-label">Categories</div></div>
+          <div class="stat-card reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">Catalog entries</div></div>
+          <div class="stat-card reveal reveal-d2"><div class="stat-num" data-count={ecosystem.catalogReviewed}>0</div><div class="stat-label">Reviewed</div></div>
+          <div class="stat-card reveal reveal-d3"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">First-party pkgs</div></div>
         </div>
       </div>
     </div>
@@ -729,7 +765,7 @@ wsl -d linxira</code></pre>
       </div>
       <a href="/en/docs/ecosystem/" class="ecosystem-link reveal">
         <h3>Browse the full catalog →</h3>
-        <p>{ecosystem.catalogTotal} curated applications in {ecosystem.catalogCategories} categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
+        <p>{ecosystem.catalogTotal} catalog entries ({ecosystem.catalogReviewed} reviewed) in {ecosystem.catalogCategories} categories: browsers &amp; office, bioinformatics, container reproducibility, AI coding and more</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">Containers</span><span class="eco-tag">Dev Tools</span><span class="eco-tag">Bioinformatics</span><span class="eco-tag">Scientific Computing</span><span class="eco-tag">AI Coding</span><span class="eco-tag">Office</span><span class="eco-tag">Gaming</span>
         </div>

@@ -297,10 +297,10 @@ const blogPosts = await getAllPosts();
     }
 
     /* ---------- 动态更新滚动条（ticker · 自动滚动） ---------- */
-    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(2,6,10,0.4); }
+    .ticker-wrap { overflow: hidden; border-top: 1px solid var(--t-border-subtle); border-bottom: 1px solid var(--t-border-subtle); background: var(--t-surface-2); }
     .ticker { display: flex; width: max-content; animation: ticker-scroll 40s linear infinite; }
     .ticker-wrap:hover .ticker { animation-play-state: paused; }
-    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--soft); }
+    .ticker-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.8rem 2.4rem; white-space: nowrap; font-size: 0.88rem; color: var(--t-text-secondary); }
     .ticker-item b { color: var(--t-brand); font-weight: 600; }
     .ticker-item .tdot { width: 6px; height: 6px; border-radius: 50%; background: var(--t-brand); box-shadow: 0 0 10px color-mix(in oklab, var(--t-brand) 80%, transparent); flex: none; }
     @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -452,7 +452,7 @@ const blogPosts = await getAllPosts();
             <span class="ln" data-hero-scramble>从内核到像素，</span>
             <span class="ln">都由你<span class="grad">掌握</span></span>
           </h1>
-          <p class="hero-lede reveal in reveal-d1">基于 Arch Linux 的个人科学工作站：开箱即用的 KDE Plasma 桌面、<strong>{ecosystem.catalogTotal} 款审核软件</strong>、签名仓库 <code>[linxira]</code> 与双内核兜底。安装器里勾选即装，不必翻 AUR 赌安全。</p>
+          <p class="hero-lede reveal in reveal-d1">基于 Arch Linux 的个人科学工作站：开箱即用的 KDE Plasma 桌面、<strong>{ecosystem.catalogTotal} 条软件目录</strong>、签名仓库 <code>[linxira]</code> 与双内核兜底。安装器里勾选即装，不必翻 AUR 赌安全。</p>
           <div class="hero-ctas reveal in reveal-d3">
             <a href="/zh/download/" class="cta">下载 ISO</a>
             <a href="/zh/docs/" class="cta-ghost">阅读文档 →</a>
@@ -464,6 +464,42 @@ const blogPosts = await getAllPosts();
         </div>
       </div>
       <HeroFx lang="zh" variant="metrics" />
+    </div>
+  </section>
+
+  <!-- 动态数据滚动条（自动滚动 · hover 暂停） -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item"><span class="tdot"></span><b>最新镜像</b> {releases.iso.label} · {releases.iso.sizeHuman}</span>
+      <span class="ticker-item"><span class="tdot"></span>软件目录 <b>{ecosystem.catalogTotal}</b> 条 · 已审核 <b>{ecosystem.catalogReviewed}</b> 条 · <b>{ecosystem.catalogCategories}</b> 个分类</span>
+      <span class="ticker-item"><span class="tdot"></span>自研包 <b>{ecosystem.packageTotal}</b> 个，其中 <b>{ecosystem.groupTotal}</b> 个并入 pacman 组 <b>linxira</b></span>
+      <span class="ticker-item"><span class="tdot"></span>签名仓库 <b>[linxira]</b> · SigLevel = Required DatabaseOptional</span>
+      <span class="ticker-item"><span class="tdot"></span>双内核 + Timeshift 快照回滚</span>
+      <span class="ticker-item"><span class="tdot"></span>中 / 英 / 繁三语文档与社区</span>
+    </div>
+  </div>
+
+  <!-- 终端演示：只列真实命令，不伪造输出 -->
+  <section class="section-block terminal-section">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">一行命令，掌控一切</h2>
+        <p class="section-subtitle">无头切换、SSH、更新与快照——都是 linxira-config 里真实存在的子命令</p>
+        <div class="section-divider"></div>
+      </div>
+      <div class="terminal glass" id="terminal">
+        <div class="term-bar">
+          <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+          <span class="term-title">linxira — zsh</span>
+        </div>
+        <div class="term-body" id="termBody">
+          <div class="term-line"><span class="term-prompt">$</span> sudo pacman -Syu</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config status</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config headless on now</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config ssh on</div>
+          <div class="term-line"><span class="term-prompt">$</span> linxira-config timeshift status</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -709,7 +745,7 @@ wsl -d linxira</code></pre>
       </div>
       <div class="features">
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch 桌面</h3><p>KDE Plasma 桌面直接基于 Arch 官方仓库构建，软件最新、性能最优。双内核（linux + linux-lts）作为滚动更新的兜底。</p></div>
-        <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} 款审核软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
+        <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} 条软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
         <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>{ecosystem.packageTotal} 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>严谨的软件来源</h3><p>以官方仓库与审核目录为准。野生 AUR 包未经审核、由用户个人维护，常存在质量问题与安全隐患，请勿随意启用。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🛡️</span><h3>滚动更新 · 紧跟安全补丁</h3><p>上游一发布补丁，滚动更新即可跟进修复高危 CVE，无需等待发行版统一调度。配合 Timeshift 快照 + grub-btrfs 回滚 + 双内核，安全与稳定兼得。</p></div>
@@ -732,9 +768,9 @@ wsl -d linxira</code></pre>
           <p><strong>离线开箱即用，联网更完整</strong>：ISO 附带 Plasma 桌面与预装软件，无网也能进入可用系统；但绝大多数额外应用与第三方桌面仍需<strong>联网安装</strong>。校园网、内网环境请先确认网络可达。</p>
         </div>
         <div class="about-stats">
-          <div class="stat-card glass reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">审核软件</div></div>
-          <div class="stat-card glass reveal reveal-d2"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">自研工具</div></div>
-          <div class="stat-card glass reveal reveal-d3"><div class="stat-num" data-count={ecosystem.catalogCategories}>0</div><div class="stat-label">应用分类</div></div>
+          <div class="stat-card glass reveal reveal-d1"><div class="stat-num" data-count={ecosystem.catalogTotal}>0</div><div class="stat-label">软件目录</div></div>
+          <div class="stat-card glass reveal reveal-d2"><div class="stat-num" data-count={ecosystem.catalogReviewed}>0</div><div class="stat-label">已审核</div></div>
+          <div class="stat-card glass reveal reveal-d3"><div class="stat-num" data-count={ecosystem.packageTotal}>0</div><div class="stat-label">自研包</div></div>
         </div>
       </div>
     </div>
@@ -750,7 +786,7 @@ wsl -d linxira</code></pre>
       </div>
       <a href="/zh/docs/ecosystem/" class="ecosystem-link glass reveal">
         <h3>浏览完整软件目录 →</h3>
-        <p>{ecosystem.catalogTotal} 款精选软件，{ecosystem.catalogCategories} 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
+        <p>{ecosystem.catalogTotal} 条软件目录（{ecosystem.catalogReviewed} 条已审核），{ecosystem.catalogCategories} 个分类：从浏览器办公到生信分析，从容器复现到 AI 编码</p>
         <div class="ecosystem-tags">
           <span class="eco-tag">容器</span><span class="eco-tag">开发工具</span><span class="eco-tag">生信工作流</span><span class="eco-tag">科学计算</span><span class="eco-tag">AI 编码</span><span class="eco-tag">办公</span><span class="eco-tag">游戏</span>
         </div>

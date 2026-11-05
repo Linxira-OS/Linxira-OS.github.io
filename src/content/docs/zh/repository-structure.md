@@ -22,7 +22,7 @@ order: 2
 </table>
 
 <h2>自研系统工具</h2>
-<p>22 个由 Linxira 维护的工具仓库（截至 catalog 2026.10 与 packages 仓现有条目；<code>shelly</code> 是源码构建的打包例外）：</p>
+<p>22 个由 Linxira 维护的包仓库（其中 19 个并入 pacman 组 <code>linxira</code>；<code>shelly</code> 是源码构建的打包例外）：</p>
 <table>
 <thead><tr><th>仓库</th><th>用途</th></tr></thead>
 <tbody>

@@ -37,7 +37,7 @@ sudo pacman -Syu
 <p>Checking and updating are handled by <code>linxira-update</code> (hourly automatic checks, a snapshot before every pacman transaction, optional fully-automatic updates); for manual methods, snapshots and GRUB rollback see <a href="/en/docs/updates/">Updates &amp; Rollback</a>.</p>
 
 <h2>3. Install software</h2>
-<p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (107 curated applications) or install directly with pacman:</p>
+<p>Choose from the <a href="/en/docs/ecosystem/">Software Ecosystem</a> (107 catalog entries, 77 reviewed) or install directly with pacman:</p>
 
 ```
 sudo pacman -S firefox libreoffice-fresh vlc

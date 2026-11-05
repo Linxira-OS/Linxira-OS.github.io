@@ -6,7 +6,7 @@ order: 1
 
 <a href="/zh/docs/" style="color:var(--t-brand); text-decoration:none; display:inline-block; margin-bottom:1.5rem;">← 返回文档</a>
 <h1>软件生态</h1>
-<p>Linxira OS 的软件生态由 <strong>107 个精选应用</strong>组成，按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是项目维护者推荐的常用应用；<span class="tag prop">专有</span> 标记只表示该软件的<b>许可证非开源</b>（按 catalog 的 license 分级，如 Steam、WPS Office），与它由谁开发无关，安装时需接受其许可协议。</p>
+<p>Linxira OS 的软件目录共 <strong>107 条</strong>（其中 <strong>77 条已通过完整审核</strong>），按 14 个分类组织，全部通过 <strong>catalog v3 审查流程</strong>（许可证/来源/可用性分级）。可用应用通过 <code>pacman</code> 从官方签名仓库 <a href="https://github.com/Linxira-OS/linxira-packages/tree/main/x86_64" target="_blank">[linxira]</a> 安装；带 <span class="tag rec">推荐</span> 标记的是项目维护者推荐的常用应用；<span class="tag prop">专有</span> 标记只表示该软件的<b>许可证非开源</b>（按 catalog 的 license 分级，如 Steam、WPS Office），与它由谁开发无关，安装时需接受其许可协议。</p>
 <p style="color:var(--t-text-muted);font-size:0.9rem;">本清单由 <code>scripts/gen-ecosystem-docs.mjs</code> 从 catalog v3 生成，卡片的数量与分类计数都取自同一份数据；改目录请看 <a href="/zh/docs/ecosystem/">catalog 说明</a>，不要手改这里的卡片。</p>
 <h2>网络与浏览器 <span style="font-size:0.9rem;color:var(--t-text-muted);font-weight:400;">(4)</span></h2>
 <div class="app-grid">

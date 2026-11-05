@@ -10,14 +10,14 @@ import { ecosystem } from "../../../data/ecosystem";
     <div class="card">
       <h3>First Experimental Stable released <span class="tag done">Done</span></h3>
       <ul>
-        <li>{ecosystem.catalogTotal} curated applications (catalog v3), {ecosystem.catalogCategories} categories — scientific computing and gaming (Steam + gaming foundation components) pre-selected</li>
+        <li>{ecosystem.catalogTotal} catalog entries (catalog v3, 77 reviewed), {ecosystem.catalogCategories} categories — scientific computing and gaming (Steam + gaming foundation components) pre-selected</li>
         <li>Dual kernels: linux (main) + linux-lts (fallback), flat GRUB menu defaulting to the latest kernel</li>
         <li>Timeshift + grub-btrfs snapshot rollback, one-command setup: linxira-config timeshift enable</li>
         <li>Container ecosystem default-on: Podman / Distrobox / Apptainer / Docker out of the box</li>
         <li>Headless server mode: linxira-config headless on/off, zero desktop footprint, all RAM for compute</li>
         <li>Desktop choice at install: KDE Plasma / server (no desktop)</li>
         <li>Chinese input method auto-configured from install language (fcitx5)</li>
-        <li>Self-signed [linxira] repository + {ecosystem.packageTotal} first-party packages, including the official handbook (linxira-wiki), readable by humans and AI agents alike and installed offline with the ISO</li>
+        <li>Self-signed [linxira] repository + {ecosystem.packageTotal} first-party packages (19 join the pacman group linxira), including the official handbook (linxira-wiki), readable by humans and AI agents alike and installed offline with the ISO</li>
         <li>Workspace guard: a root timer takes an independent recovery point of every registered workspace (including its .git) every 30 minutes; the installer can create a separate ext4 partition, and restore always writes to a new directory rather than over the live workspace</li>
         <li>China mirror auto-fallback + [linxira] database pre-synced at install</li>
       </ul>

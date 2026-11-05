@@ -23,7 +23,7 @@ const zh = lang === 'zh';
 const metrics = [
   { value: releases.iso.label, key: zh ? '最新镜像批次' : 'Latest image' },
   { value: releases.iso.sizeHuman, key: zh ? 'ISO 体积' : 'ISO size' },
-  { value: String(ecosystem.catalogTotal), key: zh ? '审核软件' : 'Reviewed apps', count: true },
+  { value: String(ecosystem.catalogTotal), key: zh ? '软件目录' : 'Catalog apps', count: true },
   { value: String(ecosystem.packageTotal), key: zh ? '自研包' : 'First-party pkgs', count: true }
 ];
 

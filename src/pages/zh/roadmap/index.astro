@@ -10,10 +10,10 @@ import { ecosystem } from "../../../data/ecosystem";
     <div class="card">
       <h3>首个实验性正式版已发布 <span class="tag done">已完成</span></h3>
       <ul>
-        <li>{ecosystem.catalogTotal} 个精选应用（catalog v3），{ecosystem.catalogCategories} 大分类——科学计算与游戏（Steam + 游戏基础组件）默认装载</li>
+        <li>{ecosystem.catalogTotal} 条软件目录（catalog v3，77 条已审核），{ecosystem.catalogCategories} 大分类——科学计算与游戏（Steam + 游戏基础组件）默认装载</li>
         <li>双内核：linux（主）+ linux-lts（兜底），GRUB 平铺菜单默认最新内核</li>
         <li>Timeshift + grub-btrfs 快照回滚，一键配置：linxira-config timeshift enable</li>
-        <li>自研签名仓库 [linxira] + {ecosystem.packageTotal} 个自研包（含官方手册 linxira-wiki，人与 AI 同等可读，随 ISO 离线安装）</li>
+        <li>自研签名仓库 [linxira] + {ecosystem.packageTotal} 个自研包（其中 19 个并入 pacman 组 linxira）（含官方手册 linxira-wiki，人与 AI 同等可读，随 ISO 离线安装）</li>
         <li>工作区守护：root 定时器每 30 分钟为已登记工作区生成独立恢复点（含 .git），装机可选建独立 ext4 分区，恢复永远写入新目录不覆盖原工作区</li>
         <li>无头服务器模式：linxira-config headless on/off，桌面零占用、内存全给计算</li>
         <li>桌面选择：KDE Plasma / 服务器（无桌面）安装时二选一</li>

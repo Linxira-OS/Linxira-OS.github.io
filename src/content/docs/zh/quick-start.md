@@ -37,7 +37,7 @@ sudo pacman -Syu
 <p>检查与更新由 <code>linxira-update</code> 自动完成（每小时自动检查、每个 pacman 事务前自动快照，可选全自动更新）；手动方式、快照与 GRUB 回滚详见 <a href="/zh/docs/updates/">系统更新与快照回滚</a>。</p>
 
 <h2>3. 安装软件</h2>
-<p>常用软件可从 <a href="/zh/docs/ecosystem/">软件生态</a> 选择（107 个精选应用），也可直接通过 pacman 安装：</p>
+<p>常用软件可从 <a href="/zh/docs/ecosystem/">软件生态</a> 选择（软件目录 107 条，已审核 77 条），也可直接通过 pacman 安装：</p>
 
 ```
 sudo pacman -S firefox libreoffice-fresh vlc
