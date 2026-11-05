@@ -282,7 +282,7 @@ All verification data, raw reports, and hash manifests behind this article are a
 3. **Full three-backend sweep (6 capabilities × rust/python/r × 3 repeats, 54/54 passed)**: `benchmark-results/2026-09-17/full-three-way/summary.csv`, `benchmark-results/2026-09-17/full-three-way/runs_raw.csv`
 4. **Index of all benchmark records**: `benchmark-results/RECORDS.md`
 
-Repository path (branch `dev/more-tools-and-cloud`; the path is unchanged after merging to main): <https://github.com/Linxira-OS/linxira-bio-sdk/tree/dev/more-tools-and-cloud/benchmark-results>
+Repository path (now on `main`; the development branch has been removed): <https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/benchmark-results>
 
 ## 8. Appendix: Engineering Records (2026-09-17/18)
 

@@ -125,7 +125,7 @@ sha256sum -c linxira-2026.10.27-r4-x86_64.iso.sha256
 <p>包获取脚本 <code>fetch-linxira-packages.sh</code> 使用 <code>--output</code> 指定下载目录（示例 <code>./.linxira-packages</code>）。</p>
 
 <h2 id="history">6. 历史</h2>
-<p>旧版构建仓库 <a href="https://github.com/Linxira-OS/linxira-iso" target="_blank">linxira-iso</a>（fork 自 CachyOS-Live-ISO）已废弃：ISO 构建已迁移至 linxira-iso-direct。旧仓库仅保留历史参考，不再维护。其 Quick Start 的依赖安装命令即上文<a href="#prerequisites">前置准备</a>所用：</p>
+<p>旧版构建仓库 <code>linxira-iso</code>（fork 自 CachyOS-Live-ISO）已废弃并已删除：ISO 构建已迁移至 linxira-iso-direct。该仓库已不存在，下面的命令仅作历史记录，不能按原样执行。其 Quick Start 的依赖安装命令即上文<a href="#prerequisites">前置准备</a>所用：</p>
 
 ```
 sudo pacman -S archiso mkinitcpio-archiso git squashfs-tools grub --needed

@@ -10,7 +10,7 @@ import PageLayout from "../../../../components/PageLayout.astro";
 
     <h2>版本信息</h2>
     <p>本次发布的 ISO 文件名为 <code>linxira-2026.08.14-x86_64.iso</code>，大小约 <strong>4.79 GB</strong>，SHA-256 校验值为 <code>b85ffcea99b39402470868a2d63d330613d12ec4068c57b92286a19e403bd145</code>。</p>
-    <p>下载渠道有两个：<a href="/zh/download/">官网下载页</a> 与 <a href="https://github.com/Linxira-OS/linxira-iso/releases" target="_blank">linxira-iso GitHub Releases</a>。安装前建议校验 SHA-256 确保文件完整——这一点在完整安装测试中同样被验证过：自研软件安装零报错、签名仓库可用，说明我们交付的软件链路本身是自洽的。</p>
+    <p>下载渠道有两个：<a href="/zh/download/">官网下载页</a> 与 linxira-iso GitHub Releases（该仓库已删除，历史链接不再可用）。安装前建议校验 SHA-256 确保文件完整——这一点在完整安装测试中同样被验证过：自研软件安装零报错、签名仓库可用，说明我们交付的软件链路本身是自洽的。</p>
     <p>文件名的命名规则与后续版本一致：<code>linxira-YYYY.MM.DD-x86_64.iso</code>，日期即构建日期。4.79 GB 的体积来自默认装载的 93 个精选应用与双内核——我们选择「预装到位」而不是「装完再折腾」，体积是这份默认软件集的直接代价。校验方式：下载后计算 ISO 的 SHA-256，与上方数值比对一致再制作启动盘。</p>
     <p>完整安装流程（启动盘制作、分区方案、系统要求）见 <a href="/zh/docs/install/">安装指南</a>。推荐分区方案是 btrfs + Timeshift，与系统内置的快照回滚能力配套。按系统要求预留至少 20 GB 存储，推荐 50 GB 以上；启动盘至少需要 8 GB 的 U 盘。</p>
 

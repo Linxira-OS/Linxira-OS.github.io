@@ -369,8 +369,8 @@ scripts/tier23-bench.sh --cli <linxira-bio> --index <salmon_idx> \
    `benchmark-results/2026-09-17/full-three-way/runs_raw.csv`
 4. **全部基准记录索引**：`benchmark-results/RECORDS.md`
 
-仓库路径（分支 `dev/more-tools-and-cloud`，合并 main 后路径不变）：
-<https://github.com/Linxira-OS/linxira-bio-sdk/tree/dev/more-tools-and-cloud/benchmark-results>
+仓库路径（已并入 `main`，开发分支已删除）：
+<https://github.com/Linxira-OS/linxira-bio-sdk/tree/main/benchmark-results>
 
 ## 8. 附录：工程记录（2026-09-17/18）
 

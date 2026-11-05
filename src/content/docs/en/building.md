@@ -125,7 +125,7 @@ sha256sum -c linxira-2026.10.27-r4-x86_64.iso.sha256
 <p>The fetch script <code>fetch-linxira-packages.sh</code> uses <code>--output</code> for its download directory (e.g. <code>./.linxira-packages</code>).</p>
 
 <h2 id="history">6. History</h2>
-<p>The legacy build repository <a href="https://github.com/Linxira-OS/linxira-iso" target="_blank">linxira-iso</a> (forked from CachyOS-Live-ISO) is deprecated: ISO building has migrated to linxira-iso-direct. The old repository is kept for archival reference only and is no longer maintained. Its Quick Start dependency command is the one used in <a href="#prerequisites">Prerequisites</a> above:</p>
+<p>The legacy build repository <code>linxira-iso</code> (forked from CachyOS-Live-ISO) is deprecated and has since been deleted: ISO building has migrated to linxira-iso-direct. The repository is gone, so the snippet below is history only and is not runnable as-is. Its Quick Start dependency command is the one used in <a href="#prerequisites">Prerequisites</a> above:</p>
 
 ```
 sudo pacman -S archiso mkinitcpio-archiso git squashfs-tools grub --needed
