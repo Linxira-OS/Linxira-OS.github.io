@@ -15,7 +15,16 @@ const blogPosts = await getAllPosts();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script is:inline>document.documentElement.classList.add('js');</script>
+  <script is:inline>
+    // 首帧前按用户上次选择设置主题（与 SiteShared 同一套键）。
+    // 之前首页没有这段，导致在首页切主题后一刷新又回深色。
+    (function () {
+      document.documentElement.classList.add('js');
+      var saved = null;
+      try { saved = localStorage.getItem('linxira-theme'); } catch (e) {}
+      document.documentElement.dataset.theme = saved === 'light' ? 'light' : 'dark';
+    })();
+  </script>
   <title>Linxira OS — 面向科学计算的 Arch Linux 发行版</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <meta name="description" content={pageDescription}>
