@@ -402,6 +402,7 @@ const blogPosts = await getAllPosts();
     .section { max-width: 1120px; padding: 0 clamp(16px, 4vw, 24px); }
 
     /* 浅色主题下光束/棱镜会变成靠白的污渍，隐藏掉，只留网格与渐变 */
+    [data-theme="light"] .scanline,
     [data-theme="light"] .beam,
     [data-theme="light"] .prism-deco,
     [data-theme="light"] .prism-deco-2 { display: none; }
