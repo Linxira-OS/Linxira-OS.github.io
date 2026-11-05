@@ -7,7 +7,7 @@ import { getAllPosts } from "../../data/allPosts";
 import { releases } from "../../data/releases";
 import { ecosystem } from "../../data/ecosystem";
 import HeroFx from "../../components/HeroFx.astro";
-const pageDescription = `Linxira OS — 面向科学计算的 Arch Linux 发行版：KDE Plasma 桌面、${ecosystem.catalogTotal} 款审核软件、签名仓库 [linxira]、双内核兜底。最新镜像 ${releases.iso.label}（${releases.iso.sizeHuman}）。`;
+const pageDescription = `Linxira OS — 面向科学计算的 Arch Linux 发行版：KDE Plasma 桌面、${ecosystem.catalogTotal} 条软件目录（${ecosystem.catalogReviewed} 条已审核）、签名仓库 [linxira]、双内核兜底。最新镜像 ${releases.iso.label}（${releases.iso.sizeHuman}）。`;
 const blogPosts = await getAllPosts();
 ---
 <!DOCTYPE html>
@@ -714,9 +714,9 @@ const blogPosts = await getAllPosts();
         <div class="wsl-text glass reveal reveal-d1">
           <p>同一套工具链登陆 <strong>WSL2</strong>：<strong>systemd</strong> 就绪，<code>linxira-config stack</code> 一条命令装好 <strong>Python / Java / LaTeX / 容器</strong>，CLI、TUI、GUI（<strong>WSLg</strong>）三形态——适合在 Windows 上开发与科研、又想要完整 Linxira 环境的用户。</p>
           <ul>
-            <li>纯 CLI 工具链 + WSLg 图形工具 · x86_64 · 约 487 MB</li>
+            <li>纯 CLI 工具链 + WSLg 图形工具 · x86_64 · 约 {releases.wsl.sizeHuman}</li>
             <li>systemd 已启用；签名软件仓库 [linxira] 可直接追踪更新</li>
-            <li>与桌面版共享同一套审核软件与自研工具</li>
+            <li>与桌面版共享同一套软件目录与自研包</li>
           </ul>
           <div class="wsl-actions">
             <a class="cta" href="https://github.com/Linxira-OS/linxira-wsl/releases" target="_blank" rel="noopener">获取 WSL 镜像 →</a>
@@ -746,7 +746,7 @@ wsl -d linxira</code></pre>
       <div class="features">
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">🖥️</span><h3>Direct Arch 桌面</h3><p>KDE Plasma 桌面直接基于 Arch 官方仓库构建，软件最新、性能最优。双内核（linux + linux-lts）作为滚动更新的兜底。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">📦</span><h3>{ecosystem.catalogTotal} 条软件目录</h3><p>内置经过审核的软件目录：容器、开发工具、科研应用、AI 工具……安装器里勾选即装，无需自己翻仓库。</p></div>
-        <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>{ecosystem.packageTotal} 个自研工具全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
+        <div class="feature glass reveal reveal-d3"><span class="feature-icon">🔐</span><h3>签名仓库 [linxira]</h3><p>{ecosystem.packageTotal} 个自研包全部通过自有签名密钥发布，pacman 可直接追踪更新——从 Welcome 到 Config Hub，一条链路管到底。</p></div>
         <div class="feature glass reveal reveal-d1"><span class="feature-icon">⚠️</span><h3>严谨的软件来源</h3><p>以官方仓库与审核目录为准。野生 AUR 包未经审核、由用户个人维护，常存在质量问题与安全隐患，请勿随意启用。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🛡️</span><h3>滚动更新 · 紧跟安全补丁</h3><p>上游一发布补丁，滚动更新即可跟进修复高危 CVE，无需等待发行版统一调度。配合 Timeshift 快照 + grub-btrfs 回滚 + 双内核，安全与稳定兼得。</p></div>
         <div class="feature glass reveal reveal-d2"><span class="feature-icon">🐳</span><h3>容器化科研复现</h3><p>Podman、Distrobox、Apptainer 开箱即用——拉取别人的环境、复现实验结果、发布自己的镜像，无损且低开销。</p></div>
