@@ -4,7 +4,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 <ZetaLayoutV2
 	lang="zh"
 	title="生态 — Zeta"
-	description="Zeta 的自有能力与上游来源:工作台、项目追踪、Web 工作台、实验度量、命令市场、插件平台;上游角色与致谢——OMP 主线、Pi、OMP Web、Pi Web。"
+	description="Zeta 的自有能力与上游来源:Work Studio(浏览器版与桌面版)、项目追踪、实验度量、命令市场、插件平台;上游角色与致谢——OMP 主线、OMP Studio、TermIDE、Pi、OMP Web、Pi Web。"
 	active="ecosystem"
 >
 	<section class="page-hero">
@@ -25,9 +25,9 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>工作台 zeta</h3><p>嵌套终端工作台:标签页、窗格树、子页栈、组件窗格、套件自装与 doctor;统一入口接力四件套。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Work Studio</h3><p>由 <code>zetacode serve</code> 提供的工作台:会话历史、PTY 终端面板、diff、产物与媒体、统计、插件注册表与 Agent Hub——外加用同一套暂存运行时构建的 Electron 版与浏览器版。</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3>项目追踪 /tracking</h3><p>里程碑与关键决策写入 <code class="keycap">.zeta/tracking/</code>,跨会话保留,compaction 摘要持久化;默认关闭,显式开启。</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>Web 工作台与桌面版</h3><p>43 套深浅主题、轨迹视图、右侧工具坞、桌面信任打开桥;与 CLI 共享同一份持久会话。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Work Studio 与桌面版</h3><p>轨迹视图、追踪面板、产物与媒体、桌面信任打开桥;与 CLI 共享同一份持久会话——Electron 版与浏览器版出自同一套暂存运行时。</p></div>
 				<div class="grid-item"><div class="idx">04</div><h3>实验度量 Autoresearch</h3><p>按项目的本地实验追踪:指标、方向与基线 commit,SQLite 存储。</p></div>
 				<div class="grid-item"><div class="idx">05</div><h3>TypeScript 自定义命令与命令市场</h3><p>arktype / typebox / zod 参数校验;命令以 Bun 包安装、分享与复用。</p></div>
 				<div class="grid-item"><div class="idx">06</div><h3>IM 渠道与多工作区</h3><p>微信 / 飞书 / Telegram 机器人,工作区别名与中转委派,会话与 CLI / 桌面同步。</p></div>
@@ -85,7 +85,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				<a class="source" href="https://github.com/termide/termide" target="_blank" rel="noopener">
 					<div>
 						<div class="sname">TermIDE <span class="badge main">vendored</span></div>
-						<div class="sdesc">终端 IDE 的上游:Rust 快照 vendored 于 <code>termide/</code>(<code>termide/VENDOR.md</code>);npm 面与品牌由 Zeta 维护,工作台窗格树也构建在其 crates 之上。</div>
+						<div class="sdesc">终端 IDE 的上游:Rust 快照 vendored 于 <code>termide/</code>(<code>termide/VENDOR.md</code>);npm 面与品牌由 Zeta 维护,<code>zetaide</code> 构建在其 crates 之上。</div>
 					</div>
 					<div class="arrow">→</div>
 				</a>

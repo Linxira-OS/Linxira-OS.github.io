@@ -5,20 +5,20 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 <ZetaLayoutV2
 	lang="en"
 	title="Zeta — The Agentic Development Environment"
-	description="Zeta is an ADE (Agentic Development Environment): one workspace that tiles real terminals, plus the tools that live inside it — a coding agent, an editor, a terminal IDE, a local web workbench, and a file manager. Linux-first, Windows supported, mouse-first."
+	description="Zeta is an ADE (Agentic Development Environment) with three entries: zetacode (agent CLI and TUI), zetaide (terminal IDE and ACP client), and Work Studio — the workbench in your browser and as a self-contained desktop app. Linux-first, Windows supported."
 	active="home"
 >
 	<section class="hero">
 		<div class="container hero-grid">
 			<div class="hero-copy">
 				<div class="kicker">Agentic Development Environment · by Linxira-OS</div>
-				<h1>One terminal.<br>The <span class="accent">whole workbench.</span></h1>
+				<h1>One workbench.<br><span class="accent">Three ways in.</span></h1>
 				<p class="lede">
-					<strong>Zeta</strong> is an <strong>ADE</strong> (Agentic Development Environment), not just a coding
-					agent. It is also <strong>a workspace</strong>: tabs, tilable real-terminal panes, and a fully
-					clickable menu bar — with four entry points: <strong>zetawork</strong> (workbench, GUI + terminal),
-					<strong>zetacode</strong> (coding agent), <strong>zetaide</strong> (terminal IDE) and
-					<strong>zeta serve</strong> (local web workbench). Linux is the primary platform; Windows is supported.
+					<strong>Zeta</strong> is an <strong>ADE</strong> (Agentic Development Environment): the session, not the
+					file, is the unit of work. Three entries share one runtime — <strong>zetacode</strong> (agent CLI and
+					TUI), <strong>zetaide</strong> (terminal IDE, and an ACP client for external agents) and
+					<strong>Work Studio</strong>, the workbench in your browser or as a self-contained desktop app.
+					Linux is the primary platform; Windows is supported.
 				</p>
 				<div class="cta-row">
 					<a class="cta primary" href="#install">Get started</a>
@@ -27,44 +27,25 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 			</div>
 
-			<!-- Pure-CSS workbench mock: menu bar / tabs / panes with pages / widget panes / status -->
-			<div class="term" role="img" aria-label="Zeta workbench mock: menu bar, tabs, terminal panes and widget panes">
+			<!-- Pure-CSS terminal mock: a zetacode session and the Work Studio hand-off -->
+			<div class="term" role="img" aria-label="Mock of a zetacode session that starts Work Studio">
 				<div class="term-bar">
 					<span class="dot"></span><span class="dot"></span><span class="dot"></span>
-					<span class="title">zeta — ~/projects/linxira</span>
+					<span class="title">zetacode — ~/projects/linxira</span>
 				</div>
-				<div class="term-menu">
-					<span>Files</span><span>Edit</span><span>View</span><span class="on">Panes</span><span>Tools</span><span>Settings</span>
-				</div>
-				<div class="term-tabs">
-					<span class="tt on">1 work</span><span class="tt">2 docs</span><span class="plus">＋</span>
-				</div>
-				<div class="term-panes">
-					<div class="pane">
-						<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">+ ↔ ↕ ✕</span></div>
-						<div class="out">
-							<div><span class="prompt">❯</span> zetacode</div>
-							<div><b>▸ planning</b> refactor: pane layout</div>
-							<div><span class="ok">✓</span> 3 files patched, tests green</div>
-							<div><span class="prompt">❯</span> <span class="cur"></span></div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="pane">
-							<div class="pane-h"><span class="ph-t">🍅 pomodoro</span><span class="ctl">+ ✕</span></div>
-							<div class="widget"><span class="big">24:31</span><span class="lbl">focus · 2nd round</span></div>
-							<div class="widget"><span class="lbl">today 6 ✓ / 0 ✗</span></div>
-						</div>
-						<div class="pane">
-							<div class="pane-h"><span class="ph-t">📋 clipboard</span><span class="ctl">+ ✕</span></div>
-							<div class="clip"><span class="n">03</span> src/layout.rs</div>
-							<div class="clip"><span class="n">02</span> bun run check:ts</div>
-							<div class="clip"><span class="n">01</span> zeta doctor</div>
-						</div>
+				<div class="pane">
+					<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">session · linxira</span></div>
+					<div class="out">
+						<div><span class="prompt">❯</span> zetacode</div>
+						<div><b>▸ planning</b> refactor: workbench layout</div>
+						<div><span class="ok">✓</span> 3 files patched, tests green</div>
+						<div><span class="prompt">❯</span> zetacode serve</div>
+						<div><span class="ok">→</span> Work Studio · http://127.0.0.1:4719</div>
+						<div><span class="prompt">❯</span> <span class="cur"></span></div>
 					</div>
 				</div>
 				<div class="term-status">
-					<span><span class="st-ok">●</span> shell: bash</span><span>3 panes · 2 tabs</span><span>zetawork 1.3.1</span>
+					<span><span class="st-ok">●</span> shell: bash</span><span>session: linxira</span><span>zetacode 1.4</span>
 				</div>
 			</div>
 		</div>
@@ -76,14 +57,14 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">00</div>
 				<div>
 					<h2>An ADE, not an IDE</h2>
-					<div class="sub">Zeta is an <b>ADE</b> (Agentic Development Environment). A classic IDE is built around a human writing code — editor, completion, debugger. An ADE is built around <b>agents doing the work</b>: the workspace, terminals and editor are the agent's surface, and you set goals, review, and take over when it matters.</div>
+					<div class="sub">Zeta is an <b>ADE</b> (Agentic Development Environment). A classic IDE is built around a human writing code — editor, completion, debugger. An ADE is built around <b>agents doing the work</b>: the workbench is the agent's surface, and you set goals, review, and take over when it matters.</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>Agent-first</h3><p><code>zetacode</code> reads and writes files, runs commands and tests, and spawns sub-agents right inside the workspace — not a chat box bolted onto an IDE.</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>You still get an IDE</h3><p>When you want to edit by hand, open <code>zetaide</code> (a terminal IDE): editor, LSP and project views in the same workspace, no second editor needed.</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>Runs a local server</h3><p><code>zeta serve</code> starts the web workbench on your own machine (Next.js + REST gateway); the browser and the desktop shell share one workspace. Nothing goes through the cloud.</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>One workspace, four entry points</h3><p>GUI (<code>zetawork</code>), coding agent (<code>zetacode</code>), terminal IDE (<code>zetaide</code>) and web workbench (<code>zeta serve</code>) share one pane tree and one persistent session store.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Agent-first</h3><p><code>zetacode</code> reads and writes files, runs commands and tests, and spawns sub-agents — not a chat box bolted onto an IDE.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>You still get an IDE</h3><p>When you want to edit by hand, open <code>zetaide</code>: editor, LSP and project views, with its own PTY terminals. It is also an ACP client, so external agents can run as its panel backend.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>One workbench, two editions</h3><p><strong>Work Studio</strong> is served by <code>zetacode serve</code> in your browser, or ships as a self-contained desktop app with a bundled Chromium. Same runtime, same sessions, nothing in the cloud.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Three entries, one runtime</h3><p><code>zetacode</code>, <code>zetaide</code> and Work Studio all read the same persistent session store and speak the same host contract; coding and editing are handed off, not re-implemented per surface.</p></div>
 			</div>
 		</div>
 	</section>
@@ -93,28 +74,28 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 			<div class="section-head">
 				<div class="num">01</div>
 				<div>
-					<h2>One suite, three commands, one local server</h2>
-					<div class="sub">Every tool runs standalone with its own --help; the workspace puts them under one roof. <code>zeta serve</code> additionally starts a local web workbench from the same package.</div>
+					<h2>One suite, three entries</h2>
+					<div class="sub">Every entry launches standalone and ships its own <code>--help</code>; Work Studio is the workbench the agent and the IDE feed.</div>
 				</div>
 			</div>
 			<div class="suite">
 				<a class="suite-card hero-card" href="#install">
-					<span class="pkg">@linxiraos/main</span>
-					<div><span class="cmd">zetawork</span><span class="alias">workbench · GUI + terminal</span></div>
-					<p>The workspace: a nested-terminal workbench. Tabs, a pane tree, page stacks, a menu bar, widget panes — written in Rust, mouse-first.</p>
-					<div class="foot">Bare <b>zeta</b> prints these three names and exits</div>
-				</a>
-				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/zeta</span>
-					<div><span class="cmd">zetacode</span><span class="alias">coding agent</span></div>
-					<p>Coding agent CLI: subagents, plan mode, LSP/DAP, hindsight memory, hashline editing, and time-travel rules out of the box.</p>
-					<div class="foot">One package, one bin: no aliases, no space forms</div>
+					<div><span class="cmd">zetacode</span><span class="alias">agent CLI + TUI</span></div>
+					<p>The coding agent: subagents, plan mode, LSP/DAP, hindsight memory, hashline editing, and time-travel rules out of the box. <code>zetacode serve</code> hosts Work Studio.</p>
+					<div class="foot">Ships for <b>Linux x64</b> and <b>Windows x64</b></div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/ide</span>
-					<div><span class="cmd">zetaide</span><span class="alias">terminal IDE</span></div>
-					<p>Terminal IDE (TermIDE, vendored Rust): a near-graphical engineering experience in the terminal. Its built-in editor is the <code>@linxiraos/editor</code> payload, spawned by path — it has no bin of its own.</p>
-					<div class="foot">TermIDE (vendored Rust) inside your terminal</div>
+					<div><span class="cmd">zetaide</span><span class="alias">terminal IDE · ACP client</span></div>
+					<p>TermIDE, vendored: its own PTY terminals, editor, LSP and project views. As an ACP client it starts external agents and renders their sessions in a panel, routing their permission, filesystem and terminal requests to the IDE.</p>
+					<div class="foot">Runs <b>zetacode</b> inside a terminal pane too</div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">desktop · web-app</span>
+					<div><span class="cmd">Work Studio</span><span class="alias">browser workbench · desktop app</span></div>
+					<p>Session history, a PTY terminal panel, diffs, artifacts and media, stats, the plugin registry, the usage dashboard and the agent hub — one page, served by <code>zetacode serve</code>.</p>
+					<div class="foot">Electron and browser editions are both <b>self-contained</b>: no Bun or Node needed</div>
 				</a>
 			</div>
 		</div>
@@ -125,37 +106,54 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 			<div class="section-head">
 				<div class="num">02</div>
 				<div>
-					<h2>The workspace is mouse-first</h2>
-					<div class="sub">Every control is efficiently clickable; keyboard shortcuts are accelerators, not prerequisites.</div>
+					<h2>Work Studio, the workbench</h2>
+					<div class="sub">One page served by <code>zetacode serve</code>: the renderer reads the same runtime, settings and <code>/api/v1</code> host contract as the CLI.</div>
 				</div>
 			</div>
-			<div class="shot-strip" style="margin-bottom: 1.2rem;">
-				<button class="shot wide" type="button"><img src="/assets/zetawork-gui-editor.png" alt="zetawork: project tree, editor with diff, and git status in the right rail" loading="lazy"></button>
-			</div>
-			<p class="install-note" style="margin: 0 0 1.6rem;">Rendered offscreen from the shipped shell — not a mockup. Project tree on the left, terminal and editor panes in the middle, git and usage on the right. Click to enlarge.</p>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>Tabs and the pane tree</h3><p>Split any pane left/right or top/bottom; a weighted pane tree keeps proportions exact. Each pane also keeps a stack of pages — several terminals in one pane, nothing closed.</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>Fully clickable</h3><p>Menu bar, tab bar, pane title controls (+ ↔ ↕ ✕), and page tabs all respond to the pointer: switching, splitting, closing, and layout repair are mouse operations.</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>Widget panes</h3><p>A clock with a clickable calendar, a 🍅 pomodoro timer, and a 📋 clipboard history run as native panes — tools at hand, never leaving the terminal.</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>Suite-aware</h3><p>The Tools menu knows the suite: a missing tool installs itself into the pane that asked for it. <span class="keycap">zeta doctor</span> checks every tool and prints the exact fix.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Session history</h3><p>Every session is kept and browsable; resume any branch from the workbench instead of scrolling a terminal buffer.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>A real PTY terminal panel</h3><p>Actual pseudo-terminals, not a log viewer: run <code>zetacode</code>, <code>zetaide</code>, tests, git, or any shell command beside the conversation.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Diffs, artifacts, media</h3><p>Every change is rendered as a diff; generated files, images and other artifacts stay attached to the session that produced them.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Stats and usage</h3><p>A local stats dashboard and usage view: sessions, tokens, and cost — computed on your machine, no telemetry account.</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>Plugin registry</h3><p>First-party plugins ship in-tree and community plugins are listed in the registry; behaviour plugins work the same in every client.</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Agent hub</h3><p>Subagents and their sessions in one place: follow a running agent, read a finished one, and keep the main session clean.</p></div>
 			</div>
 		</div>
 	</section>
 
-	<section class="block" id="agent">
+	<section class="block" id="desktop">
 		<div class="container">
 			<div class="section-head">
 				<div class="num">03</div>
 				<div>
-					<h2>A coding agent, out of the box</h2>
-					<div class="sub">zetacode is built on the OMP runtime: core capabilities are built-in defaults, not optional extensions.</div>
+					<h2>Work Studio, on the desktop</h2>
+					<div class="sub">Two editions from one staged runtime — the compiled <code>zeta</code> kernel, its native addons, and the <code>web-app</code> renderer. Neither needs Bun or Node installed.</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>The full tool surface</h3><p>File read/write, search, patching, shell, git, task delegation, and structured tool output — heavy work runs on native Rust primitives.</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>Sessions are trees</h3><p>Branching history: resume from any node. Terminal, browser, and desktop share one persistent session.</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>Project tracking</h3><p>Turn on <span class="keycap">/tracking</span> and the agent writes milestones and key decisions to tracking docs — kept across sessions, browsable in the UI.</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>Extensible to the bone</h3><p>TypeScript custom commands, a command marketplace, skills, MCP, full TUI hooks — the agent can customize itself on the spot.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Electron edition</h3><p>A desktop window with a bundled Chromium: the app starts the local service and hosts Work Studio itself, with no terminal and no system browser involved.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Browser edition</h3><p>No bundled engine: the launcher starts <code>serve</code> and opens Work Studio in your default browser. The archive is zip on Windows and tar.gz on Linux.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Windows builds</h3><p>An assisted per-user NSIS installer, plus a portable zip. Windows x64 is supported; there is no macOS build.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Linux builds</h3><p>AppImage, <code>.deb</code> and <code>tar.gz</code>. Linux is the primary platform, and the same release also carries the CLI.</p></div>
+			</div>
+			<p class="install-note" style="margin-top: 1.4rem;">Desktop editions are published on <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>. Install one and launch it; there is nothing else to install first.</p>
+		</div>
+	</section>
+
+	<section class="block" id="terminal">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>The terminal is still first-class</h2>
+					<div class="sub">The workbench is a page; the place the agent actually works is still your shell.</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>zetacode in the TUI</h3><p>The full interactive agent: tool cards, previews, plan review, subagents — the same session Work Studio shows in the browser.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>zetaide as the terminal IDE</h3><p>TermIDE's panels and terminals, with an editor and LSP: a near-graphical engineering experience without leaving the terminal or an SSH session.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>External agents over ACP</h3><p>zetaide speaks the Agent Client Protocol as a client: agents such as Claude Code, through their adapters, run as a panel backend while the IDE owns permissions, filesystem access and terminal requests.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>One inside the other</h3><p>Run <code>zetacode</code> inside a zetaide terminal pane, or open Work Studio when you want the wide view. Same session, whichever surface you pick.</p></div>
 			</div>
 		</div>
 	</section>
@@ -163,10 +161,10 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="install">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">04</div>
+				<div class="num">05</div>
 				<div>
 					<h2>One command to the workbench</h2>
-					<div class="sub">Install the workspace; the rest of the suite self-installs on demand — or run zeta doctor for a full checkup.</div>
+					<div class="sub">Install the CLI, then serve Work Studio — or install a desktop edition and skip the setup.</div>
 				</div>
 			</div>
 			<div class="install">
@@ -178,12 +176,12 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
 				</div>
 				<div class="code" data-pane="npm">
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/main">npm install -g @linxiraos/main</span></span>
-					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="Copied">Copy</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/zeta">npm install -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="Copied">Copy</button>
 				</div>
 				<div class="code" data-pane="bun" hidden>
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/main">bun add -g @linxiraos/main</span></span>
-					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/main" data-done="Copied">Copy</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/zeta">bun add -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/zeta" data-done="Copied">Copy</button>
 				</div>
 				<div class="code" data-pane="linux" hidden>
 					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install.sh | sh">curl -fsSL https://linxira-os.github.io/install.sh | sh</span></span>
@@ -194,41 +192,49 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 					<button class="copy-btn" type="button" data-copy="irm https://linxira-os.github.io/install.ps1 | iex" data-done="Copied">Copy</button>
 				</div>
 				<p class="install-note">
-					Then: <code>zetawork</code> opens the workspace, <code>zetawork doctor</code> checks the whole suite.
-					Coding agent alone: <code>npm install -g @linxiraos/zeta</code> (zetacode).
+					Then: <code>zetacode serve</code> opens Work Studio in your browser.
+					Terminal IDE: <code>npm install -g @linxiraos/ide</code> (<code>zetaide</code>).
 					Slow mirror? Try <code>--registry=https://mirrors.cloud.tencent.com/npm/</code>.
 					Updating: <code>zetacode update</code> self-updates the CLI; reinstall anytime with the script above.
-					Desktop build (the zetawork GUI only; zetacode and zetaide live in the terminal): Windows <code>.zip</code>, Arch <code>.pkg.tar.zst</code>, <code>.AppImage</code> — on <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>.
+					Desktop: Work Studio ships as an Electron app (Windows NSIS/zip; Linux AppImage, <code>.deb</code>, <code>tar.gz</code>) and a browser edition (zip/tar.gz) on
+					<a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>.
 				</p>
 			</div>
 		</div>
 	</section>
 
-	<section class="block" id="webui">
+	<section class="block" id="rooms">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">05</div>
+				<div class="num">06</div>
 				<div>
-					<h2>The zetawork GUI</h2>
-					<div class="sub">Real captures of the shipped shell: editor with diff, the total panel with project management, and the provider settings. The GUI owns three settings panes the terminal does not (web, coding-agent, provider settings) and an embedded PDF viewer. Click a screenshot to enlarge.</div>
+					<h2>One page, not one terminal per repo</h2>
+					<div class="sub">Work Studio exists so you do not need a terminal tab per repository or branch. That is the goal, and the workbench already covers the part of it that ships.</div>
 				</div>
 			</div>
-			<div class="shot-strip">
-				<div class="shot-track">
-					<div class="shot-group">
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-editor.png" alt="zetawork GUI: editor, diff, and git status" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-total.png" alt="zetawork GUI: total panel and project management" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-settings.png" alt="zetawork GUI: provider settings" loading="lazy"></button>
-					</div>
-					<div class="shot-group" aria-hidden="true">
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-editor.png" alt="" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-total.png" alt="" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-settings.png" alt="" loading="lazy"></button>
-					</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>Sessions, not tabs</h3><p>Every repository and branch gets a session in one workbench: start, resume, and switch without juggling windows.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Agent hub</h3><p>Ships today: running and finished subagents in a single hub, with their own sessions and follow-up chat.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Cross-process mesh</h3><p>Ships today: separate Zeta processes on one machine can find each other over the mesh, so sessions are not trapped in one terminal.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Super-agent and rooms <span class="tag">experimental</span></h3><p>The direction is one agent per repository or branch, subagents, and cross-repo collaboration in shared rooms. This is <b>not implemented</b> yet — treat it as the roadmap, not a feature.</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="agent">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">07</div>
+				<div>
+					<h2>A coding agent, out of the box</h2>
+					<div class="sub">zetacode is built on the OMP runtime: core capabilities are built-in defaults, not optional extensions.</div>
 				</div>
 			</div>
-			<div class="lightbox" id="lightbox" hidden>
-				<img id="lightboxImg" src="" alt="Enlarged zetawork screenshot">
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>The full tool surface</h3><p>File read/write, search, patching, shell, git, task delegation, and structured tool output — heavy work runs on native Rust primitives.</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Sessions are trees</h3><p>Branching history: resume from any node. Terminal, browser, and desktop read one persistent session.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Project tracking</h3><p>Turn on <span class="keycap">/tracking</span> and the agent writes milestones and key decisions to tracking docs — kept across sessions, browsable in Work Studio.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Extensible to the bone</h3><p>TypeScript custom commands, a command marketplace, skills, MCP, full TUI hooks — the agent can customize itself on the spot.</p></div>
 			</div>
 		</div>
 	</section>
@@ -236,7 +242,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="modes">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">06</div>
+				<div class="num">08</div>
 				<div>
 					<h2>Four run modes</h2>
 					<div class="sub">One agent, many interfaces — from the full TUI to scripts, event streams, and programmatic embedding.</div>
@@ -254,7 +260,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="providers">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">07</div>
+				<div class="num">09</div>
 				<div>
 					<h2>15+ providers, hundreds of models</h2>
 					<div class="sub">Switch anytime in-session with <span class="keycap">/model</span>.</div>
@@ -274,7 +280,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="bots">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">08</div>
+				<div class="num">10</div>
 				<div>
 					<h2>Drive Zeta from chat apps</h2>
 					<div class="sub">Plug zetacode into WeChat, Feishu, and Telegram — ask, dispatch tasks, and receive results where you already talk.</div>
@@ -290,17 +296,17 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="linux">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">09</div>
+				<div class="num">11</div>
 				<div>
 					<h2>Native on Linux, not wrapped</h2>
 					<div class="sub">Linux is the primary platform (Linxira OS, Arch-based); heavy work runs on native engines, and terminal and desktop are deeply integrated.</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>Native engines</h3><p>Text, regex, grep, and diff go to Rust primitives; the workbench itself is a native Rust binary.</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Native engines</h3><p>Text, regex, grep, and diff go to Rust primitives; the desktop editions stage the native addons alongside the compiled kernel.</p></div>
 				<div class="grid-item"><div class="idx">02</div><h3>The terminal is home</h3><p>OSC 8 hyperlinks, native PTY management; the whole suite is terminal-born and works over SSH.</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>Desktop bridge</h3><p>Open local editors and file managers safely from the Web UI: HMAC gateway tokens, target allowlists, workspace containment.</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>One command to land</h3><p>npm / Bun global install, or <code class="keycap">curl … install.sh | sh</code>; the desktop build ships as Arch <code>.pkg.tar.zst</code>, AppImage, and a Windows zip.</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Desktop bridge</h3><p>Open local editors and file managers safely from Work Studio: HMAC gateway tokens, target allowlists, workspace containment.</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>One command to land</h3><p>npm / Bun global install, or <code class="keycap">curl … install.sh | sh</code>; Work Studio also ships as AppImage, <code>.deb</code>, and <code>tar.gz</code>.</p></div>
 			</div>
 		</div>
 	</section>
@@ -308,7 +314,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="identity">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">10</div>
+				<div class="num">12</div>
 				<div>
 					<h2>A first-class citizen of Linxira OS</h2>
 					<div class="sub">Zeta is built by the Linxira OS team — a Linux distribution for research workstations. On Linxira OS, Zeta is not just another package.</div>

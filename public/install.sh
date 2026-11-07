@@ -10,8 +10,9 @@ set -e
 REPO="Linxira-OS/linxira-zeta"
 API="https://api.github.com/repos/${REPO}/releases/latest"
 
-# 命令名是 `zetacode`，不是 `zeta` —— 裸 `zeta` 是工作台（zetawork）的 bin，
-# 装错会互相遮蔽。三层命名：zetacode = CLI，zetawork = 工作台，zeta = 产品自称。
+# 命令名是 `zetacode`，不是 `zeta` —— `zeta` 是产品名，不是 CLI 的 bin。
+# 只安装 CLI：`zetacode serve` 负责托管 Work Studio。zetawork 已暂停（2026-11-05），
+# 不再作为产品面发布，也不要在脚本里给旧工作台留入口。
 BIN="zetacode"
 
 VERSION=""

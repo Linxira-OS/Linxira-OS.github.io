@@ -10,8 +10,9 @@ $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 $Repo = "Linxira-OS/linxira-zeta"
 $Api = "https://api.github.com/repos/$Repo/releases/latest"
-# The command is `zetacode`, not `zeta` -- a bare `zeta` is the workbench bin
-# (zetawork), and shipping both under one name makes them shadow each other.
+# The command is `zetacode`, not `zeta` -- `zeta` is the product name, not the
+# CLI bin. Only the CLI is installed; `zetacode serve` hosts Work Studio. The
+# old `zetawork` workbench is paused (2026-11-05) and is not a product surface.
 $Bin = "zetacode"
 $Asset = "zeta-cli-windows-x64.exe"
 

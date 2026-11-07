@@ -5,17 +5,16 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 <ZetaLayoutV2
 	lang="zh"
 	title="Zeta — ADE,面向 Agent 的开发环境"
-	description="Zeta 是 ADE(Agentic Development Environment,面向 Agent 的开发环境):一个可平铺真实终端的工作区,加上活在工作区里的工具——编码 Agent、编辑器、终端 IDE、本地 Web 工作台和文件管理器。Linux 主力,Windows 支持,鼠标优先。"
+	description="Zeta 是 ADE(Agentic Development Environment,面向 Agent 的开发环境),三个入口:zetacode(编码 Agent CLI 与 TUI)、zetaide(终端 IDE,ACP 客户端)与 Work Studio——浏览器里的工作台,也提供自包含的桌面版。Linux 主力,Windows 支持。"
 	active="home"
 >
 	<section class="hero">
 		<div class="container hero-grid">
 			<div class="hero-copy">
-				<div class="kicker">终端工作台套件 · Linxira-OS 出品</div>
-				<h1>一个终端,<br>装下<span class="accent">整个工作台。</span></h1>
+				<div class="kicker">Agentic Development Environment · Linxira-OS 出品</div>
+				<h1>一个工作台,<br><span class="accent">三种入口。</span></h1>
 				<p class="lede">
-					<strong>Zeta</strong> 是 <strong>ADE</strong>(Agentic Development Environment,面向 Agent 的开发环境),不只是编码代理。<strong>一个工作区</strong>:标签页、可分裂的真实终端窗格、
-					全鼠标可控的菜单栏;四个入口:<strong>zetawork</strong>(工作台,图形界面 + 终端)、<strong>zetacode</strong>(编码 Agent)、<strong>zetaide</strong>(终端 IDE)、<strong>zeta serve</strong>(本地 Web 工作台)。Linux 主力平台,Windows 同样支持。
+					<strong>Zeta</strong> 是 <strong>ADE</strong>(Agentic Development Environment,面向 Agent 的开发环境):工作单位是会话,不是单个文件。三个入口共享同一套运行时——<strong>zetacode</strong>(编码 Agent CLI 与 TUI)、<strong>zetaide</strong>(终端 IDE,同时是外部 Agent 的 ACP 客户端)与 <strong>Work Studio</strong>(浏览器里的工作台,也可作为自包含桌面应用)。Linux 主力平台,Windows 同样支持。
 				</p>
 				<div class="cta-row">
 					<a class="cta primary" href="#install">开始使用</a>
@@ -24,44 +23,25 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				</div>
 			</div>
 
-			<!-- 纯 CSS 工作台示意:菜单栏 / 标签页 / 窗格与子页 / 组件窗格 / 状态栏 -->
-			<div class="term" role="img" aria-label="Zeta 工作台示意:菜单栏、标签页、终端窗格与组件窗格">
+			<!-- 纯 CSS 终端示意:一段 zetacode 会话,以及交给 Work Studio 的入口 -->
+			<div class="term" role="img" aria-label="zetacode 会话示意:启动后打开 Work Studio">
 				<div class="term-bar">
 					<span class="dot"></span><span class="dot"></span><span class="dot"></span>
-					<span class="title">zeta — ~/projects/linxira</span>
+					<span class="title">zetacode — ~/projects/linxira</span>
 				</div>
-				<div class="term-menu">
-					<span>Files</span><span>Edit</span><span>View</span><span class="on">Panes</span><span>Tools</span><span>Settings</span>
-				</div>
-				<div class="term-tabs">
-					<span class="tt on">1 work</span><span class="tt">2 docs</span><span class="plus">＋</span>
-				</div>
-				<div class="term-panes">
-					<div class="pane">
-						<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">+ ↔ ↕ ✕</span></div>
-						<div class="out">
-							<div><span class="prompt">❯</span> zetacode</div>
-							<div><b>▸ planning</b> refactor: pane layout</div>
-							<div><span class="ok">✓</span> 3 files patched, tests green</div>
-							<div><span class="prompt">❯</span> <span class="cur"></span></div>
-						</div>
-					</div>
-					<div class="col">
-						<div class="pane">
-							<div class="pane-h"><span class="ph-t">🍅 pomodoro</span><span class="ctl">+ ✕</span></div>
-							<div class="widget"><span class="big">24:31</span><span class="lbl">focus · 2nd round</span></div>
-							<div class="widget"><span class="lbl">today 6 ✓ / 0 ✗</span></div>
-						</div>
-						<div class="pane">
-							<div class="pane-h"><span class="ph-t">📋 clipboard</span><span class="ctl">+ ✕</span></div>
-							<div class="clip"><span class="n">03</span> src/layout.rs</div>
-							<div class="clip"><span class="n">02</span> bun run check:ts</div>
-							<div class="clip"><span class="n">01</span> zeta doctor</div>
-						</div>
+				<div class="pane">
+					<div class="pane-h on"><span class="ph-t">● zetacode</span><span class="ctl">session · linxira</span></div>
+					<div class="out">
+						<div><span class="prompt">❯</span> zetacode</div>
+						<div><b>▸ planning</b> refactor: workbench layout</div>
+						<div><span class="ok">✓</span> 3 files patched, tests green</div>
+						<div><span class="prompt">❯</span> zetacode serve</div>
+						<div><span class="ok">→</span> Work Studio · http://127.0.0.1:4719</div>
+						<div><span class="prompt">❯</span> <span class="cur"></span></div>
 					</div>
 				</div>
 				<div class="term-status">
-					<span><span class="st-ok">●</span> shell: bash</span><span>3 panes · 2 tabs</span><span>zetawork 1.3.1</span>
+					<span><span class="st-ok">●</span> shell: bash</span><span>session: linxira</span><span>zetacode 1.4</span>
 				</div>
 			</div>
 		</div>
@@ -73,14 +53,14 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 				<div class="num">00</div>
 				<div>
 					<h2>ADE,不是 IDE</h2>
-					<div class="sub">Zeta 的定位是 <b>ADE</b>(Agentic Development Environment,面向 Agent 的开发环境)。传统 IDE 围着「人写代码」转:编辑器、补全、调试器都是给人的;ADE 围着「Agent 干活」转——工作区、终端、编辑器是 Agent 的作业面,人负责定目标、审阅、必要时接手改。</div>
+					<div class="sub">Zeta 的定位是 <b>ADE</b>(Agentic Development Environment,面向 Agent 的开发环境)。传统 IDE 围着「人写代码」转:编辑器、补全、调试器都是给人的;ADE 围着「Agent 干活」转——工作台是 Agent 的作业面,人负责定目标、审阅、必要时接手改。</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>Agent 优先</h3><p><code>zetacode</code> 直接在工作区里读写文件、跑命令、跑测试、开子代理;不是「IDE 里塞一个聊天框」那种外挂。</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>仍然给你 IDE 入口</h3><p>要亲手改的时候就开 <code>zetaide</code>(终端 IDE):内置编辑器、LSP、工程视图都在同一个工作区里,不必另开一个编辑器。</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>本地起服务</h3><p><code>zeta serve</code> 在本机拉起 Web 工作台(Next.js + REST 网关),浏览器与桌面外壳共用同一套工作区;不经过云端。</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>一套工作区,四种用法</h3><p>图形界面(<code>zetawork</code>)、编码 Agent(<code>zetacode</code>)、终端 IDE(<code>zetaide</code>)、Web 工作台(<code>zeta serve</code>)共享同一个窗格树与持久会话。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Agent 优先</h3><p><code>zetacode</code> 直接读写文件、跑命令、跑测试、开子代理;不是「IDE 里塞一个聊天框」那种外挂。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>仍然给你 IDE 入口</h3><p>要亲手改的时候就开 <code>zetaide</code>:内置编辑器、LSP、工程视图,还有自己的 PTY 终端。它同时是 ACP 客户端,外部 Agent 可以作为它的面板后端运行。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>一个工作台,两个版本</h3><p><strong>Work Studio</strong> 由 <code>zetacode serve</code> 跑在浏览器里,也有自带 Chromium 的自包含桌面版。同一套运行时、同一份会话,不经过云端。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>三个入口,一套运行时</h3><p><code>zetacode</code>、<code>zetaide</code> 与 Work Studio 读写同一份持久会话,遵循同一套 host 契约;编码与编辑是交接出去的能力,不在每个界面里各写一遍。</p></div>
 			</div>
 		</div>
 	</section>
@@ -90,28 +70,28 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 			<div class="section-head">
 				<div class="num">01</div>
 				<div>
-					<h2>一套件,三个命令,一个本地服务</h2>
-					<div class="sub"><code>zetawork</code> · <code>zetacode</code> · <code>zetaide</code>——每个都能独立启动、各有自己的 --help;裸 <code>zeta</code> 只打印这三个名字。另外 <code>zeta serve</code> 用同一个包在本机起 Web 工作台。
-					</div>
+					<h2>一套件,三个入口</h2>
+					<div class="sub">每个入口都能独立启动、各有自己的 <code>--help</code>;Work Studio 是 Agent 与 IDE 共同支撑的工作台。</div>
+				</div>
 			</div>
 			<div class="suite">
 				<a class="suite-card hero-card" href="#install">
-					<span class="pkg">@linxiraos/main</span>
-					<div><span class="cmd">zetawork</span><span class="alias">工作台 · 图形界面 + 终端</span></div>
-					<p>工作台:标签页、窗格树、子页栈、菜单栏、组件窗格,终端界面与图形界面同一套工作区模型。Rust 编写,鼠标优先。</p>
-					<div class="foot">桌面发行版(Windows zip / Arch pkg / AppImage)在 Releases</div>
-				</a>
-				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/zeta</span>
-					<div><span class="cmd">zetacode</span><span class="alias">编码 Agent</span></div>
-					<p>编码 Agent CLI:子代理、计划模式、LSP/DAP、事后记忆、hashline 编辑、时间旅行规则开箱即用。</p>
-					<div class="foot">一个包一个 bin:没有别名,也没有带空格的写法</div>
+					<div><span class="cmd">zetacode</span><span class="alias">编码 Agent CLI + TUI</span></div>
+					<p>编码 Agent:子代理、计划模式、LSP/DAP、事后记忆、hashline 编辑、时间旅行规则开箱即用。<code>zetacode serve</code> 负责托管 Work Studio。</p>
+					<div class="foot">提供 <b>Linux x64</b> 与 <b>Windows x64</b> 构建</div>
 				</a>
 				<a class="suite-card" href="#install">
 					<span class="pkg">@linxiraos/ide</span>
-					<div><span class="cmd">zetaide</span><span class="alias">终端 IDE</span></div>
-					<p>终端 IDE(TermIDE,vendored Rust):在终端里获得接近图形 IDE 的工程体验,内置编辑器即 <code>@linxiraos/editor</code> 的载荷。</p>
-					<div class="foot">编辑器没有独立 bin:按路径由 IDE 或终端拉起</div>
+					<div><span class="cmd">zetaide</span><span class="alias">终端 IDE · ACP 客户端</span></div>
+					<p>TermIDE,vendored:自带 PTY 终端、编辑器、LSP 与工程视图。作为 ACP 客户端,它能启动外部 Agent 并把其会话渲染在面板里,权限、文件系统与终端请求都交回 IDE 处理。</p>
+					<div class="foot">也能在终端窗格里<b>直接跑 zetacode</b></div>
+				</a>
+				<a class="suite-card" href="#install">
+					<span class="pkg">desktop · web-app</span>
+					<div><span class="cmd">Work Studio</span><span class="alias">浏览器工作台 · 桌面应用</span></div>
+					<p>会话历史、PTY 终端面板、diff、产物与媒体、统计、插件注册表、用量面板与 Agent Hub——一个页面,由 <code>zetacode serve</code> 提供。</p>
+					<div class="foot">Electron 版与浏览器版都<b>自包含</b>:不需要机器上装 Bun 或 Node</div>
 				</a>
 			</div>
 		</div>
@@ -122,37 +102,54 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 			<div class="section-head">
 				<div class="num">02</div>
 				<div>
-					<h2>工作区,鼠标优先</h2>
-					<div class="sub">每个界面元素都能高效点击;快捷键只是加速器,不是前提。</div>
+					<h2>Work Studio,就是工作台</h2>
+					<div class="sub">由 <code>zetacode serve</code> 提供的一个页面:渲染层读取同一套运行时、同一份设置和同一个 <code>/api/v1</code> host 契约。</div>
 				</div>
 			</div>
-			<div class="shot-strip" style="margin-bottom: 1.2rem;">
-				<button class="shot wide" type="button"><img src="/assets/zeta-workbench-demo.png" alt="zeta 工作台实拍:shell、时间·日历与 🍅番茄钟三个窗格" loading="lazy"></button>
-			</div>
-			<p class="install-note" style="margin: 0 0 1.6rem;">真实工作台:菜单栏、标签页、三个窗格(shell / 时间·日历 / 🍅番茄钟),提示符即路径——点击放大。</p>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>标签页与窗格树</h3><p>窗格任意左右/上下分裂,布局由窗格树管理、比例精确;每个窗格还有自己的子页栈——一个窗格容纳多个终端,互不关闭。</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>全鼠标操作</h3><p>菜单栏、标签栏、窗格标题控件(+ ↔ ↕ ✕)、子页标签全部可点:切换、分裂、关闭、布局修复都是鼠标操作。</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>组件窗格</h3><p>带可点击日历的时钟、🍅番茄钟、📋剪贴板历史,都是原生窗格——工具就在手边,不离开终端。</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>感知套件</h3><p>Tools 菜单认识全套件:缺什么,在请求它的那个窗格里直接自装;<span class="keycap">zeta doctor</span> 逐项体检并给出精确修复命令。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>会话历史</h3><p>每个会话都保留、可浏览;在工作台里从任意分支继续,不用翻终端缓冲。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>真正的 PTY 终端面板</h3><p>是伪终端,不是日志回放:在对话旁边跑 <code>zetacode</code>、<code>zetaide</code>、测试、git,或任意 shell 命令。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>diff、产物与媒体</h3><p>每次改动都以 diff 呈现;生成的文件、图片与其他产物留在产生它的会话里。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>统计与用量</h3><p>本地统计面板与用量视图:会话、token 与花费,全在你自己的机器上计算,不需要遥测账号。</p></div>
+				<div class="grid-item"><div class="idx">05</div><h3>插件注册表</h3><p>第一方插件随源码发布,社区插件列入注册表;行为型插件在每个客户端里表现一致。</p></div>
+				<div class="grid-item"><div class="idx">06</div><h3>Agent Hub</h3><p>子代理与它们的会话集中在一处:跟进运行中的 Agent、回看结束的 Agent,主会话保持干净。</p></div>
 			</div>
 		</div>
 	</section>
 
-	<section class="block" id="agent">
+	<section class="block" id="desktop">
 		<div class="container">
 			<div class="section-head">
 				<div class="num">03</div>
 				<div>
-					<h2>编码 Agent,开箱即用</h2>
-					<div class="sub">zetacode 基于 OMP 运行时:该有的能力都是内置默认,而非可选扩展。</div>
+					<h2>Work Studio,搬到桌面</h2>
+					<div class="sub">同一套暂存运行时出两个版本——编译好的 <code>zeta</code> 内核、原生插件与 <code>web-app</code> 渲染层。两者都不需要机器上预装 Bun 或 Node。</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>完整工具面</h3><p>文件读写、搜索、补丁、shell、git、任务委派与结构化工具输出;重活跑在 Rust 原生引擎上。</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>会话是树</h3><p>分支式历史:回到任意节点继续;终端、浏览器、桌面共享同一份持久会话。</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>项目追踪</h3><p><span class="keycap">/tracking</span> 开启后,AI 在里程碑与关键决策时写入追踪文档,跨会话保留、可视化浏览。</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>可扩展到骨头里</h3><p>TypeScript 自定义命令、命令市场、技能、MCP、完整 TUI 钩子——代理可以现场自定义自己。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>Electron 版</h3><p>自带 Chromium 的桌面窗口:应用自己启动本地服务并承载 Work Studio,不弹终端,也不调用系统浏览器。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>浏览器版</h3><p>不带浏览器内核:启动器拉起 <code>serve</code>,用系统默认浏览器打开 Work Studio。Windows 发 zip,Linux 发 tar.gz。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>Windows 构建</h3><p>按用户安装的 NSIS 安装包,外加免安装 zip。支持 Windows x64;没有 macOS 构建。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Linux 构建</h3><p>AppImage、<code>.deb</code> 与 <code>tar.gz</code>。Linux 是主力平台,同一次发布也带着 CLI。</p></div>
+			</div>
+			<p class="install-note" style="margin-top: 1.4rem;">桌面版发布在 <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>。装上直接运行,不需要先准备别的环境。</p>
+		</div>
+	</section>
+
+	<section class="block" id="terminal">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">04</div>
+				<div>
+					<h2>终端仍然是一等公民</h2>
+					<div class="sub">工作台是一个页面;Agent 真正干活的地方,仍然是你的 shell。</div>
+				</div>
+			</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>zetacode 的 TUI</h3><p>完整的交互式 Agent:工具卡片、预览、计划审阅、子代理——和 Work Studio 在浏览器里看到的是同一个会话。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>zetaide 作为终端 IDE</h3><p>TermIDE 的面板与终端,加上编辑器与 LSP:不离开终端、不离开 SSH 会话,也能有接近图形 IDE 的体验。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>通过 ACP 接外部 Agent</h3><p>zetaide 以客户端身份实现 Agent Client Protocol:通过适配器接入的 Claude Code 等 Agent 作为面板后端运行,权限、文件系统访问与终端请求由 IDE 负责。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>一个跑在另一个里面</h3><p>在 zetaide 的终端窗格里跑 <code>zetacode</code>,想要大视图时再开 Work Studio。换界面不换会话。</p></div>
 			</div>
 		</div>
 	</section>
@@ -160,10 +157,10 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="install">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">04</div>
+				<div class="num">05</div>
 				<div>
 					<h2>一条命令进工作台</h2>
-					<div class="sub">装好工作区,其余工具按需自装;或用 zeta doctor 一次体检。</div>
+					<div class="sub">装好 CLI,再 serve 起 Work Studio——或者直接装桌面版,跳过配置。</div>
 				</div>
 			</div>
 			<div class="install">
@@ -175,12 +172,12 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 					<span class="tab-ind" id="tabInd" aria-hidden="true"></span>
 				</div>
 				<div class="code" data-pane="npm">
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/main">npm install -g @linxiraos/main</span></span>
-					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/main" data-done="已复制">复制</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="npm install -g @linxiraos/zeta">npm install -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="npm install -g @linxiraos/zeta" data-done="已复制">复制</button>
 				</div>
 				<div class="code" data-pane="bun" hidden>
-					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/main">bun add -g @linxiraos/main</span></span>
-					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/main" data-done="已复制">复制</button>
+					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="bun add -g @linxiraos/zeta">bun add -g @linxiraos/zeta</span></span>
+					<button class="copy-btn" type="button" data-copy="bun add -g @linxiraos/zeta" data-done="已复制">复制</button>
 				</div>
 				<div class="code" data-pane="linux" hidden>
 					<span class="cmd"><span class="prompt">$</span><span class="type" data-typing="curl -fsSL https://linxira-os.github.io/install.sh | sh">curl -fsSL https://linxira-os.github.io/install.sh | sh</span></span>
@@ -191,41 +188,49 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 					<button class="copy-btn" type="button" data-copy="irm https://linxira-os.github.io/install.ps1 | iex" data-done="已复制">复制</button>
 				</div>
 				<p class="install-note">
-					然后:<code>zetawork</code> 打开工作台,<code>zetawork doctor</code> 检查全套件安装状态。
-					编码 Agent 单装:<code>npm install -g @linxiraos/zeta</code>(zetacode)。
+					然后:<code>zetacode serve</code> 在浏览器里打开 Work Studio。
+					终端 IDE 单装:<code>npm install -g @linxiraos/ide</code>(<code>zetaide</code>)。
 					国内网络慢时可用腾讯镜像 <code>--registry=https://mirrors.cloud.tencent.com/npm/</code>。
 					升级:<code>zetacode update</code> 自更新 CLI;随时可用上面的脚本重装。
-					桌面版(只有 zetawork 的图形界面;zetacode/zetaide 跑在终端里):Windows <code>.zip</code>、Arch <code>.pkg.tar.zst</code>、<code>.AppImage</code>,见 <a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>。
+					桌面版:Work Studio 提供 Electron 版(Windows NSIS/zip;Linux AppImage、<code>.deb</code>、<code>tar.gz</code>)与浏览器版(zip/tar.gz),见
+					<a href="https://github.com/Linxira-OS/linxira-zeta/releases/latest" target="_blank" rel="noopener">GitHub Releases</a>。
 				</p>
 			</div>
 		</div>
 	</section>
 
-	<section class="block" id="webui">
+	<section class="block" id="rooms">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">05</div>
+				<div class="num">06</div>
 				<div>
-					<h2>zetawork 图形界面</h2>
-					<div class="sub">真实截图(离屏渲染,非效果图):左侧项目树,中间终端与编辑器面板,右侧 Git 与用量。图形界面独有的设置面板与内嵌预览见下;终端界面同一套工作区模型。点击截图可放大。</div>
+					<h2>一个页面,而不是每个仓库一个终端</h2>
+					<div class="sub">Work Studio 存在的意义,是不需要为每个仓库、每个分支各开一个终端页。这是目标,而其中已经落地的部分就在工作台里。</div>
 				</div>
 			</div>
-			<div class="shot-strip">
-				<div class="shot-track">
-					<div class="shot-group">
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-editor.png" alt="zetawork 图形界面:编辑器、diff 与 Git 状态" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-total.png" alt="zetawork 图形界面:总面板与项目管理" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-settings.png" alt="zetawork 图形界面:提供商设置" loading="lazy"></button>
-					</div>
-					<div class="shot-group" aria-hidden="true">
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-editor.png" alt="" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-total.png" alt="" loading="lazy"></button>
-						<button class="shot" type="button"><img src="/assets/zetawork-gui-settings.png" alt="" loading="lazy"></button>
-					</div>
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>要会话,不要标签页</h3><p>每个仓库与分支一个会话,都在同一个工作台里:开始、继续、切换,不用来回找窗口。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>Agent Hub</h3><p>今天已发布:运行中与已结束的子代理集中在一个 Hub,各有自己的会话,可以继续追问。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>跨进程 mesh</h3><p>今天已发布:同一台机器上的不同 Zeta 进程可以通过 mesh 互相发现,会话不再被困在某一个终端里。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>Super-agent 与房间 <span class="tag">实验性</span></h3><p>方向是每个仓库/分支一个 Agent、子代理协作、在共享房间里跨仓库协作。这部分<b>尚未实现</b>——请把它当作路线图,而不是现有功能。</p></div>
+			</div>
+		</div>
+	</section>
+
+	<section class="block" id="agent">
+		<div class="container">
+			<div class="section-head">
+				<div class="num">07</div>
+				<div>
+					<h2>编码 Agent,开箱即用</h2>
+					<div class="sub">zetacode 基于 OMP 运行时:该有的能力都是内置默认,而非可选扩展。</div>
 				</div>
 			</div>
-			<div class="lightbox" id="lightbox" hidden>
-				<img id="lightboxImg" src="" alt="放大的 zetawork 界面截图">
+			<div class="grid-table">
+				<div class="grid-item"><div class="idx">01</div><h3>完整工具面</h3><p>文件读写、搜索、补丁、shell、git、任务委派与结构化工具输出;重活跑在 Rust 原生引擎上。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>会话是树</h3><p>分支式历史:回到任意节点继续;终端、浏览器、桌面读取同一份持久会话。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>项目追踪</h3><p><span class="keycap">/tracking</span> 开启后,AI 在里程碑与关键决策时写入追踪文档,跨会话保留,可在 Work Studio 里浏览。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>可扩展到骨头里</h3><p>TypeScript 自定义命令、命令市场、技能、MCP、完整 TUI 钩子——代理可以现场自定义自己。</p></div>
 			</div>
 		</div>
 	</section>
@@ -233,7 +238,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="modes">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">06</div>
+				<div class="num">08</div>
 				<div>
 					<h2>四种运行模式</h2>
 					<div class="sub">同一个代理,多种接口——从全功能 TUI 到脚本、事件流与程序化嵌入。</div>
@@ -251,7 +256,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="providers">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">07</div>
+				<div class="num">09</div>
 				<div>
 					<h2>15+ 提供商,数百个模型</h2>
 					<div class="sub">会话中用 <span class="keycap">/model</span> 随时切换。</div>
@@ -271,7 +276,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="bots">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">08</div>
+				<div class="num">10</div>
 				<div>
 					<h2>在聊天平台里驱动 Zeta</h2>
 					<div class="sub">把 zetacode 接入微信、飞书与 Telegram——在熟悉的消息应用里提问、发起任务、接收结果。</div>
@@ -287,17 +292,17 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="linux">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">09</div>
+				<div class="num">11</div>
 				<div>
 					<h2>Linux 原生,而非套壳</h2>
 					<div class="sub">Linux 是主力平台(Linxira OS,基于 Arch);重活跑在原生引擎上,终端与桌面深度打通。</div>
 				</div>
 			</div>
 			<div class="grid-table">
-				<div class="grid-item"><div class="idx">01</div><h3>原生引擎</h3><p>文本、正则、grep 与 diff 的重活交给 Rust 原语;工作台本体也是 Rust 编译的原生二进制。</p></div>
-				<div class="grid-item"><div class="idx">02</div><h3>终端即主场</h3><p>OSC 8 超链接、PTY 原生进程管理;四件套全部为终端而生,SSH 远程照常用。</p></div>
-				<div class="grid-item"><div class="idx">03</div><h3>桌面桥接</h3><p>从 Web UI 安全唤起本地编辑器与文件管理器:HMAC 网关令牌、目标白名单与工作区包含检查。</p></div>
-				<div class="grid-item"><div class="idx">04</div><h3>一条命令落地</h3><p>npm / Bun 全局安装,或 <code class="keycap">curl … install.sh | sh</code>;桌面版提供 Linux 构建。</p></div>
+				<div class="grid-item"><div class="idx">01</div><h3>原生引擎</h3><p>文本、正则、grep 与 diff 的重活交给 Rust 原语;桌面版把原生插件与编译好的内核一起暂存发布。</p></div>
+				<div class="grid-item"><div class="idx">02</div><h3>终端即主场</h3><p>OSC 8 超链接、PTY 原生进程管理;整套工具为终端而生,SSH 远程照常用。</p></div>
+				<div class="grid-item"><div class="idx">03</div><h3>桌面桥接</h3><p>从 Work Studio 安全唤起本地编辑器与文件管理器:HMAC 网关令牌、目标白名单与工作区包含检查。</p></div>
+				<div class="grid-item"><div class="idx">04</div><h3>一条命令落地</h3><p>npm / Bun 全局安装,或 <code class="keycap">curl … install.sh | sh</code>;Work Studio 另有 AppImage、<code>.deb</code> 与 <code>tar.gz</code>。</p></div>
 			</div>
 		</div>
 	</section>
@@ -305,7 +310,7 @@ import ZetaLayoutV2 from "../../../sites/zeta/ZetaLayoutV2.astro";
 	<section class="block" id="identity">
 		<div class="container">
 			<div class="section-head">
-				<div class="num">10</div>
+				<div class="num">12</div>
 				<div>
 					<h2>Linxira OS 中的一等公民</h2>
 					<div class="sub">Zeta 由 Linxira OS 团队打造——一个面向科研工作站的 Linux 发行版。在 Linxira OS 上,Zeta 不只是终端里的一个包。</div>
