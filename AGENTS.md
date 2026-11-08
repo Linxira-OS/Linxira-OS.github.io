@@ -31,8 +31,9 @@ src/
     bio-sdk/                 bio-sdk 子站：BioSDKLayout.astro + components/
     zeta/                    zeta 子站：ZetaLayout.astro
   components/                主站共享组件：Navbar / PageLayout / DocsLayout / SiteShared
-  data/blog.ts               博客文章唯一数据源（注册表）
-  content/                   Astro 内容集合（历史遗留，blog/ 仅 1 篇旧文；新文章不走这里）
+  data/blog.ts               旧手写文章注册表（2026-09 前；新文章不要加条目）
+  posts/                     新博客 Markdown 唯一来源：<slug>.zh.md + <slug>.en.md
+  content/                   Astro 内容集合：仅 docs/（文档页内容）；_legacy/ 为已迁移旧稿，不生成路由
 public/                      静态资源（`public/bio-sdk/`、`public/packages/` 为独立产物，不经 Astro 编译）
 .github/workflows/deploy.yml 推送 master 自动构建部署
 ```
@@ -45,7 +46,7 @@ public/                      静态资源（`public/bio-sdk/`、`public/packages
 
 | 内容 | 放哪 |
 |---|---|
-| 公告、版本发布、技术文章、基准/实测报告、设计想法、系列专栏 | **本仓库博客**（`data/blog.ts` + 双语文章页） |
+| 公告、版本发布、技术文章、基准/实测报告、设计想法、系列专栏 | **本仓库博客**（`src/posts/` 双语 Markdown，旧文在 `data/blog.ts`） |
 | 产品 landing、功能介绍、demo、文档入口 | 本仓库 `src/sites/<product>/` |
 | 产品代码、README、CHANGELOG、API 文档源 | 产品自己的仓库（不要搬到这里） |
 | 大体积二进制（ISO、软件包） | 不入本仓库普通提交；`public/packages/` 只放已有产物，勿追加 |
@@ -56,9 +57,9 @@ public/                      静态资源（`public/bio-sdk/`、`public/packages
 
 ## 4. 新增博客文章（Markdown 直投，两份文件即可）
 
-1. **中文稿**：新建 `src/content/blog/<slug>.zh.md`——frontmatter 含 `title / date / tag（announcement|technical）/ lang: zh / desc`，正文即 Markdown（标题从 `##` 起排，H1 与顶部说明 blockquote 可保留，渲染样式由模板统一提供）。
-2. **英文稿**：新建 `src/content/blog/<slug>.en.md`，同 frontmatter 结构、`lang: en`、正文为英文。**两种语言缺一不可**，缺的语言会出现列表死链。
-3. 完成。路由由 `src/pages/{zh,en}/blog/[slug].astro` 自动生成（`/zh/blog/<slug>/`、`/en/blog/<slug>/`），列表与首页「最新动态」由 `src/data/allPosts.ts` 自动合并，无需注册。
+1. **中文稿**：新建 `src/posts/<slug>.zh.md`——frontmatter 含 `title / date / tag（announcement|technical）/ lang: zh / desc`，正文即 Markdown（标题从 `##` 起排，H1 与顶部说明 blockquote 可保留，渲染样式由模板统一提供）。
+2. **英文稿**：新建 `src/posts/<slug>.en.md`，同 frontmatter 结构、`lang: en`、正文为英文。**两种语言缺一不可**，缺的语言会出现列表死链。
+3. 完成。路由由 `src/pages/{zh,en}/blog/[slug].astro` 自动生成（`/zh/blog/<slug>/`、`/en/blog/<slug>/`），列表与首页「最新动态」由 `src/data/allPosts.ts` 自动合并（glob `src/posts/*.md`），无需注册。
 
 规范：
 - 文件名必须以 `.zh.md` / `.en.md` 结尾（语言即文件名后缀）。
@@ -174,7 +175,7 @@ npx astro build    # 生产构建，产物在 dist/
 
 - **One repo, one site, one domain.** All Linxira web presence lives here; products are **path-based sub-sites** (`/bio-sdk/`, `/zeta/`) under `src/sites/<product>/`. Never create separate Pages sites or subdomains; never put website files in product repos (they must stay clean for forks/clones).
 - **Every article goes to the blog here**, regardless of product. Sub-sites are product landing pages only and link back to blog posts for long-form content.
-- **Adding a post = 2 markdown files**: `src/content/blog/<slug>.zh.md` and `<slug>.en.md` with frontmatter (`title / date / tag / lang / desc`). Routes, lists and the homepage "latest" feed pick them up automatically. The old `data/blog.ts` registry is legacy-only.
+- **Adding a post = 2 markdown files**: `src/posts/<slug>.zh.md` and `<slug>.en.md` with frontmatter (`title / date / tag / lang / desc`). Routes, lists and the homepage "latest" feed pick them up automatically. The old `data/blog.ts` registry is legacy-only.
 - **Both zh and en are mandatory** for every page and post.
 - Product entry links use the canonical path `/<product>/` (language redirect handled by `src/pages/<product>/index.astro`).
 - Navigation has a single source: `src/components/Navbar.astro` (`navItems`, `products` arrays). Never copy `<nav>` into pages.
